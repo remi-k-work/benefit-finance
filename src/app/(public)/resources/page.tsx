@@ -1,12 +1,10 @@
 // components
 import PageHeader from "@/components/PageHeader";
-import Hero from "@/components/Hero";
 
 export default function Page() {
   return (
     <>
-      <PageHeader title="Home" description="Welcome to Benefit Finance!" />
-      <Hero />
+      <PageHeader title="Resources" description="Deep dives into personal finance" />
     </>
   );
 }

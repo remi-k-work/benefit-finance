@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import type { Route } from "next";
 import type { ReactNode } from "react";
 
-interface NavItemProps {
+interface NavIconItemProps {
   href: Route;
   match: string;
   title: string;
@@ -19,7 +19,7 @@ interface NavItemProps {
   isExternal?: boolean;
 }
 
-export default function NavItem({ href, match, title, icon, isExternal = false }: NavItemProps) {
+export default function NavIconItem({ href, match, title, icon, isExternal = false }: NavIconItemProps) {
   const pathname = usePathname();
 
   // Compile regex client-side
@@ -33,9 +33,9 @@ export default function NavItem({ href, match, title, icon, isExternal = false }
       prefetch={!isExternal}
       target={isExternal ? "_blank" : undefined}
       className={cn(
-        "bg-secondary border p-3",
-        "[&>svg]:size-11",
-        isActive ? "border-accent transition-colors [&>svg]:size-13" : "hover:border-accent hover:scale-110",
+        "bg-secondary border p-1",
+        "[&>svg]:size-7",
+        isActive ? "border-accent transition-colors [&>svg]:size-9" : "hover:border-accent hover:scale-110",
       )}
     >
       {icon}
@@ -43,9 +43,9 @@ export default function NavItem({ href, match, title, icon, isExternal = false }
   );
 }
 
-export function NavItemSkeleton({ href, title, icon, isExternal = false }: NavItemProps) {
+export function NavIconItemSkeleton({ href, title, icon, isExternal = false }: NavIconItemProps) {
   return (
-    <Link href={href} title={title} prefetch={!isExternal} target={isExternal ? "_blank" : undefined} className="bg-secondary border p-3 [&>svg]:size-11">
+    <Link href={href} title={title} prefetch={!isExternal} target={isExternal ? "_blank" : undefined} className="bg-secondary border p-1 [&>svg]:size-7">
       {icon}
     </Link>
   );
