@@ -17,7 +17,7 @@ export default function Logo() {
 
   return (
     <Link href="/" title="Benefit Finance" className="flex-none">
-      <Image src={isDarkMode ? logoD : logoL} alt="Benefit Finance" className={cn("w-auto object-contain opacity-50", !isDarkMode && "invert")} />
+      <Image src={isDarkMode ? logoD : logoL} alt="Benefit Finance" className={cn("opacity-50", !isDarkMode && "invert")} />
     </Link>
   );
 }
