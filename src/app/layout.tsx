@@ -1,5 +1,12 @@
 import "./globals.css";
 
+// services, features, and other libraries
+import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/next";
+
+// components
+import { ThemeProvider } from "next-themes";
+
 // assets
 import { fontSans, fontMono } from "@/assets/fonts";
 
@@ -20,7 +27,17 @@ export const metadata: Metadata = {
 export default function Layout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" translate="no" suppressHydrationWarning>
-      <body className={`${fontSans.variable} ${fontMono.variable} font-mono antialiased`}>{children}</body>
+      <body
+        className={cn(
+          `${fontSans.variable} ${fontMono.variable} grid font-mono antialiased`,
+          "grid-cols-[1fr] grid-rows-[auto_1fr] [grid-template-areas:'header''main']",
+        )}
+      >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {children}
+          <Analytics debug={false} />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
