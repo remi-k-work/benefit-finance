@@ -1,8 +1,5 @@
 // assets
-import { LightBulbIcon, UserIcon } from "@heroicons/react/24/outline";
-
-// types
-import type { Route } from "next";
+import { BanknotesIcon, UserIcon } from "@heroicons/react/24/outline";
 
 // constants
 export const NAV_MENU_ITEMS = [
@@ -30,13 +27,13 @@ export const NAV_MENU_ITEMS = [
 
 export const NAV_ICON_ITEMS = [
   {
-    href: "/",
+    href: "/dashboard",
     match: "^/dashboard(/.*)?$",
-    title: "Dashboard",
-    icon: <LightBulbIcon />,
+    title: "Get Started",
+    icon: <BanknotesIcon />,
   },
   {
-    href: "/" as Route,
+    href: "/profile",
     match: "^/profile(/.*)?$",
     title: "Profile",
     icon: <UserIcon />,

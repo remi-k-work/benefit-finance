@@ -14,7 +14,7 @@ export default function ThemeChanger() {
 
   return (
     <Button type="button" size="icon" variant="ghost" title={isDarkMode ? "Light Mode" : "Dark Mode"} onClick={() => setTheme(isDarkMode ? "light" : "dark")}>
-      {isDarkMode ? <SunIcon className="size-7" /> : <MoonIcon className="size-7" />}
+      {isDarkMode ? <SunIcon className="size-11" /> : <MoonIcon className="size-11" />}
     </Button>
   );
 }

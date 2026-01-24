@@ -1,5 +1,5 @@
 // services, features, and other libraries
-import { format } from "date-fns";
+import { DateTime } from "effect";
 
 // components
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
@@ -33,7 +33,7 @@ export default function ProfileInfo({ user, user: { email, name, createdAt }, se
           <CalendarIcon className="size-9" />
           Member Since
         </div>
-        <p className="text-muted-foreground text-center">{format(createdAt, "MMMM d, yyyy")}</p>
+        <p className="text-muted-foreground text-center">{DateTime.formatLocal(DateTime.unsafeFromDate(createdAt))}</p>
       </CardFooter>
     </Card>
   );

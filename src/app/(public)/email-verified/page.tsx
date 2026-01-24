@@ -22,6 +22,7 @@ export default function Page() {
       <PageHeader title="Email Verified" description="Your email has been verified successfully" />
       <Button
         variant="ghost"
+        nativeButton={false}
         render={
           <Link href="/dashboard">
             <LightBulbIcon className="size-9" />

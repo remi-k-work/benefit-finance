@@ -108,7 +108,7 @@ export default function SignInForm({ redirect }: SignInFormProps) {
               <SignInSocial provider="github" redirect={redirect} />
             </section>
             <p className="mt-9 text-center">
-              New to Total Recall AI?&nbsp;
+              New to BENEFIT FINANCE?&nbsp;
               <Link href="/sign-up" className="link">
                 Create an Account
               </Link>

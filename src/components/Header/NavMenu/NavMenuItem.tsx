@@ -40,7 +40,7 @@ export default function NavMenuItem({ title, items, href, match }: NavMenuItemPr
 
     return (
       <NavigationMenuItem>
-        <NavigationMenuTrigger className={cn("uppercase", isParentActive && "text-accent")}>{title}</NavigationMenuTrigger>
+        <NavigationMenuTrigger className={cn("uppercase", isParentActive && "bg-accent text-accent-foreground")}>{title}</NavigationMenuTrigger>
         <NavigationMenuContent className="uppercase">
           {items.map((subItem, index) => (
             <SimpleNavLink key={index} {...subItem} />
@@ -73,7 +73,7 @@ function SimpleNavLink({ title, href = "#", match, isMainLevel = false }: Simple
   const isActive = new RegExp(regexString).test(pathname);
 
   const LinkComponent = (
-    <Link href={href} className={cn(isActive && "font-bold")}>
+    <Link href={href} className={cn(isActive && "bg-accent text-accent-foreground")}>
       {title}
     </Link>
   );

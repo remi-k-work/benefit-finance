@@ -33,9 +33,9 @@ export default function NavIconItem({ href, match, title, icon, isExternal = fal
       prefetch={!isExternal}
       target={isExternal ? "_blank" : undefined}
       className={cn(
-        "bg-secondary border p-1",
-        "[&>svg]:size-7",
-        isActive ? "border-accent transition-colors [&>svg]:size-9" : "hover:border-accent hover:scale-110",
+        "bg-secondary border p-3",
+        "[&>svg]:size-11",
+        isActive ? "border-accent transition-colors [&>svg]:size-13" : "hover:border-accent hover:scale-110",
       )}
     >
       {icon}
@@ -45,7 +45,7 @@ export default function NavIconItem({ href, match, title, icon, isExternal = fal
 
 export function NavIconItemSkeleton({ href, title, icon, isExternal = false }: NavIconItemProps) {
   return (
-    <Link href={href} title={title} prefetch={!isExternal} target={isExternal ? "_blank" : undefined} className="bg-secondary border p-1 [&>svg]:size-7">
+    <Link href={href} title={title} prefetch={!isExternal} target={isExternal ? "_blank" : undefined} className="bg-secondary border p-3 [&>svg]:size-11">
       {icon}
     </Link>
   );

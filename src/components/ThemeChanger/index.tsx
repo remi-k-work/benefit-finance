@@ -14,7 +14,7 @@ export const ThemeChanger = dynamic(() => import("./ThemeChanger"), { ssr: false
 export function ThemeChangerSkeleton() {
   return (
     <Button type="button" size="icon" variant="ghost" title="Change Theme" disabled>
-      <SunIcon className="size-7" />
+      <SunIcon className="size-11" />
     </Button>
   );
 }
