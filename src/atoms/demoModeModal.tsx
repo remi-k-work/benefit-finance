@@ -10,7 +10,7 @@ import { Atom, useAtom, useAtomSet } from "@effect-atom/atom-react";
 // components
 import DemoModeModal from "@/components/DemoModeModal";
 
-// Create the atom that holds the demo mode modal state that is initially 'none' (closed)
+// Create the atom that holds the modal state that is initially 'none' (closed)
 const demoModeModalAtom = Atom.make(Option.none<void>());
 
 // This is the hook that components use to open the modal
@@ -18,6 +18,7 @@ export function useDemoModeModal() {
   const setDemoModeModal = useAtomSet(demoModeModalAtom);
 
   const openDemoModeModal = useCallback(() => {
+    // Set the atom to some, which will render the modal
     setDemoModeModal(Option.some(undefined));
   }, [setDemoModeModal]);
 

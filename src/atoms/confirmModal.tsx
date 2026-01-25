@@ -18,7 +18,7 @@ interface ConfirmModalState {
   onConfirmed: () => void;
 }
 
-// Create the atom that holds the confirm modal state that is initially 'none' (closed)
+// Create the atom that holds the modal state that is initially 'none' (closed)
 const confirmModalAtom = Atom.make(Option.none<ConfirmModalState>());
 
 // This is the hook that components use to open the modal
@@ -27,7 +27,7 @@ export function useConfirmModal() {
 
   const openConfirmModal = useCallback(
     (confirmModalState: ConfirmModalState) => {
-      // Set the atom to some, containing the content and callback
+      // Set the atom to some, which will render the modal
       setConfirmModal(Option.some(confirmModalState));
     },
     [setConfirmModal],
