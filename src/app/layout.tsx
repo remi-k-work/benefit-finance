@@ -6,8 +6,8 @@ import { Analytics } from "@vercel/analytics/next";
 
 // components
 import { ThemeProvider } from "next-themes";
-import DemoModeProvider from "@/contexts/DemoMode";
-import ConfirmModalProvider from "@/contexts/ConfirmModal";
+import { ConfirmModalRoot } from "@/atoms/confirmModal";
+import { DemoModeModalRoot } from "@/atoms/demoModeModal";
 import { Toaster } from "@/components/ui/custom/sonner";
 
 // assets
@@ -37,13 +37,11 @@ export default function Layout({ children }: LayoutProps<"/">) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <DemoModeProvider>
-            <ConfirmModalProvider>
-              {children}
-              <Toaster richColors />
-              <Analytics debug={false} />
-            </ConfirmModalProvider>
-          </DemoModeProvider>
+          {children}
+          <ConfirmModalRoot />
+          <DemoModeModalRoot />
+          <Toaster richColors />
+          <Analytics debug={false} />
         </ThemeProvider>
       </body>
     </html>

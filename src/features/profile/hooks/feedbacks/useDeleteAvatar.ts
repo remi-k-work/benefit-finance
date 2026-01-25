@@ -7,7 +7,6 @@ import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
 import useDemoModeGuard from "@/hooks/useDemoModeGuard";
 
 // types
-import type { RefObject } from "react";
 import type { DeleteAvatarActionResult } from "@/features/profile/actions/deleteAvatar";
 
 // constants
@@ -16,7 +15,7 @@ const SUCCEEDED_MESSAGE = "Your avatar has been deleted.";
 const FAILED_MESSAGE = "Your avatar could not be deleted; please try again later.";
 
 // Provide feedback to the user regarding this server action
-export default function useDeleteAvatarFeedback(hasPressedConfirmRef: RefObject<boolean>, { actionStatus, actionError }: DeleteAvatarActionResult) {
+export default function useDeleteAvatarFeedback({ actionStatus, actionError }: DeleteAvatarActionResult) {
   // Access the user session data from the client side
   const { refetch } = authClient.useSession();
 
@@ -44,7 +43,6 @@ export default function useDeleteAvatarFeedback(hasPressedConfirmRef: RefObject<
   });
 
   useEffect(() => {
-    if (hasPressedConfirmRef.current === false) return;
     onFeedbackNeeded();
-  }, [hasPressedConfirmRef, actionStatus]);
+  }, [actionStatus]);
 }

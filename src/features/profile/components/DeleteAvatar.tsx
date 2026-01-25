@@ -5,7 +5,7 @@ import { startTransition, useActionState } from "react";
 import deleteAvatar from "@/features/profile/actions/deleteAvatar";
 
 // services, features, and other libraries
-import { useConfirmModalContext } from "@/contexts/ConfirmModal";
+import { useConfirmModal } from "@/atoms/confirmModal";
 import useDeleteAvatarFeedback from "@/features/profile/hooks/feedbacks/useDeleteAvatar";
 
 // components
@@ -21,14 +21,14 @@ interface DeleteAvatarProps {
 }
 
 export default function DeleteAvatar({ currentImage }: DeleteAvatarProps) {
-  // Access the confirm modal context and retrieve all necessary information
-  const { hasPressedConfirmRef, openConfirmModal } = useConfirmModalContext();
+  // This is the hook that components use to open the modal
+  const { openConfirmModal } = useConfirmModal();
 
   // Deletes a user avatar, sets the user's image to null, and removes the corresponding avatar file from uploadthing
   const [deleteAvatarState, deleteAvatarAction, deleteAvatarIsPending] = useActionState(deleteAvatar, { actionStatus: "idle" });
 
   // Provide feedback to the user regarding this server action
-  useDeleteAvatarFeedback(hasPressedConfirmRef, deleteAvatarState);
+  useDeleteAvatarFeedback(deleteAvatarState);
 
   return (
     <Button
@@ -36,14 +36,16 @@ export default function DeleteAvatar({ currentImage }: DeleteAvatarProps) {
       variant="destructive"
       disabled={!currentImage || deleteAvatarIsPending}
       onClick={() => {
-        openConfirmModal(
-          <p className="text-center text-xl">
-            Are you sure you want to <b className="text-destructive">delete</b> your avatar?
-          </p>,
-          () => {
+        openConfirmModal({
+          content: (
+            <p className="text-center text-xl">
+              Are you sure you want to <b className="text-destructive">delete</b> your avatar?
+            </p>
+          ),
+          onConfirmed: () => {
             startTransition(deleteAvatarAction);
           },
-        );
+        });
       }}
     >
       {deleteAvatarIsPending ? <Loader2 className="size-9 animate-spin" /> : <TrashIcon className="size-9" />}
