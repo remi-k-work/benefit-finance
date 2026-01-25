@@ -2,7 +2,8 @@
 import { Suspense } from "react";
 
 // services, features, and other libraries
-import { validatePageInputs } from "@/lib/helpers";
+import { Effect } from "effect";
+import { runPageMainOrNavigate, validatePageInputs } from "@/lib/helpersEffect";
 import { ResetPassPageSchema } from "@/features/auth/schemas/resetPassPage";
 
 // components
@@ -17,6 +18,16 @@ export const metadata: Metadata = {
   title: "Benefit Finance ► Reset Password",
 };
 
+const main = ({ params, searchParams }: PageProps<"/reset-password">) =>
+  Effect.gen(function* () {
+    // Safely validate next.js route inputs (`params` and `searchParams`) against a schema; return typed data or trigger a 404 on failure
+    const {
+      searchParams: { token },
+    } = yield* validatePageInputs(ResetPassPageSchema, { params, searchParams });
+
+    return { token };
+  });
+
 // Page remains the fast, static shell
 export default function Page({ params, searchParams }: PageProps<"/reset-password">) {
   return (
@@ -28,10 +39,8 @@ export default function Page({ params, searchParams }: PageProps<"/reset-passwor
 
 // This new async component contains the dynamic logic
 async function PageContent({ params, searchParams }: PageProps<"/reset-password">) {
-  // Safely validate next.js route inputs (`params` and `searchParams`) against a zod schema; return typed data or trigger a 404 on failure
-  const {
-    searchParams: { token },
-  } = await validatePageInputs(ResetPassPageSchema, { params, searchParams });
+  // Execute the main effect for the page, map known errors to the subsequent navigation helpers, and return the payload
+  const { token } = await runPageMainOrNavigate(main({ params, searchParams }));
 
   return (
     <>
