@@ -10,6 +10,7 @@ import { useActionState, useEffect, useRef } from "react";
 import passChange from "@/features/profile/actions/passChangeForm";
 
 // services, features, and other libraries
+import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
 import { PassChangeFormSchema, PassSetupFormSchema } from "@/features/profile/schemas/passChangeForm";
@@ -71,21 +72,21 @@ export default function PassChangeForm({ hasCredential }: PassChangeFormProps) {
               <>
                 <AppField
                   name={"currentPassword" as any}
-                  validators={{ onChange: PassChangeFormSchema.shape.currentPassword }}
+                  validators={{ onChange: Schema.standardSchemaV1(PassChangeFormSchema.from.fields.currentPassword) }}
                   children={(field) => (
                     <field.PasswordField label="Current Password" size={40} maxLength={129} autoComplete="current-password" placeholder="e.g. P@ssw0rd!" />
                   )}
                 />
                 <AppField
                   name="newPassword"
-                  validators={{ onChange: PassChangeFormSchema.shape.newPassword }}
+                  validators={{ onChange: Schema.standardSchemaV1(PassChangeFormSchema.from.fields.newPassword) }}
                   children={(field) => (
                     <field.PasswordField label="New Password" size={40} maxLength={129} autoComplete="new-password" placeholder="e.g. P@ssw0rd!" />
                   )}
                 />
                 <AppField
                   name="confirmPassword"
-                  validators={{ onChange: PassChangeFormSchema.shape.confirmPassword }}
+                  validators={{ onChange: Schema.standardSchemaV1(PassChangeFormSchema.from.fields.confirmPassword) }}
                   children={(field) => (
                     <field.PasswordField label="Confirm Password" size={40} maxLength={129} autoComplete="new-password" placeholder="e.g. P@ssw0rd!" />
                   )}
@@ -95,14 +96,14 @@ export default function PassChangeForm({ hasCredential }: PassChangeFormProps) {
               <>
                 <AppField
                   name="newPassword"
-                  validators={{ onChange: PassSetupFormSchema.shape.newPassword }}
+                  validators={{ onChange: Schema.standardSchemaV1(PassSetupFormSchema.from.fields.newPassword) }}
                   children={(field) => (
                     <field.PasswordField label="New Password" size={40} maxLength={129} autoComplete="new-password" placeholder="e.g. P@ssw0rd!" />
                   )}
                 />
                 <AppField
                   name="confirmPassword"
-                  validators={{ onChange: PassSetupFormSchema.shape.confirmPassword }}
+                  validators={{ onChange: Schema.standardSchemaV1(PassSetupFormSchema.from.fields.confirmPassword) }}
                   children={(field) => (
                     <field.PasswordField label="Confirm Password" size={40} maxLength={129} autoComplete="new-password" placeholder="e.g. P@ssw0rd!" />
                   )}

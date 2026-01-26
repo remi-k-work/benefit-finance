@@ -23,11 +23,6 @@ export const NAV_MENU_ITEMS = [
     href: "/resources",
     match: "^/resources(/.*)?$",
   },
-  // {
-  //   title: "Test",
-  //   href: "/test",
-  //   match: "^/test(/.*)?$",
-  // },
 ] as const;
 
 export const NAV_ICON_ITEMS = [

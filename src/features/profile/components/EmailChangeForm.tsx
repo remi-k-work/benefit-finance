@@ -9,6 +9,7 @@ import { useActionState, useEffect, useRef } from "react";
 import emailChange from "@/features/profile/actions/emailChangeForm";
 
 // services, features, and other libraries
+import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
 import { EmailChangeFormSchema } from "@/features/profile/schemas/emailChangeForm";
@@ -71,7 +72,7 @@ export default function EmailChangeForm({ user: { email: currentEmail } }: Email
           <CardContent>
             <AppField
               name="newEmail"
-              validators={{ onChange: EmailChangeFormSchema.shape.newEmail }}
+              validators={{ onChange: Schema.standardSchemaV1(EmailChangeFormSchema.fields.newEmail) }}
               children={(field) => (
                 <field.TextField label="New Email" size={40} maxLength={50} spellCheck={false} autoComplete="email" placeholder="e.g. john.doe@gmail.com" />
               )}

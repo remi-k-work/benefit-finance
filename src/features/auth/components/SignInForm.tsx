@@ -12,6 +12,7 @@ import Link from "next/link";
 import signIn from "@/features/auth/actions/signInForm";
 
 // services, features, and other libraries
+import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
 import { SignInFormSchema } from "@/features/auth/schemas/signInForm";
@@ -74,14 +75,14 @@ export default function SignInForm({ redirect }: SignInFormProps) {
           <CardContent>
             <AppField
               name="email"
-              validators={{ onChange: SignInFormSchema.shape.email }}
+              validators={{ onChange: Schema.standardSchemaV1(SignInFormSchema.fields.email) }}
               children={(field) => (
                 <field.TextField label="Email" size={40} maxLength={50} spellCheck={false} autoComplete="email" placeholder="e.g. john.doe@gmail.com" />
               )}
             />
             <AppField
               name="password"
-              validators={{ onChange: SignInFormSchema.shape.password }}
+              validators={{ onChange: Schema.standardSchemaV1(SignInFormSchema.fields.password) }}
               children={(field) => (
                 <field.PasswordField
                   label="Password"

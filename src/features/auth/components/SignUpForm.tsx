@@ -9,6 +9,7 @@ import { useActionState, useEffect, useRef } from "react";
 import signUp from "@/features/auth/actions/signUpForm";
 
 // services, features, and other libraries
+import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
 import { SignUpFormSchema } from "@/features/auth/schemas/signUpForm";
@@ -63,24 +64,24 @@ export default function SignUpForm() {
           <CardContent>
             <AppField
               name="name"
-              validators={{ onChange: SignUpFormSchema.shape.name }}
+              validators={{ onChange: Schema.standardSchemaV1(SignUpFormSchema.from.fields.name) }}
               children={(field) => <field.TextField label="Name" size={40} maxLength={26} spellCheck={false} autoComplete="name" placeholder="e.g. John Doe" />}
             />
             <AppField
               name="email"
-              validators={{ onChange: SignUpFormSchema.shape.email }}
+              validators={{ onChange: Schema.standardSchemaV1(SignUpFormSchema.from.fields.email) }}
               children={(field) => (
                 <field.TextField label="Email" size={40} maxLength={50} spellCheck={false} autoComplete="email" placeholder="e.g. john.doe@gmail.com" />
               )}
             />
             <AppField
               name="password"
-              validators={{ onChange: SignUpFormSchema.shape.password }}
+              validators={{ onChange: Schema.standardSchemaV1(SignUpFormSchema.from.fields.password) }}
               children={(field) => <field.PasswordField label="Password" size={40} maxLength={129} autoComplete="new-password" placeholder="e.g. P@ssw0rd!" />}
             />
             <AppField
               name="confirmPassword"
-              validators={{ onChange: SignUpFormSchema.shape.confirmPassword }}
+              validators={{ onChange: Schema.standardSchemaV1(SignUpFormSchema.from.fields.confirmPassword) }}
               children={(field) => (
                 <field.PasswordField label="Confirm Password" size={40} maxLength={129} autoComplete="new-password" placeholder="e.g. P@ssw0rd!" />
               )}

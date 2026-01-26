@@ -8,7 +8,7 @@ import { Option } from "effect";
 import { Atom, useAtom, useAtomSet } from "@effect-atom/atom-react";
 
 // components
-import ConfirmModal from "@/components/ConfirmModal2";
+import ConfirmModal from "@/components/ConfirmModal";
 
 // types
 import type { ReactNode } from "react";

@@ -9,6 +9,7 @@ import { useActionState, useEffect, useRef } from "react";
 import profileDetails from "@/features/profile/actions/profileDetailsForm";
 
 // services, features, and other libraries
+import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
 import { ProfileDetailsFormSchema } from "@/features/profile/schemas/profileDetailsForm";
@@ -82,7 +83,7 @@ export default function ProfileDetailsForm({ user, user: { name: currentName, im
             </div>
             <AppField
               name="name"
-              validators={{ onChange: ProfileDetailsFormSchema.shape.name }}
+              validators={{ onChange: Schema.standardSchemaV1(ProfileDetailsFormSchema.fields.name) }}
               children={(field) => <field.TextField label="Name" size={40} maxLength={26} spellCheck={false} autoComplete="name" placeholder="e.g. John Doe" />}
             />
           </CardContent>

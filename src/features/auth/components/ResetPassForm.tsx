@@ -9,6 +9,7 @@ import { useActionState, useEffect, useRef } from "react";
 import resetPass from "@/features/auth/actions/resetPassForm";
 
 // services, features, and other libraries
+import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
 import { ResetPassFormSchema } from "@/features/auth/schemas/resetPassForm";
@@ -68,14 +69,14 @@ export default function ResetPassForm({ token }: ResetPassFormProps) {
           <CardContent>
             <AppField
               name="newPassword"
-              validators={{ onChange: ResetPassFormSchema.shape.newPassword }}
+              validators={{ onChange: Schema.standardSchemaV1(ResetPassFormSchema.from.fields.newPassword) }}
               children={(field) => (
                 <field.PasswordField label="New Password" size={40} maxLength={129} autoComplete="new-password" placeholder="e.g. P@ssw0rd!" />
               )}
             />
             <AppField
               name="confirmPassword"
-              validators={{ onChange: ResetPassFormSchema.shape.confirmPassword }}
+              validators={{ onChange: Schema.standardSchemaV1(ResetPassFormSchema.from.fields.confirmPassword) }}
               children={(field) => (
                 <field.PasswordField label="Confirm Password" size={40} maxLength={129} autoComplete="new-password" placeholder="e.g. P@ssw0rd!" />
               )}

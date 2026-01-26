@@ -13,15 +13,13 @@ import { HandThumbDownIcon, HandThumbUpIcon, QuestionMarkCircleIcon, XCircleIcon
 
 // types
 import type { ComponentPropsWithoutRef } from "react";
-import type { RefObject } from "react";
 
 interface ConfirmModalProps extends ComponentPropsWithoutRef<"dialog"> {
-  hasPressedConfirmRef: RefObject<boolean>;
   onConfirmed: () => void;
   onClosed: () => void;
 }
 
-export default function ConfirmModal({ hasPressedConfirmRef, onConfirmed, onClosed, children, className, ...props }: ConfirmModalProps) {
+export default function ConfirmModal({ onConfirmed, onClosed, children, className, ...props }: ConfirmModalProps) {
   // To be able to call showModal() method on the dialog
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -32,14 +30,6 @@ export default function ConfirmModal({ hasPressedConfirmRef, onConfirmed, onClos
     // Show the dialog as a modal
     dialogRef.current?.showModal();
   }, []);
-
-  // All this new cleanup code is for the <Activity /> boundary
-  useEffect(() => {
-    // Reset the flag when the component unmounts
-    return () => {
-      hasPressedConfirmRef.current = false;
-    };
-  }, [hasPressedConfirmRef]);
 
   return (
     <dialog
@@ -81,7 +71,6 @@ export default function ConfirmModal({ hasPressedConfirmRef, onConfirmed, onClos
                 onClick={() => {
                   onConfirmed();
                   setIsOpen(false);
-                  hasPressedConfirmRef.current = true;
                 }}
               >
                 <HandThumbUpIcon className="size-9" />

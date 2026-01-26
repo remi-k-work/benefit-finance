@@ -9,6 +9,7 @@ import { useActionState, useEffect, useRef } from "react";
 import forgotPass from "@/features/auth/actions/forgotPassForm";
 
 // services, features, and other libraries
+import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
 import { ForgotPassFormSchema } from "@/features/auth/schemas/forgotPassForm";
@@ -63,7 +64,7 @@ export default function ForgotPassForm() {
           <CardContent>
             <AppField
               name="email"
-              validators={{ onChange: ForgotPassFormSchema.shape.email }}
+              validators={{ onChange: Schema.standardSchemaV1(ForgotPassFormSchema.fields.email) }}
               children={(field) => (
                 <field.TextField label="Email" size={40} maxLength={50} spellCheck={false} autoComplete="email" placeholder="e.g. john.doe@gmail.com" />
               )}

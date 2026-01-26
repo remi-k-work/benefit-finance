@@ -27,7 +27,7 @@ export default async function signIn(_prevState: unknown, formData: FormData): P
     const { email, password, rememberMe } = await SERVER_VALIDATE(formData);
 
     // Sign in the user through the better-auth api
-    await auth.api.signInEmail({ body: { email, password, rememberMe: !!rememberMe }, headers: await headers() });
+    await auth.api.signInEmail({ body: { email, password, rememberMe }, headers: await headers() });
   } catch (error) {
     // Validation has failed
     if (error instanceof ServerValidateError) return { ...error.formState, actionStatus: "invalid" };
