@@ -24,7 +24,7 @@ const buttonVariants = cva(
         default: "px-4 py-2",
         sm: "px-3 py-1",
         lg: "px-6 py-3",
-        icon: "rounded-full p-2",
+        icon: "p-2",
       },
     },
     defaultVariants: {

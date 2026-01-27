@@ -11,6 +11,7 @@ import { Logo, LogoSkeleton } from "./Logo";
 import NavMenu, { NavMenuSkeleton } from "./NavMenu";
 import NavIconItem, { NavIconItemSkeleton } from "./NavIconItem";
 import UserPopover, { UserPopoverSkeleton } from "@/components/UserPopover";
+import LangChanger, { LangChangerSkeleton } from "@/components/LangChanger";
 import { ThemeChanger, ThemeChangerSkeleton } from "@/components/ThemeChanger";
 
 // constants
@@ -28,7 +29,7 @@ export default function Header() {
 // This new async component contains the dynamic logic
 async function HeaderContent() {
   // Create an instance of the lang loader needed for localization
-  const { navIconItems } = await LangLoader.create();
+  const { prefferedLanguage, navIconItems } = await LangLoader.create();
 
   // Access the user session data from the server side
   const userSessionData = await getUserSessionData();
@@ -46,6 +47,7 @@ async function HeaderContent() {
           </Suspense>
         ))}
         {userSessionData ? <UserPopover user={userSessionData.user} session={userSessionData.session} /> : <UserPopoverSkeleton />}
+        <LangChanger preferredLang={prefferedLanguage} />
         <ThemeChanger />
       </section>
     </header>
@@ -64,6 +66,7 @@ export function HeaderSkeleton() {
           <NavIconItemSkeleton key={index} {...navIconItem} />
         ))}
         <UserPopoverSkeleton />
+        <LangChangerSkeleton />
         <ThemeChangerSkeleton />
       </section>
     </header>

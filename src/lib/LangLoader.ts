@@ -11,10 +11,11 @@ import navMenuItemsEn from "@/assets/lang/navMenuItems.en.json";
 import navMenuItemsPl from "@/assets/lang/navMenuItems.pl.json";
 
 // types
-type Lang = "en" | "pl";
+export type Lang = "en" | "pl";
 
 // constants
-const LANG_COOKIE = "lang";
+export const LANG_COOKIE = "lang";
+export const LANG_COOKIE_MAXAGE = 2592000;
 
 export default class LangLoader {
   public readonly prefferedLanguage;
