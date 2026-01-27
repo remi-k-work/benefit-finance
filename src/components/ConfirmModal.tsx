@@ -13,13 +13,15 @@ import { HandThumbDownIcon, HandThumbUpIcon, QuestionMarkCircleIcon, XCircleIcon
 
 // types
 import type { ComponentPropsWithoutRef } from "react";
+import type LangLoader from "@/lib/LangLoader";
 
 interface ConfirmModalProps extends ComponentPropsWithoutRef<"dialog"> {
   onConfirmed: () => void;
   onClosed: () => void;
+  ll: typeof LangLoader.prototype.confirmModal;
 }
 
-export default function ConfirmModal({ onConfirmed, onClosed, children, className, ...props }: ConfirmModalProps) {
+export default function ConfirmModal({ onConfirmed, onClosed, ll, children, className, ...props }: ConfirmModalProps) {
   // To be able to call showModal() method on the dialog
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -57,7 +59,7 @@ export default function ConfirmModal({ onConfirmed, onClosed, children, classNam
             <header className="from-primary to-secondary flex items-center justify-between gap-4 bg-linear-to-r p-3">
               <section className="flex items-center gap-2">
                 <QuestionMarkCircleIcon className="size-11 flex-none" />
-                <h4 className="flex-1 font-sans text-3xl leading-none uppercase">Please Confirm!</h4>
+                <h4 className="flex-1 font-sans text-3xl leading-none uppercase">{ll["Please Confirm!"]}</h4>
               </section>
               <Button type="button" size="icon" onClick={() => setIsOpen(false)}>
                 <XCircleIcon className="size-11" />
@@ -74,11 +76,11 @@ export default function ConfirmModal({ onConfirmed, onClosed, children, classNam
                 }}
               >
                 <HandThumbUpIcon className="size-9" />
-                Confirm
+                {ll["Confirm"]}
               </Button>
               <Button type="button" variant="secondary" onClick={() => setIsOpen(false)}>
                 <HandThumbDownIcon className="size-9" />
-                Cancel
+                {ll["Cancel"]}
               </Button>
             </footer>
           </motion.div>

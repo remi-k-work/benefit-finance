@@ -7,9 +7,10 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 
 // services, features, and other libraries
+import LangLoader from "@/lib/LangLoader";
 import { auth } from "@/services/better-auth/auth";
 import { initialFormState, ServerValidateError } from "@tanstack/react-form-nextjs";
-import { SERVER_VALIDATE } from "@/features/auth/constants/signInForm";
+import { SERVER_VALIDATE_EN, SERVER_VALIDATE_PL } from "@/features/auth/constants/signInForm";
 import { APIError } from "better-auth/api";
 
 // types
@@ -23,8 +24,11 @@ export interface SignInFormActionResult extends ServerFormState<any, any> {
 // The main server action that processes the form
 export default async function signIn(_prevState: unknown, formData: FormData): Promise<SignInFormActionResult> {
   try {
+    // Create an instance of the lang loader needed for localization
+    const { prefferedLanguage } = await LangLoader.create();
+
     // Validate the form on the server side and extract needed data
-    const { email, password, rememberMe } = await SERVER_VALIDATE(formData);
+    const { email, password, rememberMe } = prefferedLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
 
     // Sign in the user through the better-auth api
     await auth.api.signInEmail({ body: { email, password, rememberMe }, headers: await headers() });

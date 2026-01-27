@@ -14,13 +14,15 @@ import { UserIcon } from "@heroicons/react/24/outline";
 
 // types
 import type { Session, User } from "@/services/better-auth/auth";
+import type LangLoader from "@/lib/LangLoader";
 
 interface UserPopoverProps {
   user: User;
   session: Session;
+  ll: typeof LangLoader.prototype.userPopover;
 }
 
-export default function UserPopover({ user, user: { email, name }, session }: UserPopoverProps) {
+export default function UserPopover({ user, user: { email, name }, session, ll }: UserPopoverProps) {
   // Whether or not the user popover is open
   const [isOpen, setIsOpen] = useState(false);
 
@@ -47,9 +49,9 @@ export default function UserPopover({ user, user: { email, name }, session }: Us
             }}
           >
             <UserIcon className="size-9" />
-            Profile
+            {ll["Profile"]}
           </Button>
-          <SignOut />
+          <SignOut ll={ll} />
         </div>
       </PopoverContent>
     </Popover>

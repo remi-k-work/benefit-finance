@@ -5,10 +5,20 @@ import { cookies, headers } from "next/headers";
 import { resolveAcceptLanguage } from "resolve-accept-language";
 
 // assets
+import confirmModalEn from "@/assets/lang/confirmModal.en.json";
+import confirmModalPl from "@/assets/lang/confirmModal.pl.json";
+import demoModeModalEn from "@/assets/lang/demoModeModal.en.json";
+import demoModeModalPl from "@/assets/lang/demoModeModal.pl.json";
+import langChangerEn from "@/assets/lang/langChanger.en.json";
+import langChangerPl from "@/assets/lang/langChanger.pl.json";
 import navIconItemsEn from "@/assets/lang/navIconItems.en.json";
 import navIconItemsPl from "@/assets/lang/navIconItems.pl.json";
 import navMenuItemsEn from "@/assets/lang/navMenuItems.en.json";
 import navMenuItemsPl from "@/assets/lang/navMenuItems.pl.json";
+import themeChangerEn from "@/assets/lang/themeChanger.en.json";
+import themeChangerPl from "@/assets/lang/themeChanger.pl.json";
+import userPopoverEn from "@/assets/lang/userPopover.en.json";
+import userPopoverPl from "@/assets/lang/userPopover.pl.json";
 
 // types
 export type Lang = "en" | "pl";
@@ -54,11 +64,25 @@ export default class LangLoader {
   }
 
   // Localized content accessors are designed for the preferred language and optimized to pass specific chunks from the server components as props
+  public get confirmModal() {
+    return this.prefferedLanguage === "pl" ? confirmModalPl : confirmModalEn;
+  }
+  public get demoModeModal() {
+    return this.prefferedLanguage === "pl" ? demoModeModalPl : demoModeModalEn;
+  }
+  public get langChanger() {
+    return this.prefferedLanguage === "pl" ? langChangerPl : langChangerEn;
+  }
   public get navIconItems() {
     return this.prefferedLanguage === "pl" ? navIconItemsPl : navIconItemsEn;
   }
-
   public get navMenuItems() {
     return this.prefferedLanguage === "pl" ? navMenuItemsPl : navMenuItemsEn;
+  }
+  public get themeChanger() {
+    return this.prefferedLanguage === "pl" ? themeChangerPl : themeChangerEn;
+  }
+  public get userPopover() {
+    return this.prefferedLanguage === "pl" ? userPopoverPl : userPopoverEn;
   }
 }

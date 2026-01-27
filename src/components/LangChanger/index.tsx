@@ -17,13 +17,15 @@ import UsFlagIcon from "@/assets/icons/UsFlag";
 import PlFlagIcon from "@/assets/icons/PlFlag";
 
 // types
+import type LangLoader from "@/lib/LangLoader";
 import type { Lang } from "@/lib/LangLoader";
 
 interface LangChangerProps {
   preferredLang: Lang;
+  ll: typeof LangLoader.prototype.langChanger;
 }
 
-export default function LangChanger({ preferredLang }: LangChangerProps) {
+export default function LangChanger({ preferredLang, ll }: LangChangerProps) {
   // To display a pending status while the server action is running
   const [isPending, startTransition] = useTransition();
 
@@ -38,7 +40,14 @@ export default function LangChanger({ preferredLang }: LangChangerProps) {
   }
 
   return (
-    <Button type="button" size="icon" variant="ghost" disabled={isPending} title={preferredLang === "en" ? "English" : "Polish"} onClick={handleLangToggled}>
+    <Button
+      type="button"
+      size="icon"
+      variant="ghost"
+      disabled={isPending}
+      title={preferredLang === "en" ? ll["English"] : ll["Polish"]}
+      onClick={handleLangToggled}
+    >
       {preferredLang && (preferredLang === "en" ? <UsFlagIcon className="size-11" /> : <PlFlagIcon className="size-11" />)}
     </Button>
   );

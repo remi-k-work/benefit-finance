@@ -6,9 +6,10 @@
 import { revalidatePath } from "next/cache";
 
 // services, features, and other libraries
+import LangLoader from "@/lib/LangLoader";
 import { auth } from "@/services/better-auth/auth";
 import { initialFormState, ServerValidateError } from "@tanstack/react-form-nextjs";
-import { SERVER_VALIDATE } from "@/features/auth/constants/signUpForm";
+import { SERVER_VALIDATE_EN, SERVER_VALIDATE_PL } from "@/features/auth/constants/signUpForm";
 import { APIError } from "better-auth/api";
 
 // types
@@ -22,8 +23,11 @@ export interface SignUpFormActionResult extends ServerFormState<any, any> {
 // The main server action that processes the form
 export default async function signUp(_prevState: unknown, formData: FormData): Promise<SignUpFormActionResult> {
   try {
+    // Create an instance of the lang loader needed for localization
+    const { prefferedLanguage } = await LangLoader.create();
+
     // Validate the form on the server side and extract needed data
-    const { name, email, password } = await SERVER_VALIDATE(formData);
+    const { name, email, password } = prefferedLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
 
     // Sign up the user through the better-auth api
     await auth.api.signUpEmail({ body: { name, email, password } });

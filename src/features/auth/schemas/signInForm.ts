@@ -2,11 +2,17 @@
 import { Schema } from "effect";
 
 // schemas
-import { EmailSchema } from "@/schemas/email";
-import { PasswordSchema } from "@/schemas/password";
+import { EmailSchemaEn, EmailSchemaPl } from "@/schemas/email";
+import { PasswordSchemaEn, PasswordSchemaPl } from "@/schemas/password";
 
-export const SignInFormSchema = Schema.Struct({
-  email: EmailSchema,
-  password: PasswordSchema,
+export const SignInFormSchemaEn = Schema.Struct({
+  email: EmailSchemaEn,
+  password: PasswordSchemaEn,
+  rememberMe: Schema.optionalWith(Schema.BooleanFromString, { default: () => false }),
+});
+
+export const SignInFormSchemaPl = Schema.Struct({
+  email: EmailSchemaPl,
+  password: PasswordSchemaPl,
   rememberMe: Schema.optionalWith(Schema.BooleanFromString, { default: () => false }),
 });

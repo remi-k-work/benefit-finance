@@ -7,10 +7,11 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 
 // services, features, and other libraries
+import LangLoader from "@/lib/LangLoader";
 import { getUserSessionData, makeSureUserIsAuthenticated } from "@/features/auth/lib/helpers";
 import { auth } from "@/services/better-auth/auth";
 import { initialFormState, ServerValidateError } from "@tanstack/react-form-nextjs";
-import { SERVER_VALIDATE } from "@/features/profile/constants/emailChangeForm";
+import { SERVER_VALIDATE_EN, SERVER_VALIDATE_PL } from "@/features/profile/constants/emailChangeForm";
 import { APIError } from "better-auth/api";
 
 // types
@@ -39,11 +40,14 @@ export default async function emailChange(_prevState: unknown, formData: FormDat
     // Return early if the current user is in demo mode
     if (role === "demo") return { ...initialFormState, actionStatus: "demoMode" };
 
+    // Create an instance of the lang loader needed for localization
+    const { prefferedLanguage } = await LangLoader.create();
+
     // Only users with verified emails need to additionally approve their email change
     if (emailVerified) needsApproval = true;
 
     // Validate the form on the server side and extract needed data
-    const { newEmail } = await SERVER_VALIDATE(formData);
+    const { newEmail } = prefferedLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
 
     // Request the email change through the better-auth api for the user
     await auth.api.changeEmail({ body: { newEmail, callbackURL: needsApproval ? "/email-approved" : "/email-verified" }, headers: await headers() });

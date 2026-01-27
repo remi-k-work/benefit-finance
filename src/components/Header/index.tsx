@@ -29,7 +29,7 @@ export default function Header() {
 // This new async component contains the dynamic logic
 async function HeaderContent() {
   // Create an instance of the lang loader needed for localization
-  const { prefferedLanguage, navIconItems } = await LangLoader.create();
+  const { prefferedLanguage, langChanger, navIconItems, themeChanger, userPopover } = await LangLoader.create();
 
   // Access the user session data from the server side
   const userSessionData = await getUserSessionData();
@@ -46,9 +46,9 @@ async function HeaderContent() {
             <NavIconItem {...navIconItem} />
           </Suspense>
         ))}
-        {userSessionData ? <UserPopover user={userSessionData.user} session={userSessionData.session} /> : <UserPopoverSkeleton />}
-        <LangChanger preferredLang={prefferedLanguage} />
-        <ThemeChanger />
+        {userSessionData ? <UserPopover user={userSessionData.user} session={userSessionData.session} ll={userPopover} /> : <UserPopoverSkeleton />}
+        <LangChanger preferredLang={prefferedLanguage} ll={langChanger} />
+        <ThemeChanger ll={themeChanger} />
       </section>
     </header>
   );

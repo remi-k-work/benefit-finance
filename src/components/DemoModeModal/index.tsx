@@ -14,12 +14,14 @@ import Footer from "./Footer";
 
 // types
 import type { ComponentPropsWithoutRef } from "react";
+import type LangLoader from "@/lib/LangLoader";
 
 interface DemoModeModalProps extends ComponentPropsWithoutRef<"dialog"> {
   onClosed: () => void;
+  ll: typeof LangLoader.prototype.demoModeModal;
 }
 
-export default function DemoModeModal({ onClosed, className, ...props }: DemoModeModalProps) {
+export default function DemoModeModal({ onClosed, ll, className, ...props }: DemoModeModalProps) {
   // To be able to call showModal() method on the dialog
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -54,9 +56,9 @@ export default function DemoModeModal({ onClosed, className, ...props }: DemoMod
             exit={{ opacity: 0, scale: 0.75 }}
             transition={{ ease: "easeOut", duration: 0.5 }}
           >
-            <Header onClosed={() => setIsOpen(false)} />
-            <Content />
-            <Footer onClosed={() => setIsOpen(false)} />
+            <Header onClosed={() => setIsOpen(false)} ll={ll} />
+            <Content ll={ll} />
+            <Footer onClosed={() => setIsOpen(false)} ll={ll} />
           </motion.div>
         )}
       </AnimatePresence>

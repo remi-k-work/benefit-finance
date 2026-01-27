@@ -5,16 +5,19 @@ import { Button } from "@/components/ui/custom/button";
 import { ShieldExclamationIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
 // types
+import type LangLoader from "@/lib/LangLoader";
+
 interface HeaderProps {
   onClosed: () => void;
+  ll: typeof LangLoader.prototype.demoModeModal;
 }
 
-export default function Header({ onClosed }: HeaderProps) {
+export default function Header({ onClosed, ll }: HeaderProps) {
   return (
     <header className="from-primary to-secondary flex items-center justify-between gap-4 bg-linear-to-r p-3">
       <section className="flex items-center gap-2">
         <ShieldExclamationIcon className="size-11 flex-none" />
-        <h4 className="flex-1 font-sans text-3xl leading-none uppercase">Welcome to Demo Mode!</h4>
+        <h4 className="flex-1 font-sans text-3xl leading-none uppercase">{ll["Welcome to Demo Mode!"]}</h4>
       </section>
       <Button type="button" size="icon" onClick={onClosed}>
         <XCircleIcon className="size-11" />

@@ -15,11 +15,14 @@ import { UserIcon } from "@heroicons/react/24/outline";
 import { Loader2 } from "lucide-react";
 
 // types
+import type LangLoader from "@/lib/LangLoader";
+
 interface SignInOrCreateProps {
   onSignedOut: () => void;
+  ll: typeof LangLoader.prototype.demoModeModal;
 }
 
-export default function SignInOrCreate({ onSignedOut }: SignInOrCreateProps) {
+export default function SignInOrCreate({ onSignedOut, ll }: SignInOrCreateProps) {
   // Whether or not the sign out request is pending
   const [isPending, setIsPending] = useState(false);
 
@@ -51,7 +54,7 @@ export default function SignInOrCreate({ onSignedOut }: SignInOrCreateProps) {
       }}
     >
       {isPending ? <Loader2 className="size-9 animate-spin" /> : <UserIcon className="size-9" />}
-      Sign In or Create Account
+      {ll["Sign In or Create Account"]}
     </Button>
   );
 }

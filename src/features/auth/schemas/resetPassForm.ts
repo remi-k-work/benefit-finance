@@ -2,14 +2,24 @@
 import { Schema } from "effect";
 
 // schemas
-import { PasswordSchema } from "@/schemas/password";
+import { PasswordSchemaEn, PasswordSchemaPl } from "@/schemas/password";
 
-export const ResetPassFormSchema = Schema.Struct({
-  newPassword: PasswordSchema,
-  confirmPassword: PasswordSchema,
+export const ResetPassFormSchemaEn = Schema.Struct({
+  newPassword: PasswordSchemaEn,
+  confirmPassword: PasswordSchemaEn,
 }).pipe(
   // Add a filter to ensure that passwords match
   Schema.filter(({ newPassword, confirmPassword }) => {
     if (newPassword !== confirmPassword) return { path: ["confirmPassword"], message: "Passwords do not match" };
+  }),
+);
+
+export const ResetPassFormSchemaPl = Schema.Struct({
+  newPassword: PasswordSchemaPl,
+  confirmPassword: PasswordSchemaPl,
+}).pipe(
+  // Add a filter to ensure that passwords match
+  Schema.filter(({ newPassword, confirmPassword }) => {
+    if (newPassword !== confirmPassword) return { path: ["confirmPassword"], message: "Hasła nie pasują" };
   }),
 );

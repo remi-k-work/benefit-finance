@@ -7,10 +7,16 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 
 // services, features, and other libraries
+import LangLoader from "@/lib/LangLoader";
 import { getUserSessionData, makeSureUserIsAuthenticated } from "@/features/auth/lib/helpers";
 import { auth } from "@/services/better-auth/auth";
 import { initialFormState, ServerValidateError } from "@tanstack/react-form-nextjs";
-import { SERVER_VALIDATE_CHANGE, SERVER_VALIDATE_SETUP } from "@/features/profile/constants/passChangeForm";
+import {
+  SERVER_VALIDATE_CHANGE_EN,
+  SERVER_VALIDATE_CHANGE_PL,
+  SERVER_VALIDATE_SETUP_EN,
+  SERVER_VALIDATE_SETUP_PL,
+} from "@/features/profile/constants/passChangeForm";
 import { APIError } from "better-auth/api";
 
 // types
@@ -35,10 +41,14 @@ export default async function passChange(hasCredential: boolean, _prevState: unk
     // Return early if the current user is in demo mode
     if (role === "demo") return { ...initialFormState, actionStatus: "demoMode" };
 
+    // Create an instance of the lang loader needed for localization
+    const { prefferedLanguage } = await LangLoader.create();
+
     // Validate the form on the server side and extract needed data
     let currentPassword: string, newPassword: string;
-    if (hasCredential) ({ currentPassword, newPassword } = await SERVER_VALIDATE_CHANGE(formData));
-    else ({ newPassword } = await SERVER_VALIDATE_SETUP(formData));
+    if (hasCredential)
+      ({ currentPassword, newPassword } = prefferedLanguage === "en" ? await SERVER_VALIDATE_CHANGE_EN(formData) : await SERVER_VALIDATE_CHANGE_PL(formData));
+    else ({ newPassword } = prefferedLanguage === "en" ? await SERVER_VALIDATE_SETUP_EN(formData) : await SERVER_VALIDATE_SETUP_PL(formData));
 
     // Change or setup the password through the better-auth api for the user
     if (hasCredential) await auth.api.changePassword({ body: { currentPassword: currentPassword!, newPassword }, headers: await headers() });

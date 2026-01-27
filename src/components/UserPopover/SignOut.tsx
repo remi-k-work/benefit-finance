@@ -14,7 +14,14 @@ import { toast } from "sonner";
 import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { Loader2 } from "lucide-react";
 
-export default function SignOut() {
+// types
+import type LangLoader from "@/lib/LangLoader";
+
+interface SignOutProps {
+  ll: typeof LangLoader.prototype.userPopover;
+}
+
+export default function SignOut({ ll }: SignOutProps) {
   // Whether or not the sign out request is pending
   const [isPending, setIsPending] = useState(false);
 
@@ -35,14 +42,14 @@ export default function SignOut() {
             },
             onError: ({ error: { message } }) => {
               setIsPending(false);
-              toast.error("AUTHORIZATION ERROR!", { description: message });
+              toast.error(ll["AUTHORIZATION ERROR!"], { description: message });
             },
           },
         });
       }}
     >
       {isPending ? <Loader2 className="size-9 animate-spin" /> : <ArrowRightStartOnRectangleIcon className="size-9" />}
-      Sign Out
+      {ll["Sign Out"]}
     </Button>
   );
 }

@@ -12,6 +12,11 @@ import ConfirmModal from "@/components/ConfirmModal";
 
 // types
 import type { ReactNode } from "react";
+import type LangLoader from "@/lib/LangLoader";
+
+interface ConfirmModalRootProps {
+  ll: typeof LangLoader.prototype.confirmModal;
+}
 
 interface ConfirmModalState {
   content: ReactNode;
@@ -37,7 +42,7 @@ export function useConfirmModal() {
 }
 
 // The root component that renders the modal based on the atom state
-export function ConfirmModalRoot() {
+export function ConfirmModalRoot({ ll }: ConfirmModalRootProps) {
   const [confirmModal, setConfirmModal] = useAtom(confirmModalAtom);
 
   // Use Effect's pipe and Option.match for a functional render flow
@@ -45,7 +50,7 @@ export function ConfirmModalRoot() {
     Option.match({
       onNone: () => null,
       onSome: ({ content, onConfirmed }) => (
-        <ConfirmModal onConfirmed={onConfirmed} onClosed={() => setConfirmModal(Option.none())}>
+        <ConfirmModal onConfirmed={onConfirmed} onClosed={() => setConfirmModal(Option.none())} ll={ll}>
           {content}
         </ConfirmModal>
       ),

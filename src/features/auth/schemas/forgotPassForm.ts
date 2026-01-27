@@ -2,6 +2,7 @@
 import { Schema } from "effect";
 
 // schemas
-import { EmailSchema } from "@/schemas/email";
+import { EmailSchemaEn, EmailSchemaPl } from "@/schemas/email";
 
-export const ForgotPassFormSchema = Schema.Struct({ email: EmailSchema });
+export const ForgotPassFormSchemaEn = Schema.Struct({ email: EmailSchemaEn });
+export const ForgotPassFormSchemaPl = Schema.Struct({ email: EmailSchemaPl });

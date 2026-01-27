@@ -10,6 +10,13 @@ import { Atom, useAtom, useAtomSet } from "@effect-atom/atom-react";
 // components
 import DemoModeModal from "@/components/DemoModeModal";
 
+// types
+import type LangLoader from "@/lib/LangLoader";
+
+interface DemoModeModalRootProps {
+  ll: typeof LangLoader.prototype.demoModeModal;
+}
+
 // Create the atom that holds the modal state that is initially 'none' (closed)
 const demoModeModalAtom = Atom.make(Option.none<void>());
 
@@ -26,14 +33,14 @@ export function useDemoModeModal() {
 }
 
 // The root component that renders the modal based on the atom state
-export function DemoModeModalRoot() {
+export function DemoModeModalRoot({ ll }: DemoModeModalRootProps) {
   const [demoModeModal, setDemoModeModal] = useAtom(demoModeModalAtom);
 
   // Use Effect's pipe and Option.match for a functional render flow
   return demoModeModal.pipe(
     Option.match({
       onNone: () => null,
-      onSome: () => <DemoModeModal onClosed={() => setDemoModeModal(Option.none())} />,
+      onSome: () => <DemoModeModal onClosed={() => setDemoModeModal(Option.none())} ll={ll} />,
     }),
   );
 }

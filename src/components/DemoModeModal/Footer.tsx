@@ -6,17 +6,20 @@ import SignInOrCreate from "./SignInOrCreate";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 
 // types
+import type LangLoader from "@/lib/LangLoader";
+
 interface FooterProps {
   onClosed: () => void;
+  ll: typeof LangLoader.prototype.demoModeModal;
 }
 
-export default function Footer({ onClosed }: FooterProps) {
+export default function Footer({ onClosed, ll }: FooterProps) {
   return (
     <footer className="flex flex-wrap items-center gap-6 border-t p-3 *:flex-1">
-      <SignInOrCreate onSignedOut={onClosed} />
+      <SignInOrCreate onSignedOut={onClosed} ll={ll} />
       <Button type="button" variant="secondary" onClick={onClosed}>
         <XCircleIcon className="size-9" />
-        Continue Demo
+        {ll["Continue Demo"]}
       </Button>
     </footer>
   );
