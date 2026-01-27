@@ -1,41 +1,84 @@
 // assets
 import { BanknotesIcon, UserIcon } from "@heroicons/react/24/outline";
 
+// types
+import type LangLoader from "@/lib/LangLoader";
+
 // constants
-export const NAV_MENU_ITEMS = [
+export const NAV_MENU_ITEMS = (ll: typeof LangLoader.prototype.navMenuItems) =>
+  [
+    {
+      title: ll["Products"],
+      items: [
+        { title: ll["Spending"], href: "/spending", match: "^/spending(/.*)?$" },
+        { title: ll["Investing"], href: "/investing", match: "^/investing(/.*)?$" },
+        { title: ll["Forecasting"], href: "/forecasting", match: "^/forecasting(/.*)?$" },
+        { title: ll["Estate Planning"], href: "/estate-planning", match: "^/estate-planning(/.*)?$" },
+        { title: ll["Couples"], href: "/couples", match: "^/couples(/.*)?$" },
+      ],
+    },
+    {
+      title: ll["For Employers"],
+      href: "/for-employers",
+      match: "^/employers(/.*)?$",
+    },
+    {
+      title: ll["Resources"],
+      href: "/resources",
+      match: "^/resources(/.*)?$",
+    },
+  ] as const;
+
+export const NAV_ICON_ITEMS = (ll: typeof LangLoader.prototype.navIconItems) =>
+  [
+    {
+      href: "/dashboard",
+      match: "^/dashboard(/.*)?$",
+      title: ll["Get Started"],
+      icon: <BanknotesIcon />,
+    },
+    {
+      href: "/profile",
+      match: "^/profile(/.*)?$",
+      title: ll["Profile"],
+      icon: <UserIcon />,
+    },
+  ] as const;
+
+export const NAV_MENU_ITEMS_S = [
   {
-    title: "Products",
+    title: "",
     items: [
-      { title: "Spending", href: "/spending", match: "^/spending(/.*)?$" },
-      { title: "Investing", href: "/investing", match: "^/investing(/.*)?$" },
-      { title: "Forecasting", href: "/forecasting", match: "^/forecasting(/.*)?$" },
-      { title: "Estate Planning", href: "/estate-planning", match: "^/estate-planning(/.*)?$" },
-      { title: "Couples", href: "/couples", match: "^/couples(/.*)?$" },
+      { title: "", href: "/spending", match: "^/spending(/.*)?$" },
+      { title: "", href: "/investing", match: "^/investing(/.*)?$" },
+      { title: "", href: "/forecasting", match: "^/forecasting(/.*)?$" },
+      { title: "", href: "/estate-planning", match: "^/estate-planning(/.*)?$" },
+      { title: "", href: "/couples", match: "^/couples(/.*)?$" },
     ],
   },
   {
-    title: "For Employers",
+    title: "",
     href: "/for-employers",
     match: "^/employers(/.*)?$",
   },
   {
-    title: "Resources",
+    title: "",
     href: "/resources",
     match: "^/resources(/.*)?$",
   },
 ] as const;
 
-export const NAV_ICON_ITEMS = [
+export const NAV_ICON_ITEMS_S = [
   {
     href: "/dashboard",
     match: "^/dashboard(/.*)?$",
-    title: "Get Started",
+    title: "",
     icon: <BanknotesIcon />,
   },
   {
     href: "/profile",
     match: "^/profile(/.*)?$",
-    title: "Profile",
+    title: "",
     icon: <UserIcon />,
   },
 ] as const;

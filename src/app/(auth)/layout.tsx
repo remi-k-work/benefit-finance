@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 import { isUserAuthenticated } from "@/features/auth/lib/helpers";
 
 // components
-import Header from "@/components/Header";
+import Header, { HeaderSkeleton } from "@/components/Header";
 
 // Layout remains the fast, static shell
 export default function Layout(props: LayoutProps<"/">) {
@@ -38,7 +38,7 @@ async function LayoutContent({ children }: LayoutProps<"/">) {
 function LayoutSkeleton({ children }: LayoutProps<"/">) {
   return (
     <>
-      <Header />
+      <HeaderSkeleton />
       <main className="mx-4 [grid-area:main]">{children}</main>
     </>
   );
