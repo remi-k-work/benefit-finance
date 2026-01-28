@@ -10,12 +10,7 @@ import useDemoModeGuard from "@/hooks/useDemoModeGuard";
 import type { RefObject } from "react";
 import type { PassChangeFormActionResult } from "@/features/profile/actions/passChangeForm";
 import type { AnyFormApi } from "@tanstack/react-form";
-
-// constants
-const FORM_NAME_CHANGE = "[PASSWORD CHANGE]";
-const SUCCEEDED_MESSAGE_CHANGE = "Your password has been changed.";
-const FORM_NAME_SETUP = "[PASSWORD SETUP]";
-const SUCCEEDED_MESSAGE_SETUP = "Your password has been setup.";
+import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this form actions
 export default function usePassChangeFormFeedback(
@@ -24,15 +19,21 @@ export default function usePassChangeFormFeedback(
   reset: () => void,
   formStore: AnyFormApi["store"],
   hasCredential: boolean,
+  ll: typeof LangLoader.prototype.passChangeFormFeedback,
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
   // Generic hook for managing a permanent feedback message
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedback(formStore);
 
   // Generic hook for displaying toast notifications for form actions
-  const showToast = useFormToastFeedback(hasCredential ? FORM_NAME_CHANGE : FORM_NAME_SETUP, {
-    succeeded: hasCredential ? SUCCEEDED_MESSAGE_CHANGE : SUCCEEDED_MESSAGE_SETUP,
-    authError: actionError,
-  });
+  const showToast = useFormToastFeedback(
+    hasCredential ? ll["[PASSWORD CHANGE]"] : ll["[PASSWORD SETUP]"],
+    {
+      succeeded: hasCredential ? ll["Your password has been changed."] : ll["Your password has been setup."],
+      authError: actionError,
+    },
+    llFormToastFeedback,
+  );
 
   // Custom hook that observes an action's status and automatically opens the global demo mode modal
   const guardForDemoMode = useDemoModeGuard(actionStatus);
@@ -47,7 +48,7 @@ export default function usePassChangeFormFeedback(
       reset();
 
       // Show the permanent feedback message as well
-      showFeedbackMessage(hasCredential ? SUCCEEDED_MESSAGE_CHANGE : SUCCEEDED_MESSAGE_SETUP);
+      showFeedbackMessage(hasCredential ? ll["Your password has been changed."] : ll["Your password has been setup."]);
     } else {
       // Was a restricted operation attempted under the demo account? Inform the user
       guardForDemoMode();

@@ -12,10 +12,7 @@ import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
 import type { RefObject } from "react";
 import type { SignUpFormActionResult } from "@/features/auth/actions/signUpForm";
 import type { AnyFormApi } from "@tanstack/react-form";
-
-// constants
-const FORM_NAME = "[SIGN UP]";
-const SUCCEEDED_MESSAGE = "You signed up successfully.";
+import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this form actions
 export default function useSignUpFormFeedback(
@@ -23,12 +20,14 @@ export default function useSignUpFormFeedback(
   { actionStatus, actionError, errors }: SignUpFormActionResult,
   reset: () => void,
   formStore: AnyFormApi["store"],
+  ll: typeof LangLoader.prototype.signUpFormFeedback,
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
   // Generic hook for managing a permanent feedback message
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedback(formStore);
 
   // Generic hook for displaying toast notifications for form actions
-  const showToast = useFormToastFeedback(FORM_NAME, { succeeded: SUCCEEDED_MESSAGE, authError: actionError });
+  const showToast = useFormToastFeedback(ll["[SIGN UP]"], { succeeded: ll["You signed up successfully."], authError: actionError }, llFormToastFeedback);
 
   // Function to be called when feedback is needed
   const onFeedbackNeeded = useEffectEvent(() => {
@@ -40,7 +39,7 @@ export default function useSignUpFormFeedback(
       reset();
 
       // Show the permanent feedback message as well
-      showFeedbackMessage(SUCCEEDED_MESSAGE);
+      showFeedbackMessage(ll["You signed up successfully."]);
 
       // Redirect the user after successful sign up
       return setTimeout(() => redirect("/dashboard"), 3000);

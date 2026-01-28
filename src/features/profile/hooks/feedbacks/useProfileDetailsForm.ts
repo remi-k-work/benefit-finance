@@ -11,10 +11,7 @@ import useDemoModeGuard from "@/hooks/useDemoModeGuard";
 import type { RefObject } from "react";
 import type { ProfileDetailsFormActionResult } from "@/features/profile/actions/profileDetailsForm";
 import type { AnyFormApi } from "@tanstack/react-form";
-
-// constants
-const FORM_NAME = "[PROFILE DETAILS]";
-const SUCCEEDED_MESSAGE = "Your profile details have been updated.";
+import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this form actions
 export default function useProfileDetailsFormFeedback(
@@ -22,6 +19,8 @@ export default function useProfileDetailsFormFeedback(
   { actionStatus, actionError, errors }: ProfileDetailsFormActionResult,
   reset: () => void,
   formStore: AnyFormApi["store"],
+  ll: typeof LangLoader.prototype.profileDetailsFormFeedback,
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
   // Access the user session data from the client side
   const { refetch } = authClient.useSession();
@@ -30,7 +29,11 @@ export default function useProfileDetailsFormFeedback(
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedback(formStore);
 
   // Generic hook for displaying toast notifications for form actions
-  const showToast = useFormToastFeedback(FORM_NAME, { succeeded: SUCCEEDED_MESSAGE, authError: actionError });
+  const showToast = useFormToastFeedback(
+    ll["[PROFILE DETAILS]"],
+    { succeeded: ll["Your profile details have been updated."], authError: actionError },
+    llFormToastFeedback,
+  );
 
   // Custom hook that observes an action's status and automatically opens the global demo mode modal
   const guardForDemoMode = useDemoModeGuard(actionStatus);
@@ -48,7 +51,7 @@ export default function useProfileDetailsFormFeedback(
       refetch();
 
       // Show the permanent feedback message as well
-      showFeedbackMessage(SUCCEEDED_MESSAGE);
+      showFeedbackMessage(ll["Your profile details have been updated."]);
     } else {
       // Was a restricted operation attempted under the demo account? Inform the user
       guardForDemoMode();

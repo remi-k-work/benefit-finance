@@ -11,11 +11,7 @@ import useDemoModeGuard from "@/hooks/useDemoModeGuard";
 import type { RefObject } from "react";
 import type { EmailChangeFormActionResult } from "@/features/profile/actions/emailChangeForm";
 import type { AnyFormApi } from "@tanstack/react-form";
-
-// constants
-const FORM_NAME = "[EMAIL CHANGE]";
-const SUCCEEDED_MESSAGE_ONE = "The email change has been initiated and needs to be approved. Please check your current email address for the approval link.";
-const SUCCEEDED_MESSAGE_TWO = "Your email has been changed successfully. A verification email has been sent to your new email address.";
+import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this form actions
 export default function useEmailChangeFormFeedback(
@@ -23,6 +19,8 @@ export default function useEmailChangeFormFeedback(
   { actionStatus, actionError, needsApproval, errors }: EmailChangeFormActionResult,
   reset: () => void,
   formStore: AnyFormApi["store"],
+  ll: typeof LangLoader.prototype.emailChangeFormFeedback,
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
   // Access the user session data from the client side
   const { refetch } = authClient.useSession();
@@ -31,7 +29,16 @@ export default function useEmailChangeFormFeedback(
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedback(formStore);
 
   // Generic hook for displaying toast notifications for form actions
-  const showToast = useFormToastFeedback(FORM_NAME, { succeeded: needsApproval ? SUCCEEDED_MESSAGE_ONE : SUCCEEDED_MESSAGE_TWO, authError: actionError });
+  const showToast = useFormToastFeedback(
+    ll["[EMAIL CHANGE]"],
+    {
+      succeeded: needsApproval
+        ? ll["The email change has been initiated and needs to be approved. Please check your current email address for the approval link."]
+        : ll["Your email has been changed successfully. A verification email has been sent to your new email address."],
+      authError: actionError,
+    },
+    llFormToastFeedback,
+  );
 
   // Custom hook that observes an action's status and automatically opens the global demo mode modal
   const guardForDemoMode = useDemoModeGuard(actionStatus);
@@ -49,7 +56,11 @@ export default function useEmailChangeFormFeedback(
       refetch();
 
       // Show the permanent feedback message as well
-      showFeedbackMessage(needsApproval ? SUCCEEDED_MESSAGE_ONE : SUCCEEDED_MESSAGE_TWO);
+      showFeedbackMessage(
+        needsApproval
+          ? ll["The email change has been initiated and needs to be approved. Please check your current email address for the approval link."]
+          : ll["Your email has been changed successfully. A verification email has been sent to your new email address."],
+      );
     } else {
       // Was a restricted operation attempted under the demo account? Inform the user
       guardForDemoMode();

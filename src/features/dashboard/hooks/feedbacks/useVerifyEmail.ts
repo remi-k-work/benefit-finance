@@ -9,18 +9,24 @@ import useDemoModeGuard from "@/hooks/useDemoModeGuard";
 // types
 import type { RefObject } from "react";
 import type { VerifyEmailActionResult } from "@/features/dashboard/actions/verifyEmail";
-
-// constants
-const FORM_NAME = "[VERIFY EMAIL]";
-const SUCCEEDED_MESSAGE = "A verification email has been sent to your current email address. Please check your inbox.";
+import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this server action
-export default function useVerifyEmailFeedback(hasPressedSubmitRef: RefObject<boolean>, { actionStatus, actionError }: VerifyEmailActionResult) {
+export default function useVerifyEmailFeedback(
+  hasPressedSubmitRef: RefObject<boolean>,
+  { actionStatus, actionError }: VerifyEmailActionResult,
+  ll: typeof LangLoader.prototype.verifyEmailFeedback,
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
+) {
   // Generic hook for managing a permanent feedback message
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedbackLoc();
 
   // Generic hook for displaying toast notifications for form actions
-  const showToast = useFormToastFeedback(FORM_NAME, { succeeded: SUCCEEDED_MESSAGE, authError: actionError });
+  const showToast = useFormToastFeedback(
+    ll["[VERIFY EMAIL]"],
+    { succeeded: ll["A verification email has been sent to your current email address. Please check your inbox."], authError: actionError },
+    llFormToastFeedback,
+  );
 
   // Custom hook that observes an action's status and automatically opens the global demo mode modal
   const guardForDemoMode = useDemoModeGuard(actionStatus);
@@ -32,7 +38,7 @@ export default function useVerifyEmailFeedback(hasPressedSubmitRef: RefObject<bo
       showToast("succeeded");
 
       // Show the permanent feedback message as well
-      showFeedbackMessage(SUCCEEDED_MESSAGE);
+      showFeedbackMessage(ll["A verification email has been sent to your current email address. Please check your inbox."]);
     } else {
       // Was a restricted operation attempted under the demo account? Inform the user
       guardForDemoMode();

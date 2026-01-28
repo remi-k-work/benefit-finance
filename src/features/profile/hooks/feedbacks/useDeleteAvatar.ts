@@ -8,19 +8,23 @@ import useDemoModeGuard from "@/hooks/useDemoModeGuard";
 
 // types
 import type { DeleteAvatarActionResult } from "@/features/profile/actions/deleteAvatar";
-
-// constants
-const FORM_NAME = "[PROFILE DETAILS]";
-const SUCCEEDED_MESSAGE = "Your avatar has been deleted.";
-const FAILED_MESSAGE = "Your avatar could not be deleted; please try again later.";
+import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this server action
-export default function useDeleteAvatarFeedback({ actionStatus, actionError }: DeleteAvatarActionResult) {
+export default function useDeleteAvatarFeedback(
+  { actionStatus, actionError }: DeleteAvatarActionResult,
+  ll: typeof LangLoader.prototype.deleteAvatarFeedback,
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
+) {
   // Access the user session data from the client side
   const { refetch } = authClient.useSession();
 
   // Generic hook for displaying toast notifications for form actions
-  const showToast = useFormToastFeedback(FORM_NAME, { succeeded: SUCCEEDED_MESSAGE, failed: FAILED_MESSAGE, authError: actionError });
+  const showToast = useFormToastFeedback(
+    ll["[PROFILE DETAILS]"],
+    { succeeded: ll["Your avatar has been deleted."], failed: ll["Your avatar could not be deleted; please try again later."], authError: actionError },
+    llFormToastFeedback,
+  );
 
   // Custom hook that observes an action's status and automatically opens the global demo mode modal
   const guardForDemoMode = useDemoModeGuard(actionStatus);

@@ -9,10 +9,14 @@ import confirmModalEn from "@/assets/lang/confirmModal.en.json";
 import confirmModalPl from "@/assets/lang/confirmModal.pl.json";
 import deleteAvatarEn from "@/assets/lang/deleteAvatar.en.json";
 import deleteAvatarPl from "@/assets/lang/deleteAvatar.pl.json";
+import deleteAvatarFeedbackEn from "@/assets/lang/deleteAvatarFeedback.en.json";
+import deleteAvatarFeedbackPl from "@/assets/lang/deleteAvatarFeedback.pl.json";
 import demoModeModalEn from "@/assets/lang/demoModeModal.en.json";
 import demoModeModalPl from "@/assets/lang/demoModeModal.pl.json";
 import emailChangeFormEn from "@/assets/lang/emailChangeForm.en.json";
 import emailChangeFormPl from "@/assets/lang/emailChangeForm.pl.json";
+import emailChangeFormFeedbackEn from "@/assets/lang/emailChangeFormFeedback.en.json";
+import emailChangeFormFeedbackPl from "@/assets/lang/emailChangeFormFeedback.pl.json";
 import forgotPassFormEn from "@/assets/lang/forgotPassForm.en.json";
 import forgotPassFormPl from "@/assets/lang/forgotPassForm.pl.json";
 import forgotPassFormFeedbackEn from "@/assets/lang/forgotPassFormFeedback.en.json";
@@ -27,8 +31,12 @@ import navMenuItemsEn from "@/assets/lang/navMenuItems.en.json";
 import navMenuItemsPl from "@/assets/lang/navMenuItems.pl.json";
 import passChangeFormEn from "@/assets/lang/passChangeForm.en.json";
 import passChangeFormPl from "@/assets/lang/passChangeForm.pl.json";
+import passChangeFormFeedbackEn from "@/assets/lang/passChangeFormFeedback.en.json";
+import passChangeFormFeedbackPl from "@/assets/lang/passChangeFormFeedback.pl.json";
 import profileDetailsFormEn from "@/assets/lang/profileDetailsForm.en.json";
 import profileDetailsFormPl from "@/assets/lang/profileDetailsForm.pl.json";
+import profileDetailsFormFeedbackEn from "@/assets/lang/profileDetailsFormFeedback.en.json";
+import profileDetailsFormFeedbackPl from "@/assets/lang/profileDetailsFormFeedback.pl.json";
 import profileInfoEn from "@/assets/lang/profileInfo.en.json";
 import profileInfoPl from "@/assets/lang/profileInfo.pl.json";
 import resetPassFormEn from "@/assets/lang/resetPassForm.en.json";
@@ -41,12 +49,18 @@ import signInDemoUserEn from "@/assets/lang/signInDemoUser.en.json";
 import signInDemoUserPl from "@/assets/lang/signInDemoUser.pl.json";
 import signInFormEn from "@/assets/lang/signInForm.en.json";
 import signInFormPl from "@/assets/lang/signInForm.pl.json";
+import signInFormFeedbackEn from "@/assets/lang/signInFormFeedback.en.json";
+import signInFormFeedbackPl from "@/assets/lang/signInFormFeedback.pl.json";
 import signInSocialEn from "@/assets/lang/signInSocial.en.json";
 import signInSocialPl from "@/assets/lang/signInSocial.pl.json";
 import signOutEverywhereEn from "@/assets/lang/signOutEverywhere.en.json";
 import signOutEverywherePl from "@/assets/lang/signOutEverywhere.pl.json";
+import signOutEverywhereFeedbackEn from "@/assets/lang/signOutEverywhereFeedback.en.json";
+import signOutEverywhereFeedbackPl from "@/assets/lang/signOutEverywhereFeedback.pl.json";
 import signUpFormEn from "@/assets/lang/signUpForm.en.json";
 import signUpFormPl from "@/assets/lang/signUpForm.pl.json";
+import signUpFormFeedbackEn from "@/assets/lang/signUpFormFeedback.en.json";
+import signUpFormFeedbackPl from "@/assets/lang/signUpFormFeedback.pl.json";
 import themeChangerEn from "@/assets/lang/themeChanger.en.json";
 import themeChangerPl from "@/assets/lang/themeChanger.pl.json";
 import uploadAvatarEn from "@/assets/lang/uploadAvatar.en.json";
@@ -55,6 +69,8 @@ import userPopoverEn from "@/assets/lang/userPopover.en.json";
 import userPopoverPl from "@/assets/lang/userPopover.pl.json";
 import verifyEmailEn from "@/assets/lang/verifyEmail.en.json";
 import verifyEmailPl from "@/assets/lang/verifyEmail.pl.json";
+import verifyEmailFeedbackEn from "@/assets/lang/verifyEmailFeedback.en.json";
+import verifyEmailFeedbackPl from "@/assets/lang/verifyEmailFeedback.pl.json";
 
 // types
 export type Lang = "en" | "pl";
@@ -106,11 +122,17 @@ export default class LangLoader {
   public get deleteAvatar() {
     return this.prefferedLanguage === "pl" ? deleteAvatarPl : deleteAvatarEn;
   }
+  public get deleteAvatarFeedback() {
+    return this.prefferedLanguage === "pl" ? deleteAvatarFeedbackPl : deleteAvatarFeedbackEn;
+  }
   public get demoModeModal() {
     return this.prefferedLanguage === "pl" ? demoModeModalPl : demoModeModalEn;
   }
   public get emailChangeForm() {
     return this.prefferedLanguage === "pl" ? emailChangeFormPl : emailChangeFormEn;
+  }
+  public get emailChangeFormFeedback() {
+    return this.prefferedLanguage === "pl" ? emailChangeFormFeedbackPl : emailChangeFormFeedbackEn;
   }
   public get forgotPassForm() {
     return this.prefferedLanguage === "pl" ? forgotPassFormPl : forgotPassFormEn;
@@ -133,8 +155,14 @@ export default class LangLoader {
   public get passChangeForm() {
     return this.prefferedLanguage === "pl" ? passChangeFormPl : passChangeFormEn;
   }
+  public get passChangeFormFeedback() {
+    return this.prefferedLanguage === "pl" ? passChangeFormFeedbackPl : passChangeFormFeedbackEn;
+  }
   public get profileDetailsForm() {
     return this.prefferedLanguage === "pl" ? profileDetailsFormPl : profileDetailsFormEn;
+  }
+  public get profileDetailsFormFeedback() {
+    return this.prefferedLanguage === "pl" ? profileDetailsFormFeedbackPl : profileDetailsFormFeedbackEn;
   }
   public get profileInfo() {
     return this.prefferedLanguage === "pl" ? profileInfoPl : profileInfoEn;
@@ -154,14 +182,23 @@ export default class LangLoader {
   public get signInForm() {
     return this.prefferedLanguage === "pl" ? signInFormPl : signInFormEn;
   }
+  public get signInFormFeedback() {
+    return this.prefferedLanguage === "pl" ? signInFormFeedbackPl : signInFormFeedbackEn;
+  }
   public get signInSocial() {
     return this.prefferedLanguage === "pl" ? signInSocialPl : signInSocialEn;
   }
   public get signOutEverywhere() {
     return this.prefferedLanguage === "pl" ? signOutEverywherePl : signOutEverywhereEn;
   }
+  public get signOutEverywhereFeedback() {
+    return this.prefferedLanguage === "pl" ? signOutEverywhereFeedbackPl : signOutEverywhereFeedbackEn;
+  }
   public get signUpForm() {
     return this.prefferedLanguage === "pl" ? signUpFormPl : signUpFormEn;
+  }
+  public get signUpFormFeedback() {
+    return this.prefferedLanguage === "pl" ? signUpFormFeedbackPl : signUpFormFeedbackEn;
   }
   public get themeChanger() {
     return this.prefferedLanguage === "pl" ? themeChangerPl : themeChangerEn;
@@ -174,5 +211,8 @@ export default class LangLoader {
   }
   public get verifyEmail() {
     return this.prefferedLanguage === "pl" ? verifyEmailPl : verifyEmailEn;
+  }
+  public get verifyEmailFeedback() {
+    return this.prefferedLanguage === "pl" ? verifyEmailFeedbackPl : verifyEmailFeedbackEn;
   }
 }
