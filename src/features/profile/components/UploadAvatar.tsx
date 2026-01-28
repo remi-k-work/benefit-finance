@@ -8,7 +8,14 @@ import { authClient } from "@/services/better-auth/auth-client";
 import { UploadButton } from "@/services/uploadthing/components";
 import { toast } from "sonner";
 
-export default function UploadAvatar() {
+// types
+import type LangLoader from "@/lib/LangLoader";
+
+interface UploadAvatarProps {
+  ll: typeof LangLoader.prototype.uploadAvatar;
+}
+
+export default function UploadAvatar({ ll }: UploadAvatarProps) {
   // To be able to refresh the page
   const router = useRouter();
 
@@ -21,7 +28,7 @@ export default function UploadAvatar() {
           await authClient.updateUser({ image: ufsUrl });
 
           // Display a success message
-          toast.success("SUCCESS!", { description: message });
+          toast.success(ll["SUCCESS!"], { description: message });
 
           // Refresh the page
           router.refresh();
@@ -29,7 +36,7 @@ export default function UploadAvatar() {
       }}
       onUploadError={(error: Error) => {
         // Show the upload error message in case something goes wrong
-        toast.error("UPLOAD ERROR!", { description: error.message });
+        toast.error(ll["UPLOAD ERROR!"], { description: error.message });
       }}
       className="ut-button:w-full ut-button:rounded-none ut-button:uppercase ut-button:font-semibold ut-button:tracking-widest ut-button:bg-primary ut-button:text-primary-foreground"
     />

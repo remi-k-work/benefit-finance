@@ -12,7 +12,7 @@ import emailChange from "@/features/profile/actions/emailChangeForm";
 import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { EmailChangeFormSchema } from "@/features/profile/schemas/emailChangeForm";
+import { EmailChangeFormSchemaEn, EmailChangeFormSchemaPl } from "@/features/profile/schemas/emailChangeForm";
 import useEmailChangeFormFeedback from "@/features/profile/hooks/feedbacks/useEmailChangeForm";
 
 // components
@@ -24,15 +24,19 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
 // types
 import type { User } from "@/services/better-auth/auth";
+import type { Lang } from "@/lib/LangLoader";
+import type LangLoader from "@/lib/LangLoader";
 
 interface EmailChangeFormProps {
   user: User;
+  preferredLang: Lang;
+  ll: typeof LangLoader.prototype.emailChangeForm;
 }
 
 // constants
 import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/profile/constants/emailChangeForm";
 
-export default function EmailChangeForm({ user: { email: currentEmail } }: EmailChangeFormProps) {
+export default function EmailChangeForm({ user: { email: currentEmail }, preferredLang, ll }: EmailChangeFormProps) {
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(emailChange, INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
@@ -66,15 +70,24 @@ export default function EmailChangeForm({ user: { email: currentEmail } }: Email
       >
         <Card>
           <CardHeader>
-            <CardTitle>Email Change</CardTitle>
-            <CardDescription>Enter your new email below</CardDescription>
+            <CardTitle>{ll["Email Change"]}</CardTitle>
+            <CardDescription>{ll["Enter your new email below"]}</CardDescription>
           </CardHeader>
           <CardContent>
             <AppField
               name="newEmail"
-              validators={{ onChange: Schema.standardSchemaV1(EmailChangeFormSchema.fields.newEmail) }}
+              validators={{
+                onChange: Schema.standardSchemaV1(preferredLang === "en" ? EmailChangeFormSchemaEn.fields.newEmail : EmailChangeFormSchemaPl.fields.newEmail),
+              }}
               children={(field) => (
-                <field.TextField label="New Email" size={40} maxLength={50} spellCheck={false} autoComplete="email" placeholder="e.g. john.doe@gmail.com" />
+                <field.TextField
+                  label={ll["New Email"]}
+                  size={40}
+                  maxLength={50}
+                  spellCheck={false}
+                  autoComplete="email"
+                  placeholder={ll["e.g. john.doe@gmail.com"]}
+                />
               )}
             />
           </CardContent>
@@ -82,7 +95,7 @@ export default function EmailChangeForm({ user: { email: currentEmail } }: Email
             <InfoLine message={feedbackMessage} />
             <FormSubmit
               submitIcon={<PaperAirplaneIcon className="size-9" />}
-              submitText="Request Email Change"
+              submitText={ll["Request Email Change"]}
               isPending={isPending}
               showCancel={false}
               onClearedForm={hideFeedbackMessage}

@@ -12,7 +12,7 @@ import profileDetails from "@/features/profile/actions/profileDetailsForm";
 import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { ProfileDetailsFormSchema } from "@/features/profile/schemas/profileDetailsForm";
+import { ProfileDetailsFormSchemaEn, ProfileDetailsFormSchemaPl } from "@/features/profile/schemas/profileDetailsForm";
 import useProfileDetailsFormFeedback from "@/features/profile/hooks/feedbacks/useProfileDetailsForm";
 
 // components
@@ -27,16 +27,28 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 // types
 import type { Session, User } from "@/services/better-auth/auth";
+import type { Lang } from "@/lib/LangLoader";
+import type LangLoader from "@/lib/LangLoader";
 
 interface ProfileDetailsFormProps {
   user: User;
   session: Session;
+  preferredLang: Lang;
+  ll: typeof LangLoader.prototype.profileDetailsForm;
+  llDeleteAvatar: typeof LangLoader.prototype.deleteAvatar;
 }
 
 // constants
 import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/profile/constants/profileDetailsForm";
 
-export default function ProfileDetailsForm({ user, user: { name: currentName, image: currentImage }, session }: ProfileDetailsFormProps) {
+export default function ProfileDetailsForm({
+  user,
+  user: { name: currentName, image: currentImage },
+  session,
+  preferredLang,
+  ll,
+  llDeleteAvatar,
+}: ProfileDetailsFormProps) {
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(profileDetails, INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
@@ -70,28 +82,32 @@ export default function ProfileDetailsForm({ user, user: { name: currentName, im
       >
         <Card>
           <CardHeader>
-            <CardTitle>Profile Details</CardTitle>
-            <CardDescription>Change your avatar and name</CardDescription>
+            <CardTitle>{ll["Profile Details"]}</CardTitle>
+            <CardDescription>{ll["Change your avatar and name"]}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="mb-4 flex flex-wrap items-center justify-around gap-4 sm:justify-between">
               <UserAvatar user={user} session={session} />
               <div className="grid gap-4">
                 <UploadAvatar />
-                <DeleteAvatar currentImage={currentImage ?? undefined} />
+                <DeleteAvatar currentImage={currentImage ?? undefined} ll={llDeleteAvatar} />
               </div>
             </div>
             <AppField
               name="name"
-              validators={{ onChange: Schema.standardSchemaV1(ProfileDetailsFormSchema.fields.name) }}
-              children={(field) => <field.TextField label="Name" size={40} maxLength={26} spellCheck={false} autoComplete="name" placeholder="e.g. John Doe" />}
+              validators={{
+                onChange: Schema.standardSchemaV1(preferredLang === "en" ? ProfileDetailsFormSchemaEn.fields.name : ProfileDetailsFormSchemaPl.fields.name),
+              }}
+              children={(field) => (
+                <field.TextField label={ll["Name"]} size={40} maxLength={26} spellCheck={false} autoComplete="name" placeholder={ll["e.g. John Doe"]} />
+              )}
             />
           </CardContent>
           <CardFooter>
             <InfoLine message={feedbackMessage} />
             <FormSubmit
               submitIcon={<PencilSquareIcon className="size-9" />}
-              submitText="Change Name"
+              submitText={ll["Change Name"]}
               isPending={isPending}
               showCancel={false}
               onClearedForm={hideFeedbackMessage}

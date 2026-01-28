@@ -18,7 +18,14 @@ import { Button } from "@/components/ui/custom/button";
 import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { Loader2 } from "lucide-react";
 
-export default function SignOutEverywhere() {
+// types
+import type LangLoader from "@/lib/LangLoader";
+
+interface SignOutEverywhereProps {
+  ll: typeof LangLoader.prototype.signOutEverywhere;
+}
+
+export default function SignOutEverywhere({ ll }: SignOutEverywhereProps) {
   // This is the hook that components use to open the modal
   const { openConfirmModal } = useConfirmModal();
 
@@ -31,8 +38,8 @@ export default function SignOutEverywhere() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sign Out Everywhere</CardTitle>
-        <CardDescription>Sign out from all devices</CardDescription>
+        <CardTitle>{ll["Sign Out Everywhere"]}</CardTitle>
+        <CardDescription>{ll["Sign out from all devices"]}</CardDescription>
       </CardHeader>
       <CardContent>
         <Button
@@ -44,7 +51,7 @@ export default function SignOutEverywhere() {
             openConfirmModal({
               content: (
                 <p className="text-center text-xl">
-                  Are you sure you want to <b className="text-destructive">sign out</b> from all devices?
+                  {ll["Are you sure you want to"]} <b className="text-destructive">{ll["sign out"]}</b> {ll["from all devices?"]}
                 </p>
               ),
               onConfirmed: () => {
@@ -54,7 +61,7 @@ export default function SignOutEverywhere() {
           }}
         >
           {signOutEverywhereIsPending ? <Loader2 className="size-9 animate-spin" /> : <ArrowRightStartOnRectangleIcon className="size-9" />}
-          Sign Out Everywhere
+          {ll["Sign Out Everywhere"]}
         </Button>
       </CardContent>
     </Card>

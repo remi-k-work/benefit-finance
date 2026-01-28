@@ -12,10 +12,7 @@ import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
 import type { RefObject } from "react";
 import type { ResetPassFormActionResult } from "@/features/auth/actions/resetPassForm";
 import type { AnyFormApi } from "@tanstack/react-form";
-
-// constants
-const FORM_NAME = "[RESET PASSWORD]";
-const SUCCEEDED_MESSAGE = "The password has been reset. Please sign in with your new password.";
+import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this form actions
 export default function useResetPassFormFeedback(
@@ -23,12 +20,18 @@ export default function useResetPassFormFeedback(
   { actionStatus, actionError, errors }: ResetPassFormActionResult,
   reset: () => void,
   formStore: AnyFormApi["store"],
+  ll: typeof LangLoader.prototype.resetPassFormFeedback,
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
   // Generic hook for managing a permanent feedback message
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedback(formStore);
 
   // Generic hook for displaying toast notifications for form actions
-  const showToast = useFormToastFeedback(FORM_NAME, { succeeded: SUCCEEDED_MESSAGE, authError: actionError });
+  const showToast = useFormToastFeedback(
+    ll["[RESET PASSWORD]"],
+    { succeeded: ll["The password has been reset. Please sign in with your new password."], authError: actionError },
+    llFormToastFeedback,
+  );
 
   // Function to be called when feedback is needed
   const onFeedbackNeeded = useEffectEvent(() => {
@@ -40,7 +43,7 @@ export default function useResetPassFormFeedback(
       reset();
 
       // Show the permanent feedback message as well
-      showFeedbackMessage(SUCCEEDED_MESSAGE);
+      showFeedbackMessage(ll["The password has been reset. Please sign in with your new password."]);
 
       // Redirect the user after successful password reset
       return setTimeout(() => redirect("/sign-in"), 3000);
