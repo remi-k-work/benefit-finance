@@ -16,11 +16,14 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import { Loader2 } from "lucide-react";
 
 // types
+import type LangLoader from "@/lib/LangLoader";
+
 interface DeleteAvatarProps {
   currentImage?: string;
+  ll: typeof LangLoader.prototype.deleteAvatar;
 }
 
-export default function DeleteAvatar({ currentImage }: DeleteAvatarProps) {
+export default function DeleteAvatar({ currentImage, ll }: DeleteAvatarProps) {
   // This is the hook that components use to open the modal
   const { openConfirmModal } = useConfirmModal();
 
@@ -39,7 +42,7 @@ export default function DeleteAvatar({ currentImage }: DeleteAvatarProps) {
         openConfirmModal({
           content: (
             <p className="text-center text-xl">
-              Are you sure you want to <b className="text-destructive">delete</b> your avatar?
+              {ll["Are you sure you want to"]} <b className="text-destructive">{ll["delete"]}</b> {ll["your avatar?"]}
             </p>
           ),
           onConfirmed: () => {
@@ -49,7 +52,7 @@ export default function DeleteAvatar({ currentImage }: DeleteAvatarProps) {
       }}
     >
       {deleteAvatarIsPending ? <Loader2 className="size-9 animate-spin" /> : <TrashIcon className="size-9" />}
-      Delete Avatar
+      {ll["Delete Avatar"]}
     </Button>
   );
 }

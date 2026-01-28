@@ -12,7 +12,7 @@ import signUp from "@/features/auth/actions/signUpForm";
 import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { SignUpFormSchema } from "@/features/auth/schemas/signUpForm";
+import { SignUpFormSchemaEn, SignUpFormSchemaPl } from "@/features/auth/schemas/signUpForm";
 import useSignUpFormFeedback from "@/features/auth/hooks/feedbacks/useSignUpForm";
 
 // components
@@ -22,10 +22,19 @@ import InfoLine from "@/components/Form/InfoLine";
 // assets
 import { UserIcon } from "@heroicons/react/24/outline";
 
+// types
+import type { Lang } from "@/lib/LangLoader";
+import type LangLoader from "@/lib/LangLoader";
+
+interface SignUpFormProps {
+  preferredLang: Lang;
+  ll: typeof LangLoader.prototype.signUpForm;
+}
+
 // constants
 import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/auth/constants/signUpForm";
 
-export default function SignUpForm() {
+export default function SignUpForm({ preferredLang, ll }: SignUpFormProps) {
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(signUp, INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
@@ -58,32 +67,53 @@ export default function SignUpForm() {
       >
         <Card>
           <CardHeader>
-            <CardTitle>Sign Up</CardTitle>
-            <CardDescription>To create a new account</CardDescription>
+            <CardTitle>{ll["Sign Up"]}</CardTitle>
+            <CardDescription>{ll["To create a new account"]}</CardDescription>
           </CardHeader>
           <CardContent>
             <AppField
               name="name"
-              validators={{ onChange: Schema.standardSchemaV1(SignUpFormSchema.from.fields.name) }}
-              children={(field) => <field.TextField label="Name" size={40} maxLength={26} spellCheck={false} autoComplete="name" placeholder="e.g. John Doe" />}
+              validators={{
+                onChange: Schema.standardSchemaV1(preferredLang === "en" ? SignUpFormSchemaEn.from.fields.name : SignUpFormSchemaPl.from.fields.name),
+              }}
+              children={(field) => (
+                <field.TextField label={ll["Name"]} size={40} maxLength={26} spellCheck={false} autoComplete="name" placeholder={ll["e.g. John Doe"]} />
+              )}
             />
             <AppField
               name="email"
-              validators={{ onChange: Schema.standardSchemaV1(SignUpFormSchema.from.fields.email) }}
+              validators={{
+                onChange: Schema.standardSchemaV1(preferredLang === "en" ? SignUpFormSchemaEn.from.fields.email : SignUpFormSchemaPl.from.fields.email),
+              }}
               children={(field) => (
-                <field.TextField label="Email" size={40} maxLength={50} spellCheck={false} autoComplete="email" placeholder="e.g. john.doe@gmail.com" />
+                <field.TextField
+                  label={ll["Email"]}
+                  size={40}
+                  maxLength={50}
+                  spellCheck={false}
+                  autoComplete="email"
+                  placeholder={ll["e.g. john.doe@gmail.com"]}
+                />
               )}
             />
             <AppField
               name="password"
-              validators={{ onChange: Schema.standardSchemaV1(SignUpFormSchema.from.fields.password) }}
-              children={(field) => <field.PasswordField label="Password" size={40} maxLength={129} autoComplete="new-password" placeholder="e.g. P@ssw0rd!" />}
+              validators={{
+                onChange: Schema.standardSchemaV1(preferredLang === "en" ? SignUpFormSchemaEn.from.fields.password : SignUpFormSchemaPl.from.fields.password),
+              }}
+              children={(field) => (
+                <field.PasswordField label={ll["Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />
+              )}
             />
             <AppField
               name="confirmPassword"
-              validators={{ onChange: Schema.standardSchemaV1(SignUpFormSchema.from.fields.confirmPassword) }}
+              validators={{
+                onChange: Schema.standardSchemaV1(
+                  preferredLang === "en" ? SignUpFormSchemaEn.from.fields.confirmPassword : SignUpFormSchemaPl.from.fields.confirmPassword,
+                ),
+              }}
               children={(field) => (
-                <field.PasswordField label="Confirm Password" size={40} maxLength={129} autoComplete="new-password" placeholder="e.g. P@ssw0rd!" />
+                <field.PasswordField label={ll["Confirm Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />
               )}
             />
           </CardContent>
@@ -91,7 +121,7 @@ export default function SignUpForm() {
             <InfoLine message={feedbackMessage} />
             <FormSubmit
               submitIcon={<UserIcon className="size-9" />}
-              submitText="Create New Account"
+              submitText={ll["Create New Account"]}
               isPending={isPending}
               onClearedForm={hideFeedbackMessage}
             />

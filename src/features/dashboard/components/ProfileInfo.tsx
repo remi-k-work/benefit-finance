@@ -10,18 +10,20 @@ import { CalendarIcon } from "@heroicons/react/24/outline";
 
 // types
 import type { Session, User } from "@/services/better-auth/auth";
+import type LangLoader from "@/lib/LangLoader";
 
 interface ProfileInfoProps {
   user: User;
   session: Session;
+  ll: typeof LangLoader.prototype.profileInfo;
 }
 
-export default function ProfileInfo({ user, user: { email, name, createdAt }, session }: ProfileInfoProps) {
+export default function ProfileInfo({ user, user: { email, name, createdAt }, session, ll }: ProfileInfoProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Profile Information</CardTitle>
-        <CardDescription>Your account details and current status</CardDescription>
+        <CardTitle>{ll["Profile Information"]}</CardTitle>
+        <CardDescription>{ll["Your account details and current status"]}</CardDescription>
       </CardHeader>
       <CardContent>
         <UserAvatar user={user} session={session} className="mx-auto" />
@@ -31,7 +33,7 @@ export default function ProfileInfo({ user, user: { email, name, createdAt }, se
       <CardFooter>
         <div className="flex items-center justify-center gap-2 uppercase">
           <CalendarIcon className="size-9" />
-          Member Since
+          {ll["Member Since"]}
         </div>
         <p className="text-muted-foreground text-center">{DateTime.formatLocal(DateTime.unsafeFromDate(createdAt))}</p>
       </CardFooter>

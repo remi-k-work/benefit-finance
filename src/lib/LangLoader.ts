@@ -7,8 +7,12 @@ import { resolveAcceptLanguage } from "resolve-accept-language";
 // assets
 import confirmModalEn from "@/assets/lang/confirmModal.en.json";
 import confirmModalPl from "@/assets/lang/confirmModal.pl.json";
+import deleteAvatarEn from "@/assets/lang/deleteAvatar.en.json";
+import deleteAvatarPl from "@/assets/lang/deleteAvatar.pl.json";
 import demoModeModalEn from "@/assets/lang/demoModeModal.en.json";
 import demoModeModalPl from "@/assets/lang/demoModeModal.pl.json";
+import emailChangeFormEn from "@/assets/lang/emailChangeForm.en.json";
+import emailChangeFormPl from "@/assets/lang/emailChangeForm.pl.json";
 import forgotPassFormEn from "@/assets/lang/forgotPassForm.en.json";
 import forgotPassFormPl from "@/assets/lang/forgotPassForm.pl.json";
 import langChangerEn from "@/assets/lang/langChanger.en.json";
@@ -17,6 +21,8 @@ import navIconItemsEn from "@/assets/lang/navIconItems.en.json";
 import navIconItemsPl from "@/assets/lang/navIconItems.pl.json";
 import navMenuItemsEn from "@/assets/lang/navMenuItems.en.json";
 import navMenuItemsPl from "@/assets/lang/navMenuItems.pl.json";
+import profileInfoEn from "@/assets/lang/profileInfo.en.json";
+import profileInfoPl from "@/assets/lang/profileInfo.pl.json";
 import resetPassFormEn from "@/assets/lang/resetPassForm.en.json";
 import resetPassFormPl from "@/assets/lang/resetPassForm.pl.json";
 import signInDemoEn from "@/assets/lang/signInDemo.en.json";
@@ -33,6 +39,8 @@ import themeChangerEn from "@/assets/lang/themeChanger.en.json";
 import themeChangerPl from "@/assets/lang/themeChanger.pl.json";
 import userPopoverEn from "@/assets/lang/userPopover.en.json";
 import userPopoverPl from "@/assets/lang/userPopover.pl.json";
+import verifyEmailEn from "@/assets/lang/verifyEmail.en.json";
+import verifyEmailPl from "@/assets/lang/verifyEmail.pl.json";
 
 // types
 export type Lang = "en" | "pl";
@@ -81,8 +89,14 @@ export default class LangLoader {
   public get confirmModal() {
     return this.prefferedLanguage === "pl" ? confirmModalPl : confirmModalEn;
   }
+  public get deleteAvatar() {
+    return this.prefferedLanguage === "pl" ? deleteAvatarPl : deleteAvatarEn;
+  }
   public get demoModeModal() {
     return this.prefferedLanguage === "pl" ? demoModeModalPl : demoModeModalEn;
+  }
+  public get emailChangeForm() {
+    return this.prefferedLanguage === "pl" ? emailChangeFormPl : emailChangeFormEn;
   }
   public get forgotPassForm() {
     return this.prefferedLanguage === "pl" ? forgotPassFormPl : forgotPassFormEn;
@@ -95,6 +109,9 @@ export default class LangLoader {
   }
   public get navMenuItems() {
     return this.prefferedLanguage === "pl" ? navMenuItemsPl : navMenuItemsEn;
+  }
+  public get profileInfo() {
+    return this.prefferedLanguage === "pl" ? profileInfoPl : profileInfoEn;
   }
   public get resetPassForm() {
     return this.prefferedLanguage === "pl" ? resetPassFormPl : resetPassFormEn;
@@ -119,5 +136,8 @@ export default class LangLoader {
   }
   public get userPopover() {
     return this.prefferedLanguage === "pl" ? userPopoverPl : userPopoverEn;
+  }
+  public get verifyEmail() {
+    return this.prefferedLanguage === "pl" ? verifyEmailPl : verifyEmailEn;
   }
 }

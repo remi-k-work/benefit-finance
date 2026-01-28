@@ -20,12 +20,14 @@ import { Loader2 } from "lucide-react";
 
 // types
 import type { User } from "@/services/better-auth/auth";
+import type LangLoader from "@/lib/LangLoader";
 
 interface VerifyEmailProps {
   user: User;
+  ll: typeof LangLoader.prototype.verifyEmail;
 }
 
-export default function VerifyEmail({ user: { emailVerified } }: VerifyEmailProps) {
+export default function VerifyEmail({ user: { emailVerified }, ll }: VerifyEmailProps) {
   // Triggers the email verification process for the current user
   const [verifyEmailState, verifyEmailAction, verifyEmailsPending] = useActionState(verifyEmail, { actionStatus: "idle" });
 
@@ -46,8 +48,8 @@ export default function VerifyEmail({ user: { emailVerified } }: VerifyEmailProp
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Verify Email</CardTitle>
-        <CardDescription>To access all our features</CardDescription>
+        <CardTitle>{ll["Verify Email"]}</CardTitle>
+        <CardDescription>{ll["To access all our features"]}</CardDescription>
       </CardHeader>
       <CardContent>
         {emailVerified ? (
@@ -66,7 +68,7 @@ export default function VerifyEmail({ user: { emailVerified } }: VerifyEmailProp
               }}
             >
               {verifyEmailsPending ? <Loader2 className="size-9 animate-spin" /> : <CheckBadgeIcon className="size-9" />}
-              Verify Email
+              {ll["Verify Email"]}
             </Button>
           </>
         )}
