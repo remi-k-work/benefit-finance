@@ -16,15 +16,17 @@ import { Loader2 } from "lucide-react";
 
 // types
 import type { Route } from "next";
+import type LangLoader from "@/lib/LangLoader";
 
 interface SignInDemoProps {
   redirect?: Route;
+  ll: typeof LangLoader.prototype.signInDemo;
 }
 
 // constants
 import { DEMO_USER_EMAIL, DEMO_USER_PASS } from "@/drizzle/seed/constants";
 
-export default function SignInDemo({ redirect }: SignInDemoProps) {
+export default function SignInDemo({ redirect, ll }: SignInDemoProps) {
   // Whether or not the demo sign in request is pending
   const [isPending, setIsPending] = useState(false);
 
@@ -45,14 +47,14 @@ export default function SignInDemo({ redirect }: SignInDemoProps) {
             },
             onError: ({ error: { message } }) => {
               setIsPending(false);
-              toast.error("AUTHORIZATION ERROR!", { description: message });
+              toast.error(ll["AUTHORIZATION ERROR!"], { description: message });
             },
           },
         });
       }}
     >
       {isPending ? <Loader2 className="size-9 animate-spin" /> : <ArrowRightEndOnRectangleIcon className="size-9" />}
-      Sign In as a Demo User
+      {ll["Sign In as a Demo User"]}
     </Button>
   );
 }

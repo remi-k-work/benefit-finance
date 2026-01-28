@@ -17,8 +17,8 @@ import UsFlagIcon from "@/assets/icons/UsFlag";
 import PlFlagIcon from "@/assets/icons/PlFlag";
 
 // types
-import type LangLoader from "@/lib/LangLoader";
 import type { Lang } from "@/lib/LangLoader";
+import type LangLoader from "@/lib/LangLoader";
 
 interface LangChangerProps {
   preferredLang: Lang;

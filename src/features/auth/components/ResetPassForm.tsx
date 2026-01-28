@@ -12,7 +12,7 @@ import resetPass from "@/features/auth/actions/resetPassForm";
 import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { ResetPassFormSchema } from "@/features/auth/schemas/resetPassForm";
+import { ResetPassFormSchemaEn, ResetPassFormSchemaPl } from "@/features/auth/schemas/resetPassForm";
 import useResetPassFormFeedback from "@/features/auth/hooks/feedbacks/useResetPassForm";
 
 // components
@@ -23,14 +23,19 @@ import InfoLine from "@/components/Form/InfoLine";
 import { KeyIcon } from "@heroicons/react/24/outline";
 
 // types
+import type { Lang } from "@/lib/LangLoader";
+import type LangLoader from "@/lib/LangLoader";
+
 interface ResetPassFormProps {
   token: string;
+  preferredLang: Lang;
+  ll: typeof LangLoader.prototype.resetPassForm;
 }
 
 // constants
 import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/auth/constants/resetPassForm";
 
-export default function ResetPassForm({ token }: ResetPassFormProps) {
+export default function ResetPassForm({ token, preferredLang, ll }: ResetPassFormProps) {
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(resetPass.bind(null, token), INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
@@ -63,28 +68,41 @@ export default function ResetPassForm({ token }: ResetPassFormProps) {
       >
         <Card>
           <CardHeader>
-            <CardTitle>Reset Your Password</CardTitle>
-            <CardDescription>Enter your new password below</CardDescription>
+            <CardTitle>{ll["Reset Your Password"]}</CardTitle>
+            <CardDescription>{ll["Enter your new password below"]}</CardDescription>
           </CardHeader>
           <CardContent>
             <AppField
               name="newPassword"
-              validators={{ onChange: Schema.standardSchemaV1(ResetPassFormSchema.from.fields.newPassword) }}
+              validators={{
+                onChange: Schema.standardSchemaV1(
+                  preferredLang === "en" ? ResetPassFormSchemaEn.from.fields.newPassword : ResetPassFormSchemaPl.from.fields.newPassword,
+                ),
+              }}
               children={(field) => (
-                <field.PasswordField label="New Password" size={40} maxLength={129} autoComplete="new-password" placeholder="e.g. P@ssw0rd!" />
+                <field.PasswordField label={ll["New Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />
               )}
             />
             <AppField
               name="confirmPassword"
-              validators={{ onChange: Schema.standardSchemaV1(ResetPassFormSchema.from.fields.confirmPassword) }}
+              validators={{
+                onChange: Schema.standardSchemaV1(
+                  preferredLang === "en" ? ResetPassFormSchemaEn.from.fields.confirmPassword : ResetPassFormSchemaPl.from.fields.confirmPassword,
+                ),
+              }}
               children={(field) => (
-                <field.PasswordField label="Confirm Password" size={40} maxLength={129} autoComplete="new-password" placeholder="e.g. P@ssw0rd!" />
+                <field.PasswordField label={ll["Confirm Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />
               )}
             />
           </CardContent>
           <CardFooter>
             <InfoLine message={feedbackMessage} />
-            <FormSubmit submitIcon={<KeyIcon className="size-9" />} submitText="Reset Password" isPending={isPending} onClearedForm={hideFeedbackMessage} />
+            <FormSubmit
+              submitIcon={<KeyIcon className="size-9" />}
+              submitText={ll["Reset Password"]}
+              isPending={isPending}
+              onClearedForm={hideFeedbackMessage}
+            />
           </CardFooter>
         </Card>
       </form>

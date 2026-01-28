@@ -12,7 +12,7 @@ import forgotPass from "@/features/auth/actions/forgotPassForm";
 import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { ForgotPassFormSchema } from "@/features/auth/schemas/forgotPassForm";
+import { ForgotPassFormSchemaEn, ForgotPassFormSchemaPl } from "@/features/auth/schemas/forgotPassForm";
 import useForgotPassFormFeedback from "@/features/auth/hooks/feedbacks/useForgotPassForm";
 
 // components
@@ -22,10 +22,19 @@ import InfoLine from "@/components/Form/InfoLine";
 // assets
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
+// types
+import type { Lang } from "@/lib/LangLoader";
+import type LangLoader from "@/lib/LangLoader";
+
+interface ForgotPassFormProps {
+  preferredLang: Lang;
+  ll: typeof LangLoader.prototype.forgotPassForm;
+}
+
 // constants
 import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/auth/constants/forgotPassForm";
 
-export default function ForgotPassForm() {
+export default function ForgotPassForm({ preferredLang, ll }: ForgotPassFormProps) {
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(forgotPass, INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
@@ -58,15 +67,24 @@ export default function ForgotPassForm() {
       >
         <Card>
           <CardHeader>
-            <CardTitle>Forgot Your Password?</CardTitle>
-            <CardDescription>Enter your email below to reset password</CardDescription>
+            <CardTitle>{ll["Forgot Your Password?"]}</CardTitle>
+            <CardDescription>{ll["Enter your email below to reset password"]}</CardDescription>
           </CardHeader>
           <CardContent>
             <AppField
               name="email"
-              validators={{ onChange: Schema.standardSchemaV1(ForgotPassFormSchema.fields.email) }}
+              validators={{
+                onChange: Schema.standardSchemaV1(preferredLang === "en" ? ForgotPassFormSchemaEn.fields.email : ForgotPassFormSchemaPl.fields.email),
+              }}
               children={(field) => (
-                <field.TextField label="Email" size={40} maxLength={50} spellCheck={false} autoComplete="email" placeholder="e.g. john.doe@gmail.com" />
+                <field.TextField
+                  label={ll["Email"]}
+                  size={40}
+                  maxLength={50}
+                  spellCheck={false}
+                  autoComplete="email"
+                  placeholder={ll["e.g. john.doe@gmail.com"]}
+                />
               )}
             />
           </CardContent>
@@ -74,7 +92,7 @@ export default function ForgotPassForm() {
             <InfoLine message={feedbackMessage} />
             <FormSubmit
               submitIcon={<PaperAirplaneIcon className="size-9" />}
-              submitText="Send Reset Link"
+              submitText={ll["Send Reset Link"]}
               isPending={isPending}
               onClearedForm={hideFeedbackMessage}
             />

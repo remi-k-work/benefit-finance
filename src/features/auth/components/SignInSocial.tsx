@@ -15,13 +15,15 @@ import { Loader2 } from "lucide-react";
 
 // types
 import type { Route } from "next";
+import type LangLoader from "@/lib/LangLoader";
 
 interface SignInSocialProps {
   provider: "google" | "github";
   redirect?: Route;
+  ll: typeof LangLoader.prototype.signInSocial;
 }
 
-export default function SignInSocial({ provider, redirect }: SignInSocialProps) {
+export default function SignInSocial({ provider, redirect, ll }: SignInSocialProps) {
   // Whether or not the social sign in request is pending
   const [isPending, setIsPending] = useState(false);
 
@@ -40,14 +42,14 @@ export default function SignInSocial({ provider, redirect }: SignInSocialProps) 
             },
             onError: ({ error: { message } }) => {
               setIsPending(false);
-              toast.error("AUTHORIZATION ERROR!", { description: message });
+              toast.error(ll["AUTHORIZATION ERROR!"], { description: message });
             },
           },
         });
       }}
     >
       {isPending ? <Loader2 className="size-9 animate-spin" /> : provider === "google" ? <GoogleIcon className="size-9" /> : <GitHubIcon className="size-9" />}
-      Sign In With {provider}
+      {ll["Sign In With"]} {provider}
     </Button>
   );
 }
