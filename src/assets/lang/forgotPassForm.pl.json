@@ -3,5 +3,7 @@
   "Enter your email below to reset password": "Wprowadź poniżej swój adres e-mail, aby zresetować hasło",
   "Email": "Adres e-mail",
   "e.g. john.doe@gmail.com": "np. jan.kowalski@gmail.com",
-  "Send Reset Link": "Wyślij Link Resetujący"
+  "Send Reset Link": "Wyślij Link Resetujący",
+  "Clear Form": "Wyczyść Formularz",
+  "Cancel and Go Back": "Anuluj i Wróć"
 }

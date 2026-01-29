@@ -133,6 +133,8 @@ export default function SignUpForm({ preferredLanguage, ll, llSignUpFormFeedback
             <FormSubmit
               submitIcon={<UserIcon className="size-9" />}
               submitText={ll["Create New Account"]}
+              resetText={ll["Clear Form"]}
+              cancelText={ll["Cancel and Go Back"]}
               isPending={isPending}
               onClearedForm={hideFeedbackMessage}
             />

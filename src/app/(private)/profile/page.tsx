@@ -8,7 +8,7 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 import { getUserSessionData, hasCredentialAccount } from "@/features/auth/lib/helpersEffect";
 
 // components
-import PageHeader from "@/components/PageHeader";
+import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
 import ProfileDetailsForm from "@/features/profile/components/ProfileDetailsForm";
 import EmailChangeForm from "@/features/profile/components/EmailChangeForm";
 import PassChangeForm from "@/features/profile/components/PassChangeForm";
@@ -31,6 +31,7 @@ const main = Effect.gen(function* () {
 
   // Create an instance of the lang loader needed for localization
   const {
+    profilePage: ll,
     preferredLanguage,
     profileDetailsForm,
     uploadAvatar,
@@ -50,6 +51,7 @@ const main = Effect.gen(function* () {
     user,
     session,
     hasCredential,
+    ll,
     preferredLanguage,
     profileDetailsForm,
     uploadAvatar,
@@ -82,6 +84,7 @@ async function PageContent() {
     user,
     session,
     hasCredential,
+    ll,
     preferredLanguage,
     profileDetailsForm,
     uploadAvatar,
@@ -99,7 +102,7 @@ async function PageContent() {
 
   return (
     <>
-      <PageHeader title="Profile" description="Below you can see and manage your profile" />
+      <PageHeader title={ll["Profile"]} description={ll["Below you can see and manage your profile"]} />
       <article className="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <ProfileDetailsForm
           user={user}
@@ -136,7 +139,7 @@ async function PageContent() {
 function PageSkeleton() {
   return (
     <>
-      <PageHeader title="Profile" description="Below you can see and manage your profile" />
+      <PageHeaderSkeleton />
     </>
   );
 }

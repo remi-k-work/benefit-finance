@@ -8,7 +8,7 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
 
 // components
-import PageHeader from "@/components/PageHeader";
+import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
 import ProfileInfo from "@/features/dashboard/components/ProfileInfo";
 import VerifyEmail from "@/features/dashboard/components/VerifyEmail";
 
@@ -25,9 +25,9 @@ const main = Effect.gen(function* () {
   const { user, session } = yield* getUserSessionData;
 
   // Create an instance of the lang loader needed for localization
-  const { profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback } = yield* LangLoader.createEffect();
+  const { dashboardPage: ll, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback } = yield* LangLoader.createEffect();
 
-  return { user, session, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback };
+  return { user, session, ll, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback };
 });
 
 // Page remains the fast, static shell
@@ -42,11 +42,11 @@ export default function Page() {
 // This new async component contains the dynamic logic
 async function PageContent() {
   // Execute the main effect for the page, map known errors to the subsequent navigation helpers, and return the payload
-  const { user, session, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback } = await runPageMainOrNavigate(main);
+  const { user, session, ll, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback } = await runPageMainOrNavigate(main);
 
   return (
     <>
-      <PageHeader title="Dashboard" description="Welcome back! Below is your account overview" />
+      <PageHeader title={ll["Dashboard"]} description={ll["Welcome back! Below is your account overview"]} />
       <article className="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <ProfileInfo user={user} session={session} ll={profileInfo} />
         <VerifyEmail user={user} ll={verifyEmail} llVerifyEmailFeedback={verifyEmailFeedback} llFormToastFeedback={formToastFeedback} />
@@ -58,7 +58,7 @@ async function PageContent() {
 function PageSkeleton() {
   return (
     <>
-      <PageHeader title="Dashboard" description="Welcome back! Below is your account overview" />
+      <PageHeaderSkeleton />
     </>
   );
 }

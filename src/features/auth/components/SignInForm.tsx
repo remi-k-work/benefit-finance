@@ -126,6 +126,8 @@ export default function SignInForm({ redirect, preferredLanguage, ll, llSignInSo
             <FormSubmit
               submitIcon={<ArrowRightEndOnRectangleIcon className="size-9" />}
               submitText={ll["Sign In"]}
+              resetText={ll["Clear Form"]}
+              cancelText={ll["Cancel and Go Back"]}
               isPending={isPending}
               onClearedForm={hideFeedbackMessage}
             />

@@ -109,6 +109,8 @@ export default function ResetPassForm({ token, preferredLanguage, ll, llResetPas
             <FormSubmit
               submitIcon={<KeyIcon className="size-9" />}
               submitText={ll["Reset Password"]}
+              resetText={ll["Clear Form"]}
+              cancelText={ll["Cancel and Go Back"]}
               isPending={isPending}
               onClearedForm={hideFeedbackMessage}
             />

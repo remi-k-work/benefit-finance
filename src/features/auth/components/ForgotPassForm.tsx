@@ -102,6 +102,8 @@ export default function ForgotPassForm({ preferredLanguage, ll, llForgotPassForm
             <FormSubmit
               submitIcon={<PaperAirplaneIcon className="size-9" />}
               submitText={ll["Send Reset Link"]}
+              resetText={ll["Clear Form"]}
+              cancelText={ll["Cancel and Go Back"]}
               isPending={isPending}
               onClearedForm={hideFeedbackMessage}
             />

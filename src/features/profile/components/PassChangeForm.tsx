@@ -169,6 +169,8 @@ export default function PassChangeForm({ hasCredential, preferredLanguage, ll, l
             <FormSubmit
               submitIcon={<KeyIcon className="size-9" />}
               submitText={hasCredential ? ll["Change Password"] : ll["Setup Password"]}
+              resetText={ll["Clear Form"]}
+              cancelText={ll["Cancel and Go Back"]}
               isPending={isPending}
               showCancel={false}
               onClearedForm={hideFeedbackMessage}

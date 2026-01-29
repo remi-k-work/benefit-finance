@@ -128,6 +128,8 @@ export default function ProfileDetailsForm({
             <FormSubmit
               submitIcon={<PencilSquareIcon className="size-9" />}
               submitText={ll["Change Name"]}
+              resetText={ll["Clear Form"]}
+              cancelText={ll["Cancel and Go Back"]}
               isPending={isPending}
               showCancel={false}
               onClearedForm={hideFeedbackMessage}

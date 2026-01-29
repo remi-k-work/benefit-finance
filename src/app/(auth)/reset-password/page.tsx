@@ -8,7 +8,7 @@ import { runPageMainOrNavigate, validatePageInputs } from "@/lib/helpersEffect";
 import { ResetPassPageSchema } from "@/features/auth/schemas/resetPassPage";
 
 // components
-import PageHeader from "@/components/PageHeader";
+import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
 import ResetPassForm from "@/features/auth/components/ResetPassForm";
 
 // types
@@ -27,9 +27,9 @@ const main = ({ params, searchParams }: PageProps<"/reset-password">) =>
     } = yield* validatePageInputs(ResetPassPageSchema, { params, searchParams });
 
     // Create an instance of the lang loader needed for localization
-    const { preferredLanguage, resetPassForm, resetPassFormFeedback, formToastFeedback } = yield* LangLoader.createEffect();
+    const { resetPasswordPage: ll, preferredLanguage, resetPassForm, resetPassFormFeedback, formToastFeedback } = yield* LangLoader.createEffect();
 
-    return { token, preferredLanguage, resetPassForm, resetPassFormFeedback, formToastFeedback };
+    return { token, ll, preferredLanguage, resetPassForm, resetPassFormFeedback, formToastFeedback };
   });
 
 // Page remains the fast, static shell
@@ -44,11 +44,11 @@ export default function Page({ params, searchParams }: PageProps<"/reset-passwor
 // This new async component contains the dynamic logic
 async function PageContent({ params, searchParams }: PageProps<"/reset-password">) {
   // Execute the main effect for the page, map known errors to the subsequent navigation helpers, and return the payload
-  const { token, preferredLanguage, resetPassForm, resetPassFormFeedback, formToastFeedback } = await runPageMainOrNavigate(main({ params, searchParams }));
+  const { token, ll, preferredLanguage, resetPassForm, resetPassFormFeedback, formToastFeedback } = await runPageMainOrNavigate(main({ params, searchParams }));
 
   return (
     <>
-      <PageHeader title="Reset Password" description="Use the form below to reset your password" />
+      <PageHeader title={ll["Reset Password"]} description={ll["Use the form below to reset your password"]} />
       <ResetPassForm
         token={token}
         preferredLanguage={preferredLanguage}
@@ -63,7 +63,7 @@ async function PageContent({ params, searchParams }: PageProps<"/reset-password"
 function PageSkeleton() {
   return (
     <>
-      <PageHeader title="Reset Password" description="Use the form below to reset your password" />
+      <PageHeaderSkeleton />
     </>
   );
 }

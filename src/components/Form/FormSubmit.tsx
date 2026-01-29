@@ -17,12 +17,22 @@ import type { ReactNode } from "react";
 interface FormSubmitProps {
   submitIcon: ReactNode;
   submitText: string;
+  resetText?: string;
+  cancelText?: string;
   isPending: boolean;
   showCancel?: boolean;
   onClearedForm?: () => void;
 }
 
-export default function FormSubmit({ submitIcon, submitText, isPending, showCancel = true, onClearedForm }: FormSubmitProps) {
+export default function FormSubmit({
+  submitIcon,
+  submitText,
+  resetText = "Clear Form",
+  cancelText = "Cancel and Go Back",
+  isPending,
+  showCancel = true,
+  onClearedForm,
+}: FormSubmitProps) {
   // Get the form context
   const { Subscribe, reset } = useFormContext();
 
@@ -48,12 +58,12 @@ export default function FormSubmit({ submitIcon, submitText, isPending, showCanc
         }}
       >
         <XCircleIcon className="size-9" />
-        Clear Form
+        {resetText}
       </Button>
       {showCancel && (
         <Button type="button" variant="secondary" onClick={() => back()}>
           <ArrowLeftCircleIcon className="size-9" />
-          Cancel and Go Back
+          {cancelText}
         </Button>
       )}
     </section>

@@ -8,7 +8,7 @@ import { runPageMainOrNavigate, validatePageInputs } from "@/lib/helpersEffect";
 import { SignInPageSchema } from "@/features/auth/schemas/signInPage";
 
 // components
-import PageHeader from "@/components/PageHeader";
+import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
 import SignInForm from "@/features/auth/components/SignInForm";
 import SignInDemoUser from "@/features/auth/components/SignInDemoUser";
 
@@ -28,9 +28,18 @@ const main = ({ params, searchParams }: PageProps<"/sign-in">) =>
     } = yield* validatePageInputs(SignInPageSchema, { params, searchParams });
 
     // Create an instance of the lang loader needed for localization
-    const { preferredLanguage, signInForm, signInSocial, signInFormFeedback, formToastFeedback, signInDemoUser, signInDemo } = yield* LangLoader.createEffect();
+    const {
+      signInPage: ll,
+      preferredLanguage,
+      signInForm,
+      signInSocial,
+      signInFormFeedback,
+      formToastFeedback,
+      signInDemoUser,
+      signInDemo,
+    } = yield* LangLoader.createEffect();
 
-    return { redirect, preferredLanguage, signInForm, signInSocial, signInFormFeedback, formToastFeedback, signInDemoUser, signInDemo };
+    return { redirect, ll, preferredLanguage, signInForm, signInSocial, signInFormFeedback, formToastFeedback, signInDemoUser, signInDemo };
   });
 
 // Page remains the fast, static shell
@@ -45,12 +54,12 @@ export default function Page({ params, searchParams }: PageProps<"/sign-in">) {
 // This new async component contains the dynamic logic
 async function PageContent({ params, searchParams }: PageProps<"/sign-in">) {
   // Execute the main effect for the page, map known errors to the subsequent navigation helpers, and return the payload
-  const { redirect, preferredLanguage, signInForm, signInSocial, signInFormFeedback, formToastFeedback, signInDemoUser, signInDemo } =
+  const { redirect, ll, preferredLanguage, signInForm, signInSocial, signInFormFeedback, formToastFeedback, signInDemoUser, signInDemo } =
     await runPageMainOrNavigate(main({ params, searchParams }));
 
   return (
     <>
-      <PageHeader title="Sign In" description="Use the form below to sign in" />
+      <PageHeader title={ll["Sign In"]} description={ll["Use the form below to sign in"]} />
       <article className="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <SignInForm
           redirect={redirect as Route}
@@ -69,7 +78,7 @@ async function PageContent({ params, searchParams }: PageProps<"/sign-in">) {
 function PageSkeleton() {
   return (
     <>
-      <PageHeader title="Sign In" description="Use the form below to sign in" />
+      <PageHeaderSkeleton />
     </>
   );
 }

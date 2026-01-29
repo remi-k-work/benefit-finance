@@ -113,6 +113,8 @@ export default function EmailChangeForm({
             <FormSubmit
               submitIcon={<PaperAirplaneIcon className="size-9" />}
               submitText={ll["Request Email Change"]}
+              resetText={ll["Clear Form"]}
+              cancelText={ll["Cancel and Go Back"]}
               isPending={isPending}
               showCancel={false}
               onClearedForm={hideFeedbackMessage}
