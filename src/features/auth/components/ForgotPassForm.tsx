@@ -27,14 +27,16 @@ import type { Lang } from "@/lib/LangLoader";
 import type LangLoader from "@/lib/LangLoader";
 
 interface ForgotPassFormProps {
-  preferredLang: Lang;
+  preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.forgotPassForm;
+  llForgotPassFormFeedback: typeof LangLoader.prototype.forgotPassFormFeedback;
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
 // constants
 import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/auth/constants/forgotPassForm";
 
-export default function ForgotPassForm({ preferredLang, ll }: ForgotPassFormProps) {
+export default function ForgotPassForm({ preferredLanguage, ll, llForgotPassFormFeedback, llFormToastFeedback }: ForgotPassFormProps) {
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(forgotPass, INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
@@ -54,7 +56,14 @@ export default function ForgotPassForm({ preferredLang, ll }: ForgotPassFormProp
   }, []);
 
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useForgotPassFormFeedback(hasPressedSubmitRef, formState, reset, store);
+  const { feedbackMessage, hideFeedbackMessage } = useForgotPassFormFeedback(
+    hasPressedSubmitRef,
+    formState,
+    reset,
+    store,
+    llForgotPassFormFeedback,
+    llFormToastFeedback,
+  );
 
   return (
     <AppForm>
@@ -74,7 +83,7 @@ export default function ForgotPassForm({ preferredLang, ll }: ForgotPassFormProp
             <AppField
               name="email"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLang === "en" ? ForgotPassFormSchemaEn.fields.email : ForgotPassFormSchemaPl.fields.email),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ForgotPassFormSchemaEn.fields.email : ForgotPassFormSchemaPl.fields.email),
               }}
               children={(field) => (
                 <field.TextField

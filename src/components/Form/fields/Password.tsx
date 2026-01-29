@@ -24,9 +24,10 @@ import type { Route } from "next";
 interface PasswordFieldProps extends ComponentPropsWithoutRef<typeof Input> {
   label: string;
   forgotPassHref?: Route;
+  forgotPassText?: string;
 }
 
-export default function PasswordField({ label, forgotPassHref, className, ...props }: PasswordFieldProps) {
+export default function PasswordField({ label, forgotPassHref, forgotPassText = "Forgot your password?", className, ...props }: PasswordFieldProps) {
   // Get the field context
   const {
     name,
@@ -47,7 +48,7 @@ export default function PasswordField({ label, forgotPassHref, className, ...pro
         <div className="flex items-center justify-between gap-4">
           <Label htmlFor={id}>{label}</Label>
           <Link href={forgotPassHref} className="link">
-            Forgot your password?
+            {forgotPassText}
           </Link>
         </div>
       ) : (

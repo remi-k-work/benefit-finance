@@ -25,9 +25,11 @@ import type LangLoader from "@/lib/LangLoader";
 interface VerifyEmailProps {
   user: User;
   ll: typeof LangLoader.prototype.verifyEmail;
+  llVerifyEmailFeedback: typeof LangLoader.prototype.verifyEmailFeedback;
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
-export default function VerifyEmail({ user: { emailVerified }, ll }: VerifyEmailProps) {
+export default function VerifyEmail({ user: { emailVerified }, ll, llVerifyEmailFeedback, llFormToastFeedback }: VerifyEmailProps) {
   // Triggers the email verification process for the current user
   const [verifyEmailState, verifyEmailAction, verifyEmailsPending] = useActionState(verifyEmail, { actionStatus: "idle" });
 
@@ -43,7 +45,7 @@ export default function VerifyEmail({ user: { emailVerified }, ll }: VerifyEmail
   }, []);
 
   // Provide feedback to the user regarding this server action
-  const { feedbackMessage, hideFeedbackMessage } = useVerifyEmailFeedback(hasPressedSubmitRef, verifyEmailState);
+  const { feedbackMessage, hideFeedbackMessage } = useVerifyEmailFeedback(hasPressedSubmitRef, verifyEmailState, llVerifyEmailFeedback, llFormToastFeedback);
 
   return (
     <Card>

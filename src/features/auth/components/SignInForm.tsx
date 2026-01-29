@@ -33,15 +33,17 @@ import type LangLoader from "@/lib/LangLoader";
 
 interface SignInFormProps {
   redirect?: Route;
-  preferredLang: Lang;
+  preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.signInForm;
   llSignInSocial: typeof LangLoader.prototype.signInSocial;
+  llSignInFormFeedback: typeof LangLoader.prototype.signInFormFeedback;
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
 // constants
 import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/auth/constants/signInForm";
 
-export default function SignInForm({ redirect, preferredLang, ll, llSignInSocial }: SignInFormProps) {
+export default function SignInForm({ redirect, preferredLanguage, ll, llSignInSocial, llSignInFormFeedback, llFormToastFeedback }: SignInFormProps) {
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(signIn, INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
@@ -61,7 +63,15 @@ export default function SignInForm({ redirect, preferredLang, ll, llSignInSocial
   }, []);
 
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useSignInFormFeedback(hasPressedSubmitRef, formState, reset, store, redirect);
+  const { feedbackMessage, hideFeedbackMessage } = useSignInFormFeedback(
+    hasPressedSubmitRef,
+    formState,
+    reset,
+    store,
+    llSignInFormFeedback,
+    llFormToastFeedback,
+    redirect,
+  );
 
   return (
     <AppForm>
@@ -80,7 +90,7 @@ export default function SignInForm({ redirect, preferredLang, ll, llSignInSocial
           <CardContent>
             <AppField
               name="email"
-              validators={{ onChange: Schema.standardSchemaV1(preferredLang === "en" ? SignInFormSchemaEn.fields.email : SignInFormSchemaPl.fields.email) }}
+              validators={{ onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? SignInFormSchemaEn.fields.email : SignInFormSchemaPl.fields.email) }}
               children={(field) => (
                 <field.TextField
                   label={ll["Email"]}
@@ -95,12 +105,13 @@ export default function SignInForm({ redirect, preferredLang, ll, llSignInSocial
             <AppField
               name="password"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLang === "en" ? SignInFormSchemaEn.fields.password : SignInFormSchemaPl.fields.password),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? SignInFormSchemaEn.fields.password : SignInFormSchemaPl.fields.password),
               }}
               children={(field) => (
                 <field.PasswordField
                   label={ll["Password"]}
                   forgotPassHref="/forgot-password"
+                  forgotPassText={ll["Forgot your password?"]}
                   size={40}
                   maxLength={129}
                   autoComplete="current-password"

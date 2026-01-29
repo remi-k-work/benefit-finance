@@ -28,14 +28,16 @@ import type LangLoader from "@/lib/LangLoader";
 
 interface ResetPassFormProps {
   token: string;
-  preferredLang: Lang;
+  preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.resetPassForm;
+  llResetPassFormFeedback: typeof LangLoader.prototype.resetPassFormFeedback;
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
 // constants
 import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/auth/constants/resetPassForm";
 
-export default function ResetPassForm({ token, preferredLang, ll }: ResetPassFormProps) {
+export default function ResetPassForm({ token, preferredLanguage, ll, llResetPassFormFeedback, llFormToastFeedback }: ResetPassFormProps) {
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(resetPass.bind(null, token), INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
@@ -55,7 +57,14 @@ export default function ResetPassForm({ token, preferredLang, ll }: ResetPassFor
   }, []);
 
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useResetPassFormFeedback(hasPressedSubmitRef, formState, reset, store);
+  const { feedbackMessage, hideFeedbackMessage } = useResetPassFormFeedback(
+    hasPressedSubmitRef,
+    formState,
+    reset,
+    store,
+    llResetPassFormFeedback,
+    llFormToastFeedback,
+  );
 
   return (
     <AppForm>
@@ -76,7 +85,7 @@ export default function ResetPassForm({ token, preferredLang, ll }: ResetPassFor
               name="newPassword"
               validators={{
                 onChange: Schema.standardSchemaV1(
-                  preferredLang === "en" ? ResetPassFormSchemaEn.from.fields.newPassword : ResetPassFormSchemaPl.from.fields.newPassword,
+                  preferredLanguage === "en" ? ResetPassFormSchemaEn.from.fields.newPassword : ResetPassFormSchemaPl.from.fields.newPassword,
                 ),
               }}
               children={(field) => (
@@ -87,7 +96,7 @@ export default function ResetPassForm({ token, preferredLang, ll }: ResetPassFor
               name="confirmPassword"
               validators={{
                 onChange: Schema.standardSchemaV1(
-                  preferredLang === "en" ? ResetPassFormSchemaEn.from.fields.confirmPassword : ResetPassFormSchemaPl.from.fields.confirmPassword,
+                  preferredLanguage === "en" ? ResetPassFormSchemaEn.from.fields.confirmPassword : ResetPassFormSchemaPl.from.fields.confirmPassword,
                 ),
               }}
               children={(field) => (

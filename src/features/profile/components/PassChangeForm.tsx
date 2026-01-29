@@ -29,14 +29,16 @@ import type LangLoader from "@/lib/LangLoader";
 
 interface PassChangeFormProps {
   hasCredential: boolean;
-  preferredLang: Lang;
+  preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.passChangeForm;
+  llPassChangeFormFeedback: typeof LangLoader.prototype.passChangeFormFeedback;
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
 // constants
 import { FORM_OPTIONS_CHANGE, FORM_OPTIONS_SETUP, INITIAL_FORM_STATE } from "@/features/profile/constants/passChangeForm";
 
-export default function PassChangeForm({ hasCredential, preferredLang, ll }: PassChangeFormProps) {
+export default function PassChangeForm({ hasCredential, preferredLanguage, ll, llPassChangeFormFeedback, llFormToastFeedback }: PassChangeFormProps) {
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(passChange.bind(null, hasCredential), INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
@@ -56,7 +58,15 @@ export default function PassChangeForm({ hasCredential, preferredLang, ll }: Pas
   }, []);
 
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = usePassChangeFormFeedback(hasPressedSubmitRef, formState, reset, store, hasCredential);
+  const { feedbackMessage, hideFeedbackMessage } = usePassChangeFormFeedback(
+    hasPressedSubmitRef,
+    formState,
+    reset,
+    store,
+    hasCredential,
+    llPassChangeFormFeedback,
+    llFormToastFeedback,
+  );
 
   return (
     <AppForm>
@@ -79,7 +89,7 @@ export default function PassChangeForm({ hasCredential, preferredLang, ll }: Pas
                   name={"currentPassword" as any}
                   validators={{
                     onChange: Schema.standardSchemaV1(
-                      preferredLang === "en" ? PassChangeFormSchemaEn.from.fields.currentPassword : PassChangeFormSchemaPl.from.fields.currentPassword,
+                      preferredLanguage === "en" ? PassChangeFormSchemaEn.from.fields.currentPassword : PassChangeFormSchemaPl.from.fields.currentPassword,
                     ),
                   }}
                   children={(field) => (
@@ -96,7 +106,7 @@ export default function PassChangeForm({ hasCredential, preferredLang, ll }: Pas
                   name="newPassword"
                   validators={{
                     onChange: Schema.standardSchemaV1(
-                      preferredLang === "en" ? PassChangeFormSchemaEn.from.fields.newPassword : PassChangeFormSchemaPl.from.fields.newPassword,
+                      preferredLanguage === "en" ? PassChangeFormSchemaEn.from.fields.newPassword : PassChangeFormSchemaPl.from.fields.newPassword,
                     ),
                   }}
                   children={(field) => (
@@ -107,7 +117,7 @@ export default function PassChangeForm({ hasCredential, preferredLang, ll }: Pas
                   name="confirmPassword"
                   validators={{
                     onChange: Schema.standardSchemaV1(
-                      preferredLang === "en" ? PassChangeFormSchemaEn.from.fields.confirmPassword : PassChangeFormSchemaPl.from.fields.confirmPassword,
+                      preferredLanguage === "en" ? PassChangeFormSchemaEn.from.fields.confirmPassword : PassChangeFormSchemaPl.from.fields.confirmPassword,
                     ),
                   }}
                   children={(field) => (
@@ -127,7 +137,7 @@ export default function PassChangeForm({ hasCredential, preferredLang, ll }: Pas
                   name="newPassword"
                   validators={{
                     onChange: Schema.standardSchemaV1(
-                      preferredLang === "en" ? PassSetupFormSchemaEn.from.fields.newPassword : PassSetupFormSchemaPl.from.fields.newPassword,
+                      preferredLanguage === "en" ? PassSetupFormSchemaEn.from.fields.newPassword : PassSetupFormSchemaPl.from.fields.newPassword,
                     ),
                   }}
                   children={(field) => (
@@ -138,7 +148,7 @@ export default function PassChangeForm({ hasCredential, preferredLang, ll }: Pas
                   name="confirmPassword"
                   validators={{
                     onChange: Schema.standardSchemaV1(
-                      preferredLang === "en" ? PassSetupFormSchemaEn.from.fields.confirmPassword : PassSetupFormSchemaPl.from.fields.confirmPassword,
+                      preferredLanguage === "en" ? PassSetupFormSchemaEn.from.fields.confirmPassword : PassSetupFormSchemaPl.from.fields.confirmPassword,
                     ),
                   }}
                   children={(field) => (

@@ -23,9 +23,11 @@ import type LangLoader from "@/lib/LangLoader";
 
 interface SignOutEverywhereProps {
   ll: typeof LangLoader.prototype.signOutEverywhere;
+  llSignOutEverywhereFeedback: typeof LangLoader.prototype.signOutEverywhereFeedback;
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
-export default function SignOutEverywhere({ ll }: SignOutEverywhereProps) {
+export default function SignOutEverywhere({ ll, llSignOutEverywhereFeedback, llFormToastFeedback }: SignOutEverywhereProps) {
   // This is the hook that components use to open the modal
   const { openConfirmModal } = useConfirmModal();
 
@@ -33,7 +35,7 @@ export default function SignOutEverywhere({ ll }: SignOutEverywhereProps) {
   const [signOutEverywhereState, signOutEverywhereAction, signOutEverywhereIsPending] = useActionState(signOutEverywhere, { actionStatus: "idle" });
 
   // Provide feedback to the user regarding this server action
-  useSignOutEverywhereFeedback(signOutEverywhereState);
+  useSignOutEverywhereFeedback(signOutEverywhereState, llSignOutEverywhereFeedback, llFormToastFeedback);
 
   return (
     <Card>

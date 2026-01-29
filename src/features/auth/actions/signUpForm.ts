@@ -24,10 +24,10 @@ export interface SignUpFormActionResult extends ServerFormState<any, any> {
 export default async function signUp(_prevState: unknown, formData: FormData): Promise<SignUpFormActionResult> {
   try {
     // Create an instance of the lang loader needed for localization
-    const { prefferedLanguage } = await LangLoader.create();
+    const { preferredLanguage } = await LangLoader.create();
 
     // Validate the form on the server side and extract needed data
-    const { name, email, password } = prefferedLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
+    const { name, email, password } = preferredLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
 
     // Sign up the user through the better-auth api
     await auth.api.signUpEmail({ body: { name, email, password } });

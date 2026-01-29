@@ -24,10 +24,10 @@ export interface ResetPassFormActionResult extends ServerFormState<any, any> {
 export default async function resetPass(token: string, _prevState: unknown, formData: FormData): Promise<ResetPassFormActionResult> {
   try {
     // Create an instance of the lang loader needed for localization
-    const { prefferedLanguage } = await LangLoader.create();
+    const { preferredLanguage } = await LangLoader.create();
 
     // Validate the form on the server side and extract needed data
-    const { newPassword } = prefferedLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
+    const { newPassword } = preferredLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
 
     // Reset the password through the better-auth api for the user
     await auth.api.resetPassword({ body: { newPassword, token } });

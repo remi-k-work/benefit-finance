@@ -3,6 +3,7 @@ import { Suspense } from "react";
 
 // services, features, and other libraries
 import { Effect } from "effect";
+import LangLoader from "@/lib/LangLoader";
 import { runPageMainOrNavigate, validatePageInputs } from "@/lib/helpersEffect";
 import { SignInPageSchema } from "@/features/auth/schemas/signInPage";
 
@@ -26,7 +27,10 @@ const main = ({ params, searchParams }: PageProps<"/sign-in">) =>
       searchParams: { redirect },
     } = yield* validatePageInputs(SignInPageSchema, { params, searchParams });
 
-    return { redirect };
+    // Create an instance of the lang loader needed for localization
+    const { preferredLanguage, signInForm, signInSocial, signInFormFeedback, formToastFeedback, signInDemoUser, signInDemo } = yield* LangLoader.createEffect();
+
+    return { redirect, preferredLanguage, signInForm, signInSocial, signInFormFeedback, formToastFeedback, signInDemoUser, signInDemo };
   });
 
 // Page remains the fast, static shell
@@ -41,14 +45,22 @@ export default function Page({ params, searchParams }: PageProps<"/sign-in">) {
 // This new async component contains the dynamic logic
 async function PageContent({ params, searchParams }: PageProps<"/sign-in">) {
   // Execute the main effect for the page, map known errors to the subsequent navigation helpers, and return the payload
-  const { redirect } = await runPageMainOrNavigate(main({ params, searchParams }));
+  const { redirect, preferredLanguage, signInForm, signInSocial, signInFormFeedback, formToastFeedback, signInDemoUser, signInDemo } =
+    await runPageMainOrNavigate(main({ params, searchParams }));
 
   return (
     <>
       <PageHeader title="Sign In" description="Use the form below to sign in" />
       <article className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-        <SignInForm redirect={redirect as Route} />
-        <SignInDemoUser redirect={redirect as Route} />
+        <SignInForm
+          redirect={redirect as Route}
+          preferredLanguage={preferredLanguage}
+          ll={signInForm}
+          llSignInSocial={signInSocial}
+          llSignInFormFeedback={signInFormFeedback}
+          llFormToastFeedback={formToastFeedback}
+        />
+        <SignInDemoUser redirect={redirect as Route} ll={signInDemoUser} llSignInDemo={signInDemo} />
       </article>
     </>
   );

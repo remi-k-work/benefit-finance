@@ -29,14 +29,22 @@ import type LangLoader from "@/lib/LangLoader";
 
 interface EmailChangeFormProps {
   user: User;
-  preferredLang: Lang;
+  preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.emailChangeForm;
+  llEmailChangeFormFeedback: typeof LangLoader.prototype.emailChangeFormFeedback;
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
 // constants
 import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/profile/constants/emailChangeForm";
 
-export default function EmailChangeForm({ user: { email: currentEmail }, preferredLang, ll }: EmailChangeFormProps) {
+export default function EmailChangeForm({
+  user: { email: currentEmail },
+  preferredLanguage,
+  ll,
+  llEmailChangeFormFeedback,
+  llFormToastFeedback,
+}: EmailChangeFormProps) {
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(emailChange, INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
@@ -57,7 +65,14 @@ export default function EmailChangeForm({ user: { email: currentEmail }, preferr
   }, []);
 
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useEmailChangeFormFeedback(hasPressedSubmitRef, formState, reset, store);
+  const { feedbackMessage, hideFeedbackMessage } = useEmailChangeFormFeedback(
+    hasPressedSubmitRef,
+    formState,
+    reset,
+    store,
+    llEmailChangeFormFeedback,
+    llFormToastFeedback,
+  );
 
   return (
     <AppForm>
@@ -77,7 +92,9 @@ export default function EmailChangeForm({ user: { email: currentEmail }, preferr
             <AppField
               name="newEmail"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLang === "en" ? EmailChangeFormSchemaEn.fields.newEmail : EmailChangeFormSchemaPl.fields.newEmail),
+                onChange: Schema.standardSchemaV1(
+                  preferredLanguage === "en" ? EmailChangeFormSchemaEn.fields.newEmail : EmailChangeFormSchemaPl.fields.newEmail,
+                ),
               }}
               children={(field) => (
                 <field.TextField

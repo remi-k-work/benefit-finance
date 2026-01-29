@@ -24,10 +24,10 @@ export interface ForgotPassFormActionResult extends ServerFormState<any, any> {
 export default async function forgotPass(_prevState: unknown, formData: FormData): Promise<ForgotPassFormActionResult> {
   try {
     // Create an instance of the lang loader needed for localization
-    const { prefferedLanguage } = await LangLoader.create();
+    const { preferredLanguage } = await LangLoader.create();
 
     // Validate the form on the server side and extract needed data
-    const { email } = prefferedLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
+    const { email } = preferredLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
 
     // Request the password reset through the better-auth api for the user
     await auth.api.requestPasswordReset({ body: { email, redirectTo: "/reset-password" } });

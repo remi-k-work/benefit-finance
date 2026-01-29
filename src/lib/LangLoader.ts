@@ -1,7 +1,8 @@
 // next
 import { cookies, headers } from "next/headers";
 
-// other libraries
+// services, features, and other libraries
+import { Effect } from "effect";
 import { resolveAcceptLanguage } from "resolve-accept-language";
 
 // assets
@@ -80,20 +81,26 @@ export const LANG_COOKIE = "lang";
 export const LANG_COOKIE_MAXAGE = 2592000;
 
 export default class LangLoader {
-  public readonly prefferedLanguage;
+  public readonly preferredLanguage;
 
-  private constructor(prefferedLanguage: Lang) {
+  private constructor(preferredLanguage: Lang) {
     // Save the just-established preferred language by the user
-    this.prefferedLanguage = prefferedLanguage;
+    this.preferredLanguage = preferredLanguage;
   }
 
   // Create a new instance of LangLoader (we use a factory method because constructors cannot be async)
   public static async create(): Promise<LangLoader> {
-    return new LangLoader(await LangLoader.prefferedLanguage());
+    return new LangLoader(await LangLoader.preferredLanguage());
   }
 
+  public static createEffect = () =>
+    Effect.gen(function* () {
+      const preferredLanguage = yield* Effect.promise(() => LangLoader.preferredLanguage());
+      return new LangLoader(preferredLanguage);
+    });
+
   // Establish the preferred language by the user
-  private static async prefferedLanguage(): Promise<Lang> {
+  private static async preferredLanguage(): Promise<Lang> {
     // Try obtaining the lang value from a local cookie
     const langCookieValue = (await cookies()).get(LANG_COOKIE)?.value;
     if (langCookieValue) {
@@ -117,102 +124,102 @@ export default class LangLoader {
 
   // Localized content accessors are designed for the preferred language and optimized to pass specific chunks from the server components as props
   public get confirmModal() {
-    return this.prefferedLanguage === "pl" ? confirmModalPl : confirmModalEn;
+    return this.preferredLanguage === "pl" ? confirmModalPl : confirmModalEn;
   }
   public get deleteAvatar() {
-    return this.prefferedLanguage === "pl" ? deleteAvatarPl : deleteAvatarEn;
+    return this.preferredLanguage === "pl" ? deleteAvatarPl : deleteAvatarEn;
   }
   public get deleteAvatarFeedback() {
-    return this.prefferedLanguage === "pl" ? deleteAvatarFeedbackPl : deleteAvatarFeedbackEn;
+    return this.preferredLanguage === "pl" ? deleteAvatarFeedbackPl : deleteAvatarFeedbackEn;
   }
   public get demoModeModal() {
-    return this.prefferedLanguage === "pl" ? demoModeModalPl : demoModeModalEn;
+    return this.preferredLanguage === "pl" ? demoModeModalPl : demoModeModalEn;
   }
   public get emailChangeForm() {
-    return this.prefferedLanguage === "pl" ? emailChangeFormPl : emailChangeFormEn;
+    return this.preferredLanguage === "pl" ? emailChangeFormPl : emailChangeFormEn;
   }
   public get emailChangeFormFeedback() {
-    return this.prefferedLanguage === "pl" ? emailChangeFormFeedbackPl : emailChangeFormFeedbackEn;
+    return this.preferredLanguage === "pl" ? emailChangeFormFeedbackPl : emailChangeFormFeedbackEn;
   }
   public get forgotPassForm() {
-    return this.prefferedLanguage === "pl" ? forgotPassFormPl : forgotPassFormEn;
+    return this.preferredLanguage === "pl" ? forgotPassFormPl : forgotPassFormEn;
   }
   public get forgotPassFormFeedback() {
-    return this.prefferedLanguage === "pl" ? forgotPassFormFeedbackPl : forgotPassFormFeedbackEn;
+    return this.preferredLanguage === "pl" ? forgotPassFormFeedbackPl : forgotPassFormFeedbackEn;
   }
   public get formToastFeedback() {
-    return this.prefferedLanguage === "pl" ? formToastFeedbackPl : formToastFeedbackEn;
+    return this.preferredLanguage === "pl" ? formToastFeedbackPl : formToastFeedbackEn;
   }
   public get langChanger() {
-    return this.prefferedLanguage === "pl" ? langChangerPl : langChangerEn;
+    return this.preferredLanguage === "pl" ? langChangerPl : langChangerEn;
   }
   public get navIconItems() {
-    return this.prefferedLanguage === "pl" ? navIconItemsPl : navIconItemsEn;
+    return this.preferredLanguage === "pl" ? navIconItemsPl : navIconItemsEn;
   }
   public get navMenuItems() {
-    return this.prefferedLanguage === "pl" ? navMenuItemsPl : navMenuItemsEn;
+    return this.preferredLanguage === "pl" ? navMenuItemsPl : navMenuItemsEn;
   }
   public get passChangeForm() {
-    return this.prefferedLanguage === "pl" ? passChangeFormPl : passChangeFormEn;
+    return this.preferredLanguage === "pl" ? passChangeFormPl : passChangeFormEn;
   }
   public get passChangeFormFeedback() {
-    return this.prefferedLanguage === "pl" ? passChangeFormFeedbackPl : passChangeFormFeedbackEn;
+    return this.preferredLanguage === "pl" ? passChangeFormFeedbackPl : passChangeFormFeedbackEn;
   }
   public get profileDetailsForm() {
-    return this.prefferedLanguage === "pl" ? profileDetailsFormPl : profileDetailsFormEn;
+    return this.preferredLanguage === "pl" ? profileDetailsFormPl : profileDetailsFormEn;
   }
   public get profileDetailsFormFeedback() {
-    return this.prefferedLanguage === "pl" ? profileDetailsFormFeedbackPl : profileDetailsFormFeedbackEn;
+    return this.preferredLanguage === "pl" ? profileDetailsFormFeedbackPl : profileDetailsFormFeedbackEn;
   }
   public get profileInfo() {
-    return this.prefferedLanguage === "pl" ? profileInfoPl : profileInfoEn;
+    return this.preferredLanguage === "pl" ? profileInfoPl : profileInfoEn;
   }
   public get resetPassForm() {
-    return this.prefferedLanguage === "pl" ? resetPassFormPl : resetPassFormEn;
+    return this.preferredLanguage === "pl" ? resetPassFormPl : resetPassFormEn;
   }
   public get resetPassFormFeedback() {
-    return this.prefferedLanguage === "pl" ? resetPassFormFeedbackPl : resetPassFormFeedbackEn;
+    return this.preferredLanguage === "pl" ? resetPassFormFeedbackPl : resetPassFormFeedbackEn;
   }
   public get signInDemo() {
-    return this.prefferedLanguage === "pl" ? signInDemoPl : signInDemoEn;
+    return this.preferredLanguage === "pl" ? signInDemoPl : signInDemoEn;
   }
   public get signInDemoUser() {
-    return this.prefferedLanguage === "pl" ? signInDemoUserPl : signInDemoUserEn;
+    return this.preferredLanguage === "pl" ? signInDemoUserPl : signInDemoUserEn;
   }
   public get signInForm() {
-    return this.prefferedLanguage === "pl" ? signInFormPl : signInFormEn;
+    return this.preferredLanguage === "pl" ? signInFormPl : signInFormEn;
   }
   public get signInFormFeedback() {
-    return this.prefferedLanguage === "pl" ? signInFormFeedbackPl : signInFormFeedbackEn;
+    return this.preferredLanguage === "pl" ? signInFormFeedbackPl : signInFormFeedbackEn;
   }
   public get signInSocial() {
-    return this.prefferedLanguage === "pl" ? signInSocialPl : signInSocialEn;
+    return this.preferredLanguage === "pl" ? signInSocialPl : signInSocialEn;
   }
   public get signOutEverywhere() {
-    return this.prefferedLanguage === "pl" ? signOutEverywherePl : signOutEverywhereEn;
+    return this.preferredLanguage === "pl" ? signOutEverywherePl : signOutEverywhereEn;
   }
   public get signOutEverywhereFeedback() {
-    return this.prefferedLanguage === "pl" ? signOutEverywhereFeedbackPl : signOutEverywhereFeedbackEn;
+    return this.preferredLanguage === "pl" ? signOutEverywhereFeedbackPl : signOutEverywhereFeedbackEn;
   }
   public get signUpForm() {
-    return this.prefferedLanguage === "pl" ? signUpFormPl : signUpFormEn;
+    return this.preferredLanguage === "pl" ? signUpFormPl : signUpFormEn;
   }
   public get signUpFormFeedback() {
-    return this.prefferedLanguage === "pl" ? signUpFormFeedbackPl : signUpFormFeedbackEn;
+    return this.preferredLanguage === "pl" ? signUpFormFeedbackPl : signUpFormFeedbackEn;
   }
   public get themeChanger() {
-    return this.prefferedLanguage === "pl" ? themeChangerPl : themeChangerEn;
+    return this.preferredLanguage === "pl" ? themeChangerPl : themeChangerEn;
   }
   public get uploadAvatar() {
-    return this.prefferedLanguage === "pl" ? uploadAvatarPl : uploadAvatarEn;
+    return this.preferredLanguage === "pl" ? uploadAvatarPl : uploadAvatarEn;
   }
   public get userPopover() {
-    return this.prefferedLanguage === "pl" ? userPopoverPl : userPopoverEn;
+    return this.preferredLanguage === "pl" ? userPopoverPl : userPopoverEn;
   }
   public get verifyEmail() {
-    return this.prefferedLanguage === "pl" ? verifyEmailPl : verifyEmailEn;
+    return this.preferredLanguage === "pl" ? verifyEmailPl : verifyEmailEn;
   }
   public get verifyEmailFeedback() {
-    return this.prefferedLanguage === "pl" ? verifyEmailFeedbackPl : verifyEmailFeedbackEn;
+    return this.preferredLanguage === "pl" ? verifyEmailFeedbackPl : verifyEmailFeedbackEn;
   }
 }

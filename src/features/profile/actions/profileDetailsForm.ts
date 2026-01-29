@@ -37,10 +37,10 @@ export default async function profileDetails(_prevState: unknown, formData: Form
     if (role === "demo") return { ...initialFormState, actionStatus: "demoMode" };
 
     // Create an instance of the lang loader needed for localization
-    const { prefferedLanguage } = await LangLoader.create();
+    const { preferredLanguage } = await LangLoader.create();
 
     // Validate the form on the server side and extract needed data
-    const { name } = prefferedLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
+    const { name } = preferredLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
 
     // Update the user information through the better-auth api by setting their name
     await auth.api.updateUser({ body: { name }, headers: await headers() });

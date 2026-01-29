@@ -41,13 +41,13 @@ export default async function emailChange(_prevState: unknown, formData: FormDat
     if (role === "demo") return { ...initialFormState, actionStatus: "demoMode" };
 
     // Create an instance of the lang loader needed for localization
-    const { prefferedLanguage } = await LangLoader.create();
+    const { preferredLanguage } = await LangLoader.create();
 
     // Only users with verified emails need to additionally approve their email change
     if (emailVerified) needsApproval = true;
 
     // Validate the form on the server side and extract needed data
-    const { newEmail } = prefferedLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
+    const { newEmail } = preferredLanguage === "en" ? await SERVER_VALIDATE_EN(formData) : await SERVER_VALIDATE_PL(formData);
 
     // Request the email change through the better-auth api for the user
     await auth.api.changeEmail({ body: { newEmail, callbackURL: needsApproval ? "/email-approved" : "/email-verified" }, headers: await headers() });

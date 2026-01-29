@@ -21,11 +21,11 @@ import type { Lang } from "@/lib/LangLoader";
 import type LangLoader from "@/lib/LangLoader";
 
 interface LangChangerProps {
-  preferredLang: Lang;
+  preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.langChanger;
 }
 
-export default function LangChanger({ preferredLang, ll }: LangChangerProps) {
+export default function LangChanger({ preferredLanguage, ll }: LangChangerProps) {
   // To display a pending status while the server action is running
   const [isPending, startTransition] = useTransition();
 
@@ -34,7 +34,7 @@ export default function LangChanger({ preferredLang, ll }: LangChangerProps) {
 
   function handleLangToggled() {
     startTransition(async () => {
-      await setLangCookie(preferredLang === "en" ? "pl" : "en");
+      await setLangCookie(preferredLanguage === "en" ? "pl" : "en");
       refresh();
     });
   }
@@ -45,10 +45,10 @@ export default function LangChanger({ preferredLang, ll }: LangChangerProps) {
       size="icon"
       variant="ghost"
       disabled={isPending}
-      title={preferredLang === "en" ? ll["English"] : ll["Polish"]}
+      title={preferredLanguage === "en" ? ll["English"] : ll["Polish"]}
       onClick={handleLangToggled}
     >
-      {preferredLang && (preferredLang === "en" ? <UsFlagIcon className="size-11" /> : <PlFlagIcon className="size-11" />)}
+      {preferredLanguage && (preferredLanguage === "en" ? <UsFlagIcon className="size-11" /> : <PlFlagIcon className="size-11" />)}
     </Button>
   );
 }

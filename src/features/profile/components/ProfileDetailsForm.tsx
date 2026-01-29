@@ -33,9 +33,13 @@ import type LangLoader from "@/lib/LangLoader";
 interface ProfileDetailsFormProps {
   user: User;
   session: Session;
-  preferredLang: Lang;
+  preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.profileDetailsForm;
+  llUploadAvatar: typeof LangLoader.prototype.uploadAvatar;
   llDeleteAvatar: typeof LangLoader.prototype.deleteAvatar;
+  llDeleteAvatarFeedback: typeof LangLoader.prototype.deleteAvatarFeedback;
+  llProfileDetailsFormFeedback: typeof LangLoader.prototype.profileDetailsFormFeedback;
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
 // constants
@@ -45,9 +49,13 @@ export default function ProfileDetailsForm({
   user,
   user: { name: currentName, image: currentImage },
   session,
-  preferredLang,
+  preferredLanguage,
   ll,
+  llUploadAvatar,
   llDeleteAvatar,
+  llDeleteAvatarFeedback,
+  llProfileDetailsFormFeedback,
+  llFormToastFeedback,
 }: ProfileDetailsFormProps) {
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(profileDetails, INITIAL_FORM_STATE);
@@ -69,7 +77,14 @@ export default function ProfileDetailsForm({
   }, []);
 
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useProfileDetailsFormFeedback(hasPressedSubmitRef, formState, reset, store);
+  const { feedbackMessage, hideFeedbackMessage } = useProfileDetailsFormFeedback(
+    hasPressedSubmitRef,
+    formState,
+    reset,
+    store,
+    llProfileDetailsFormFeedback,
+    llFormToastFeedback,
+  );
 
   return (
     <AppForm>
@@ -89,14 +104,19 @@ export default function ProfileDetailsForm({
             <div className="mb-4 flex flex-wrap items-center justify-around gap-4 sm:justify-between">
               <UserAvatar user={user} session={session} />
               <div className="grid gap-4">
-                <UploadAvatar />
-                <DeleteAvatar currentImage={currentImage ?? undefined} ll={llDeleteAvatar} />
+                <UploadAvatar ll={llUploadAvatar} />
+                <DeleteAvatar
+                  currentImage={currentImage ?? undefined}
+                  ll={llDeleteAvatar}
+                  llDeleteAvatarFeedback={llDeleteAvatarFeedback}
+                  llFormToastFeedback={llFormToastFeedback}
+                />
               </div>
             </div>
             <AppField
               name="name"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLang === "en" ? ProfileDetailsFormSchemaEn.fields.name : ProfileDetailsFormSchemaPl.fields.name),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ProfileDetailsFormSchemaEn.fields.name : ProfileDetailsFormSchemaPl.fields.name),
               }}
               children={(field) => (
                 <field.TextField label={ll["Name"]} size={40} maxLength={26} spellCheck={false} autoComplete="name" placeholder={ll["e.g. John Doe"]} />

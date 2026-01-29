@@ -21,9 +21,11 @@ import type LangLoader from "@/lib/LangLoader";
 interface DeleteAvatarProps {
   currentImage?: string;
   ll: typeof LangLoader.prototype.deleteAvatar;
+  llDeleteAvatarFeedback: typeof LangLoader.prototype.deleteAvatarFeedback;
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
-export default function DeleteAvatar({ currentImage, ll }: DeleteAvatarProps) {
+export default function DeleteAvatar({ currentImage, ll, llDeleteAvatarFeedback, llFormToastFeedback }: DeleteAvatarProps) {
   // This is the hook that components use to open the modal
   const { openConfirmModal } = useConfirmModal();
 
@@ -31,7 +33,7 @@ export default function DeleteAvatar({ currentImage, ll }: DeleteAvatarProps) {
   const [deleteAvatarState, deleteAvatarAction, deleteAvatarIsPending] = useActionState(deleteAvatar, { actionStatus: "idle" });
 
   // Provide feedback to the user regarding this server action
-  useDeleteAvatarFeedback(deleteAvatarState);
+  useDeleteAvatarFeedback(deleteAvatarState, llDeleteAvatarFeedback, llFormToastFeedback);
 
   return (
     <Button

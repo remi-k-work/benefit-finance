@@ -9,8 +9,8 @@ export default function Layout({ children }: LayoutProps<"/test">) {
       <Header />
       <main className="mx-4 [grid-area:main]">{children}</main>
       {/* Add the Reactive Root for the modal */}
-      <ConfirmModalRoot />
-      <DemoModeModalRoot />
+      {/* <ConfirmModalRoot />
+      <DemoModeModalRoot /> */}
     </>
   );
 }

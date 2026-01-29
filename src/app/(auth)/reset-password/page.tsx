@@ -3,6 +3,7 @@ import { Suspense } from "react";
 
 // services, features, and other libraries
 import { Effect } from "effect";
+import LangLoader from "@/lib/LangLoader";
 import { runPageMainOrNavigate, validatePageInputs } from "@/lib/helpersEffect";
 import { ResetPassPageSchema } from "@/features/auth/schemas/resetPassPage";
 
@@ -25,7 +26,10 @@ const main = ({ params, searchParams }: PageProps<"/reset-password">) =>
       searchParams: { token },
     } = yield* validatePageInputs(ResetPassPageSchema, { params, searchParams });
 
-    return { token };
+    // Create an instance of the lang loader needed for localization
+    const { preferredLanguage, resetPassForm, resetPassFormFeedback, formToastFeedback } = yield* LangLoader.createEffect();
+
+    return { token, preferredLanguage, resetPassForm, resetPassFormFeedback, formToastFeedback };
   });
 
 // Page remains the fast, static shell
@@ -40,12 +44,18 @@ export default function Page({ params, searchParams }: PageProps<"/reset-passwor
 // This new async component contains the dynamic logic
 async function PageContent({ params, searchParams }: PageProps<"/reset-password">) {
   // Execute the main effect for the page, map known errors to the subsequent navigation helpers, and return the payload
-  const { token } = await runPageMainOrNavigate(main({ params, searchParams }));
+  const { token, preferredLanguage, resetPassForm, resetPassFormFeedback, formToastFeedback } = await runPageMainOrNavigate(main({ params, searchParams }));
 
   return (
     <>
       <PageHeader title="Reset Password" description="Use the form below to reset your password" />
-      <ResetPassForm token={token} />
+      <ResetPassForm
+        token={token}
+        preferredLanguage={preferredLanguage}
+        ll={resetPassForm}
+        llResetPassFormFeedback={resetPassFormFeedback}
+        llFormToastFeedback={formToastFeedback}
+      />
     </>
   );
 }
