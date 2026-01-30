@@ -27,11 +27,11 @@ function CardHeader({ className, ...props }: React.ComponentProps<"header">) {
 }
 
 function CardTitle({ className, ...props }: React.ComponentProps<"h3">) {
-  return <h3 data-slot="card-title" className={cn("font-sans text-3xl leading-none uppercase", className)} {...props} />;
+  return <h3 data-slot="card-title" className={cn("font-sans text-2xl leading-none uppercase md:text-3xl", className)} {...props} />;
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<"p">) {
-  return <p data-slot="card-description" className={cn("text-muted-foreground font-sans text-lg uppercase", className)} {...props} />;
+  return <p data-slot="card-description" className={cn("text-muted-foreground font-sans uppercase md:text-lg", className)} {...props} />;
 }
 
 function CardAction({ className, ...props }: React.ComponentProps<"aside">) {

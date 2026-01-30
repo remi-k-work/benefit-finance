@@ -47,22 +47,22 @@ export const NAV_ICON_ITEMS = (ll: typeof LangLoader.prototype.navIconItems) =>
 
 export const NAV_MENU_ITEMS_S = [
   {
-    title: "",
+    title: "............",
     items: [
-      { title: "", href: "/spending", match: "^/spending(/.*)?$" },
-      { title: "", href: "/investing", match: "^/investing(/.*)?$" },
-      { title: "", href: "/forecasting", match: "^/forecasting(/.*)?$" },
-      { title: "", href: "/estate-planning", match: "^/estate-planning(/.*)?$" },
-      { title: "", href: "/couples", match: "^/couples(/.*)?$" },
+      { title: "............", href: "/spending", match: "^/spending(/.*)?$" },
+      { title: "............", href: "/investing", match: "^/investing(/.*)?$" },
+      { title: "............", href: "/forecasting", match: "^/forecasting(/.*)?$" },
+      { title: "............", href: "/estate-planning", match: "^/estate-planning(/.*)?$" },
+      { title: "............", href: "/couples", match: "^/couples(/.*)?$" },
     ],
   },
   {
-    title: "",
+    title: "............",
     href: "/for-employers",
     match: "^/employers(/.*)?$",
   },
   {
-    title: "",
+    title: "............",
     href: "/resources",
     match: "^/resources(/.*)?$",
   },
@@ -72,13 +72,13 @@ export const NAV_ICON_ITEMS_S = [
   {
     href: "/dashboard",
     match: "^/dashboard(/.*)?$",
-    title: "",
+    title: "............",
     icon: <BanknotesIcon />,
   },
   {
     href: "/profile",
     match: "^/profile(/.*)?$",
-    title: "",
+    title: "............",
     icon: <UserIcon />,
   },
 ] as const;

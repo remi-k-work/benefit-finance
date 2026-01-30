@@ -36,11 +36,14 @@ async function HeaderContent() {
 
   return (
     <header
-      className={cn("from-background via-secondary z-10 flex items-center gap-4 bg-linear-to-b to-transparent p-2 [grid-area:header]", "lg:sticky lg:top-0")}
+      className={cn(
+        "from-background via-secondary z-10 flex flex-wrap items-center gap-1 bg-linear-to-b to-transparent p-2 [grid-area:header] md:gap-4",
+        "lg:sticky lg:top-0",
+      )}
     >
       <Logo />
       <NavMenu />
-      <section className="flex flex-none items-center gap-4">
+      <section className="flex flex-1 items-center justify-around gap-1 md:flex-none md:gap-4">
         {NAV_ICON_ITEMS(navIconItems).map((navIconItem, index) => (
           <Suspense key={index} fallback={<NavIconItemSkeleton {...navIconItem} />}>
             <NavIconItem {...navIconItem} />
@@ -57,11 +60,14 @@ async function HeaderContent() {
 export function HeaderSkeleton() {
   return (
     <header
-      className={cn("from-background via-secondary z-10 flex items-center gap-4 bg-linear-to-b to-transparent p-2 [grid-area:header]", "lg:sticky lg:top-0")}
+      className={cn(
+        "from-background via-secondary z-10 flex flex-wrap items-center gap-1 bg-linear-to-b to-transparent p-2 [grid-area:header] md:gap-4",
+        "lg:sticky lg:top-0",
+      )}
     >
       <LogoSkeleton />
       <NavMenuSkeleton />
-      <section className="flex flex-none items-center gap-4">
+      <section className="flex flex-1 items-center justify-around gap-1 md:flex-none md:gap-4">
         {NAV_ICON_ITEMS_S.map((navIconItem, index) => (
           <NavIconItemSkeleton key={index} {...navIconItem} />
         ))}

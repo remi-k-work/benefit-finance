@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
   cn(
-    "flex shrink-0 items-center justify-center gap-2 border whitespace-nowrap transition-all duration-300 ease-in-out outline-none uppercase tracking-widest font-semibold select-none",
+    "flex shrink-0 items-center justify-center gap-2 border transition-all duration-300 ease-in-out outline-none uppercase tracking-widest font-semibold select-none",
     "hover:shadow-md active:scale-95 active:shadow-none",
     "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-1",
     "disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none",

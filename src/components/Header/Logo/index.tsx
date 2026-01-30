@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 // assets
-import logoD from "@/assets/logoSm.png";
+import logoD from "@/assets/logoOnly.png";
 
 export const Logo = dynamic(() => import("./Logo"), { ssr: false });
 

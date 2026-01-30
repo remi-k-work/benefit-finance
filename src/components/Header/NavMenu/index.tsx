@@ -27,7 +27,7 @@ async function NavMenuContent() {
 
   return (
     <NavigationMenu className="mx-auto uppercase">
-      <NavigationMenuList>
+      <NavigationMenuList className="flex-wrap gap-2 sm:gap-0">
         {NAV_MENU_ITEMS(navMenuItems).map((navMenuItem, index) => (
           <NavMenuItem key={index} {...navMenuItem} />
         ))}
@@ -38,8 +38,8 @@ async function NavMenuContent() {
 
 export function NavMenuSkeleton() {
   return (
-    <NavigationMenu className="mx-auto uppercase">
-      <NavigationMenuList>
+    <NavigationMenu className="mx-auto text-transparent uppercase">
+      <NavigationMenuList className="flex-wrap gap-2 sm:gap-0">
         {NAV_MENU_ITEMS_S.map((navMenuItem, index) => (
           <NavMenuItem key={index} {...navMenuItem} />
         ))}
