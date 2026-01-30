@@ -1,25 +1,33 @@
 // react
 import { Suspense } from "react";
 
+// next
+import Link from "next/link";
+
 // services, features, and other libraries
 import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
 import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
+import Header, { HeaderSkeleton } from "@/components/Header";
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
+import { Button } from "@/components/ui/custom/button";
+
+// assets
+import { HomeModernIcon } from "@heroicons/react/24/outline";
 
 // types
 import type { Metadata } from "next";
 
 // constants
 export const metadata: Metadata = {
-  title: "Benefit Finance ► Spending",
+  title: "Benefit Finance ► Not Found",
 };
 
 const main = Effect.gen(function* () {
   // Create an instance of the lang loader needed for localization
-  const { spendingPage: ll } = yield* LangLoader.createEffect();
+  const { notFoundPage: ll } = yield* LangLoader.createEffect();
 
   return { ll };
 });
@@ -40,18 +48,31 @@ async function PageContent() {
 
   return (
     <>
-      <PageHeader
-        title={ll["Track your spending"]}
-        description={ll["See your spending clearly with AI that shows where your money goes, and what it means for you"]}
-      />
+      <Header />
+      <main className="mx-4 grid h-full place-items-center [grid-area:main]">
+        <PageHeader title={ll["Not Found"]} description={ll["Could not find requested resource"]} />
+        <Button
+          variant="ghost"
+          nativeButton={false}
+          render={
+            <Link href="/">
+              <HomeModernIcon className="size-9" />
+              {ll["Return Home"]}
+            </Link>
+          }
+        ></Button>
+      </main>
     </>
   );
 }
 
 function PageSkeleton() {
   return (
-    <article className="grid h-full place-items-center">
-      <PageHeaderSkeleton />
-    </article>
+    <>
+      <HeaderSkeleton />
+      <main className="mx-4 grid h-full place-items-center [grid-area:main]">
+        <PageHeaderSkeleton />
+      </main>
+    </>
   );
 }
