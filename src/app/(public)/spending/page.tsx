@@ -50,8 +50,8 @@ async function PageContent() {
 
 function PageSkeleton() {
   return (
-    <article className="grid h-full place-items-center">
+    <>
       <PageHeaderSkeleton />
-    </article>
+    </>
   );
 }
