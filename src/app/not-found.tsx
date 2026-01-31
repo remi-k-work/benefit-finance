@@ -10,7 +10,6 @@ import LangLoader from "@/lib/LangLoader";
 import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
-import Header, { HeaderSkeleton } from "@/components/Header";
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
 import { Button } from "@/components/ui/custom/button";
 
@@ -47,32 +46,26 @@ async function PageContent() {
   const { ll } = await runPageMainOrNavigate(main);
 
   return (
-    <>
-      <Header />
-      <main className="mx-4 grid h-full place-items-center [grid-area:main]">
-        <PageHeader title={ll["Not Found"]} description={ll["Could not find requested resource"]} />
-        <Button
-          variant="ghost"
-          nativeButton={false}
-          render={
-            <Link href="/">
-              <HomeModernIcon className="size-9" />
-              {ll["Return Home"]}
-            </Link>
-          }
-        ></Button>
-      </main>
-    </>
+    <article className="grid h-full place-items-center">
+      <PageHeader title={ll["Not Found"]} description={ll["Could not find requested resource"]} />
+      <Button
+        variant="ghost"
+        nativeButton={false}
+        render={
+          <Link href="/">
+            <HomeModernIcon className="size-9" />
+            {ll["Return Home"]}
+          </Link>
+        }
+      ></Button>
+    </article>
   );
 }
 
 function PageSkeleton() {
   return (
-    <>
-      <HeaderSkeleton />
-      <main className="mx-4 grid h-full place-items-center [grid-area:main]">
-        <PageHeaderSkeleton />
-      </main>
-    </>
+    <article className="grid h-full place-items-center">
+      <PageHeaderSkeleton />
+    </article>
   );
 }
