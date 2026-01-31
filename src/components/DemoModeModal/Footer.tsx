@@ -15,7 +15,7 @@ interface FooterProps {
 
 export default function Footer({ onClosed, ll }: FooterProps) {
   return (
-    <footer className="flex flex-wrap items-center gap-6 border-t p-3 *:flex-1">
+    <footer className="flex flex-wrap gap-3 border-t p-3 *:flex-1 md:gap-6">
       <SignInOrCreate onSignedOut={onClosed} ll={ll} />
       <Button type="button" variant="secondary" onClick={onClosed}>
         <XCircleIcon className="size-9" />

@@ -66,7 +66,7 @@ export default function ConfirmModal({ onConfirmed, onClosed, ll, children, clas
               </Button>
             </header>
             <article className="z-1 grid max-h-full overflow-y-auto overscroll-y-contain px-6 py-9">{children}</article>
-            <footer className="flex flex-wrap items-center gap-6 border-t p-3 *:flex-1">
+            <footer className="flex flex-wrap gap-3 border-t p-3 *:flex-1 md:gap-6">
               <Button
                 type="button"
                 variant="destructive"
