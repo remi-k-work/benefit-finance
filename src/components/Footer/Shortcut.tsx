@@ -75,7 +75,7 @@ async function ShortcutContent() {
           </Link>
         </li>
         <li>
-          <Link href="/" className="link font-mono text-base font-normal normal-case">
+          <Link href="/contact-us" className="link font-mono text-base font-normal normal-case">
             {ll["Contact Us"]}
           </Link>
         </li>
