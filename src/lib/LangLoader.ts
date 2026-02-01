@@ -28,6 +28,12 @@ import emailVerifiedPageEn from "@/assets/lang/emailVerifiedPage.en.json";
 import emailVerifiedPagePl from "@/assets/lang/emailVerifiedPage.pl.json";
 import estatePlanningPageEn from "@/assets/lang/estatePlanningPage.en.json";
 import estatePlanningPagePl from "@/assets/lang/estatePlanningPage.pl.json";
+import footerAddressEn from "@/assets/lang/footerAddress.en.json";
+import footerAddressPl from "@/assets/lang/footerAddress.pl.json";
+import footerContactEn from "@/assets/lang/footerContact.en.json";
+import footerContactPl from "@/assets/lang/footerContact.pl.json";
+import footerShortcutEn from "@/assets/lang/footerShortcut.en.json";
+import footerShortcutPl from "@/assets/lang/footerShortcut.pl.json";
 import forecastingPageEn from "@/assets/lang/forecastingPage.en.json";
 import forecastingPagePl from "@/assets/lang/forecastingPage.pl.json";
 import forEmployersPageEn from "@/assets/lang/forEmployersPage.en.json";
@@ -191,6 +197,15 @@ export default class LangLoader {
   }
   public get estatePlanningPage() {
     return this.preferredLanguage === "pl" ? estatePlanningPagePl : estatePlanningPageEn;
+  }
+  public get footerAddress() {
+    return this.preferredLanguage === "pl" ? footerAddressPl : footerAddressEn;
+  }
+  public get footerContact() {
+    return this.preferredLanguage === "pl" ? footerContactPl : footerContactEn;
+  }
+  public get footerShortcut() {
+    return this.preferredLanguage === "pl" ? footerShortcutPl : footerShortcutEn;
   }
   public get forecastingPage() {
     return this.preferredLanguage === "pl" ? forecastingPagePl : forecastingPageEn;

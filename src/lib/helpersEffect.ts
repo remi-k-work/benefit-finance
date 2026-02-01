@@ -55,3 +55,28 @@ export const runPageMainOrNavigate = async <A, E extends { _tag: string }>(pageM
     return pageMainResult.right;
   }
 };
+
+// Execute the main effect for the component, handle known errors, and return the payload
+export const runComponentMain = async <A, E extends { _tag: string }>(componentMain: Effect.Effect<A, E, any>) => {
+  // Explicitly defer to request time (Effect uses Date.now() internally)
+  await connection();
+
+  // We wrap in Effect.either to catch failures gracefully
+  const componentMainResult = await RuntimeServer.runPromise(
+    componentMain.pipe(
+      Effect.tapError((error) => Console.log(`[COMPONENT MAIN ERROR]: ${error}`)),
+      Effect.either,
+    ),
+  );
+
+  // Standardized error handling
+  if (Either.isLeft(componentMainResult)) {
+    const error = componentMainResult.left;
+
+    // Allow the next.js error boundary to catch any unexpected errors
+    throw error;
+  } else {
+    // Return success result
+    return componentMainResult.right;
+  }
+};

@@ -3,8 +3,10 @@ import { Suspense } from "react";
 
 // services, features, and other libraries
 import { cn } from "@/lib/utils";
+import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
-import { getUserSessionData } from "@/features/auth/lib/helpers";
+import { runComponentMain } from "@/lib/helpersEffect";
+import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
 
 // components
 import { Logo, LogoSkeleton } from "./Logo";
@@ -17,6 +19,16 @@ import { ThemeChanger, ThemeChangerSkeleton } from "@/components/ThemeChanger";
 // constants
 import { NAV_ICON_ITEMS, NAV_ICON_ITEMS_S } from "./constants";
 
+const main = Effect.gen(function* () {
+  // Access the user session data from the server side or fail with an unauthorized access error
+  const { user, session } = yield* getUserSessionData.pipe(Effect.orElse(() => Effect.succeed({ user: null, session: null })));
+
+  // Create an instance of the lang loader needed for localization
+  const { preferredLanguage, langChanger, navIconItems, themeChanger, userPopover } = yield* LangLoader.createEffect();
+
+  return { user, session, preferredLanguage, langChanger, navIconItems, themeChanger, userPopover };
+});
+
 // Component remains the fast, static shell
 export default function Header() {
   return (
@@ -28,11 +40,8 @@ export default function Header() {
 
 // This new async component contains the dynamic logic
 async function HeaderContent() {
-  // Create an instance of the lang loader needed for localization
-  const { preferredLanguage, langChanger, navIconItems, themeChanger, userPopover } = await LangLoader.create();
-
-  // Access the user session data from the server side
-  const userSessionData = await getUserSessionData();
+  // Execute the main effect for the component, handle known errors, and return the payload
+  const { user, session, preferredLanguage, langChanger, navIconItems, themeChanger, userPopover } = await runComponentMain(main);
 
   return (
     <header
@@ -49,7 +58,7 @@ async function HeaderContent() {
             <NavIconItem {...navIconItem} />
           </Suspense>
         ))}
-        {userSessionData ? <UserPopover user={userSessionData.user} session={userSessionData.session} ll={userPopover} /> : <UserPopoverSkeleton />}
+        {user && session ? <UserPopover user={user} session={session} ll={userPopover} /> : <UserPopoverSkeleton />}
         <LangChanger preferredLanguage={preferredLanguage} ll={langChanger} />
         <ThemeChanger ll={themeChanger} />
       </section>
