@@ -52,7 +52,7 @@ async function HeaderContent() {
     >
       <Logo />
       <NavMenu />
-      <section className="flex flex-1 items-center justify-around gap-1 md:flex-none md:gap-4">
+      <section className="flex flex-1 items-center justify-end gap-3 md:flex-none md:gap-4">
         {NAV_ICON_ITEMS(navIconItems).map((navIconItem, index) => (
           <Suspense key={index} fallback={<NavIconItemSkeleton {...navIconItem} />}>
             <NavIconItem {...navIconItem} />
@@ -76,7 +76,7 @@ export function HeaderSkeleton() {
     >
       <LogoSkeleton />
       <NavMenuSkeleton />
-      <section className="flex flex-1 items-center justify-around gap-1 md:flex-none md:gap-4">
+      <section className="flex flex-1 items-center justify-end gap-3 md:flex-none md:gap-4">
         {NAV_ICON_ITEMS_S.map((navIconItem, index) => (
           <NavIconItemSkeleton key={index} {...navIconItem} />
         ))}

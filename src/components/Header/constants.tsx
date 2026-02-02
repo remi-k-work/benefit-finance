@@ -1,5 +1,5 @@
 // assets
-import { BanknotesIcon, UserIcon } from "@heroicons/react/24/outline";
+import { BanknotesIcon } from "@heroicons/react/24/outline";
 
 // types
 import type LangLoader from "@/lib/LangLoader";
@@ -37,12 +37,6 @@ export const NAV_ICON_ITEMS = (ll: typeof LangLoader.prototype.navIconItems) =>
       title: ll["Get Started"],
       icon: <BanknotesIcon />,
     },
-    {
-      href: "/profile",
-      match: "^/profile(/.*)?$",
-      title: ll["Profile"],
-      icon: <UserIcon />,
-    },
   ] as const;
 
 export const NAV_MENU_ITEMS_S = [
@@ -74,11 +68,5 @@ export const NAV_ICON_ITEMS_S = [
     match: "^/dashboard(/.*)?$",
     title: "............",
     icon: <BanknotesIcon />,
-  },
-  {
-    href: "/profile",
-    match: "^/profile(/.*)?$",
-    title: "............",
-    icon: <UserIcon />,
   },
 ] as const;

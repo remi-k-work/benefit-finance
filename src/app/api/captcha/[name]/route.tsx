@@ -24,8 +24,6 @@ export interface CaptchaSession {
 import { CAPTCHA_HEIGHT, CAPTCHA_WIDTH } from "@/features/captcha/components/CaptchaBackground";
 const FONTS_DIR = "public/fonts";
 
-export const dynamic = "force-dynamic";
-
 export async function GET(_req: NextRequest, { params: paramsPromise }: RouteContext<"/api/captcha/[name]">) {
   const { name } = await paramsPromise;
 

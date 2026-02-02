@@ -12,6 +12,8 @@ import contactUsFormEn from "@/assets/lang/contactUsForm.en.json";
 import contactUsFormPl from "@/assets/lang/contactUsForm.pl.json";
 import contactUsFormFeedbackEn from "@/assets/lang/contactUsFormFeedback.en.json";
 import contactUsFormFeedbackPl from "@/assets/lang/contactUsFormFeedback.pl.json";
+import contactUsMapEn from "@/assets/lang/contactUsMap.en.json";
+import contactUsMapPl from "@/assets/lang/contactUsMap.pl.json";
 import contactUsPageEn from "@/assets/lang/contactUsPage.en.json";
 import contactUsPagePl from "@/assets/lang/contactUsPage.pl.json";
 import couplesPageEn from "@/assets/lang/couplesPage.en.json";
@@ -179,6 +181,9 @@ export default class LangLoader {
   }
   public get contactUsFormFeedback() {
     return this.preferredLanguage === "pl" ? contactUsFormFeedbackPl : contactUsFormFeedbackEn;
+  }
+  public get contactUsMap() {
+    return this.preferredLanguage === "pl" ? contactUsMapPl : contactUsMapEn;
   }
   public get contactUsPage() {
     return this.preferredLanguage === "pl" ? contactUsPagePl : contactUsPageEn;

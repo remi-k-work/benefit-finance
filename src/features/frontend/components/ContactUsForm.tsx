@@ -170,7 +170,7 @@ export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFe
             <AppField
               name="captcha"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.message : ContactUsFormSchemaPl.fields.message),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.captcha : ContactUsFormSchemaPl.fields.captcha),
               }}
               children={(field) => (
                 <field.TextField
