@@ -6,12 +6,14 @@
   "Email": "Email",
   "We will answer you here": "We will answer you here",
   "Subject": "Subject",
-  "Project Inquiry? Feedback? Let us know!": "Project Inquiry? Feedback? Let us know!",
+  "Question? Feedback? Let us know!": "Question? Feedback? Let us know!",
   "Phone": "Phone",
   "e.g. 333-444-4444": "e.g. 333-444-4444",
-  "e.g. P@ssw0rd!": "e.g. P@ssw0rd!",
-  "Confirm Password": "Confirm Password",
-  "Create New Account": "Create New Account",
+  "Message": "Message",
+  "How can we help you today?": "How can we help you today?",
+  "Captcha": "Captcha",
+  "Enter the generated captcha": "Enter the generated captcha",
+  "Send Message": "Send Message",
   "Clear Form": "Clear Form",
   "Cancel and Go Back": "Cancel and Go Back"
 }

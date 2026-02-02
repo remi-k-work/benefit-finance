@@ -8,6 +8,10 @@ import { resolveAcceptLanguage } from "resolve-accept-language";
 // assets
 import confirmModalEn from "@/assets/lang/confirmModal.en.json";
 import confirmModalPl from "@/assets/lang/confirmModal.pl.json";
+import contactUsFormEn from "@/assets/lang/contactUsForm.en.json";
+import contactUsFormPl from "@/assets/lang/contactUsForm.pl.json";
+import contactUsFormFeedbackEn from "@/assets/lang/contactUsFormFeedback.en.json";
+import contactUsFormFeedbackPl from "@/assets/lang/contactUsFormFeedback.pl.json";
 import contactUsPageEn from "@/assets/lang/contactUsPage.en.json";
 import contactUsPagePl from "@/assets/lang/contactUsPage.pl.json";
 import couplesPageEn from "@/assets/lang/couplesPage.en.json";
@@ -169,6 +173,12 @@ export default class LangLoader {
   // Localized content accessors are designed for the preferred language and optimized to pass specific chunks from the server components as props
   public get confirmModal() {
     return this.preferredLanguage === "pl" ? confirmModalPl : confirmModalEn;
+  }
+  public get contactUsForm() {
+    return this.preferredLanguage === "pl" ? contactUsFormPl : contactUsFormEn;
+  }
+  public get contactUsFormFeedback() {
+    return this.preferredLanguage === "pl" ? contactUsFormFeedbackPl : contactUsFormFeedbackEn;
   }
   public get contactUsPage() {
     return this.preferredLanguage === "pl" ? contactUsPagePl : contactUsPageEn;

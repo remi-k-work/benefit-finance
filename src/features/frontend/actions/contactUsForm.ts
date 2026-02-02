@@ -17,11 +17,11 @@ import type { ServerFormState, StandardSchemaV1Issue } from "@tanstack/react-for
 import type { CaptchaSession } from "@/app/api/captcha/[name]/route";
 
 export interface ContactUsFormActionResult extends ServerFormState<any, any> {
-  actionStatus: "idle" | "succeeded" | "failed" | "invalid" | "invalid-captcha";
+  actionStatus: "idle" | "succeeded" | "failed" | "invalid";
 }
 
 // The main server action that processes the form
-export default async function signUp(_prevState: unknown, formData: FormData): Promise<ContactUsFormActionResult> {
+export default async function contactUs(_prevState: unknown, formData: FormData): Promise<ContactUsFormActionResult> {
   try {
     // Create an instance of the lang loader needed for localization
     const { preferredLanguage } = await LangLoader.create();
@@ -41,7 +41,7 @@ export default async function signUp(_prevState: unknown, formData: FormData): P
         ...initialFormState,
         errors: [formErrors],
         errorMap: { onServer: { form: { ...formErrors }, fields: { ...formErrors } } },
-        actionStatus: "invalid-captcha",
+        actionStatus: "invalid",
       };
     }
   } catch (error) {
