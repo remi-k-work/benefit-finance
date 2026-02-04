@@ -28,6 +28,9 @@ export class SupAgentDocDB extends Effect.Service<SupAgentDocDB>()("SupAgentDocD
     // Delete a document
     const deleteDoc = (id: string) => execute((dbOrTx) => dbOrTx.delete(SupAgentDocTable).where(eq(SupAgentDocTable.id, id)));
 
-    return { getDoc, insertDoc, updateDoc, deleteDoc } as const;
+    // Delete all documents
+    const deleteAll = execute((dbOrTx) => dbOrTx.delete(SupAgentDocTable));
+
+    return { getDoc, insertDoc, updateDoc, deleteDoc, deleteAll } as const;
   }),
 }) {}
