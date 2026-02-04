@@ -28,24 +28,22 @@ const main = Effect.gen(function* () {
       // Delete all documents
       yield* Effect.log("Removing all existing documents").pipe(Effect.andThen(supAgentDocDB.deleteAll));
 
-      let docNr = 1;
-      for (const docContent of SUP_AGENT_DOC) {
+      for (const { title, content } of SUP_AGENT_DOC) {
         // Insert a new document
-        const wordCount = docContent.split(/\s+/).length;
-        yield* Effect.log(`Seeding with document ${docNr} that has ${wordCount} words`).pipe(
-          Effect.andThen(supAgentDocDB.insertDoc({ content: docContent })),
+        const wordCount = content.split(/\s+/).length;
+        yield* Effect.log(`Seeding with document "${title}" that has ${wordCount} words`).pipe(
+          Effect.andThen(supAgentDocDB.insertDoc({ title, content })),
           Effect.tap(([{ id }]) => Effect.log(`Document ID: ${id}`)),
           Effect.andThen(([{ id }]) =>
             // Generate embeddings for a document
             Effect.log(`Generating embeddings for document ${id}...`).pipe(
-              Effect.andThen(generateDocEmbeddings(docContent)),
+              Effect.andThen(generateDocEmbeddings(content)),
               Effect.tap((docEmbeddings) => Effect.log(`Document embeddings/chunks: ${docEmbeddings.length}`)),
               // Insert multiple new chunks for a document
               Effect.andThen((docEmbeddings) => supAgentChunkDB.insertChunks(id, docEmbeddings)),
             ),
           ),
         );
-        docNr++;
       }
     }),
   );

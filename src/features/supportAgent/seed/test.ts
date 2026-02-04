@@ -2,49 +2,60 @@
 import "dotenv/config";
 
 // drizzle and db access
-// import { searchNoteChunksForUser } from "@/features/notes/db";
+import { DB } from "@/drizzle/dbEffect";
+import { searchDocChunks } from "@/features/supportAgent/db/search";
 
 // services, features, and other libraries
-// import { expandQueryWithHypotheticalAnswer } from "@/features/notes-assistant/lib/helpers";
+import { Effect, Layer, Logger } from "effect";
+import { NodeRuntime } from "@effect/platform-node";
 
 // constants
-// import { EXAMPLE_QUESTIONS } from "./constants";
+import { EXAMPLE_QUESTIONS } from "./constants";
 
-async function main() {
-  try {
-    // 🔍 Retrieval tests
-    console.log("Testing retrieval...");
+const MainLayer = Layer.mergeAll(Logger.pretty, DB.Default);
 
-    // for (const { question, expect } of EXAMPLE_QUESTIONS) {
-    //   console.log(`Q: ${question}`);
+const main = Effect.gen(function* () {
+  yield* Effect.log("Testing retrieval...\n" + "=".repeat(50));
 
-    //   // Expand the user's question into a hypothetical answer
-    //   const expandedQuery = await expandQueryWithHypotheticalAnswer(question);
+  for (const { category, question } of EXAMPLE_QUESTIONS) {
+    yield* Effect.log(`\n📝 Category: ${category}`);
+    yield* Effect.log(`❓ Question: "${question}"`);
 
-    //   // Search for and retrieve note chunks most relevant to the user's question
-    //   const results = await searchNoteChunksForUser("yLWyVGaBlCa7v27qfYk5DyyYiZqNXxqP", expandedQuery);
-    //   if (results.length > 0) {
-    //     // Print top match
-    //     console.log(
-    //       `Top match (expected: ${expect}): Note "${results[0].noteTitle}" → "${results[0].chunk.slice(0, 100)}..." (similarity: ${results[0].similarity.toFixed(3)})`,
-    //     );
+    // Start timer
+    const startTime = performance.now();
 
-    //     // Print all matches for debugging
-    //     console.log("All matches:");
-    //     for (const result of results) {
-    //       console.log(`Note "${result.noteTitle}" → [${result.similarity.toFixed(3)}] "${result.chunk.slice(0, 80)}..."`);
-    //     }
-    //   } else {
-    //     console.log("No matches found.");
-    //   }
-    // }
+    // EXECUTE RETRIEVAL
+    // We ask for top 3 results to see if the ranking logic is working
+    const results = yield* searchDocChunks(question, 3);
 
-    process.exit(0);
-  } catch (error) {
-    console.error("An error occurred:", error);
-    process.exit(1);
+    // Stop timer
+    const duration = (performance.now() - startTime).toFixed(2);
+
+    if (results.length === 0) {
+      yield* Effect.log(`❌ No relevant chunks found (Time: ${duration}ms)`);
+      yield* Effect.log("-".repeat(50));
+      continue;
+    }
+
+    yield* Effect.log(`✅ Found ${results.length} chunks (Time: ${duration}ms):`);
+
+    // Print formatted results
+    for (const [i, result] of results.entries()) {
+      const score = (result.similarity * 100).toFixed(1);
+      const title = result.docTitle;
+
+      // Truncate chunk text for readability in console
+      const snippet = result.chunk.replace(/\n/g, " ").substring(0, 100) + "...";
+
+      yield* Effect.log(`   ${i + 1}. [${score}%] [${title}]`);
+      yield* Effect.log(`      "${snippet}"`);
+    }
+
+    yield* Effect.log("-".repeat(50));
   }
-}
 
-// Execute the main function
-main();
+  yield* Effect.log("\n🏁 Test Complete");
+}).pipe(Effect.provide(MainLayer));
+
+// Use NodeRuntime.runMain for graceful teardown on CTRL+C
+NodeRuntime.runMain(main);

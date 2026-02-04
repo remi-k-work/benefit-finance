@@ -1,6 +1,8 @@
 // Example documents for the support agent
 export const SUP_AGENT_DOC = [
-  `# About Benefit Finance
+  {
+    title: "About Benefit Finance",
+    content: `# About Benefit Finance
 
 ## Company Overview
 Benefit Finance is a holistic wealth management company founded on the belief that financial freedom should be accessible to everyone, not just high-net-worth individuals. We combine cutting-edge Artificial Intelligence with human empathy to unify personal finances, investing, and legacy planning into one dashboard.
@@ -23,8 +25,10 @@ Austin, Texas 78701
 * **Encryption:** We use bank-level AES-256 encryption for all data in transit and at rest.
 * **Regulation:** Benefit Finance is a registered investment advisor (RIA) with the SEC.
 * **Insurance:** Cash accounts are FDIC insured up to $250,000 via our partner banks.`,
-
-  `# Benefit Finance: Products & Features
+  },
+  {
+    title: "Products & Features",
+    content: `# Benefit Finance: Products & Features
 
 Benefit Finance offers an "All-in-One" ecosystem comprising four main pillars:
 
@@ -47,8 +51,10 @@ Tools to secure your family's future.
 
 ## 4. Expert Access
 * **Hybrid Model:** While our AI handles day-to-day management, Premium users get direct access to Certified Financial Planners (CFPs) for complex questions regarding mortgages, divorce, or retirement withdrawal strategies.`,
-
-  `# Benefit Finance Pricing Structure
+  },
+  {
+    title: "Pricing Structure",
+    content: `# Benefit Finance Pricing Structure
 
 We believe in transparent, flat-fee pricing. We do not charge commissions on trades.
 
@@ -66,8 +72,11 @@ We believe in transparent, flat-fee pricing. We do not charge commissions on tra
 * **Cost:** $49/month (or $500/year)
 * **Includes:** Everything in Plus + Unlimited access to Human CFPs + Estate Planning Suite (Wills & Trusts).
 * **Best for:** Users with complex financial needs or families requiring estate planning.`,
+  },
 
-  `# Financial Knowledge Base
+  {
+    title: "Financial Knowledge Base",
+    content: `# Financial Knowledge Base
 
 ## Common Financial Concepts
 
@@ -88,4 +97,5 @@ A budgeting technique recommended by Benefit Finance:
 
 ### Fiduciary Duty
 A legal obligation to act in the best interest of another party. Benefit Finance and its CFPs are fiduciaries, meaning we are legally bound to put your financial interests ahead of our own.`,
+  },
 ] as const;

@@ -11,7 +11,7 @@ class AiSdkError extends Data.TaggedError("AiSdkError")<{ readonly message: stri
 const model = google.embedding("gemini-embedding-001");
 
 // A single, structure-aware splitter for all documents
-const markdownSplitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", { chunkSize: 1000, chunkOverlap: 200 });
+const markdownSplitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", { chunkSize: 300, chunkOverlap: 50 });
 
 // Parse document content into smaller chunks for similarity search and retrieval
 const generateDocChunks = (docContent: string) => Effect.promise(() => markdownSplitter.splitText(docContent));

@@ -1,9 +1,9 @@
 // drizzle and db access
 import { DB } from "@/drizzle/dbEffect";
-import { cosineDistance, desc, gt, sql } from "drizzle-orm";
+import { cosineDistance, desc, eq, gt, sql } from "drizzle-orm";
 
 // all table definitions (their schemas)
-import { SupAgentChunkTable } from "@/drizzle/schema";
+import { SupAgentChunkTable, SupAgentDocTable } from "@/drizzle/schema";
 
 // services, features, and other libraries
 import { Effect } from "effect";
@@ -23,8 +23,15 @@ export const searchDocChunks = (question: string, topK: number = 5, baseMinSimil
     // Query candidate chunks ordered by similarity (and apply a hard floor — discard "obviously irrelevant" chunks)
     const candidateChunks = yield* execute((dbOrTx) =>
       dbOrTx
-        .select({ docId: SupAgentChunkTable.docId, chunk: SupAgentChunkTable.chunk, similarity })
+        .select({
+          docId: SupAgentChunkTable.docId,
+          docTitle: SupAgentDocTable.title,
+          docMeta: SupAgentDocTable.metadata,
+          chunk: SupAgentChunkTable.chunk,
+          similarity,
+        })
         .from(SupAgentChunkTable)
+        .innerJoin(SupAgentDocTable, eq(SupAgentChunkTable.docId, SupAgentDocTable.id))
         .where(gt(similarity, baseMinSimilarity))
         .orderBy(desc(similarity))
         .limit(topK),
