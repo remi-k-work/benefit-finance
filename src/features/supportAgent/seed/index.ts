@@ -11,7 +11,7 @@ import { NodeRuntime } from "@effect/platform-node";
 import { generateDocEmbeddings } from "@/features/supportAgent/lib/embeddings";
 
 // constants
-import { SUP_AGENT_DOC } from "./constants";
+import { SUP_AGENT_DOC } from "@/features/supportAgent/constants";
 
 const MainLayer = Layer.mergeAll(Logger.pretty, DB.Default, SupAgentDocDB.Default, SupAgentChunkDB.Default);
 

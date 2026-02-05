@@ -10,7 +10,7 @@ export const SupAgentDocTable = pgTable("sup_agent_doc", {
   id,
   title: varchar({ length: 50 }).notNull(),
   content: text().notNull(),
-  metadata: jsonb(),
+  metadata: jsonb().$type<Record<string, string>>(),
   createdAt,
   updatedAt,
 });

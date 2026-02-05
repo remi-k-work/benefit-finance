@@ -3,14 +3,14 @@ import "dotenv/config";
 
 // drizzle and db access
 import { DB } from "@/drizzle/dbEffect";
-import { searchDocChunks } from "@/features/supportAgent/db/search";
+import { searchDocChunks } from "@/features/supportAgent/db";
 
 // services, features, and other libraries
 import { Effect, Layer, Logger } from "effect";
 import { NodeRuntime } from "@effect/platform-node";
 
 // constants
-import { EXAMPLE_QUESTIONS } from "./constants";
+import { EXAMPLE_QUESTIONS } from "@/features/supportAgent/constants";
 
 const MainLayer = Layer.mergeAll(Logger.pretty, DB.Default);
 
