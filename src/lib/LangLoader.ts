@@ -110,6 +110,8 @@ import signUpPageEn from "@/assets/lang/signUpPage.en.json";
 import signUpPagePl from "@/assets/lang/signUpPage.pl.json";
 import spendingPageEn from "@/assets/lang/spendingPage.en.json";
 import spendingPagePl from "@/assets/lang/spendingPage.pl.json";
+import supportAgentModalEn from "@/assets/lang/supportAgentModal.en.json";
+import supportAgentModalPl from "@/assets/lang/supportAgentModal.pl.json";
 import themeChangerEn from "@/assets/lang/themeChanger.en.json";
 import themeChangerPl from "@/assets/lang/themeChanger.pl.json";
 import unauthorizedPageEn from "@/assets/lang/unauthorizedPage.en.json";
@@ -328,6 +330,9 @@ export default class LangLoader {
   }
   public get spendingPage() {
     return this.preferredLanguage === "pl" ? spendingPagePl : spendingPageEn;
+  }
+  public get supportAgentModal() {
+    return this.preferredLanguage === "pl" ? supportAgentModalPl : supportAgentModalEn;
   }
   public get themeChanger() {
     return this.preferredLanguage === "pl" ? themeChangerPl : themeChangerEn;
