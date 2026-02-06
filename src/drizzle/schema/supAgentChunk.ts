@@ -16,7 +16,10 @@ export const SupAgentChunkTable = pgTable(
     chunk: text().notNull(),
     embedding: vector({ dimensions: 1536 }).notNull(),
   },
-  (table) => [index("doc_id_idx").on(table.docId), index("embedding_idx").using("hnsw", table.embedding.op("vector_cosine_ops"))],
+  (table) => [
+    index("sup_agent_chunk_doc_id_idx").on(table.docId),
+    index("sup_agent_chunk_embedding_idx").using("hnsw", table.embedding.op("vector_cosine_ops")),
+  ],
 );
 
 export const supAgentChunkRelations = relations(SupAgentChunkTable, ({ one }) => ({
