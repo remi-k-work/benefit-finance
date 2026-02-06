@@ -1,9 +1,9 @@
 // drizzle and db access
-import { searchDocChunks } from "@/features/supportAgent/db";
+import { getInformation } from "@/features/supportAgent/db";
 
 // services, features, and other libraries
 import { tool } from "ai";
-import { InputSchema, OutputSchema } from "@/features/supportAgent/schemas/searchDocChunks";
+import { InputSchema, OutputSchema } from "@/features/supportAgent/schemas/getInformation";
 import { RuntimeServer } from "@/lib/RuntimeServer";
 
 export const getInformationTool = tool({
@@ -11,7 +11,7 @@ export const getInformationTool = tool({
   inputSchema: InputSchema,
   outputSchema: OutputSchema,
   execute: async ({ question }) => {
-    // Search for and retrieve support agent document chunks most relevant to the user's question
-    return { output: await RuntimeServer.runPromise(searchDocChunks(question)) };
+    // Search the agent's knowledge base for document chunks that are most relevant to the user's question
+    return await RuntimeServer.runPromise(getInformation(question));
   },
 });

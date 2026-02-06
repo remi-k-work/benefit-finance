@@ -1,11 +1,9 @@
 // services, features, and other libraries
-import { Data, Effect } from "effect";
+import { Effect } from "effect";
 import { google } from "@ai-sdk/google";
 import { embed, embedMany } from "ai";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
-
-// Define a domain error for the ai sdk
-class AiSdkError extends Data.TaggedError("AiSdkError")<{ readonly message: string; readonly cause?: unknown }> {}
+import { AiSdkError } from "@/lib/errors";
 
 // Initialize our embedding model
 const model = google.embedding("gemini-embedding-001");

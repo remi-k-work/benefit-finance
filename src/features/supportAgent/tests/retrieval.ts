@@ -3,7 +3,7 @@ import "dotenv/config";
 
 // drizzle and db access
 import { DB } from "@/drizzle/dbEffect";
-import { searchDocChunks } from "@/features/supportAgent/db";
+import { getInformation } from "@/features/supportAgent/db";
 
 // services, features, and other libraries
 import { Effect, Layer, Logger } from "effect";
@@ -26,7 +26,7 @@ const main = Effect.gen(function* () {
 
     // EXECUTE RETRIEVAL
     // We ask for top 3 results to see if the ranking logic is working
-    const results = yield* searchDocChunks(question, 3);
+    const results = yield* getInformation(question, 3);
 
     // Stop timer
     const duration = (performance.now() - startTime).toFixed(2);

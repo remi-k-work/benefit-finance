@@ -9,8 +9,8 @@ import { SupAgentChunkTable, SupAgentDocTable } from "@/drizzle/schema";
 import { Effect } from "effect";
 import { generateQuestionEmbedding } from "@/features/supportAgent/lib/embeddings";
 
-// Search for and retrieve support agent document chunks most relevant to the user's question
-export const searchDocChunks = (question: string, topK: number = 5, baseMinSimilarity: number = 0.5) =>
+// Search the agent's knowledge base for document chunks that are most relevant to the user's question
+export const getInformation = (question: string, topK: number = 5, baseMinSimilarity: number = 0.5) =>
   Effect.gen(function* () {
     const { execute } = yield* DB;
 

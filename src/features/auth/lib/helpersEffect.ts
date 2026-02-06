@@ -2,11 +2,9 @@
 import { headers } from "next/headers";
 
 // services, features, and other libraries
-import { Data, Effect } from "effect";
+import { Effect } from "effect";
 import { auth } from "@/services/better-auth/auth";
-
-// Define a domain error for the unauthorized access
-class UnauthorizedAccessError extends Data.TaggedError("UnauthorizedAccessError")<{ readonly message: string; readonly cause?: unknown }> {}
+import { UnauthorizedAccessError } from "@/lib/errors";
 
 // Access the user session data from the server side or fail with an unauthorized access error
 export const getUserSessionData = Effect.gen(function* () {

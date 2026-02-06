@@ -1,15 +1,57 @@
+// node.js
+import { inspect } from "node:util";
+
 // services, features, and other libraries
+import { Effect } from "effect";
 import { stepCountIs, ToolLoopAgent } from "ai";
 import { google } from "@ai-sdk/google";
 import { getInformationTool } from "@/features/supportAgent/tools/getInformation";
+import { AiSdkError } from "@/lib/errors";
 
-export const supportAgent = new ToolLoopAgent({
-  model: google("gemini-flash-latest"),
-  instructions:
-    `You are a helpful assistant. Check your knowledge base before answering any questions. Only respond to questions using information from tool calls. If no relevant information is found in the tool calls, respond, "Sorry, I do not know." Always respond in markdown.` as const,
+// constants
+import { INSTRUCTIONS } from "@/features/supportAgent/constants";
 
-  stopWhen: stepCountIs(5),
+const supportAgent = new ToolLoopAgent({
+  model: google("gemini-flash-lite-latest"),
+  instructions: INSTRUCTIONS,
+
+  stopWhen: stepCountIs(3),
   tools: {
     getInformation: getInformationTool,
   },
 });
+
+export const runSupportAgent = (question: string) =>
+  Effect.tryPromise({
+    try: () =>
+      supportAgent.stream({
+        prompt: question,
+
+        // Give us some feedback on each step for debugging
+        onStepFinish: async ({ usage, finishReason, toolCalls, toolResults }) => {
+          console.log(
+            "Step completed:",
+            inspect(
+              {
+                tokens: {
+                  in: usage.inputTokens,
+                  out: usage.outputTokens,
+                },
+                finishReason,
+                toolCalls: toolCalls?.map(({ toolName, input }) => ({
+                  toolName,
+                  input,
+                })),
+                toolResults: toolResults?.map(({ toolName, input, output }) => ({
+                  toolName,
+                  input,
+                  output,
+                })),
+              },
+              { depth: null, colors: true },
+            ),
+          );
+        },
+      }),
+    catch: (cause) => new AiSdkError({ message: "Failed to run support agent", cause }),
+  });
