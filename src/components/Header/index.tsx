@@ -15,6 +15,7 @@ import NavIconItem, { NavIconItemSkeleton } from "./NavIconItem";
 import UserPopover, { UserPopoverSkeleton } from "@/components/UserPopover";
 import LangChanger, { LangChangerSkeleton } from "@/components/LangChanger";
 import { ThemeChanger, ThemeChangerSkeleton } from "@/components/ThemeChanger";
+import SupportAgent, { SupportAgentSkeleton } from "./SupportAgent";
 
 // constants
 import { NAV_ICON_ITEMS, NAV_ICON_ITEMS_S } from "./constants";
@@ -24,9 +25,9 @@ const main = Effect.gen(function* () {
   const { user, session } = yield* getUserSessionData.pipe(Effect.orElse(() => Effect.succeed({ user: null, session: null })));
 
   // Create an instance of the lang loader needed for localization
-  const { preferredLanguage, langChanger, navIconItems, themeChanger, userPopover } = yield* LangLoader.createEffect();
+  const { preferredLanguage, langChanger, navIconItems, themeChanger, userPopover, supportAgent } = yield* LangLoader.createEffect();
 
-  return { user, session, preferredLanguage, langChanger, navIconItems, themeChanger, userPopover };
+  return { user, session, preferredLanguage, langChanger, navIconItems, themeChanger, userPopover, supportAgent };
 });
 
 // Component remains the fast, static shell
@@ -41,7 +42,7 @@ export default function Header() {
 // This new async component contains the dynamic logic
 async function HeaderContent() {
   // Execute the main effect for the component, handle known errors, and return the payload
-  const { user, session, preferredLanguage, langChanger, navIconItems, themeChanger, userPopover } = await runComponentMain(main);
+  const { user, session, preferredLanguage, langChanger, navIconItems, themeChanger, userPopover, supportAgent } = await runComponentMain(main);
 
   return (
     <header
@@ -61,6 +62,7 @@ async function HeaderContent() {
         {user && session ? <UserPopover user={user} session={session} ll={userPopover} /> : <UserPopoverSkeleton />}
         <LangChanger preferredLanguage={preferredLanguage} ll={langChanger} />
         <ThemeChanger ll={themeChanger} />
+        <SupportAgent ll={supportAgent} />
       </section>
     </header>
   );
@@ -83,6 +85,7 @@ export function HeaderSkeleton() {
         <UserPopoverSkeleton />
         <LangChangerSkeleton />
         <ThemeChangerSkeleton />
+        <SupportAgentSkeleton />
       </section>
     </header>
   );

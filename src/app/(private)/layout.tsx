@@ -8,6 +8,7 @@ import LangLoader from "@/lib/LangLoader";
 import Header, { HeaderSkeleton } from "@/components/Header";
 import { ConfirmModalRoot } from "@/atoms/confirmModal";
 import { DemoModeModalRoot } from "@/atoms/demoModeModal";
+import { SupportAgentModalRoot } from "@/atoms/supportAgentModal";
 
 // Layout remains the fast, static shell
 export default function Layout(props: LayoutProps<"/">) {
@@ -21,7 +22,7 @@ export default function Layout(props: LayoutProps<"/">) {
 // This new async component contains the dynamic logic
 async function LayoutContent({ children }: LayoutProps<"/">) {
   // Create an instance of the lang loader needed for localization
-  const { confirmModal, demoModeModal } = await LangLoader.create();
+  const { preferredLanguage, confirmModal, demoModeModal, supportAgentModal } = await LangLoader.create();
 
   return (
     <>
@@ -29,6 +30,7 @@ async function LayoutContent({ children }: LayoutProps<"/">) {
       <main className="mx-4 [grid-area:main]">{children}</main>
       <ConfirmModalRoot ll={confirmModal} />
       <DemoModeModalRoot ll={demoModeModal} />
+      <SupportAgentModalRoot preferredLanguage={preferredLanguage} ll={supportAgentModal} />
     </>
   );
 }

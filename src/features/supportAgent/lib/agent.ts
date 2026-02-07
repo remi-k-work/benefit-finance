@@ -11,7 +11,7 @@ import { AiSdkError } from "@/lib/errors";
 // constants
 import { INSTRUCTIONS } from "@/features/supportAgent/constants";
 
-const supportAgent = new ToolLoopAgent({
+export const supportAgent = new ToolLoopAgent({
   model: google("gemini-flash-lite-latest"),
   instructions: INSTRUCTIONS,
 

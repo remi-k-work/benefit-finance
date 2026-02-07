@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/custom/button";
 
 // assets
-import { SparklesIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { ChatBubbleLeftRightIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
 // types
 import type LangLoader from "@/lib/LangLoader";
@@ -16,7 +16,7 @@ export default function Header({ onClosed, ll }: HeaderProps) {
   return (
     <header className="from-primary to-secondary flex items-center justify-between gap-4 bg-linear-to-r p-3">
       <section className="flex items-center gap-2">
-        <SparklesIcon className="size-11 flex-none" />
+        <ChatBubbleLeftRightIcon className="size-11 flex-none" />
         <h4 className="flex-1 font-sans text-3xl leading-none uppercase">{ll["Support Agent"]}</h4>
       </section>
       <Button type="button" size="icon" onClick={onClosed}>

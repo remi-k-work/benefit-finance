@@ -6,15 +6,28 @@ export const INSTRUCTIONS =
   `You are a helpful assistant. Check your knowledge base before answering any questions. Only respond to questions using information from tool calls. If no relevant information is found in the tool calls, respond, "Sorry, I do not know." Always respond in markdown.` as const;
 
 // An initial welcome message shown to the user
-export const INITIAL_MESSAGE = [
+export const INITIAL_MESSAGE_EN: UIMessage[] = [
   {
     id: "welcome-message",
     role: "assistant",
     parts: [
       {
         type: "text",
-        text: "Welcome to Benefit Finance! How can I help you today?",
+        text: "Welcome to **Benefit Finance**! Need help?",
       },
     ],
   },
-] as const satisfies UIMessage[];
+] as const;
+
+export const INITIAL_MESSAGE_PL: UIMessage[] = [
+  {
+    id: "welcome-message",
+    role: "assistant",
+    parts: [
+      {
+        type: "text",
+        text: "Witamy w **Benefit Finance**! Potrzebujesz pomocy?",
+      },
+    ],
+  },
+] as const;

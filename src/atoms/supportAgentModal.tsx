@@ -11,9 +11,11 @@ import { Atom, useAtom, useAtomSet } from "@effect-atom/atom-react";
 import SupportAgentModal from "@/features/supportAgent/components/SupportAgentModal";
 
 // types
+import type { Lang } from "@/lib/LangLoader";
 import type LangLoader from "@/lib/LangLoader";
 
 interface SupportAgentModalRootProps {
+  preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.supportAgentModal;
 }
 
@@ -33,14 +35,14 @@ export function useSupportAgentModal() {
 }
 
 // The root component that renders the modal based on the atom state
-export function SupportAgentModalRoot({ ll }: SupportAgentModalRootProps) {
+export function SupportAgentModalRoot({ preferredLanguage, ll }: SupportAgentModalRootProps) {
   const [supportAgentModal, setSupportAgentModal] = useAtom(supportAgentModalAtom);
 
   // Use Effect's pipe and Option.match for a functional render flow
   return supportAgentModal.pipe(
     Option.match({
       onNone: () => null,
-      onSome: () => <SupportAgentModal onClosed={() => setSupportAgentModal(Option.none())} ll={ll} />,
+      onSome: () => <SupportAgentModal onClosed={() => setSupportAgentModal(Option.none())} preferredLanguage={preferredLanguage} ll={ll} />,
     }),
   );
 }

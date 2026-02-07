@@ -1,21 +1,24 @@
 "use client";
 
+// react
+import { memo } from "react";
+
+// services, features, and other libraries
+import { cn } from "@/lib/utils";
+
+// components
+import { Streamdown } from "streamdown";
+
+// types
 import type { UIMessage } from "ai";
 import type { ComponentPropsWithoutRef } from "react";
-
-import { cn } from "@/lib/utils";
-import { cjk } from "@streamdown/cjk";
-import { code } from "@streamdown/code";
-import { math } from "@streamdown/math";
-import { mermaid } from "@streamdown/mermaid";
-import { memo } from "react";
-import { Streamdown } from "streamdown";
 
 type MessageProps = ComponentPropsWithoutRef<"div"> & { from: UIMessage["role"] };
 type MessageContentProps = ComponentPropsWithoutRef<"div">;
 type MessageResponseProps = ComponentPropsWithoutRef<typeof Streamdown>;
 
-const streamdownPlugins = { cjk, code, math, mermaid };
+// constants
+import { REHYPE_PLUGINS } from "@/features/supportAgent/constants";
 
 export const Message = ({ className, from, ...props }: MessageProps) => (
   <div
@@ -38,7 +41,7 @@ export const MessageContent = ({ className, ...props }: MessageContentProps) => 
 
 export const MessageResponse = memo(
   ({ className, ...props }: MessageResponseProps) => (
-    <Streamdown className={cn("size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0", className)} plugins={streamdownPlugins} {...props} />
+    <Streamdown className={cn("size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0", className)} rehypePlugins={REHYPE_PLUGINS} {...props} />
   ),
   (prevProps, nextProps) => prevProps.children === nextProps.children,
 );

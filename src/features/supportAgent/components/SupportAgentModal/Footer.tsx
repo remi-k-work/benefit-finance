@@ -11,11 +11,10 @@ import { Loader2 } from "lucide-react";
 
 // types
 import type { useChat } from "@ai-sdk/react";
-import type { INITIAL_MESSAGE } from "@/features/supportAgent/constants/messages";
 import type LangLoader from "@/lib/LangLoader";
 
 interface FooterProps {
-  sendMessage: ReturnType<typeof useChat>["sendMessage"] & Omit<typeof INITIAL_MESSAGE, "id" | "role">;
+  sendMessage: ReturnType<typeof useChat>["sendMessage"];
   status: ReturnType<typeof useChat>["status"];
   ll: typeof LangLoader.prototype.supportAgentModal;
 }

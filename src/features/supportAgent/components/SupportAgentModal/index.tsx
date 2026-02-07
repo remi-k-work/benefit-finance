@@ -15,17 +15,19 @@ import Footer from "./Footer";
 
 // types
 import type { ComponentPropsWithoutRef } from "react";
+import type { Lang } from "@/lib/LangLoader";
 import type LangLoader from "@/lib/LangLoader";
 
 interface SupportAgentModalProps extends ComponentPropsWithoutRef<"dialog"> {
   onClosed: () => void;
+  preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.supportAgentModal;
 }
 
 // constants
-import { INITIAL_MESSAGE } from "@/features/supportAgent/constants/messages";
+import { INITIAL_MESSAGE_EN, INITIAL_MESSAGE_PL } from "@/features/supportAgent/constants/messages";
 
-export default function SupportAgentModal({ onClosed, ll, className, ...props }: SupportAgentModalProps) {
+export default function SupportAgentModal({ onClosed, preferredLanguage, ll, className, ...props }: SupportAgentModalProps) {
   // To be able to call showModal() method on the dialog
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -37,7 +39,7 @@ export default function SupportAgentModal({ onClosed, ll, className, ...props }:
     dialogRef.current?.showModal();
   }, []);
 
-  const { messages, sendMessage, status } = useChat({ messages: INITIAL_MESSAGE });
+  const { messages, sendMessage, status } = useChat({ messages: preferredLanguage === "en" ? INITIAL_MESSAGE_EN : INITIAL_MESSAGE_PL });
 
   return (
     <dialog
