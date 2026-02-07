@@ -44,6 +44,10 @@ export default function ConfirmModal({ onConfirmed, onClosed, ll, children, clas
       )}
       // When the dialog is actually closed (by .close() or ESC), it calls the parent's onClosed handler
       onClose={onClosed}
+      onCancel={(ev) => {
+        ev.preventDefault();
+        setIsOpen(false);
+      }}
       {...props}
     >
       {/* The onExitComplete callback is crucial. It calls dialog.close() ONLY after the exit animation is done */}

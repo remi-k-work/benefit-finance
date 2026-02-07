@@ -73,7 +73,6 @@ We believe in transparent, flat-fee pricing. We do not charge commissions on tra
 * **Includes:** Everything in Plus + Unlimited access to Human CFPs + Estate Planning Suite (Wills & Trusts).
 * **Best for:** Users with complex financial needs or families requiring estate planning.`,
   },
-
   {
     title: "Financial Knowledge Base",
     content: `# Financial Knowledge Base
@@ -97,5 +96,112 @@ A budgeting technique recommended by Benefit Finance:
 
 ### Fiduciary Duty
 A legal obligation to act in the best interest of another party. Benefit Finance and its CFPs are fiduciaries, meaning we are legally bound to put your financial interests ahead of our own.`,
+  },
+  {
+    title: "Frequently Asked Questions (FAQ)",
+    content: `# Frequently Asked Questions (FAQ)
+
+## General
+
+### What is Benefit Finance?
+Benefit Finance is an all-in-one financial platform that helps you budget smarter, invest automatically, plan for taxes and estates, and access expert financial advice — all from a single dashboard.
+
+### Who is Benefit Finance best for?
+Benefit Finance is designed for individuals, families, freelancers, and professionals who want to simplify their finances, grow wealth, and make confident financial decisions without needing to be experts.
+
+## Accounts & Security
+
+### Is my money safe with Benefit Finance?
+Yes. Benefit Finance uses bank-level AES-256 encryption and partners with FDIC-insured banks, meaning cash balances are insured up to $250,000 per depositor. We are also a registered investment advisor (RIA) and operate under strict regulatory standards.
+
+### Can Benefit Finance access or move my money?
+No. We use read-only connections to external accounts unless you explicitly authorize transfers or investments. You remain in full control of your funds at all times.
+
+### What happens if Benefit Finance shuts down?
+Your assets remain safe at your underlying custodial institutions. You retain full ownership and access to your accounts regardless of Benefit Finance’s status.
+
+## Pricing & Plans
+
+### How much does Benefit Finance cost?
+We offer three tiers:
+- **Basic:** Free
+- **Plus:** $12/month or $120/year
+- **Private Client:** $49/month or $500/year  
+You can upgrade, downgrade, or cancel at any time.
+
+### Is there a free trial?
+Yes. All paid plans come with a 14-day free trial, no credit card required.
+
+### Do you charge commissions or hidden fees?
+No. Benefit Finance uses transparent flat-fee pricing with zero trading commissions.
+
+## Investing & Taxes
+
+### Can Benefit Finance help me reduce my taxes?
+Yes. Our Plus and Private Client plans include automated tax-loss harvesting, retirement contribution optimization, and personalized tax insights designed to reduce your taxable income over time.
+
+### Do I need investing experience to use Benefit Finance?
+Not at all. Our WealthGrow robo-advisor automatically builds and manages a diversified portfolio based on your goals and risk tolerance — no experience required.
+
+### Can I invest in crypto?
+Yes. Crypto exposure is available as an optional add-on for Plus and Private Client members and can be enabled or disabled at any time.
+
+## Budgeting & Financial Planning
+
+### How does SmartBudget AI work?
+SmartBudget AI connects to your bank accounts, categorizes transactions automatically, detects subscriptions, and gives real-time insights into where your money is going — along with personalized recommendations.
+
+### What is an emergency fund and how much should I save?
+An emergency fund is money set aside for unexpected expenses like medical bills or job loss. Most experts recommend saving 3–6 months of living expenses. Benefit Finance helps automate this through goal-based savings tools.
+
+### Can Benefit Finance help with retirement planning?
+Yes. We offer retirement projections, contribution recommendations, withdrawal strategies, and access to CFPs for complex planning scenarios.
+
+## Estate Planning
+
+### Can I create a will using Benefit Finance?
+Yes. Private Client members can create legally binding digital wills in under 15 minutes and update them anytime as life circumstances change.
+
+### Do you support trusts?
+Yes. Benefit Finance provides guidance and tools for setting up both revocable and irrevocable trusts with expert assistance.
+
+## Support & Contact
+
+### How can I contact Benefit Finance?
+You can reach us anytime via:
+- **Email:** support@benefitfinance.com  
+- **Phone:** +1 (800) 555-0199  
+- **Live Chat:** Available 24/7  
+
+Or visit our contact page here: [Contact Us](/contact-us)
+
+### What are your customer support hours?
+AI chat support is available 24/7. Human support agents are available Monday–Friday, 9:00 AM–6:00 PM CST.
+
+### Do you offer financial advisors?
+Yes. Private Client members get unlimited access to Certified Financial Planners (CFPs) for personalized advice on investments, taxes, estate planning, and major life decisions.
+
+## Getting Started
+
+### How do I create an account?
+Simply sign up on our website, connect your financial accounts securely, and your dashboard will populate automatically within minutes.
+You can sign up by going here: [Sign Up](/sign-up)
+
+### Can I cancel anytime?
+Yes. There are no long-term contracts — you can cancel or change plans anytime from your account settings.
+
+### Do you support joint or family accounts?
+Yes. Benefit Finance supports household dashboards for couples and families, making it easy to manage shared finances together.
+
+## Miscellaneous
+
+### Is Benefit Finance a bank?
+No. We are not a bank — we partner with regulated financial institutions to provide banking and investment services through our platform.
+
+### Is my data sold to third parties?
+No. We never sell customer data. Your financial information is private and protected under strict confidentiality standards.
+
+### What makes Benefit Finance different from other finance apps?
+Unlike single-purpose apps, Benefit Finance unifies budgeting, investing, tax optimization, estate planning, and human financial advice into one intelligent platform — helping users move from paycheck management to long-term wealth building.`,
   },
 ] as const;
