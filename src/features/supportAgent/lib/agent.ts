@@ -22,8 +22,6 @@ const supportAgent = (model: LanguageModel) =>
     instructions: INSTRUCTIONS,
 
     stopWhen: stepCountIs(3),
-    maxRetries: 0,
-
     tools: {
       getInformation: getInformationTool,
     },
