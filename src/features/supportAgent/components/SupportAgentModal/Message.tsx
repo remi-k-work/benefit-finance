@@ -30,14 +30,12 @@ export default function Message({ message: { id, role, parts }, status, ll }: Me
 
             // For tool parts, use the typed tool part names
             case "tool-getInformation":
-              const { toolCallId, state } = part;
+              const { toolCallId } = part;
 
               return (
-                state === "input-streaming" && (
-                  <p key={toolCallId} className="animate-pulse italic">
-                    {ll["Please wait while we fetch information from our knowledge base..."]}
-                  </p>
-                )
+                <p key={toolCallId} className="italic">
+                  {ll["Please wait while we fetch information from our knowledge base..."]}
+                </p>
               );
 
             default:

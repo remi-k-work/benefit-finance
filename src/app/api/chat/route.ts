@@ -1,8 +1,8 @@
 // services, features, and other libraries
 import { Effect } from "effect";
-import { convertToModelMessages, createAgentUIStreamResponse } from "ai";
+import { convertToModelMessages } from "ai";
 import { RuntimeServer } from "@/lib/RuntimeServer";
-import { supportAgent, runSupportAgent } from "@/features/supportAgent/lib/agent";
+import { runSupportAgent } from "@/features/supportAgent/lib/agent";
 
 // types
 import type { ModelMessage } from "ai";
@@ -13,7 +13,7 @@ export const maxDuration = 30;
 
 const main = (modelMessages: ModelMessage[]) =>
   Effect.gen(function* () {
-    // Run the support agent
+    // Run the support agent using a fallback chain of models
     const result = yield* runSupportAgent(modelMessages);
     return result;
   });

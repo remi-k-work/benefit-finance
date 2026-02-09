@@ -9,7 +9,7 @@ import { AiSdkError } from "@/lib/errors";
 const model = google.embedding("gemini-embedding-001");
 
 // A single, structure-aware splitter for all documents
-const markdownSplitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", { chunkSize: 300, chunkOverlap: 50 });
+const markdownSplitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", { chunkSize: 600, chunkOverlap: 100 });
 
 // Parse document content into smaller chunks for similarity search and retrieval
 const generateDocChunks = (docContent: string) => Effect.promise(() => markdownSplitter.splitText(docContent));

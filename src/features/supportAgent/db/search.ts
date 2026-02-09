@@ -41,12 +41,9 @@ export const getInformation = (question: string, topK: number = 5, baseMinSimila
 
     // Adaptive confidence logic
     const top = candidateChunks[0].similarity;
-    const second = candidateChunks[1]?.similarity ?? 0;
 
-    // Confidence criteria:
-    // - Top result must clear 0.6 (to ensure reasonable semantic match)
-    // - AND top must beat second-best by a margin (0.05 = ~5%)
-    if (!(top >= 0.6 && (top - second >= 0.05 || second < 0.6))) return [];
+    // If the top result is strong, we accept it; we only focus on the margin if the results are mediocre (for example, between 0.5 and 0.6).
+    if (top < 0.6) return [];
 
     // Return candidate chunks (confident case)
     return candidateChunks;

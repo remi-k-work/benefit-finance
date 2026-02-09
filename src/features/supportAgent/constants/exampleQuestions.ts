@@ -24,4 +24,12 @@ export const EXAMPLE_QUESTIONS = [
     category: "Irrelevant/Noise",
     question: "How do I bake a chocolate cake?",
   },
+  {
+    category: "Contact",
+    question: "How can I contact Benefit Finance?",
+  },
+  {
+    category: "Contact",
+    question: "What are Benefit Finance's hours of operation and contact methods?",
+  },
 ] as const;
