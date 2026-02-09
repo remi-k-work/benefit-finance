@@ -11,23 +11,19 @@ import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
 // components
 import { Logo, LogoSkeleton } from "./Logo";
 import NavMenu, { NavMenuSkeleton } from "./NavMenu";
-import NavIconItem, { NavIconItemSkeleton } from "./NavIconItem";
 import UserPopover, { UserPopoverSkeleton } from "@/components/UserPopover";
 import LangChanger, { LangChangerSkeleton } from "@/components/LangChanger";
 import { ThemeChanger, ThemeChangerSkeleton } from "@/components/ThemeChanger";
 import SupportAgent, { SupportAgentSkeleton } from "./SupportAgent";
-
-// constants
-import { NAV_ICON_ITEMS, NAV_ICON_ITEMS_S } from "./constants";
 
 const main = Effect.gen(function* () {
   // Access the user session data from the server side or fail with an unauthorized access error
   const { user, session } = yield* getUserSessionData.pipe(Effect.orElse(() => Effect.succeed({ user: null, session: null })));
 
   // Create an instance of the lang loader needed for localization
-  const { preferredLanguage, langChanger, navIconItems, themeChanger, userPopover, supportAgent } = yield* LangLoader.createEffect();
+  const { preferredLanguage, langChanger, themeChanger, userPopover, supportAgent } = yield* LangLoader.createEffect();
 
-  return { user, session, preferredLanguage, langChanger, navIconItems, themeChanger, userPopover, supportAgent };
+  return { user, session, preferredLanguage, langChanger, themeChanger, userPopover, supportAgent };
 });
 
 // Component remains the fast, static shell
@@ -42,7 +38,7 @@ export default function Header() {
 // This new async component contains the dynamic logic
 async function HeaderContent() {
   // Execute the main effect for the component, handle known errors, and return the payload
-  const { user, session, preferredLanguage, langChanger, navIconItems, themeChanger, userPopover, supportAgent } = await runComponentMain(main);
+  const { user, session, preferredLanguage, langChanger, themeChanger, userPopover, supportAgent } = await runComponentMain(main);
 
   return (
     <header
@@ -54,15 +50,10 @@ async function HeaderContent() {
       <Logo />
       <NavMenu />
       <section className="flex flex-1 items-center justify-end gap-3 md:flex-none md:gap-4">
-        {NAV_ICON_ITEMS(navIconItems).map((navIconItem, index) => (
-          <Suspense key={index} fallback={<NavIconItemSkeleton {...navIconItem} />}>
-            <NavIconItem {...navIconItem} />
-          </Suspense>
-        ))}
-        {user && session ? <UserPopover user={user} session={session} ll={userPopover} /> : <UserPopoverSkeleton />}
-        <LangChanger preferredLanguage={preferredLanguage} ll={langChanger} />
-        <ThemeChanger ll={themeChanger} />
         <SupportAgent ll={supportAgent} />
+        <ThemeChanger ll={themeChanger} />
+        <LangChanger preferredLanguage={preferredLanguage} ll={langChanger} />
+        {user && session ? <UserPopover user={user} session={session} ll={userPopover} /> : <UserPopoverSkeleton />}
       </section>
     </header>
   );
@@ -79,13 +70,10 @@ export function HeaderSkeleton() {
       <LogoSkeleton />
       <NavMenuSkeleton />
       <section className="flex flex-1 items-center justify-end gap-3 md:flex-none md:gap-4">
-        {NAV_ICON_ITEMS_S.map((navIconItem, index) => (
-          <NavIconItemSkeleton key={index} {...navIconItem} />
-        ))}
-        <UserPopoverSkeleton />
-        <LangChangerSkeleton />
-        <ThemeChangerSkeleton />
         <SupportAgentSkeleton />
+        <ThemeChangerSkeleton />
+        <LangChangerSkeleton />
+        <UserPopoverSkeleton />
       </section>
     </header>
   );

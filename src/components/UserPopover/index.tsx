@@ -3,6 +3,9 @@
 // react
 import { useState } from "react";
 
+// next
+import Link from "next/link";
+
 // components
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/custom/popover";
 import { Button } from "@/components/ui/custom/button";
@@ -60,8 +63,16 @@ export default function UserPopover({ user, user: { email, name }, session, ll }
 
 export function UserPopoverSkeleton() {
   return (
-    <Button type="button" variant="ghost" size="icon" title="User" disabled>
-      <UserAvatarSkeleton isSmall />
-    </Button>
+    <Button
+      variant="ghost"
+      size="icon"
+      title="Profile"
+      nativeButton={false}
+      render={
+        <Link href="/sign-in?redirect=/profile">
+          <UserAvatarSkeleton isSmall />
+        </Link>
+      }
+    ></Button>
   );
 }

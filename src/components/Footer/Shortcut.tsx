@@ -65,16 +65,6 @@ async function ShortcutContent() {
           </Link>
         </li>
         <li>
-          <Link href="/for-employers" className="link font-mono text-base font-normal normal-case">
-            {ll["For Employers"]}
-          </Link>
-        </li>
-        <li>
-          <Link href="/resources" className="link font-mono text-base font-normal normal-case">
-            {ll["Resources"]}
-          </Link>
-        </li>
-        <li>
           <Link href="/contact-us" className="link font-mono text-base font-normal normal-case">
             {ll["Contact Us"]}
           </Link>
@@ -89,8 +79,6 @@ export function ShortcutSkeleton() {
     <section className="text-center">
       <h4 className="from-background via-primary to-background mx-auto mb-3 animate-pulse bg-linear-to-r p-1 text-center font-sans text-xl">&nbsp;</h4>
       <ul className="flex flex-col items-center gap-2">
-        <li>&nbsp;</li>
-        <li>&nbsp;</li>
         <li>&nbsp;</li>
         <li>&nbsp;</li>
         <li>&nbsp;</li>

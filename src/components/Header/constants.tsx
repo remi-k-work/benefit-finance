@@ -1,6 +1,3 @@
-// assets
-import { BanknotesIcon } from "@heroicons/react/24/outline";
-
 // types
 import type LangLoader from "@/lib/LangLoader";
 
@@ -18,24 +15,9 @@ export const NAV_MENU_ITEMS = (ll: typeof LangLoader.prototype.navMenuItems) =>
       ],
     },
     {
-      title: ll["For Employers"],
-      href: "/for-employers",
-      match: "^/employers(/.*)?$",
-    },
-    {
-      title: ll["Resources"],
-      href: "/resources",
-      match: "^/resources(/.*)?$",
-    },
-  ] as const;
-
-export const NAV_ICON_ITEMS = (ll: typeof LangLoader.prototype.navIconItems) =>
-  [
-    {
-      href: "/dashboard",
-      match: "^/dashboard(/.*)?$",
       title: ll["Get Started"],
-      icon: <BanknotesIcon />,
+      href: "/sign-in?redirect=/dashboard",
+      match: "^/dashboard(/.*)?$",
     },
   ] as const;
 
@@ -52,21 +34,7 @@ export const NAV_MENU_ITEMS_S = [
   },
   {
     title: "............",
-    href: "/for-employers",
-    match: "^/employers(/.*)?$",
-  },
-  {
-    title: "............",
-    href: "/resources",
-    match: "^/resources(/.*)?$",
-  },
-] as const;
-
-export const NAV_ICON_ITEMS_S = [
-  {
-    href: "/dashboard",
+    href: "/sign-in?redirect=/dashboard",
     match: "^/dashboard(/.*)?$",
-    title: "............",
-    icon: <BanknotesIcon />,
   },
 ] as const;

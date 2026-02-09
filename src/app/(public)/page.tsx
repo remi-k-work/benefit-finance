@@ -33,7 +33,7 @@ async function PageContent() {
 
   return (
     <>
-      <PageHeader title={ll["Home"]} description={ll["Welcome to Benefit Finance!"]} />
+      <PageHeader title={ll["About Us"]} description={ll["Welcome to Benefit Finance!"]} />
       <Hero />
     </>
   );

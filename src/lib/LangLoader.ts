@@ -44,8 +44,6 @@ import footerShortcutEn from "@/assets/lang/footerShortcut.en.json";
 import footerShortcutPl from "@/assets/lang/footerShortcut.pl.json";
 import forecastingPageEn from "@/assets/lang/forecastingPage.en.json";
 import forecastingPagePl from "@/assets/lang/forecastingPage.pl.json";
-import forEmployersPageEn from "@/assets/lang/forEmployersPage.en.json";
-import forEmployersPagePl from "@/assets/lang/forEmployersPage.pl.json";
 import forgotPassFormEn from "@/assets/lang/forgotPassForm.en.json";
 import forgotPassFormPl from "@/assets/lang/forgotPassForm.pl.json";
 import forgotPassFormFeedbackEn from "@/assets/lang/forgotPassFormFeedback.en.json";
@@ -60,8 +58,6 @@ import investingPageEn from "@/assets/lang/investingPage.en.json";
 import investingPagePl from "@/assets/lang/investingPage.pl.json";
 import langChangerEn from "@/assets/lang/langChanger.en.json";
 import langChangerPl from "@/assets/lang/langChanger.pl.json";
-import navIconItemsEn from "@/assets/lang/navIconItems.en.json";
-import navIconItemsPl from "@/assets/lang/navIconItems.pl.json";
 import navMenuItemsEn from "@/assets/lang/navMenuItems.en.json";
 import navMenuItemsPl from "@/assets/lang/navMenuItems.pl.json";
 import notFoundPageEn from "@/assets/lang/notFoundPage.en.json";
@@ -84,8 +80,6 @@ import resetPassFormFeedbackEn from "@/assets/lang/resetPassFormFeedback.en.json
 import resetPassFormFeedbackPl from "@/assets/lang/resetPassFormFeedback.pl.json";
 import resetPasswordPageEn from "@/assets/lang/resetPasswordPage.en.json";
 import resetPasswordPagePl from "@/assets/lang/resetPasswordPage.pl.json";
-import resourcesPageEn from "@/assets/lang/resourcesPage.en.json";
-import resourcesPagePl from "@/assets/lang/resourcesPage.pl.json";
 import signInDemoEn from "@/assets/lang/signInDemo.en.json";
 import signInDemoPl from "@/assets/lang/signInDemo.pl.json";
 import signInDemoUserEn from "@/assets/lang/signInDemoUser.en.json";
@@ -234,9 +228,6 @@ export default class LangLoader {
   public get forecastingPage() {
     return this.preferredLanguage === "pl" ? forecastingPagePl : forecastingPageEn;
   }
-  public get forEmployersPage() {
-    return this.preferredLanguage === "pl" ? forEmployersPagePl : forEmployersPageEn;
-  }
   public get forgotPassForm() {
     return this.preferredLanguage === "pl" ? forgotPassFormPl : forgotPassFormEn;
   }
@@ -257,9 +248,6 @@ export default class LangLoader {
   }
   public get langChanger() {
     return this.preferredLanguage === "pl" ? langChangerPl : langChangerEn;
-  }
-  public get navIconItems() {
-    return this.preferredLanguage === "pl" ? navIconItemsPl : navIconItemsEn;
   }
   public get navMenuItems() {
     return this.preferredLanguage === "pl" ? navMenuItemsPl : navMenuItemsEn;
@@ -293,9 +281,6 @@ export default class LangLoader {
   }
   public get resetPasswordPage() {
     return this.preferredLanguage === "pl" ? resetPasswordPagePl : resetPasswordPageEn;
-  }
-  public get resourcesPage() {
-    return this.preferredLanguage === "pl" ? resourcesPagePl : resourcesPageEn;
   }
   public get signInDemo() {
     return this.preferredLanguage === "pl" ? signInDemoPl : signInDemoEn;
