@@ -14,15 +14,16 @@ export const maxDuration = 30;
 const main = (modelMessages: ModelMessage[]) =>
   Effect.gen(function* () {
     // Run the support agent using a fallback chain of models
-    const result = yield* runSupportAgent(modelMessages);
-    return result;
-  });
+    const { response } = yield* runSupportAgent(modelMessages);
+    return response;
+  }).pipe(
+    Effect.scoped,
+    Effect.catchAll((error) => Effect.logError(`Support agent recovering from ${error._tag}`)),
+  );
 
 export async function POST(req: Request) {
   const { messages }: { messages: SupportAgentUIMessage[] } = await req.json();
   const modelMessages = await convertToModelMessages(messages);
 
-  const result = await RuntimeServer.runPromise(main(modelMessages));
-  return result.toUIMessageStreamResponse();
-  // return createAgentUIStreamResponse({ agent: supportAgent, uiMessages: messages });
+  return await RuntimeServer.runPromise(main(modelMessages));
 }

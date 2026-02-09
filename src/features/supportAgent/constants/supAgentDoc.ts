@@ -12,13 +12,15 @@ Benefit Finance is a holistic wealth management company founded on the belief th
 
 ## Location & Contact Information
 **Headquarters:**
-Benefit Finance Tower
-100 Fintech Boulevard, Suite 500
-Austin, Texas 78701
+Benefit Finance
+Mazowiecka 60A
+35-324 Rzeszów
+Poland
 
 **Customer Support:**
-* **Email:** support@benefitfinance.com
-* **Phone:** +1 (800) 555-0199
+* **Email:** info@benefit-finance.com
+* **Phone1:** (+48) 555 555 555
+* **Phone2:** (+48) 17 555 55 55
 * **Live Chat Hours:** 24/7 (AI Support), 9:00 AM - 6:00 PM CST (Human Agents)
 
 ## Security & Regulation

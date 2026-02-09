@@ -23,7 +23,7 @@ const main = Effect.gen(function* () {
     const startTime = performance.now();
 
     // Run the support agent
-    const result = yield* runSupportAgent(question);
+    const { result } = yield* runSupportAgent(question);
 
     // Convert the textStream into an Effect Stream
     const stream = Stream.fromAsyncIterable(result.textStream, (cause) => new AiSdkError({ message: "Failed to read text stream", cause }));
@@ -37,10 +37,6 @@ const main = Effect.gen(function* () {
 
     // Stop timer
     const duration = (performance.now() - startTime).toFixed(2);
-
-    // for await (const chunk of result.textStream) {
-    //   console.log(chunk);
-    // }
 
     yield* Effect.log(`\n✅ Stream Finished`);
     yield* Effect.log(`Time: ${duration}ms`);
