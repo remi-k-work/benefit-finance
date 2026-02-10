@@ -29,31 +29,24 @@ interface NavMenuItemProps {
 export default function NavMenuItem({ title, items, href, match }: NavMenuItemProps) {
   const pathname = usePathname();
 
-  // SCENARIO 1: It's a Dropdown (has children)
   if (items && items.length > 0) {
-    // Check if any child is active to highlight the parent trigger
-    const isParentActive = items.some(({ match }) => {
-      // If match regex is provided, use it; otherwise, use exact href match
-      const regex = new RegExp(match);
-      return regex.test(pathname);
-    });
+    const isParentActive = items.some((item) => isMatchActive(pathname, item.match, item.href));
 
     return (
       <NavigationMenuItem>
         <NavigationMenuTrigger className={cn("uppercase", isParentActive && "bg-accent text-accent-foreground")}>{title}</NavigationMenuTrigger>
         <NavigationMenuContent className="uppercase">
           {items.map((subItem, index) => (
-            <SimpleNavLink key={index} {...subItem} />
+            <SimpleNavLink key={index} pathname={pathname} {...subItem} />
           ))}
         </NavigationMenuContent>
       </NavigationMenuItem>
     );
   }
 
-  // SCENARIO 2: It's a Direct Link (no children)
   return (
     <NavigationMenuItem>
-      <SimpleNavLink title={title} href={href} match={match} isMainLevel />
+      <SimpleNavLink title={title} href={href} match={match} isMainLevel pathname={pathname} />
     </NavigationMenuItem>
   );
 }
@@ -63,14 +56,11 @@ interface SimpleLinkProps {
   href?: Route;
   match?: string;
   isMainLevel?: boolean;
+  pathname: string;
 }
 
-function SimpleNavLink({ title, href = "#", match, isMainLevel = false }: SimpleLinkProps) {
-  const pathname = usePathname();
-
-  // Logic: Use regex if provided, otherwise simple exact match
-  const regexString = match || `^${href}$`;
-  const isActive = new RegExp(regexString).test(pathname);
+function SimpleNavLink({ title, href = "#", match, isMainLevel = false, pathname }: SimpleLinkProps) {
+  const isActive = isMatchActive(pathname, match, href);
 
   const LinkComponent = (
     <Link href={href} className={cn(isActive && "bg-accent text-accent-foreground")}>
@@ -79,4 +69,8 @@ function SimpleNavLink({ title, href = "#", match, isMainLevel = false }: Simple
   );
 
   return <NavigationMenuLink className={cn(isMainLevel && navigationMenuTriggerStyle())} render={LinkComponent} />;
+}
+
+function isMatchActive(pathname: string, match?: string, href: string = "#") {
+  return new RegExp(match ?? `^${href}$`).test(pathname);
 }

@@ -27,11 +27,7 @@ async function NavMenuContent() {
 
   return (
     <NavigationMenu className="mx-auto uppercase">
-      <NavigationMenuList className="flex-wrap gap-2 sm:gap-0">
-        {NAV_MENU_ITEMS(navMenuItems).map((navMenuItem, index) => (
-          <NavMenuItem key={index} {...navMenuItem} />
-        ))}
-      </NavigationMenuList>
+      {renderNavMenuList(NAV_MENU_ITEMS(navMenuItems))}
     </NavigationMenu>
   );
 }
@@ -39,11 +35,17 @@ async function NavMenuContent() {
 export function NavMenuSkeleton() {
   return (
     <NavigationMenu className="mx-auto text-transparent uppercase">
-      <NavigationMenuList className="flex-wrap gap-2 sm:gap-0">
-        {NAV_MENU_ITEMS_S.map((navMenuItem, index) => (
-          <NavMenuItem key={index} {...navMenuItem} />
-        ))}
-      </NavigationMenuList>
+      {renderNavMenuList(NAV_MENU_ITEMS_S)}
     </NavigationMenu>
+  );
+}
+
+function renderNavMenuList(items: typeof NAV_MENU_ITEMS_S) {
+  return (
+    <NavigationMenuList className="flex-wrap gap-2 sm:gap-0">
+      {items.map((navMenuItem, index) => (
+        <NavMenuItem key={index} {...navMenuItem} />
+      ))}
+    </NavigationMenuList>
   );
 }
