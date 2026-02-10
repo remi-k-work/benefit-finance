@@ -5,37 +5,31 @@ export type NavMenuItems = ReturnType<typeof NAV_MENU_ITEMS> | typeof NAV_MENU_I
 // constants
 export const NAV_MENU_ITEMS = (ll: typeof LangLoader.prototype.navMenuItems) =>
   [
+    { title: ll["Subsidies"], href: "/subsidies", match: "^/subsidies(/.*)?$" },
     {
-      title: ll["Products"],
+      title: ll["Credits"],
       items: [
-        { title: ll["Spending"], href: "/spending", match: "^/spending(/.*)?$" },
-        { title: ll["Investing"], href: "/investing", match: "^/investing(/.*)?$" },
-        { title: ll["Forecasting"], href: "/forecasting", match: "^/forecasting(/.*)?$" },
-        { title: ll["Estate Planning"], href: "/estate-planning", match: "^/estate-planning(/.*)?$" },
-        { title: ll["Couples"], href: "/couples", match: "^/couples(/.*)?$" },
+        { title: ll["Credits for Individuals"], href: "/credits-for-individuals", match: "^/credits-for-individuals(/.*)?$" },
+        { title: ll["Credits for Companies"], href: "/credits-for-companies", match: "^/credits-for-companies(/.*)?$" },
+        // { title: ll["Estate Planning"], href: "/estate-planning", match: "^/estate-planning(/.*)?$" },
+        // { title: ll["Couples"], href: "/couples", match: "^/couples(/.*)?$" },
       ],
     },
-    {
-      title: ll["Get Started"],
-      href: "/sign-in?redirect=/dashboard",
-      match: "^/dashboard(/.*)?$",
-    },
+    { title: ll["Contact Us"], href: "/contact-us", match: "^/contact-us(/.*)?$" },
+    { title: ll["Get Started"], href: "/sign-in?redirect=/dashboard", match: "^/dashboard(/.*)?$" },
   ] as const;
 
 export const NAV_MENU_ITEMS_S = [
+  { title: "............", href: "/subsidies", match: "^/subsidies(/.*)?$" },
   {
     title: "............",
     items: [
-      { title: "............", href: "/spending", match: "^/spending(/.*)?$" },
-      { title: "............", href: "/investing", match: "^/investing(/.*)?$" },
-      { title: "............", href: "/forecasting", match: "^/forecasting(/.*)?$" },
-      { title: "............", href: "/estate-planning", match: "^/estate-planning(/.*)?$" },
-      { title: "............", href: "/couples", match: "^/couples(/.*)?$" },
+      { title: "............", href: "/credits-for-individuals", match: "^/credits-for-individuals(/.*)?$" },
+      { title: "............", href: "/credits-for-companies", match: "^/credits-for-companies(/.*)?$" },
+      // { title: "............", href: "/estate-planning", match: "^/estate-planning(/.*)?$" },
+      // { title: "............", href: "/couples", match: "^/couples(/.*)?$" },
     ],
   },
-  {
-    title: "............",
-    href: "/sign-in?redirect=/dashboard",
-    match: "^/dashboard(/.*)?$",
-  },
+  { title: "............", href: "/contact-us", match: "^/contact-us(/.*)?$" },
+  { title: "............", href: "/sign-in?redirect=/dashboard", match: "^/dashboard(/.*)?$" },
 ] as const;

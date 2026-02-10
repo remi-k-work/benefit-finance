@@ -14,12 +14,12 @@ import type { Metadata } from "next";
 
 // constants
 export const metadata: Metadata = {
-  title: "Benefit Finance ► Forecasting",
+  title: "Benefit Finance ► Credits for Companies",
 };
 
 const main = Effect.gen(function* () {
   // Create an instance of the lang loader needed for localization
-  const { forecastingPage: ll } = yield* LangLoader.createEffect();
+  const { creditsForCompaniesPage: ll } = yield* LangLoader.createEffect();
 
   return { ll };
 });
@@ -41,8 +41,10 @@ async function PageContent() {
   return (
     <>
       <PageHeader
-        title={ll["Forecast your future"]}
-        description={ll["Get clear on your future and see how major life events can shape your money over time"]}
+        title={ll["Fuel your business growth"]}
+        description={
+          ll["Reinvest in your vision by using Benefit Finance to track R&D, energy, and payroll credits that turn your tax liabilities into working capital"]
+        }
       />
     </>
   );

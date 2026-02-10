@@ -18,6 +18,10 @@ import contactUsPageEn from "@/assets/lang/contactUsPage.en.json";
 import contactUsPagePl from "@/assets/lang/contactUsPage.pl.json";
 import couplesPageEn from "@/assets/lang/couplesPage.en.json";
 import couplesPagePl from "@/assets/lang/couplesPage.pl.json";
+import creditsForCompaniesPageEn from "@/assets/lang/creditsForCompaniesPage.en.json";
+import creditsForCompaniesPagePl from "@/assets/lang/creditsForCompaniesPage.pl.json";
+import creditsForIndividualsPageEn from "@/assets/lang/creditsForIndividualsPage.en.json";
+import creditsForIndividualsPagePl from "@/assets/lang/creditsForIndividualsPage.pl.json";
 import dashboardPageEn from "@/assets/lang/dashboardPage.en.json";
 import dashboardPagePl from "@/assets/lang/dashboardPage.pl.json";
 import deleteAvatarEn from "@/assets/lang/deleteAvatar.en.json";
@@ -42,8 +46,6 @@ import footerContactEn from "@/assets/lang/footerContact.en.json";
 import footerContactPl from "@/assets/lang/footerContact.pl.json";
 import footerShortcutEn from "@/assets/lang/footerShortcut.en.json";
 import footerShortcutPl from "@/assets/lang/footerShortcut.pl.json";
-import forecastingPageEn from "@/assets/lang/forecastingPage.en.json";
-import forecastingPagePl from "@/assets/lang/forecastingPage.pl.json";
 import forgotPassFormEn from "@/assets/lang/forgotPassForm.en.json";
 import forgotPassFormPl from "@/assets/lang/forgotPassForm.pl.json";
 import forgotPassFormFeedbackEn from "@/assets/lang/forgotPassFormFeedback.en.json";
@@ -54,8 +56,6 @@ import formToastFeedbackEn from "@/assets/lang/formToastFeedback.en.json";
 import formToastFeedbackPl from "@/assets/lang/formToastFeedback.pl.json";
 import homePageEn from "@/assets/lang/homePage.en.json";
 import homePagePl from "@/assets/lang/homePage.pl.json";
-import investingPageEn from "@/assets/lang/investingPage.en.json";
-import investingPagePl from "@/assets/lang/investingPage.pl.json";
 import langChangerEn from "@/assets/lang/langChanger.en.json";
 import langChangerPl from "@/assets/lang/langChanger.pl.json";
 import navMenuItemsEn from "@/assets/lang/navMenuItems.en.json";
@@ -102,8 +102,8 @@ import signUpFormFeedbackEn from "@/assets/lang/signUpFormFeedback.en.json";
 import signUpFormFeedbackPl from "@/assets/lang/signUpFormFeedback.pl.json";
 import signUpPageEn from "@/assets/lang/signUpPage.en.json";
 import signUpPagePl from "@/assets/lang/signUpPage.pl.json";
-import spendingPageEn from "@/assets/lang/spendingPage.en.json";
-import spendingPagePl from "@/assets/lang/spendingPage.pl.json";
+import subsidiesPageEn from "@/assets/lang/subsidiesPage.en.json";
+import subsidiesPagePl from "@/assets/lang/subsidiesPage.pl.json";
 import supportAgentEn from "@/assets/lang/supportAgent.en.json";
 import supportAgentPl from "@/assets/lang/supportAgent.pl.json";
 import supportAgentModalEn from "@/assets/lang/supportAgentModal.en.json";
@@ -189,6 +189,12 @@ export default class LangLoader {
   public get couplesPage() {
     return this.preferredLanguage === "pl" ? couplesPagePl : couplesPageEn;
   }
+  public get creditsForCompaniesPage() {
+    return this.preferredLanguage === "pl" ? creditsForCompaniesPagePl : creditsForCompaniesPageEn;
+  }
+  public get creditsForIndividualsPage() {
+    return this.preferredLanguage === "pl" ? creditsForIndividualsPagePl : creditsForIndividualsPageEn;
+  }
   public get dashboardPage() {
     return this.preferredLanguage === "pl" ? dashboardPagePl : dashboardPageEn;
   }
@@ -225,9 +231,6 @@ export default class LangLoader {
   public get footerShortcut() {
     return this.preferredLanguage === "pl" ? footerShortcutPl : footerShortcutEn;
   }
-  public get forecastingPage() {
-    return this.preferredLanguage === "pl" ? forecastingPagePl : forecastingPageEn;
-  }
   public get forgotPassForm() {
     return this.preferredLanguage === "pl" ? forgotPassFormPl : forgotPassFormEn;
   }
@@ -242,9 +245,6 @@ export default class LangLoader {
   }
   public get homePage() {
     return this.preferredLanguage === "pl" ? homePagePl : homePageEn;
-  }
-  public get investingPage() {
-    return this.preferredLanguage === "pl" ? investingPagePl : investingPageEn;
   }
   public get langChanger() {
     return this.preferredLanguage === "pl" ? langChangerPl : langChangerEn;
@@ -315,8 +315,8 @@ export default class LangLoader {
   public get signUpPage() {
     return this.preferredLanguage === "pl" ? signUpPagePl : signUpPageEn;
   }
-  public get spendingPage() {
-    return this.preferredLanguage === "pl" ? spendingPagePl : spendingPageEn;
+  public get subsidiesPage() {
+    return this.preferredLanguage === "pl" ? subsidiesPagePl : subsidiesPageEn;
   }
   public get supportAgent() {
     return this.preferredLanguage === "pl" ? supportAgentPl : supportAgentEn;

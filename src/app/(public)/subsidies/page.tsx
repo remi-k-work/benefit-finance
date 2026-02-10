@@ -14,12 +14,12 @@ import type { Metadata } from "next";
 
 // constants
 export const metadata: Metadata = {
-  title: "Benefit Finance ► Investing",
+  title: "Benefit Finance ► Subsidies",
 };
 
 const main = Effect.gen(function* () {
   // Create an instance of the lang loader needed for localization
-  const { investingPage: ll } = yield* LangLoader.createEffect();
+  const { subsidiesPage: ll } = yield* LangLoader.createEffect();
 
   return { ll };
 });
@@ -41,8 +41,8 @@ async function PageContent() {
   return (
     <>
       <PageHeader
-        title={ll["Invest with intention"]}
-        description={ll["See your portfolio clearly with AI that shows how you’re invested and what it means for your future"]}
+        title={ll["Manage your subsidies"]}
+        description={ll["Get a clear view of your external funding with AI that organizes your benefits and explains what they mean for your financial future"]}
       />
     </>
   );

@@ -1,9 +1,10 @@
 {
-  "Products": "Produkty",
-  "Spending": "Wydatki",
-  "Investing": "Inwestowanie",
-  "Forecasting": "Prognozowanie",
+  "Subsidies": "Dofinansowania",
+  "Credits": "Kredyty",
+  "Credits for Individuals": "Kredyty Indywidualne",
+  "Credits for Companies": "Kredyty dla Firm",
   "Estate Planning": "Planowanie Majątku",
   "Couples": "Pary",
+  "Contact Us": "Kontakt",
   "Get Started": "Rozpocznij ➜"
 }

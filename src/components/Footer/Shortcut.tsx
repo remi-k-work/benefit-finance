@@ -40,18 +40,18 @@ async function ShortcutContent() {
           </Link>
         </li>
         <li>
-          <Link href="/spending" className="link font-mono text-base font-normal normal-case">
-            {ll["Spending"]}
+          <Link href="/subsidies" className="link font-mono text-base font-normal normal-case">
+            {ll["Subsidies"]}
           </Link>
         </li>
         <li>
-          <Link href="/investing" className="link font-mono text-base font-normal normal-case">
-            {ll["Investing"]}
+          <Link href="/credits-for-individuals" className="link font-mono text-base font-normal normal-case">
+            {ll["Credits for Individuals"]}
           </Link>
         </li>
         <li>
-          <Link href="/forecasting" className="link font-mono text-base font-normal normal-case">
-            {ll["Forecasting"]}
+          <Link href="/credits-for-companies" className="link font-mono text-base font-normal normal-case">
+            {ll["Credits for Companies"]}
           </Link>
         </li>
         <li>

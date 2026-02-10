@@ -1,9 +1,10 @@
 {
-  "Products": "Products",
-  "Spending": "Spending",
-  "Investing": "Investing",
-  "Forecasting": "Forecasting",
+  "Subsidies": "Subsidies",
+  "Credits": "Credits",
+  "Credits for Individuals": "Credits for Individuals",
+  "Credits for Companies": "Credits for Companies",
   "Estate Planning": "Estate Planning",
   "Couples": "Couples",
+  "Contact Us": "Contact Us",
   "Get Started": "Get Started ➜"
 }

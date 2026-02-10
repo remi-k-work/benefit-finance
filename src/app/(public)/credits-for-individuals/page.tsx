@@ -14,12 +14,12 @@ import type { Metadata } from "next";
 
 // constants
 export const metadata: Metadata = {
-  title: "Benefit Finance ► Spending",
+  title: "Benefit Finance ► Credits for Individuals",
 };
 
 const main = Effect.gen(function* () {
   // Create an instance of the lang loader needed for localization
-  const { spendingPage: ll } = yield* LangLoader.createEffect();
+  const { creditsForIndividualsPage: ll } = yield* LangLoader.createEffect();
 
   return { ll };
 });
@@ -41,8 +41,10 @@ async function PageContent() {
   return (
     <>
       <PageHeader
-        title={ll["Track your spending"]}
-        description={ll["See your spending clearly with AI that shows where your money goes, and what it means for you"]}
+        title={ll["Keep more of what you earn"]}
+        description={
+          ll["Maximize your tax efficiency with AI that identifies every personal credit you’re eligible for and shows how they lower your cost of living"]
+        }
       />
     </>
   );
