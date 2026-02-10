@@ -14,12 +14,12 @@ import type { Metadata } from "next";
 
 // constants
 export const metadata: Metadata = {
-  title: "Benefit Finance ► Couples",
+  title: "Benefit Finance ► Life and Health Insurance",
 };
 
 const main = Effect.gen(function* () {
   // Create an instance of the lang loader needed for localization
-  const { couplesPage: ll } = yield* LangLoader.createEffect();
+  const { lifeAndHealthInsurancePage: ll } = yield* LangLoader.createEffect();
 
   return { ll };
 });
@@ -40,7 +40,12 @@ async function PageContent() {
 
   return (
     <>
-      <PageHeader title={ll["Manage money together"]} description={ll["Benefit Finance is a shared home for your finances by adding your partner for free"]} />
+      <PageHeader
+        title={ll["Prioritize what matters most"]}
+        description={
+          ll["Take care of yourself and your loved ones with a simplified view of your coverage, ensuring your family’s well-being is never left to chance"]
+        }
+      />
     </>
   );
 }

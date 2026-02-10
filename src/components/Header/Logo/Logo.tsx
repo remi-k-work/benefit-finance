@@ -16,7 +16,7 @@ export default function Logo() {
 
   return (
     <Link href="/" title="Benefit Finance" className="flex-none">
-      <Image src={isDarkMode ? logoD : logoL} alt="Benefit Finance" className="size-20 mix-blend-hard-light" />
+      <Image src={isDarkMode ? logoD : logoL} alt="Benefit Finance" className="size-20 dark:mix-blend-hard-light" />
     </Link>
   );
 }

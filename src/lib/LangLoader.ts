@@ -6,6 +6,8 @@ import { Effect } from "effect";
 import { resolveAcceptLanguage } from "resolve-accept-language";
 
 // assets
+import businessInsurancePageEn from "@/assets/lang/businessInsurancePage.en.json";
+import businessInsurancePagePl from "@/assets/lang/businessInsurancePage.pl.json";
 import confirmModalEn from "@/assets/lang/confirmModal.en.json";
 import confirmModalPl from "@/assets/lang/confirmModal.pl.json";
 import contactUsFormEn from "@/assets/lang/contactUsForm.en.json";
@@ -16,8 +18,6 @@ import contactUsMapEn from "@/assets/lang/contactUsMap.en.json";
 import contactUsMapPl from "@/assets/lang/contactUsMap.pl.json";
 import contactUsPageEn from "@/assets/lang/contactUsPage.en.json";
 import contactUsPagePl from "@/assets/lang/contactUsPage.pl.json";
-import couplesPageEn from "@/assets/lang/couplesPage.en.json";
-import couplesPagePl from "@/assets/lang/couplesPage.pl.json";
 import creditsForCompaniesPageEn from "@/assets/lang/creditsForCompaniesPage.en.json";
 import creditsForCompaniesPagePl from "@/assets/lang/creditsForCompaniesPage.pl.json";
 import creditsForIndividualsPageEn from "@/assets/lang/creditsForIndividualsPage.en.json";
@@ -38,8 +38,8 @@ import emailChangeFormFeedbackEn from "@/assets/lang/emailChangeFormFeedback.en.
 import emailChangeFormFeedbackPl from "@/assets/lang/emailChangeFormFeedback.pl.json";
 import emailVerifiedPageEn from "@/assets/lang/emailVerifiedPage.en.json";
 import emailVerifiedPagePl from "@/assets/lang/emailVerifiedPage.pl.json";
-import estatePlanningPageEn from "@/assets/lang/estatePlanningPage.en.json";
-import estatePlanningPagePl from "@/assets/lang/estatePlanningPage.pl.json";
+import financialInsurancePageEn from "@/assets/lang/financialInsurancePage.en.json";
+import financialInsurancePagePl from "@/assets/lang/financialInsurancePage.pl.json";
 import footerAddressEn from "@/assets/lang/footerAddress.en.json";
 import footerAddressPl from "@/assets/lang/footerAddress.pl.json";
 import footerContactEn from "@/assets/lang/footerContact.en.json";
@@ -58,6 +58,10 @@ import homePageEn from "@/assets/lang/homePage.en.json";
 import homePagePl from "@/assets/lang/homePage.pl.json";
 import langChangerEn from "@/assets/lang/langChanger.en.json";
 import langChangerPl from "@/assets/lang/langChanger.pl.json";
+import lifeAndHealthInsurancePageEn from "@/assets/lang/lifeAndHealthInsurancePage.en.json";
+import lifeAndHealthInsurancePagePl from "@/assets/lang/lifeAndHealthInsurancePage.pl.json";
+import motorInsurancePageEn from "@/assets/lang/motorInsurancePage.en.json";
+import motorInsurancePagePl from "@/assets/lang/motorInsurancePage.pl.json";
 import navMenuItemsEn from "@/assets/lang/navMenuItems.en.json";
 import navMenuItemsPl from "@/assets/lang/navMenuItems.pl.json";
 import notFoundPageEn from "@/assets/lang/notFoundPage.en.json";
@@ -74,6 +78,8 @@ import profileInfoEn from "@/assets/lang/profileInfo.en.json";
 import profileInfoPl from "@/assets/lang/profileInfo.pl.json";
 import profilePageEn from "@/assets/lang/profilePage.en.json";
 import profilePagePl from "@/assets/lang/profilePage.pl.json";
+import propertyInsurancePageEn from "@/assets/lang/propertyInsurancePage.en.json";
+import propertyInsurancePagePl from "@/assets/lang/propertyInsurancePage.pl.json";
 import resetPassFormEn from "@/assets/lang/resetPassForm.en.json";
 import resetPassFormPl from "@/assets/lang/resetPassForm.pl.json";
 import resetPassFormFeedbackEn from "@/assets/lang/resetPassFormFeedback.en.json";
@@ -110,6 +116,8 @@ import supportAgentModalEn from "@/assets/lang/supportAgentModal.en.json";
 import supportAgentModalPl from "@/assets/lang/supportAgentModal.pl.json";
 import themeChangerEn from "@/assets/lang/themeChanger.en.json";
 import themeChangerPl from "@/assets/lang/themeChanger.pl.json";
+import travelInsurancePageEn from "@/assets/lang/travelInsurancePage.en.json";
+import travelInsurancePagePl from "@/assets/lang/travelInsurancePage.pl.json";
 import unauthorizedPageEn from "@/assets/lang/unauthorizedPage.en.json";
 import unauthorizedPagePl from "@/assets/lang/unauthorizedPage.pl.json";
 import uploadAvatarEn from "@/assets/lang/uploadAvatar.en.json";
@@ -171,6 +179,9 @@ export default class LangLoader {
   }
 
   // Localized content accessors are designed for the preferred language and optimized to pass specific chunks from the server components as props
+  public get businessInsurancePage() {
+    return this.preferredLanguage === "pl" ? businessInsurancePagePl : businessInsurancePageEn;
+  }
   public get confirmModal() {
     return this.preferredLanguage === "pl" ? confirmModalPl : confirmModalEn;
   }
@@ -185,9 +196,6 @@ export default class LangLoader {
   }
   public get contactUsPage() {
     return this.preferredLanguage === "pl" ? contactUsPagePl : contactUsPageEn;
-  }
-  public get couplesPage() {
-    return this.preferredLanguage === "pl" ? couplesPagePl : couplesPageEn;
   }
   public get creditsForCompaniesPage() {
     return this.preferredLanguage === "pl" ? creditsForCompaniesPagePl : creditsForCompaniesPageEn;
@@ -219,8 +227,8 @@ export default class LangLoader {
   public get emailVerifiedPage() {
     return this.preferredLanguage === "pl" ? emailVerifiedPagePl : emailVerifiedPageEn;
   }
-  public get estatePlanningPage() {
-    return this.preferredLanguage === "pl" ? estatePlanningPagePl : estatePlanningPageEn;
+  public get financialInsurancePage() {
+    return this.preferredLanguage === "pl" ? financialInsurancePagePl : financialInsurancePageEn;
   }
   public get footerAddress() {
     return this.preferredLanguage === "pl" ? footerAddressPl : footerAddressEn;
@@ -249,6 +257,12 @@ export default class LangLoader {
   public get langChanger() {
     return this.preferredLanguage === "pl" ? langChangerPl : langChangerEn;
   }
+  public get lifeAndHealthInsurancePage() {
+    return this.preferredLanguage === "pl" ? lifeAndHealthInsurancePagePl : lifeAndHealthInsurancePageEn;
+  }
+  public get motorInsurancePage() {
+    return this.preferredLanguage === "pl" ? motorInsurancePagePl : motorInsurancePageEn;
+  }
   public get navMenuItems() {
     return this.preferredLanguage === "pl" ? navMenuItemsPl : navMenuItemsEn;
   }
@@ -272,6 +286,9 @@ export default class LangLoader {
   }
   public get profilePage() {
     return this.preferredLanguage === "pl" ? profilePagePl : profilePageEn;
+  }
+  public get propertyInsurancePage() {
+    return this.preferredLanguage === "pl" ? propertyInsurancePagePl : propertyInsurancePageEn;
   }
   public get resetPassForm() {
     return this.preferredLanguage === "pl" ? resetPassFormPl : resetPassFormEn;
@@ -326,6 +343,9 @@ export default class LangLoader {
   }
   public get themeChanger() {
     return this.preferredLanguage === "pl" ? themeChangerPl : themeChangerEn;
+  }
+  public get travelInsurancePage() {
+    return this.preferredLanguage === "pl" ? travelInsurancePagePl : travelInsurancePageEn;
   }
   public get unauthorizedPage() {
     return this.preferredLanguage === "pl" ? unauthorizedPagePl : unauthorizedPageEn;

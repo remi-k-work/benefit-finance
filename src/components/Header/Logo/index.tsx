@@ -13,7 +13,7 @@ export const Logo = dynamic(() => import("./Logo"), { ssr: false });
 export function LogoSkeleton() {
   return (
     <Link href="/" title="Benefit Finance" className="flex-none">
-      <Image src={logoD} alt="Benefit Finance" className="size-20 mix-blend-hard-light" />
+      <Image src={logoD} alt="Benefit Finance" className="size-20 dark:mix-blend-hard-light" />
     </Link>
   );
 }

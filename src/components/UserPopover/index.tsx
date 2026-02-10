@@ -69,7 +69,7 @@ export function UserPopoverSkeleton() {
       title="Profile"
       nativeButton={false}
       render={
-        <Link href="/sign-in?redirect=/profile">
+        <Link href="/sign-in?redirect=/dashboard">
           <UserAvatarSkeleton isSmall />
         </Link>
       }

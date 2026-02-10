@@ -14,12 +14,12 @@ import type { Metadata } from "next";
 
 // constants
 export const metadata: Metadata = {
-  title: "Benefit Finance ► Estate Planning",
+  title: "Benefit Finance ► Motor Insurance",
 };
 
 const main = Effect.gen(function* () {
   // Create an instance of the lang loader needed for localization
-  const { estatePlanningPage: ll } = yield* LangLoader.createEffect();
+  const { motorInsurancePage: ll } = yield* LangLoader.createEffect();
 
   return { ll };
 });
@@ -41,10 +41,8 @@ async function PageContent() {
   return (
     <>
       <PageHeader
-        title={ll["Everyone has something valuable to protect"]}
-        description={
-          ll["We all hope to leave something for the next generation. Decide who gets what, when, and how by creating an estate plan with Benefit Finance"]
-        }
+        title={ll["Stay moving with confidence"]}
+        description={ll["Manage your vehicles under one roof with AI that tracks your premiums and ensures you’re protected every mile of the journey"]}
       />
     </>
   );

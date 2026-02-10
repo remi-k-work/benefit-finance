@@ -11,12 +11,20 @@ export const NAV_MENU_ITEMS = (ll: typeof LangLoader.prototype.navMenuItems) =>
       items: [
         { title: ll["Credits for Individuals"], href: "/credits-for-individuals", match: "^/credits-for-individuals(/.*)?$" },
         { title: ll["Credits for Companies"], href: "/credits-for-companies", match: "^/credits-for-companies(/.*)?$" },
-        // { title: ll["Estate Planning"], href: "/estate-planning", match: "^/estate-planning(/.*)?$" },
-        // { title: ll["Couples"], href: "/couples", match: "^/couples(/.*)?$" },
+      ],
+    },
+    {
+      title: ll["Insurance"],
+      items: [
+        { title: ll["Financial Insurance"], href: "/financial-insurance", match: "^/financial-insurance(/.*)?$" },
+        { title: ll["Business Insurance"], href: "/business-insurance", match: "^/business-insurance(/.*)?$" },
+        { title: ll["Property Insurance"], href: "/property-insurance", match: "^/property-insurance(/.*)?$" },
+        { title: ll["Life and Health Insurance"], href: "/life-and-health-insurance", match: "^/life-and-health-insurance(/.*)?$" },
+        { title: ll["Motor Insurance"], href: "/motor-insurance", match: "^/motor-insurance(/.*)?$" },
+        { title: ll["Travel Insurance"], href: "/travel-insurance", match: "^/travel-insurance(/.*)?$" },
       ],
     },
     { title: ll["Contact Us"], href: "/contact-us", match: "^/contact-us(/.*)?$" },
-    { title: ll["Get Started"], href: "/sign-in?redirect=/dashboard", match: "^/dashboard(/.*)?$" },
   ] as const;
 
 export const NAV_MENU_ITEMS_S = [
@@ -26,10 +34,18 @@ export const NAV_MENU_ITEMS_S = [
     items: [
       { title: "............", href: "/credits-for-individuals", match: "^/credits-for-individuals(/.*)?$" },
       { title: "............", href: "/credits-for-companies", match: "^/credits-for-companies(/.*)?$" },
-      // { title: "............", href: "/estate-planning", match: "^/estate-planning(/.*)?$" },
-      // { title: "............", href: "/couples", match: "^/couples(/.*)?$" },
+    ],
+  },
+  {
+    title: "............",
+    items: [
+      { title: "............", href: "/financial-insurance", match: "^/financial-insurance(/.*)?$" },
+      { title: "............", href: "/business-insurance", match: "^/business-insurance(/.*)?$" },
+      { title: "............", href: "/property-insurance", match: "^/property-insurance(/.*)?$" },
+      { title: "............", href: "/life-and-health-insurance", match: "^/life-and-health-insurance(/.*)?$" },
+      { title: "............", href: "/motor-insurance", match: "^/motor-insurance(/.*)?$" },
+      { title: "............", href: "/travel-insurance", match: "^/travel-insurance(/.*)?$" },
     ],
   },
   { title: "............", href: "/contact-us", match: "^/contact-us(/.*)?$" },
-  { title: "............", href: "/sign-in?redirect=/dashboard", match: "^/dashboard(/.*)?$" },
 ] as const;

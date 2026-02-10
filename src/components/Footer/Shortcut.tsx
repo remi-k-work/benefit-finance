@@ -55,13 +55,33 @@ async function ShortcutContent() {
           </Link>
         </li>
         <li>
-          <Link href="/estate-planning" className="link font-mono text-base font-normal normal-case">
-            {ll["Estate Planning"]}
+          <Link href="/financial-insurance" className="link font-mono text-base font-normal normal-case">
+            {ll["Financial Insurance"]}
           </Link>
         </li>
         <li>
-          <Link href="/couples" className="link font-mono text-base font-normal normal-case">
-            {ll["Couples"]}
+          <Link href="/business-insurance" className="link font-mono text-base font-normal normal-case">
+            {ll["Business Insurance"]}
+          </Link>
+        </li>
+        <li>
+          <Link href="/property-insurance" className="link font-mono text-base font-normal normal-case">
+            {ll["Property Insurance"]}
+          </Link>
+        </li>
+        <li>
+          <Link href="/life-and-health-insurance" className="link font-mono text-base font-normal normal-case">
+            {ll["Life and Health Insurance"]}
+          </Link>
+        </li>
+        <li>
+          <Link href="/motor-insurance" className="link font-mono text-base font-normal normal-case">
+            {ll["Motor Insurance"]}
+          </Link>
+        </li>
+        <li>
+          <Link href="/travel-insurance" className="link font-mono text-base font-normal normal-case">
+            {ll["Travel Insurance"]}
           </Link>
         </li>
         <li>
@@ -79,6 +99,10 @@ export function ShortcutSkeleton() {
     <section className="text-center">
       <h4 className="from-background via-primary to-background mx-auto mb-3 animate-pulse bg-linear-to-r p-1 text-center font-sans text-xl">&nbsp;</h4>
       <ul className="flex flex-col items-center gap-2">
+        <li>&nbsp;</li>
+        <li>&nbsp;</li>
+        <li>&nbsp;</li>
+        <li>&nbsp;</li>
         <li>&nbsp;</li>
         <li>&nbsp;</li>
         <li>&nbsp;</li>
