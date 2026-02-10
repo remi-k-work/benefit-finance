@@ -8,8 +8,11 @@ import LangLoader from "@/lib/LangLoader";
 import { NavigationMenu, NavigationMenuList } from "@/components/ui/custom/navigation-menu";
 import NavMenuItem from "./NavMenuItem";
 
+// types
+import type { NavMenuItems } from "@/components/Header/NavMenu/constants";
+
 // constants
-import { NAV_MENU_ITEMS, NAV_MENU_ITEMS_S } from "@/components/Header/constants";
+import { NAV_MENU_ITEMS, NAV_MENU_ITEMS_S } from "@/components/Header/NavMenu/constants";
 
 // Component remains the fast, static shell
 export default function NavMenu() {
@@ -25,24 +28,14 @@ async function NavMenuContent() {
   // Create an instance of the lang loader needed for localization
   const { navMenuItems } = await LangLoader.create();
 
-  return (
-    <NavigationMenu className="mx-auto uppercase">
-      {renderNavMenuList(NAV_MENU_ITEMS(navMenuItems))}
-    </NavigationMenu>
-  );
+  return <NavigationMenu className="mx-auto uppercase">{renderNavMenuList(NAV_MENU_ITEMS(navMenuItems))}</NavigationMenu>;
 }
-
-type NavMenuListItems = ReturnType<typeof NAV_MENU_ITEMS> | typeof NAV_MENU_ITEMS_S;
 
 export function NavMenuSkeleton() {
-  return (
-    <NavigationMenu className="mx-auto text-transparent uppercase">
-      {renderNavMenuList(NAV_MENU_ITEMS_S)}
-    </NavigationMenu>
-  );
+  return <NavigationMenu className="mx-auto text-transparent uppercase">{renderNavMenuList(NAV_MENU_ITEMS_S)}</NavigationMenu>;
 }
 
-function renderNavMenuList(items: NavMenuListItems) {
+function renderNavMenuList(items: NavMenuItems) {
   return (
     <NavigationMenuList className="flex-wrap gap-2 sm:gap-0">
       {items.map((navMenuItem, index) => (

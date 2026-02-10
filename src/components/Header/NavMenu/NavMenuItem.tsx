@@ -1,76 +1,47 @@
 "use client";
 
-// next
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-
 // services, features, and other libraries
 import { cn } from "@/lib/utils";
+import { useIsMatchActive } from "./hooks";
 
 // components
-import {
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/custom/navigation-menu";
+import { NavigationMenuContent, NavigationMenuItem, NavigationMenuTrigger } from "@/components/ui/custom/navigation-menu";
+import NavMenuLink from "./NavMenuLink";
 
 // types
 import type { Route } from "next";
 
 interface NavMenuItemProps {
   title: string;
-  items?: readonly { title: string; href: Route; match: string }[];
   href?: Route;
   match?: string;
+  items?: readonly { title: string; href: Route; match: string }[];
 }
 
-export default function NavMenuItem({ title, items, href, match }: NavMenuItemProps) {
-  const pathname = usePathname();
+export default function NavMenuItem({ title, href, match, items }: NavMenuItemProps) {
+  if (items && items.length > 0) return <NavMenuItemExpandable title={title} items={items} />;
+  return <NavMenuItemMainLevel title={title} href={href} match={match} />;
+}
 
-  if (items && items.length > 0) {
-    const isParentActive = items.some((item) => isMatchActive(pathname, item.match, item.href));
-
-    return (
-      <NavigationMenuItem>
-        <NavigationMenuTrigger className={cn("uppercase", isParentActive && "bg-accent text-accent-foreground")}>{title}</NavigationMenuTrigger>
-        <NavigationMenuContent className="uppercase">
-          {items.map((subItem, index) => (
-            <SimpleNavLink key={index} pathname={pathname} {...subItem} />
-          ))}
-        </NavigationMenuContent>
-      </NavigationMenuItem>
-    );
-  }
+function NavMenuItemExpandable({ title, items }: Required<Pick<NavMenuItemProps, "title" | "items">>) {
+  const isActive = useIsMatchActive(items.map(({ href, match }) => ({ href, match })));
 
   return (
     <NavigationMenuItem>
-      <SimpleNavLink title={title} href={href} match={match} isMainLevel pathname={pathname} />
+      <NavigationMenuTrigger className={cn("uppercase", isActive && "bg-accent text-accent-foreground")}>{title}</NavigationMenuTrigger>
+      <NavigationMenuContent className="uppercase">
+        {items.map(({ title, href, match }, index) => (
+          <NavMenuLink key={index} title={title} href={href} match={match} />
+        ))}
+      </NavigationMenuContent>
     </NavigationMenuItem>
   );
 }
 
-interface SimpleLinkProps {
-  title: string;
-  href?: Route;
-  match?: string;
-  isMainLevel?: boolean;
-  pathname: string;
-}
-
-function SimpleNavLink({ title, href = "#", match, isMainLevel = false, pathname }: SimpleLinkProps) {
-  const isActive = isMatchActive(pathname, match, href);
-
-  const LinkComponent = (
-    <Link href={href} className={cn(isActive && "bg-accent text-accent-foreground")}>
-      {title}
-    </Link>
+function NavMenuItemMainLevel({ title, href, match }: Omit<NavMenuItemProps, "items">) {
+  return (
+    <NavigationMenuItem>
+      <NavMenuLink title={title} href={href} match={match} isMainLevel />
+    </NavigationMenuItem>
   );
-
-  return <NavigationMenuLink className={cn(isMainLevel && navigationMenuTriggerStyle())} render={LinkComponent} />;
-}
-
-function isMatchActive(pathname: string, match?: string, href: string = "#") {
-  return new RegExp(match ?? `^${href}$`).test(pathname);
 }

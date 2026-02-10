@@ -1,5 +1,6 @@
 // types
 import type LangLoader from "@/lib/LangLoader";
+export type NavMenuItems = ReturnType<typeof NAV_MENU_ITEMS> | typeof NAV_MENU_ITEMS_S;
 
 // constants
 export const NAV_MENU_ITEMS = (ll: typeof LangLoader.prototype.navMenuItems) =>
