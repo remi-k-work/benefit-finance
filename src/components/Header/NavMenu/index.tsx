@@ -32,6 +32,8 @@ async function NavMenuContent() {
   );
 }
 
+type NavMenuListItems = ReturnType<typeof NAV_MENU_ITEMS> | typeof NAV_MENU_ITEMS_S;
+
 export function NavMenuSkeleton() {
   return (
     <NavigationMenu className="mx-auto text-transparent uppercase">
@@ -40,7 +42,7 @@ export function NavMenuSkeleton() {
   );
 }
 
-function renderNavMenuList(items: typeof NAV_MENU_ITEMS_S) {
+function renderNavMenuList(items: NavMenuListItems) {
   return (
     <NavigationMenuList className="flex-wrap gap-2 sm:gap-0">
       {items.map((navMenuItem, index) => (
