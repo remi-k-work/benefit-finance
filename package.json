@@ -31,6 +31,7 @@
     "@react-email/components": "^1.0.6",
     "@tanstack/react-form": "^1.28.0",
     "@tanstack/react-form-nextjs": "^1.28.0",
+    "@tanstack/react-table": "^8.21.3",
     "@uploadthing/react": "^7.3.3",
     "@vercel/analytics": "^1.6.1",
     "ai": "^6.0.73",

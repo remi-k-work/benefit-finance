@@ -1,12 +1,15 @@
 // drizzle and db access
 import { DB } from "@/drizzle/dbEffect";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 
 // services, features, and other libraries
 import { Effect } from "effect";
 
 // all table definitions (their schemas)
 import { SupAgentDocTable } from "@/drizzle/schema";
+
+// types
+export type AllDocsWithChunks = Effect.Effect.Success<typeof SupAgentDocDB.prototype.allDocsWithChunks>;
 
 export class SupAgentDocDB extends Effect.Service<SupAgentDocDB>()("SupAgentDocDB", {
   dependencies: [DB.Default],
@@ -31,6 +34,11 @@ export class SupAgentDocDB extends Effect.Service<SupAgentDocDB>()("SupAgentDocD
     // Delete all documents
     const deleteAll = execute((dbOrTx) => dbOrTx.delete(SupAgentDocTable));
 
-    return { getDoc, insertDoc, updateDoc, deleteDoc, deleteAll } as const;
+    // Get all documents with their corresponding chunks (used by the tanstack table)
+    const allDocsWithChunks = execute((dbOrTx) =>
+      dbOrTx.query.SupAgentDocTable.findMany({ orderBy: asc(SupAgentDocTable.title), with: { docChunks: { columns: { chunk: true } } } }),
+    );
+
+    return { getDoc, insertDoc, updateDoc, deleteDoc, deleteAll, allDocsWithChunks } as const;
   }),
 }) {}
