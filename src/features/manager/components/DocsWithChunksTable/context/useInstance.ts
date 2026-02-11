@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/incompatible-library */
+
 // drizzle and db access
 import type { AllDocsWithChunks } from "@/features/supportAgent/db";
 
@@ -7,9 +9,9 @@ import useState from "./useState";
 import useActions from "./useActions";
 
 // components
-import { columns } from "@/features/storefront/components/customers/orders-table/Columns";
+import { columns } from "@/features/manager/components/DocsWithChunksTable/Columns";
 
-export default function useInstance(data: AllDocsWithChunks) {
+export default function useInstance(data: AllDocsWithChunks[]) {
   const table = useReactTable<AllDocsWithChunks>({
     columns,
     data,
@@ -19,18 +21,7 @@ export default function useInstance(data: AllDocsWithChunks) {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
-    state: {
-      columnVisibility: {
-        orderNumber: false,
-        created: false,
-        totalQty: false,
-        shippingMethod: false,
-        totalPaid: false,
-        status: false,
-        allNames: false,
-        allBrandNames: false,
-      },
-    },
+    state: { columnVisibility: { title: false, content: false, createdAt: false, updatedAt: false } },
   });
 
   return { table, state: useState(table), actions: useActions(table) };

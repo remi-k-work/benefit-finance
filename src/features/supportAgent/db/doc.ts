@@ -9,7 +9,7 @@ import { Effect } from "effect";
 import { SupAgentDocTable } from "@/drizzle/schema";
 
 // types
-export type AllDocsWithChunks = Effect.Effect.Success<typeof SupAgentDocDB.prototype.allDocsWithChunks>;
+export type AllDocsWithChunks = Effect.Effect.Success<typeof SupAgentDocDB.prototype.allDocsWithChunks>[number];
 
 export class SupAgentDocDB extends Effect.Service<SupAgentDocDB>()("SupAgentDocDB", {
   dependencies: [DB.Default],

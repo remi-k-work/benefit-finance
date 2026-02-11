@@ -8,7 +8,7 @@ import type useState from "./useState";
 import type useActions from "./useActions";
 
 export interface InstanceContextType {
-  allDocsWithChunks: AllDocsWithChunks;
+  allDocsWithChunks: AllDocsWithChunks[];
 
   table: Table<AllDocsWithChunks>;
   state: ReturnType<typeof useState>;
@@ -16,6 +16,6 @@ export interface InstanceContextType {
 }
 
 export interface InstanceProviderProps {
-  allDocsWithChunks: AllDocsWithChunks;
+  allDocsWithChunks: AllDocsWithChunks[];
   children: ReactNode;
 }

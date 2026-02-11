@@ -2,9 +2,9 @@
 import { TableHead } from "@/components/ui/custom/table";
 
 export default function ActionsHeader() {
-  return <TableHead className="w-(--size-9)">&nbsp;</TableHead>;
+  return <TableHead className="w-16">&nbsp;</TableHead>;
 }
 
 export function ActionsHeaderSkeleton() {
-  return <TableHead className="w-(--size-9)">&nbsp;</TableHead>;
+  return <TableHead className="w-16">&nbsp;</TableHead>;
 }
