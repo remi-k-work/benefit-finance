@@ -28,7 +28,7 @@ export default function TableView() {
 
   return (
     <Table>
-      <TableHeader className="font-sans">
+      <TableHeader className="from-background to-secondary bg-linear-to-r font-sans">
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
@@ -64,7 +64,7 @@ export default function TableView() {
 export function TableViewSkeleton() {
   return (
     <Table>
-      <TableHeader className="font-sans">
+      <TableHeader className="from-background to-secondary bg-linear-to-r font-sans">
         <TableRow>
           <TitleHeaderSkeleton />
           <CreatedAndUpdatedHeaderSkeleton />

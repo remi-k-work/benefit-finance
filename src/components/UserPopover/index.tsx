@@ -13,7 +13,7 @@ import { UserAvatar, UserAvatarSkeleton } from "@/components/Avatar/User";
 import SignOut from "./SignOut";
 
 // assets
-import { UserIcon } from "@heroicons/react/24/outline";
+import { BanknotesIcon, UserIcon } from "@heroicons/react/24/outline";
 
 // types
 import type { Session, User } from "@/services/better-auth/auth";
@@ -43,6 +43,17 @@ export default function UserPopover({ user, user: { email, name }, session, ll }
         <h4 className="mt-4 truncate text-center">{name}</h4>
         <p className="text-muted-foreground truncate text-center">{email}</p>
         <div className="mt-4 grid gap-4">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => {
+              setIsOpen(false);
+              window.location.href = "/dashboard";
+            }}
+          >
+            <BanknotesIcon className="size-9" />
+            {ll["Dashboard"]}
+          </Button>
           <Button
             type="button"
             variant="ghost"

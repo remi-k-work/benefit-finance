@@ -21,7 +21,8 @@ export default function useInstance(data: AllDocsWithChunks[]) {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
-    state: { columnVisibility: { title: false, content: false, createdAt: false, updatedAt: false }, pagination: { pageIndex: 0, pageSize: 1 } },
+
+    initialState: { columnVisibility: { title: false, content: false, createdAt: false, updatedAt: false } },
   });
 
   return { table, state: useState(table), actions: useActions(table) };

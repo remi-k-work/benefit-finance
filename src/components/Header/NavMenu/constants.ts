@@ -1,10 +1,19 @@
 // types
 import type LangLoader from "@/lib/LangLoader";
-export type NavMenuItems = ReturnType<typeof NAV_MENU_ITEMS> | typeof NAV_MENU_ITEMS_S;
+type NavMenuItem = ReturnType<typeof NAV_MENU_ITEMS>[number] | (typeof NAV_MENU_ITEMS_S)[number];
+export type NavMenuItems = readonly NavMenuItem[];
 
 // constants
 export const NAV_MENU_ITEMS = (ll: typeof LangLoader.prototype.navMenuItems) =>
   [
+    {
+      title: ll["Credits"],
+      items: [
+        { title: ll["Credits for Individuals"], href: "/credits-for-individuals", match: "^/credits-for-individuals(/.*)?$" },
+        { title: ll["Credits for Companies"], href: "/credits-for-companies", match: "^/credits-for-companies(/.*)?$" },
+      ],
+    },
+
     { title: ll["Subsidies"], href: "/subsidies", match: "^/subsidies(/.*)?$" },
     {
       title: ll["Credits"],
@@ -28,6 +37,14 @@ export const NAV_MENU_ITEMS = (ll: typeof LangLoader.prototype.navMenuItems) =>
   ] as const;
 
 export const NAV_MENU_ITEMS_S = [
+  {
+    title: "............",
+    items: [
+      { title: "............", href: "/credits-for-individuals", match: "^/credits-for-individuals(/.*)?$" },
+      { title: "............", href: "/credits-for-companies", match: "^/credits-for-companies(/.*)?$" },
+    ],
+  },
+
   { title: "............", href: "/subsidies", match: "^/subsidies(/.*)?$" },
   {
     title: "............",

@@ -7,7 +7,7 @@ import ToolBar from "./ToolBar";
 
 export default function BrowseBar() {
   return (
-    <header className="via-secondary flex flex-wrap items-center justify-around gap-4 bg-linear-to-b from-transparent to-transparent px-3 py-6">
+    <header className="from-background via-secondary to-background flex flex-wrap items-center justify-around gap-4 bg-linear-to-b px-3 py-6">
       <Search />
       <Paginate />
       <ToolBar />

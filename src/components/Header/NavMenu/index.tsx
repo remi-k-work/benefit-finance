@@ -28,11 +28,22 @@ async function NavMenuContent() {
   // Create an instance of the lang loader needed for localization
   const { navMenuItems } = await LangLoader.create();
 
-  return <NavigationMenu className="mx-auto uppercase">{renderNavMenuList(NAV_MENU_ITEMS(navMenuItems))}</NavigationMenu>;
+  const [credits, ...rest] = NAV_MENU_ITEMS(navMenuItems);
+
+  return (
+    <>
+      <NavigationMenu className="mx-auto uppercase">{renderNavMenuList([credits])}</NavigationMenu>
+      <NavigationMenu className="mx-auto uppercase">{renderNavMenuList(rest)}</NavigationMenu>
+    </>
+  );
 }
 
 export function NavMenuSkeleton() {
-  return <NavigationMenu className="mx-auto text-transparent uppercase">{renderNavMenuList(NAV_MENU_ITEMS_S)}</NavigationMenu>;
+  return (
+    <>
+      <NavigationMenu className="mx-auto text-transparent uppercase">{renderNavMenuList(NAV_MENU_ITEMS_S)}</NavigationMenu>
+    </>
+  );
 }
 
 function renderNavMenuList(items: NavMenuItems) {

@@ -16,7 +16,7 @@ export default function Search() {
   // Access the table context and retrieve all necessary information
   const {
     table,
-    state: { totalItems, keyword },
+    state: { totalItems },
   } = useInstanceContext();
 
   const searchRef = useRef<HTMLInputElement>(null);
@@ -24,16 +24,7 @@ export default function Search() {
   return (
     <section className="flex items-center gap-2">
       <Badge>{totalItems}</Badge>
-      <Input
-        ref={searchRef}
-        type="search"
-        name="search"
-        size={15}
-        maxLength={25}
-        aria-label="Search Documents"
-        placeholder="Search Documents"
-        defaultValue={keyword}
-      />
+      <Input ref={searchRef} type="search" name="search" size={15} maxLength={25} aria-label="Search Documents" placeholder="Search Documents" />
       <Button
         type="button"
         size="icon"
