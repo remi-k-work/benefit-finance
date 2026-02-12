@@ -14,7 +14,7 @@ interface TitleHeaderProps {
 
 export default function TitleHeader({ table: { getColumn } }: TitleHeaderProps) {
   return (
-    <TableHead className="w-80 text-center">
+    <TableHead className="w-80">
       <ColumnHeader column={getColumn("title")!} title="Title" />
     </TableHead>
   );
@@ -22,7 +22,7 @@ export default function TitleHeader({ table: { getColumn } }: TitleHeaderProps) 
 
 export function TitleHeaderSkeleton() {
   return (
-    <TableHead className="w-80 text-center">
+    <TableHead className="w-80">
       <ColumnHeaderSkeleton title="Title" />
     </TableHead>
   );

@@ -17,9 +17,21 @@ interface CreatedAndUpdatedCellProps {
 export default function CreatedAndUpdatedCell({ row: { getValue } }: CreatedAndUpdatedCellProps) {
   return (
     <TableCell className="text-center">
-      {DateTime.formatLocal(DateTime.unsafeFromDate(getValue("createdAt")))}
+      {DateTime.formatLocal(DateTime.unsafeFromDate(getValue("createdAt")), {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })}
       <br />
-      {DateTime.formatLocal(DateTime.unsafeFromDate(getValue("updatedAt")))}
+      {DateTime.formatLocal(DateTime.unsafeFromDate(getValue("updatedAt")), {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })}
     </TableCell>
   );
 }
@@ -27,8 +39,8 @@ export default function CreatedAndUpdatedCell({ row: { getValue } }: CreatedAndU
 export function CreatedAndUpdatedCellSkeleton() {
   return (
     <TableCell className="text-center">
-      <div className="bg-background mx-auto h-5 w-16 animate-pulse" />
-      <div className="bg-background mx-auto h-5 w-16 animate-pulse" />
+      <div className="bg-background mx-auto h-5 w-32 animate-pulse" />
+      <div className="bg-background mx-auto h-5 w-32 animate-pulse" />
     </TableCell>
   );
 }

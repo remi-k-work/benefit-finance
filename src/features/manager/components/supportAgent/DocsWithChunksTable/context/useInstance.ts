@@ -9,7 +9,7 @@ import useState from "./useState";
 import useActions from "./useActions";
 
 // components
-import { columns } from "@/features/manager/components/DocsWithChunksTable/Columns";
+import { columns } from "@/features/manager/components/supportAgent/DocsWithChunksTable/Columns";
 
 export default function useInstance(data: AllDocsWithChunks[]) {
   const table = useReactTable<AllDocsWithChunks>({
@@ -21,7 +21,7 @@ export default function useInstance(data: AllDocsWithChunks[]) {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
-    state: { columnVisibility: { title: false, content: false, createdAt: false, updatedAt: false } },
+    state: { columnVisibility: { title: false, content: false, createdAt: false, updatedAt: false }, pagination: { pageIndex: 0, pageSize: 1 } },
   });
 
   return { table, state: useState(table), actions: useActions(table) };

@@ -14,20 +14,20 @@ interface CreatedAndUpdatedHeaderProps {
 
 export default function CreatedAndUpdatedHeader({ table: { getColumn } }: CreatedAndUpdatedHeaderProps) {
   return (
-    <TableHead className="w-32 text-center">
-      <ColumnHeader column={getColumn("createdAt")!} title="Created At" />
+    <TableHead className="w-64">
+      <ColumnHeader column={getColumn("createdAt")!} title="Created At" className="mx-auto" />
       <br />
-      <ColumnHeader column={getColumn("updatedAt")!} title="Updated At" />
+      <ColumnHeader column={getColumn("updatedAt")!} title="Updated At" className="mx-auto" />
     </TableHead>
   );
 }
 
 export function CreatedAndUpdatedHeaderSkeleton() {
   return (
-    <TableHead className="w-32 text-center">
-      <ColumnHeaderSkeleton title="Created At" />
+    <TableHead className="w-64">
+      <ColumnHeaderSkeleton title="Created At" className="mx-auto" />
       <br />
-      <ColumnHeaderSkeleton title="Updated At" />
+      <ColumnHeaderSkeleton title="Updated At" className="mx-auto" />
     </TableHead>
   );
 }

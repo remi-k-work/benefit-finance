@@ -9,7 +9,8 @@ import { Effect } from "effect";
 import { runComponentMain } from "@/lib/helpersEffect";
 
 // components
-import { InstanceProvider } from "@/features/manager/components/DocsWithChunksTable/context";
+import { InstanceProvider } from "./context";
+import BrowseBar from "./BrowseBar";
 import TableView, { TableViewSkeleton } from "./TableView";
 
 const main = Effect.gen(function* () {
@@ -37,6 +38,7 @@ async function DocsWithChunksTableContent() {
 
   return (
     <InstanceProvider allDocsWithChunks={allDocsWithChunks}>
+      <BrowseBar />
       <TableView />
     </InstanceProvider>
   );

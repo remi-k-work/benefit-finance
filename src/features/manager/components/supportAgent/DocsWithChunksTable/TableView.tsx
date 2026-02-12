@@ -5,7 +5,7 @@ import { Fragment } from "react";
 
 // services, features, and other libraries
 import { flexRender } from "@tanstack/react-table";
-import { useInstanceContext } from "@/features/manager/components/DocsWithChunksTable/context";
+import { useInstanceContext } from "./context";
 
 // components
 import InfoLine from "@/components/Form/InfoLine";
@@ -16,6 +16,7 @@ import { ActionsHeaderSkeleton } from "./headers/Actions";
 import { TitleCellSkeleton } from "./cells/Title";
 import { CreatedAndUpdatedCellSkeleton } from "./cells/CreatedAndUpdated";
 import { ActionsCellSkeleton } from "./cells/Actions";
+import DocPreview from "@/features/manager/components/supportAgent/DocPreview";
 
 export default function TableView() {
   const {
@@ -48,7 +49,9 @@ export default function TableView() {
             {/* If the row is expanded, render the expanded UI as a separate row with a single cell that spans the width of the table */}
             {row.getIsExpanded() && (
               <TableRow>
-                <TableCell colSpan={row.getVisibleCells().length}>{/* <OrderDetails order={row.original} /> */}</TableCell>
+                <TableCell colSpan={row.getVisibleCells().length}>
+                  <DocPreview docWithChunks={row.original} />
+                </TableCell>
               </TableRow>
             )}
           </Fragment>

@@ -17,11 +17,11 @@ interface TitleCellProps {
 
 export default function TitleCell({ row: { getValue, getCanExpand, getToggleExpandedHandler, getIsExpanded } }: TitleCellProps) {
   return (
-    <TableCell>
-      <Button type="button" variant={getIsExpanded() ? "secondary" : "default"} disabled={!getCanExpand()} onClick={getToggleExpandedHandler()}>
+    <TableCell className="flex items-center gap-2">
+      <Button type="button" size="icon" variant={getIsExpanded() ? "secondary" : "default"} disabled={!getCanExpand()} onClick={getToggleExpandedHandler()}>
         {getIsExpanded() ? <MinusCircleIcon className="size-9" /> : <PlusCircleIcon className="size-9" />}
-        <span className="truncate">{getValue("title")}</span>
       </Button>
+      {getValue("title")}
     </TableCell>
   );
 }
@@ -29,10 +29,10 @@ export default function TitleCell({ row: { getValue, getCanExpand, getToggleExpa
 export function TitleCellSkeleton() {
   return (
     <TableCell>
-      <Button type="button" variant="default" disabled>
+      <Button type="button" size="icon" disabled>
         <PlusCircleIcon className="size-9" />
-        <span className="bg-background h-5 w-43 animate-pulse" />
       </Button>
+      <span className="bg-background h-5 w-43 animate-pulse" />
     </TableCell>
   );
 }

@@ -10,11 +10,12 @@ import type { Column } from "@tanstack/react-table";
 interface ColumnHeaderProps<TData, TValue> {
   column: Column<TData, TValue>;
   title: string;
+  className?: string;
 }
 
-export default function ColumnHeader<TData, TValue>({ column, title }: ColumnHeaderProps<TData, TValue>) {
+export default function ColumnHeader<TData, TValue>({ column, title, className }: ColumnHeaderProps<TData, TValue>) {
   return (
-    <Button type="button" variant="ghost" size="sm" onClick={column.getToggleSortingHandler()}>
+    <Button type="button" variant="ghost" onClick={column.getToggleSortingHandler()} className={className}>
       {title}
       {column.getIsSorted() ? (
         column.getIsSorted() === "asc" ? (
@@ -29,9 +30,9 @@ export default function ColumnHeader<TData, TValue>({ column, title }: ColumnHea
   );
 }
 
-export function ColumnHeaderSkeleton<TData, TValue>({ title }: Pick<ColumnHeaderProps<TData, TValue>, "title">) {
+export function ColumnHeaderSkeleton<TData, TValue>({ title, className }: Omit<ColumnHeaderProps<TData, TValue>, "column">) {
   return (
-    <Button type="button" variant="ghost" size="sm" disabled>
+    <Button type="button" variant="ghost" disabled className={className}>
       {title}
       <ArrowUpDown className="ml-2 h-4 w-4" />
     </Button>

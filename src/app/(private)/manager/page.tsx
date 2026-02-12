@@ -11,7 +11,7 @@ import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
 import ProfileInfo from "@/features/dashboard/components/ProfileInfo";
 import VerifyEmail from "@/features/dashboard/components/VerifyEmail";
-import DocsWithChunksTable, { DocsWithChunksTableSkeleton } from "@/features/manager/components/DocsWithChunksTable";
+import DocsWithChunksTable, { DocsWithChunksTableSkeleton } from "@/features/manager/components/supportAgent/DocsWithChunksTable";
 
 // types
 import type { Metadata } from "next";
