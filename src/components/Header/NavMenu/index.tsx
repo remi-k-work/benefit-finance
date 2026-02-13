@@ -7,12 +7,13 @@ import LangLoader from "@/lib/LangLoader";
 // components
 import { NavigationMenu, NavigationMenuList } from "@/components/ui/custom/navigation-menu";
 import NavMenuItem from "./NavMenuItem";
+import AdminOnly from "@/features/auth/components/AdminOnly";
 
 // types
 import type { NavMenuItems } from "@/components/Header/NavMenu/constants";
 
 // constants
-import { NAV_MENU_ITEMS, NAV_MENU_ITEMS_S } from "@/components/Header/NavMenu/constants";
+import { NAV_MENU_ITEMS } from "@/components/Header/NavMenu/constants";
 
 // Component remains the fast, static shell
 export default function NavMenu() {
@@ -28,22 +29,20 @@ async function NavMenuContent() {
   // Create an instance of the lang loader needed for localization
   const { navMenuItems } = await LangLoader.create();
 
-  const [credits, ...rest] = NAV_MENU_ITEMS(navMenuItems);
+  const [adminOnly, ...rest] = NAV_MENU_ITEMS(navMenuItems);
 
   return (
     <>
-      <NavigationMenu className="mx-auto uppercase">{renderNavMenuList([credits])}</NavigationMenu>
+      <AdminOnly>
+        <NavigationMenu className="mx-auto uppercase invert">{renderNavMenuList([adminOnly])}</NavigationMenu>
+      </AdminOnly>
       <NavigationMenu className="mx-auto uppercase">{renderNavMenuList(rest)}</NavigationMenu>
     </>
   );
 }
 
 export function NavMenuSkeleton() {
-  return (
-    <>
-      <NavigationMenu className="mx-auto text-transparent uppercase">{renderNavMenuList(NAV_MENU_ITEMS_S)}</NavigationMenu>
-    </>
-  );
+  return <div className="h-full flex-1" />;
 }
 
 function renderNavMenuList(items: NavMenuItems) {

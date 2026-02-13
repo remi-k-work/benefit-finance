@@ -6,11 +6,10 @@ import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
 import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
+import { UnauthorizedAccessError } from "@/lib/errors";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
-import ProfileInfo from "@/features/dashboard/components/ProfileInfo";
-import VerifyEmail from "@/features/dashboard/components/VerifyEmail";
 import DocsWithChunksTable, { DocsWithChunksTableSkeleton } from "@/features/manager/components/supportAgent/DocsWithChunksTable";
 
 // types
@@ -18,17 +17,19 @@ import type { Metadata } from "next";
 
 // constants
 export const metadata: Metadata = {
-  title: "Benefit Finance ► Manager",
+  title: "Benefit Finance ► Manager ► Support Agent",
 };
 
 const main = Effect.gen(function* () {
   // Access the user session data from the server side or fail with an unauthorized access error
-  // const { user, session } = yield* getUserSessionData;
+  const {
+    user: { role },
+  } = yield* getUserSessionData;
+  if (role !== "admin") return yield* new UnauthorizedAccessError({ message: "Unauthorized access" });
 
   // Create an instance of the lang loader needed for localization
-  const { dashboardPage: ll, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback } = yield* LangLoader.createEffect();
+  const { manSupportAgentPage: ll } = yield* LangLoader.createEffect();
 
-  // return { user, session, ll, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback };
   return { ll };
 });
 
@@ -44,12 +45,11 @@ export default function Page() {
 // This new async component contains the dynamic logic
 async function PageContent() {
   // Execute the main effect for the page, map known errors to the subsequent navigation helpers, and return the payload
-  // const { user, session, ll, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback } = await runPageMainOrNavigate(main);
   const { ll } = await runPageMainOrNavigate(main);
 
   return (
     <>
-      <PageHeader title={ll["Dashboard"]} description={ll["Welcome back! Below is your account overview"]} />
+      <PageHeader title={ll["Support Agent"]} description={ll["Below, you can view and manage the support agent along with its knowledge base"]} />
       <DocsWithChunksTable />
     </>
   );

@@ -34,7 +34,7 @@ export default function Message({ message: { id, role, parts }, status, ll }: Me
 
               return (
                 <p key={toolCallId} className="italic">
-                  {ll["Please wait while we fetch information from our knowledge base..."]}
+                  {ll["Please wait while I fetch information from my knowledge base..."]}
                 </p>
               );
 
