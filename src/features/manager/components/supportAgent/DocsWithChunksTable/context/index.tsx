@@ -11,9 +11,9 @@ import type { InstanceContextType, InstanceProviderProps } from "./types";
 
 const InstanceContext = createContext<InstanceContextType | undefined>(undefined);
 
-export function InstanceProvider({ allDocsWithChunks, children }: InstanceProviderProps) {
-  const { table, state, actions } = useInstance(allDocsWithChunks);
-  return <InstanceContext value={{ allDocsWithChunks, table, state, actions }}>{children}</InstanceContext>;
+export function InstanceProvider({ allDocsWithChunks, ll, children }: InstanceProviderProps) {
+  const { table, state, actions } = useInstance(allDocsWithChunks, ll);
+  return <InstanceContext value={{ allDocsWithChunks, ll, table, state, actions }}>{children}</InstanceContext>;
 }
 
 export function useInstanceContext() {

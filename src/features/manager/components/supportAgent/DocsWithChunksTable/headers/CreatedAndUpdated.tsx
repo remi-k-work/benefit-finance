@@ -7,17 +7,19 @@ import ColumnHeader, { ColumnHeaderSkeleton } from "@/components/ColumnHeader";
 
 // types
 import type { Table } from "@tanstack/react-table";
+import type LangLoader from "@/lib/LangLoader";
 
 interface CreatedAndUpdatedHeaderProps {
   table: Table<AllDocsWithChunks>;
+  ll: typeof LangLoader.prototype.manSupportAgent;
 }
 
-export default function CreatedAndUpdatedHeader({ table: { getColumn } }: CreatedAndUpdatedHeaderProps) {
+export default function CreatedAndUpdatedHeader({ table: { getColumn }, ll }: CreatedAndUpdatedHeaderProps) {
   return (
     <TableHead className="w-64">
-      <ColumnHeader column={getColumn("createdAt")!} title="Created At" className="mx-auto" />
+      <ColumnHeader column={getColumn("createdAt")!} title={ll["Created At"]} className="mx-auto" />
       <br />
-      <ColumnHeader column={getColumn("updatedAt")!} title="Updated At" className="mx-auto" />
+      <ColumnHeader column={getColumn("updatedAt")!} title={ll["Updated At"]} className="mx-auto" />
     </TableHead>
   );
 }

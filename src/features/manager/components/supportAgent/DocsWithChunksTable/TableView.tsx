@@ -20,11 +20,12 @@ import DocPreview from "@/features/manager/components/supportAgent/DocPreview";
 
 export default function TableView() {
   const {
+    ll,
     table,
     state: { totalItems },
   } = useInstanceContext();
 
-  if (totalItems === 0) return <InfoLine message="No documents have been found!" className="justify-center px-6 py-9 text-xl" />;
+  if (totalItems === 0) return <InfoLine message={ll["No documents have been found!"]} className="justify-center px-6 py-9 text-xl" />;
 
   return (
     <Table>

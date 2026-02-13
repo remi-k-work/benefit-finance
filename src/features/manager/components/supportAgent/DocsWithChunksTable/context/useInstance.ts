@@ -11,9 +11,12 @@ import useActions from "./useActions";
 // components
 import { columns } from "@/features/manager/components/supportAgent/DocsWithChunksTable/Columns";
 
-export default function useInstance(data: AllDocsWithChunks[]) {
+// types
+import type LangLoader from "@/lib/LangLoader";
+
+export default function useInstance(data: AllDocsWithChunks[], ll: typeof LangLoader.prototype.manSupportAgent) {
   const table = useReactTable<AllDocsWithChunks>({
-    columns,
+    columns: columns(ll),
     data,
     getRowCanExpand: (row) => row.original.docChunks.length > 0,
     getCoreRowModel: getCoreRowModel(),

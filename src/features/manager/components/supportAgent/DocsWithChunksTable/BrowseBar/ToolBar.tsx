@@ -1,6 +1,9 @@
 // next
 import Link from "next/link";
 
+// services, features, and other libraries
+import { useInstanceContext } from "@/features/manager/components/supportAgent/DocsWithChunksTable/context";
+
 // components
 import { Button } from "@/components/ui/custom/button";
 
@@ -8,6 +11,9 @@ import { Button } from "@/components/ui/custom/button";
 import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 
 export default function ToolBar() {
+  // Access the table context and retrieve all necessary information
+  const { ll } = useInstanceContext();
+
   return (
     <section className="flex flex-wrap items-center justify-around gap-4 *:basis-24">
       <Button
@@ -17,7 +23,7 @@ export default function ToolBar() {
         render={
           <Link href="#">
             <DocumentPlusIcon className="size-11" />
-            {"New Document".replaceAll(" ", "\n")}
+            {ll["New Document"].replaceAll(" ", "\n")}
           </Link>
         }
       ></Button>

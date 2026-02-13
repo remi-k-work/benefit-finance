@@ -43,7 +43,7 @@ async function HeaderContent() {
   return (
     <header
       className={cn(
-        "from-background via-secondary z-10 flex flex-wrap items-center gap-1 bg-linear-to-b to-transparent p-2 [grid-area:header] md:gap-4",
+        "from-background via-secondary z-10 flex flex-wrap items-center gap-3 bg-linear-to-b to-transparent p-2 [grid-area:header] md:gap-4",
         "lg:sticky lg:top-0",
       )}
     >

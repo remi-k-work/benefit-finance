@@ -15,21 +15,27 @@ import CreatedAndUpdatedCell from "./cells/CreatedAndUpdated";
 import ActionsCell from "./cells/Actions";
 
 // types
+import type LangLoader from "@/lib/LangLoader";
 import type { ColumnDef } from "@tanstack/react-table";
 
 const columnHelper = createColumnHelper<AllDocsWithChunks>();
 
-export const columns: ColumnDef<AllDocsWithChunks>[] = [
-  columnHelper.accessor("title", { sortingFn: "alphanumeric", filterFn: "includesString" }),
-  columnHelper.accessor("content", { filterFn: "includesString" }),
-  columnHelper.accessor("createdAt", { sortingFn: "datetime" }),
-  columnHelper.accessor("updatedAt", { sortingFn: "datetime" }),
+export const columns = (ll: typeof LangLoader.prototype.manSupportAgent): ColumnDef<AllDocsWithChunks>[] =>
+  [
+    columnHelper.accessor("title", { sortingFn: "alphanumeric", filterFn: "includesString" }),
+    columnHelper.accessor("content", { filterFn: "includesString" }),
+    columnHelper.accessor("createdAt", { sortingFn: "datetime" }),
+    columnHelper.accessor("updatedAt", { sortingFn: "datetime" }),
 
-  columnHelper.display({ id: "titleColumn", header: ({ table }) => <TitleHeader table={table} />, cell: ({ row }) => <TitleCell row={row} /> }),
-  columnHelper.display({
-    id: "createdAndUpdatedColumn",
-    header: ({ table }) => <CreatedAndUpdatedHeader table={table} />,
-    cell: ({ row }) => <CreatedAndUpdatedCell row={row} />,
-  }),
-  columnHelper.display({ id: "actionsColumn", header: () => <ActionsHeader />, cell: ({ row }) => <ActionsCell row={row} /> }),
-] as ColumnDef<AllDocsWithChunks, unknown>[];
+    columnHelper.display({
+      id: "titleColumn",
+      header: ({ table }) => <TitleHeader table={table} ll={ll} />,
+      cell: ({ row }) => <TitleCell row={row} ll={ll} />,
+    }),
+    columnHelper.display({
+      id: "createdAndUpdatedColumn",
+      header: ({ table }) => <CreatedAndUpdatedHeader table={table} ll={ll} />,
+      cell: ({ row }) => <CreatedAndUpdatedCell row={row} />,
+    }),
+    columnHelper.display({ id: "actionsColumn", header: () => <ActionsHeader />, cell: ({ row }) => <ActionsCell row={row} ll={ll} /> }),
+  ] as ColumnDef<AllDocsWithChunks, unknown>[];

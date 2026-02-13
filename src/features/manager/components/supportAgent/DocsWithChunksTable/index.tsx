@@ -6,6 +6,7 @@ import { SupAgentDocDB } from "@/features/supportAgent/db";
 
 // services, features, and other libraries
 import { Effect } from "effect";
+import LangLoader from "@/lib/LangLoader";
 import { runComponentMain } from "@/lib/helpersEffect";
 
 // components
@@ -19,7 +20,10 @@ const main = Effect.gen(function* () {
   // Get all documents with their corresponding chunks (used by the tanstack table)
   const allDocsWithChunks = yield* supAgentDocDB.allDocsWithChunks;
 
-  return { allDocsWithChunks };
+  // Create an instance of the lang loader needed for localization
+  const { manSupportAgent: ll } = yield* LangLoader.createEffect();
+
+  return { allDocsWithChunks, ll };
 });
 
 // Component remains the fast, static shell
@@ -34,10 +38,10 @@ export default function DocsWithChunksTable() {
 // This new async component contains the dynamic logic
 async function DocsWithChunksTableContent() {
   // Execute the main effect for the component, handle known errors, and return the payload
-  const { allDocsWithChunks } = await runComponentMain(main);
+  const { allDocsWithChunks, ll } = await runComponentMain(main);
 
   return (
-    <InstanceProvider allDocsWithChunks={allDocsWithChunks}>
+    <InstanceProvider allDocsWithChunks={allDocsWithChunks} ll={ll}>
       <BrowseBar />
       <TableView />
     </InstanceProvider>

@@ -11,24 +11,25 @@ import { ArrowLeftCircleIcon, ArrowRightCircleIcon, CheckIcon } from "@heroicons
 export default function Paginate() {
   // Access the table context and retrieve all necessary information
   const {
+    ll,
     table,
     state: { currentPage, totalPages },
   } = useInstanceContext();
 
   return (
     <section className="flex items-center gap-2">
-      <Button type="button" size="icon" variant="ghost" title="Previous Page" disabled={!table.getCanPreviousPage()} onClick={() => table.previousPage()}>
+      <Button type="button" size="icon" variant="ghost" title={ll["Previous Page"]} disabled={!table.getCanPreviousPage()} onClick={() => table.previousPage()}>
         <ArrowLeftCircleIcon className="size-9" />
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger
           render={
             totalPages <= 1 ? (
-              <Button type="button" variant="ghost" title="Change Page" disabled>
+              <Button type="button" variant="ghost" title={ll["Change Page"]} disabled>
                 {currentPage}&nbsp;/&nbsp;{currentPage}
               </Button>
             ) : (
-              <Button type="button" variant="ghost" title="Change Page">
+              <Button type="button" variant="ghost" title={ll["Change Page"]}>
                 {currentPage}&nbsp;/&nbsp;{totalPages}
               </Button>
             )
@@ -51,7 +52,7 @@ export default function Paginate() {
             )}
         </DropdownMenuContent>
       </DropdownMenu>
-      <Button type="button" size="icon" variant="ghost" title="Next Page" disabled={!table.getCanNextPage()} onClick={() => table.nextPage()}>
+      <Button type="button" size="icon" variant="ghost" title={ll["Next Page"]} disabled={!table.getCanNextPage()} onClick={() => table.nextPage()}>
         <ArrowRightCircleIcon className="size-9" />
       </Button>
     </section>
