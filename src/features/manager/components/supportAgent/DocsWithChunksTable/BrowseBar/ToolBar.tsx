@@ -21,7 +21,7 @@ export default function ToolBar() {
         nativeButton={false}
         className="flex-col text-center whitespace-pre-line"
         render={
-          <Link href="#">
+          <Link href="/manager/support-agent/new">
             <DocumentPlusIcon className="size-11" />
             {ll["New Document"].replaceAll(" ", "\n")}
           </Link>
