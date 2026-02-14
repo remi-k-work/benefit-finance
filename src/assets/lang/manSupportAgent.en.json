@@ -14,5 +14,14 @@
   "No documents have been found!": "No documents have been found!",
   "Are you sure you want to": "Are you sure you want to",
   "delete": "delete",
-  "this document?": "this document?"
+  "this document?": "this document?",
+  "[NEW DOCUMENT]": "[NEW DOCUMENT]",
+  "The new document has been created.": "The new document has been created.",
+  "To create a new document for the support agent": "To create a new document for the support agent",
+  "e.g., About Benefit Finance": "e.g., About Benefit Finance",
+  "Content": "Content",
+  "e.g., Benefit Finance is a holistic wealth management company founded on the belief that financial freedom should be accessible to everyone.": "e.g., Benefit Finance is a holistic wealth management company founded on the belief that financial freedom should be accessible to everyone.",
+  "Create New Document": "Create New Document",
+  "Clear Form": "Clear Form",
+  "Cancel and Go Back": "Cancel and Go Back"
 }

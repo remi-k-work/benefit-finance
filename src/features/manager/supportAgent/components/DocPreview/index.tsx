@@ -4,8 +4,8 @@ import type { AllDocsWithChunks } from "@/features/supportAgent/db";
 // components
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
 import { MessageResponse } from "@/components/ai-elements/custom/message";
-import CreatedAt from "@/features/manager/components/supportAgent/CreatedAt";
-import UpdatedAt from "@/features/manager/components/supportAgent/UpdatedAt";
+import CreatedAt from "@/features/manager/supportAgent/components/CreatedAt";
+import UpdatedAt from "@/features/manager/supportAgent/components/UpdatedAt";
 import ChunkPreview from "./ChunkPreview";
 
 // types

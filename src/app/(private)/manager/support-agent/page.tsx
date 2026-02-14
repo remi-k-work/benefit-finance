@@ -10,7 +10,7 @@ import { UnauthorizedAccessError } from "@/lib/errors";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
-import DocsWithChunksTable, { DocsWithChunksTableSkeleton } from "@/features/manager/components/supportAgent/DocsWithChunksTable";
+import DocsWithChunksTable, { DocsWithChunksTableSkeleton } from "@/features/manager/supportAgent/components/DocsWithChunksTable";
 
 // types
 import type { Metadata } from "next";

@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 // services, features, and other libraries
-import { useInstanceContext } from "@/features/manager/components/supportAgent/DocsWithChunksTable/context";
+import { useInstanceContext } from "@/features/manager/supportAgent/components/DocsWithChunksTable/context";
 
 // components
 import { Button } from "@/components/ui/custom/button";

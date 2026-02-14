@@ -9,7 +9,7 @@ import useState from "./useState";
 import useActions from "./useActions";
 
 // components
-import { columns } from "@/features/manager/components/supportAgent/DocsWithChunksTable/Columns";
+import { columns } from "@/features/manager/supportAgent/components/DocsWithChunksTable/Columns";
 
 // types
 import type LangLoader from "@/lib/LangLoader";

@@ -16,7 +16,7 @@ import { ActionsHeaderSkeleton } from "./headers/Actions";
 import { TitleCellSkeleton } from "./cells/Title";
 import { CreatedAndUpdatedCellSkeleton } from "./cells/CreatedAndUpdated";
 import { ActionsCellSkeleton } from "./cells/Actions";
-import DocPreview from "@/features/manager/components/supportAgent/DocPreview";
+import DocPreview from "@/features/manager/supportAgent/components/DocPreview";
 
 export default function TableView() {
   const {

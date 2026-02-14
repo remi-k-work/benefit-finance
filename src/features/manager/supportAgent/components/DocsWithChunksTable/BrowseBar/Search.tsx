@@ -2,7 +2,7 @@
 import { useRef } from "react";
 
 // services, features, and other libraries
-import { useInstanceContext } from "@/features/manager/components/supportAgent/DocsWithChunksTable/context";
+import { useInstanceContext } from "@/features/manager/supportAgent/components/DocsWithChunksTable/context";
 
 // components
 import { Badge } from "@/components/ui/custom/badge";

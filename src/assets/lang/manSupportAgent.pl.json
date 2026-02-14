@@ -14,5 +14,14 @@
   "No documents have been found!": "Nie znaleziono żadnych dokumentów!",
   "Are you sure you want to": "Czy jesteś pewien, że chcesz",
   "delete": "usunąć",
-  "this document?": "ten dokument?"
+  "this document?": "ten dokument?",
+  "[NEW DOCUMENT]": "[NOWY DOKUMENT]",
+  "The new document has been created.": "Nowy dokument został utworzony.",
+  "To create a new document for the support agent": "Aby utworzyć nowy dokument dla agenta wsparcia",
+  "e.g., About Benefit Finance": "np. Informacje o Benefit Finance",
+  "Content": "Treść Dokumentu",
+  "e.g., Benefit Finance is a holistic wealth management company founded on the belief that financial freedom should be accessible to everyone.": "np. Benefit Finance to kompleksowa firma zajmująca się zarządzaniem majątkiem, której podstawą jest przekonanie, że wolność finansowa powinna być dostępna dla każdego.",
+  "Create New Document": "Utwórz Nowy Dokument",
+  "Clear Form": "Wyczyść Formularz",
+  "Cancel and Go Back": "Anuluj i Wróć"
 }
