@@ -9,9 +9,11 @@ import { createColumnHelper } from "@tanstack/react-table";
 // components
 import TitleHeader from "./headers/Title";
 import CreatedAndUpdatedHeader from "./headers/CreatedAndUpdated";
+import ChunksHeader from "./headers/Chunks";
 import ActionsHeader from "./headers/Actions";
 import TitleCell from "./cells/Title";
 import CreatedAndUpdatedCell from "./cells/CreatedAndUpdated";
+import ChunksCell from "./cells/Chunks";
 import ActionsCell from "./cells/Actions";
 
 // types
@@ -26,6 +28,7 @@ export const columns = (ll: typeof LangLoader.prototype.manSupportAgent): Column
     columnHelper.accessor("content", { filterFn: "includesString" }),
     columnHelper.accessor("createdAt", { sortingFn: "datetime" }),
     columnHelper.accessor("updatedAt", { sortingFn: "datetime" }),
+    columnHelper.accessor("chunkCount", {}),
 
     columnHelper.display({
       id: "titleColumn",
@@ -37,5 +40,6 @@ export const columns = (ll: typeof LangLoader.prototype.manSupportAgent): Column
       header: ({ table }) => <CreatedAndUpdatedHeader table={table} ll={ll} />,
       cell: ({ row }) => <CreatedAndUpdatedCell row={row} />,
     }),
+    columnHelper.display({ id: "chunksColumn", header: ({ table }) => <ChunksHeader table={table} ll={ll} />, cell: ({ row }) => <ChunksCell row={row} /> }),
     columnHelper.display({ id: "actionsColumn", header: () => <ActionsHeader />, cell: ({ row }) => <ActionsCell row={row} ll={ll} /> }),
   ] as ColumnDef<AllDocsWithChunks, unknown>[];

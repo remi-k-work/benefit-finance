@@ -1,6 +1,9 @@
 // react
 import { useRef } from "react";
 
+// next
+import Form from "next/form";
+
 // services, features, and other libraries
 import { useInstanceContext } from "@/features/manager/supportAgent/components/DocsWithChunksTable/context";
 
@@ -23,11 +26,11 @@ export default function Search() {
   const searchRef = useRef<HTMLInputElement>(null);
 
   return (
-    <section className="flex items-center gap-2">
+    <Form action="/manager/support-agent" className="flex items-center gap-2">
       <Badge>{totalItems}</Badge>
       <Input ref={searchRef} type="search" name="search" size={15} maxLength={25} aria-label={ll["Search Documents"]} placeholder={ll["Search Documents"]} />
       <Button
-        type="button"
+        type="submit"
         size="icon"
         onClick={() => {
           table.resetColumnFilters();
@@ -36,6 +39,6 @@ export default function Search() {
       >
         <MagnifyingGlassIcon className="size-11" />
       </Button>
-    </section>
+    </Form>
   );
 }

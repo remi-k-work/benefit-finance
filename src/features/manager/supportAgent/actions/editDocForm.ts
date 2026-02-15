@@ -10,14 +10,14 @@ import LangLoader from "@/lib/LangLoader";
 import { runServerActionMain } from "@/lib/helpersEffect";
 import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
 import { initialFormState } from "@tanstack/react-form-nextjs";
-import { SERVER_VALIDATE_EN, SERVER_VALIDATE_PL } from "@/features/manager/supportAgent/constants/newDocForm";
+import { SERVER_VALIDATE_EN, SERVER_VALIDATE_PL } from "@/features/manager/supportAgent/constants/editDocForm";
 import { generateDocEmbeddings } from "@/features/supportAgent/lib/embeddings";
 import { DemoModeError } from "@/lib/errors";
 
 // types
 import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
-const main = (formData: FormData) =>
+const main = (docId: string, formData: FormData) =>
   Effect.gen(function* () {
     // Access the user session data from the server side or fail with an unauthorized access error
     const {
@@ -42,8 +42,10 @@ const main = (formData: FormData) =>
 
     // Run all db operations in a transaction
     yield* db.transaction(
-      // Insert a new document, and insert multiple new chunks for a document
-      supAgentDocDB.insertDoc({ title, content }).pipe(Effect.andThen(([{ id }]) => supAgentChunkDB.insertChunks(id, docEmbeddings))),
+      // Update a document, delete all chunks for a document, and insert multiple new chunks for a document
+      supAgentDocDB
+        .updateDoc(docId, { title, content })
+        .pipe(Effect.andThen(supAgentChunkDB.deleteChunks(docId)), Effect.andThen(supAgentChunkDB.insertChunks(docId, docEmbeddings))),
     );
 
     // The form has successfully validated and submitted!
@@ -51,7 +53,7 @@ const main = (formData: FormData) =>
   });
 
 // The main server action that processes the form
-export default async function newDoc(_prevState: unknown, formData: FormData): Promise<ActionResultWithFormState> {
+export default async function editDoc(docId: string, _prevState: unknown, formData: FormData): Promise<ActionResultWithFormState> {
   // Execute the main effect for the server action, handle known errors, and return the payload
-  return await runServerActionMain(main(formData));
+  return await runServerActionMain(main(docId, formData));
 }

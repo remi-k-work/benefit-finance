@@ -16,7 +16,7 @@ import type { AnyFormApi } from "@tanstack/react-form";
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this form actions
-export default function useNewDocFormFeedback(
+export default function useEditDocFormFeedback(
   hasPressedSubmitRef: RefObject<boolean>,
   { actionStatus, errors }: ActionResultWithFormState,
   reset: () => void,
@@ -28,7 +28,7 @@ export default function useNewDocFormFeedback(
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedback(formStore);
 
   // Generic hook for displaying toast notifications for form actions
-  const showToast = useFormToastFeedback(ll["[NEW DOCUMENT]"], { succeeded: ll["The new document has been created."] }, llFormToastFeedback);
+  const showToast = useFormToastFeedback(ll["[EDIT DOCUMENT]"], { succeeded: ll["The document has been updated."] }, llFormToastFeedback);
 
   // Custom hook that observes an action's status and automatically opens the global demo mode modal
   const guardForDemoMode = useDemoModeGuard(actionStatus);
@@ -43,7 +43,7 @@ export default function useNewDocFormFeedback(
       reset();
 
       // Show the permanent feedback message as well
-      showFeedbackMessage(ll["The new document has been created."]);
+      showFeedbackMessage(ll["The document has been updated."]);
 
       // Redirect the user back to the browse page
       return setTimeout(() => redirect("/manager/support-agent"), 3000);

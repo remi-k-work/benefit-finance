@@ -5,45 +5,50 @@
 // react
 import { useActionState, useEffect, useRef } from "react";
 
+// drizzle and db access
+import type { Doc } from "@/features/supportAgent/db";
+
 // server actions and mutations
-import newDoc from "@/features/manager/supportAgent/actions/newDocForm";
+import editDoc from "@/features/manager/supportAgent/actions/editDocForm";
 
 // services, features, and other libraries
 import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { NewDocFormSchemaEn, NewDocFormSchemaPl } from "@/features/manager/supportAgent/schemas/newDocForm";
-import useNewDocFormFeedback from "@/features/manager/supportAgent/hooks/feedbacks/useNewDocForm";
+import { EditDocFormSchemaEn, EditDocFormSchemaPl } from "@/features/manager/supportAgent/schemas/editDocForm";
+import useEditDocFormFeedback from "@/features/manager/supportAgent/hooks/feedbacks/useEditDocForm";
 
 // components
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
 import InfoLine from "@/components/Form/InfoLine";
 
 // assets
-import { DocumentPlusIcon } from "@heroicons/react/24/outline";
+import { DocumentTextIcon } from "@heroicons/react/24/outline";
 
 // types
 import type { Lang } from "@/lib/LangLoader";
 import type LangLoader from "@/lib/LangLoader";
 import type { MDXEditorMethods } from "@mdxeditor/editor";
 
-interface NewDocFormProps {
+interface EditDocFormProps {
+  doc: Doc;
   preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.manSupportAgent;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
 // constants
-import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/manager/supportAgent/constants/newDocForm";
+import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/manager/supportAgent/constants/editDocForm";
 
-export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback }: NewDocFormProps) {
+export default function EditDocForm({ doc: { id: docId, title, content }, preferredLanguage, ll, llFormToastFeedback }: EditDocFormProps) {
   // Create a ref to the editor component
   const markdownFieldRef = useRef<MDXEditorMethods>(null);
 
   // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(newDoc, INITIAL_FORM_STATE);
+  const [formState, formAction, isPending] = useActionState(editDoc.bind(null, docId), INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS,
+    defaultValues: { ...FORM_OPTIONS.defaultValues, title, content, markdown: content },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
   });
 
@@ -59,7 +64,7 @@ export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback 
   }, []);
 
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useNewDocFormFeedback(
+  const { feedbackMessage, hideFeedbackMessage } = useEditDocFormFeedback(
     hasPressedSubmitRef,
     formState,
     () => {
@@ -82,13 +87,15 @@ export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback 
       >
         <Card className="max-w-4xl">
           <CardHeader>
-            <CardTitle>{ll["New Document"]}</CardTitle>
-            <CardDescription>{ll["To create a new document for the support agent"]}</CardDescription>
+            <CardTitle>{ll["Edit Document"]}</CardTitle>
+            <CardDescription>{ll["To edit an existing document for the support agent"]}</CardDescription>
           </CardHeader>
           <CardContent>
             <AppField
               name="title"
-              validators={{ onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? NewDocFormSchemaEn.fields.title : NewDocFormSchemaPl.fields.title) }}
+              validators={{
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? EditDocFormSchemaEn.fields.title : EditDocFormSchemaPl.fields.title),
+              }}
               children={(field) => (
                 <field.TextField label={ll["Title"]} size={40} maxLength={51} spellCheck autoComplete="off" placeholder={ll["e.g., About Benefit Finance"]} />
               )}
@@ -113,7 +120,7 @@ export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback 
             <AppField
               name="content"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? NewDocFormSchemaEn.fields.content : NewDocFormSchemaPl.fields.content),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? EditDocFormSchemaEn.fields.content : EditDocFormSchemaPl.fields.content),
               }}
               children={(field) => (
                 <field.TextAreaField
@@ -135,8 +142,8 @@ export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback 
           <CardFooter>
             <InfoLine message={feedbackMessage} />
             <FormSubmit
-              submitIcon={<DocumentPlusIcon className="size-9" />}
-              submitText={ll["Create New Document"]}
+              submitIcon={<DocumentTextIcon className="size-9" />}
+              submitText={ll["Edit Document"]}
               resetText={ll["Clear Form"]}
               cancelText={ll["Cancel and Go Back"]}
               isPending={isPending}

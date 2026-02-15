@@ -9,7 +9,7 @@ import { TableCell } from "@/components/ui/custom/table";
 import { Button } from "@/components/ui/custom/button";
 
 // assets
-import { XCircleIcon } from "@heroicons/react/24/outline";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 // types
 import type { Row } from "@tanstack/react-table";
@@ -42,7 +42,7 @@ export default function ActionsCell({ row, ll }: ActionsCellProps) {
           });
         }}
       >
-        <XCircleIcon className="size-9" />
+        <TrashIcon className="size-9" />
       </Button>
     </TableCell>
   );
@@ -52,7 +52,7 @@ export function ActionsCellSkeleton() {
   return (
     <TableCell>
       <Button type="button" size="icon" variant="destructive" title="Delete Document" disabled>
-        <XCircleIcon className="size-9" />
+        <TrashIcon className="size-9" />
       </Button>
     </TableCell>
   );

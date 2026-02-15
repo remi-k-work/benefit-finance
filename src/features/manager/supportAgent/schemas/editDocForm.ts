@@ -1,7 +1,7 @@
 // services, features, and other libraries
 import { Schema } from "effect";
 
-export const NewDocFormSchemaEn = Schema.Struct({
+export const EditDocFormSchemaEn = Schema.Struct({
   title: Schema.Trim.pipe(
     Schema.nonEmptyString({ message: () => "Please provide the document title; this is a necessary field" }),
     Schema.maxLength(50, { message: () => "Please keep the title to a maximum of 50 characters" }),
@@ -13,7 +13,7 @@ export const NewDocFormSchemaEn = Schema.Struct({
   markdown: Schema.optional(Schema.Trim.pipe(Schema.nonEmptyString())),
 });
 
-export const NewDocFormSchemaPl = Schema.Struct({
+export const EditDocFormSchemaPl = Schema.Struct({
   title: Schema.Trim.pipe(
     Schema.nonEmptyString({ message: () => "Proszę podać tytuł dokumentu, jest to pole obowiązkowe" }),
     Schema.maxLength(50, { message: () => "Proszę zachować tytuł o maksymalnej długości 50 znaków" }),

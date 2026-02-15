@@ -25,7 +25,7 @@ export default function useInstance(data: AllDocsWithChunks[], ll: typeof LangLo
     getSortedRowModel: getSortedRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
 
-    initialState: { columnVisibility: { title: false, content: false, createdAt: false, updatedAt: false } },
+    initialState: { columnVisibility: { title: false, content: false, createdAt: false, updatedAt: false, chunkCount: false } },
   });
 
   return { table, state: useState(table), actions: useActions(table) };

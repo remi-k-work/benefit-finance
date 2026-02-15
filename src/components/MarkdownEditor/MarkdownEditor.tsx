@@ -6,8 +6,29 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 
 // components
-import { BlockTypeSelect, BoldItalicUnderlineToggles, CodeToggle, InsertThematicBreak, ListsToggle, MDXEditor, Separator, UndoRedo } from "@mdxeditor/editor";
-import { diffSourcePlugin, headingsPlugin, listsPlugin, markdownShortcutPlugin, quotePlugin, thematicBreakPlugin, toolbarPlugin } from "@mdxeditor/editor";
+import {
+  BlockTypeSelect,
+  BoldItalicUnderlineToggles,
+  CodeToggle,
+  CreateLink,
+  DiffSourceToggleWrapper,
+  InsertThematicBreak,
+  ListsToggle,
+  MDXEditor,
+  Separator,
+  UndoRedo,
+} from "@mdxeditor/editor";
+import {
+  diffSourcePlugin,
+  headingsPlugin,
+  linkPlugin,
+  linkDialogPlugin,
+  listsPlugin,
+  markdownShortcutPlugin,
+  quotePlugin,
+  thematicBreakPlugin,
+  toolbarPlugin,
+} from "@mdxeditor/editor";
 
 // types
 import type { MDXEditorMethods, MDXEditorProps } from "@mdxeditor/editor";
@@ -35,10 +56,12 @@ export default function MarkdownEditor({ ref, className, ...props }: MarkdownEdi
         listsPlugin(),
         thematicBreakPlugin(),
         markdownShortcutPlugin(),
+        linkPlugin(),
+        linkDialogPlugin(),
         diffSourcePlugin({ viewMode: "rich-text", diffMarkdown: "", readOnlyDiff: true }),
         toolbarPlugin({
           toolbarContents: () => (
-            <>
+            <DiffSourceToggleWrapper>
               <UndoRedo />
               <Separator />
               <BlockTypeSelect />
@@ -47,8 +70,10 @@ export default function MarkdownEditor({ ref, className, ...props }: MarkdownEdi
               <Separator />
               <ListsToggle />
               <Separator />
+              <CreateLink />
+              <Separator />
               <InsertThematicBreak />
-            </>
+            </DiffSourceToggleWrapper>
           ),
         }),
       ]}

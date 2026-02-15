@@ -12,9 +12,11 @@ import InfoLine from "@/components/Form/InfoLine";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/custom/table";
 import { TitleHeaderSkeleton } from "./headers/Title";
 import { CreatedAndUpdatedHeaderSkeleton } from "./headers/CreatedAndUpdated";
+import { ChunksHeaderSkeleton } from "./headers/Chunks";
 import { ActionsHeaderSkeleton } from "./headers/Actions";
 import { TitleCellSkeleton } from "./cells/Title";
 import { CreatedAndUpdatedCellSkeleton } from "./cells/CreatedAndUpdated";
+import { ChunksCellSkeleton } from "./cells/Chunks";
 import { ActionsCellSkeleton } from "./cells/Actions";
 import DocPreview from "@/features/manager/supportAgent/components/DocPreview";
 
@@ -69,6 +71,7 @@ export function TableViewSkeleton() {
         <TableRow>
           <TitleHeaderSkeleton />
           <CreatedAndUpdatedHeaderSkeleton />
+          <ChunksHeaderSkeleton />
           <ActionsHeaderSkeleton />
         </TableRow>
       </TableHeader>
@@ -76,31 +79,37 @@ export function TableViewSkeleton() {
         <TableRow className="bg-background">
           <TitleCellSkeleton />
           <CreatedAndUpdatedCellSkeleton />
+          <ChunksCellSkeleton />
           <ActionsCellSkeleton />
         </TableRow>
         <TableRow className="bg-muted">
           <TitleCellSkeleton />
           <CreatedAndUpdatedCellSkeleton />
+          <ChunksCellSkeleton />
           <ActionsCellSkeleton />
         </TableRow>
         <TableRow className="bg-background">
           <TitleCellSkeleton />
           <CreatedAndUpdatedCellSkeleton />
+          <ChunksCellSkeleton />
           <ActionsCellSkeleton />
         </TableRow>
         <TableRow className="bg-muted">
           <TitleCellSkeleton />
           <CreatedAndUpdatedCellSkeleton />
+          <ChunksCellSkeleton />
           <ActionsCellSkeleton />
         </TableRow>
         <TableRow className="bg-background">
           <TitleCellSkeleton />
           <CreatedAndUpdatedCellSkeleton />
+          <ChunksCellSkeleton />
           <ActionsCellSkeleton />
         </TableRow>
         <TableRow className="bg-muted">
           <TitleCellSkeleton />
           <CreatedAndUpdatedCellSkeleton />
+          <ChunksCellSkeleton />
           <ActionsCellSkeleton />
         </TableRow>
       </TableBody>

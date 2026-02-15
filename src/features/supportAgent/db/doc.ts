@@ -1,14 +1,15 @@
 // drizzle and db access
 import { DB } from "@/drizzle/dbEffect";
-import { asc, eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 
 // services, features, and other libraries
 import { Effect } from "effect";
 
 // all table definitions (their schemas)
-import { SupAgentDocTable } from "@/drizzle/schema";
+import { SupAgentChunkTable, SupAgentDocTable } from "@/drizzle/schema";
 
 // types
+export type Doc = Exclude<Effect.Effect.Success<ReturnType<typeof SupAgentDocDB.prototype.getDoc>>, undefined>;
 export type AllDocsWithChunks = Effect.Effect.Success<typeof SupAgentDocDB.prototype.allDocsWithChunks>[number];
 
 export class SupAgentDocDB extends Effect.Service<SupAgentDocDB>()("SupAgentDocDB", {
@@ -36,7 +37,16 @@ export class SupAgentDocDB extends Effect.Service<SupAgentDocDB>()("SupAgentDocD
 
     // Get all documents with their corresponding chunks (used by the tanstack table)
     const allDocsWithChunks = execute((dbOrTx) =>
-      dbOrTx.query.SupAgentDocTable.findMany({ orderBy: asc(SupAgentDocTable.title), with: { docChunks: { columns: { chunk: true } } } }),
+      dbOrTx.query.SupAgentDocTable.findMany({
+        orderBy: desc(SupAgentDocTable.updatedAt),
+        with: { docChunks: { columns: { chunk: true } } },
+        extras: {
+          // We use a subquery to count chunks where the foreign key matches
+          chunkCount: sql<number>`(SELECT count(*) FROM ${SupAgentChunkTable} as "chunks" WHERE "chunks"."doc_id" = ${SupAgentDocTable.id})`
+            .mapWith(Number)
+            .as("chunk_count"),
+        },
+      }),
     );
 
     return { getDoc, insertDoc, updateDoc, deleteDoc, deleteAll, allDocsWithChunks } as const;

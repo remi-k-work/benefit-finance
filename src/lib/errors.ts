@@ -6,7 +6,11 @@ export class AiSdkError extends Data.TaggedError("AiSdkError")<{ readonly messag
 
 // Define a domain error for the unauthorized access
 export class UnauthorizedAccessError extends Data.TaggedError("UnauthorizedAccessError")<{ readonly message: string; readonly cause?: unknown }> {}
+export class DemoModeError extends Data.TaggedError("DemoModeError")<{ readonly message: string; readonly cause?: unknown }> {}
 
 // Define a domain error for invalid page inputs and situations where an item is not found
 export class InvalidPageInputsError extends Data.TaggedError("InvalidPageInputsError")<{ readonly message: string; readonly cause?: unknown }> {}
 export class ItemNotFoundError extends Data.TaggedError("ItemNotFoundError")<{ readonly message: string; readonly cause?: unknown }> {}
+
+// Define a domain error for server validation, particularly for use during form validation
+export class ValidationHasFailedError extends Data.TaggedError("ValidationHasFailedError")<{ readonly message: string; readonly cause?: unknown }> {}
