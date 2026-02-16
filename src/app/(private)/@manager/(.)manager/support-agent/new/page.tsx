@@ -10,7 +10,6 @@ import { UnauthorizedAccessError } from "@/lib/errors";
 
 // components
 import ManagerModal from "@/components/ManagerModal";
-import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
 import NewDocForm from "@/features/manager/supportAgent/components/NewDocForm";
 
 // assets
@@ -32,7 +31,7 @@ const main = Effect.gen(function* () {
 // Page remains the fast, static shell
 export default function Page() {
   return (
-    <Suspense fallback={<PageSkeleton />}>
+    <Suspense>
       <PageContent />
     </Suspense>
   );
@@ -45,19 +44,7 @@ async function PageContent() {
 
   return (
     <ManagerModal icon={<DocumentPlusIcon className="size-11 flex-none" />} title={ll["Support Agent ► New Document"]}>
-      <PageHeader
-        title={ll["Support Agent ► New Document"]}
-        description={ll["Use the form below to create a new document that will be added to the support agent knowledge base"]}
-      />
       <NewDocForm preferredLanguage={preferredLanguage} ll={manSupportAgent} llFormToastFeedback={formToastFeedback} />
     </ManagerModal>
-  );
-}
-
-function PageSkeleton() {
-  return (
-    <>
-      <PageHeaderSkeleton />
-    </>
   );
 }

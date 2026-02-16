@@ -28,8 +28,8 @@ async function LayoutContent({ manager, children }: LayoutProps<"/">) {
     <>
       <Header />
       <main className="mx-4 [grid-area:main]">
-        {manager}
         {children}
+        {manager}
       </main>
       <ConfirmModalRoot ll={confirmModal} />
       <DemoModeModalRoot ll={demoModeModal} />

@@ -100,8 +100,8 @@ A budgeting technique recommended by Benefit Finance:
 A legal obligation to act in the best interest of another party. Benefit Finance and its CFPs are fiduciaries, meaning we are legally bound to put your financial interests ahead of our own.`,
   },
   {
-    title: "Frequently Asked Questions (FAQ)",
-    content: `# Frequently Asked Questions (FAQ)
+    title: "Frequently Asked Questions (FAQ) Part 1",
+    content: `# Frequently Asked Questions (FAQ) Part 1
 
 ## General
 
@@ -140,7 +140,11 @@ No. Benefit Finance uses transparent flat-fee pricing with zero trading commissi
 ## Investing & Taxes
 
 ### Can Benefit Finance help me reduce my taxes?
-Yes. Our Plus and Private Client plans include automated tax-loss harvesting, retirement contribution optimization, and personalized tax insights designed to reduce your taxable income over time.
+Yes. Our Plus and Private Client plans include automated tax-loss harvesting, retirement contribution optimization, and personalized tax insights designed to reduce your taxable income over time.`,
+  },
+  {
+    title: "Frequently Asked Questions (FAQ) Part 2",
+    content: `# Frequently Asked Questions (FAQ) Part 2
 
 ### Do I need investing experience to use Benefit Finance?
 Not at all. Our WealthGrow robo-advisor automatically builds and manages a diversified portfolio based on your goals and risk tolerance — no experience required.
@@ -178,7 +182,11 @@ You can reach us anytime via:
 Or visit our contact page here: [Contact Us](/contact-us)
 
 ### What are your customer support hours?
-AI chat support is available 24/7. Human support agents are available Monday–Friday, 9:00 AM–6:00 PM CST.
+AI chat support is available 24/7. Human support agents are available Monday–Friday, 9:00 AM–6:00 PM CST.`,
+  },
+  {
+    title: "Frequently Asked Questions (FAQ) Part 3",
+    content: `# Frequently Asked Questions (FAQ) Part 3
 
 ### Do you offer financial advisors?
 Yes. Private Client members get unlimited access to Certified Financial Planners (CFPs) for personalized advice on investments, taxes, estate planning, and major life decisions.
@@ -205,5 +213,217 @@ No. We never sell customer data. Your financial information is private and prote
 
 ### What makes Benefit Finance different from other finance apps?
 Unlike single-purpose apps, Benefit Finance unifies budgeting, investing, tax optimization, estate planning, and human financial advice into one intelligent platform — helping users move from paycheck management to long-term wealth building.`,
+  },
+  {
+    title: "Account Management & Settings",
+    content: `# Account Management & Settings
+
+## Profile Management
+
+### How do I update my personal information?
+You can update your name, address, phone number, and employment details directly from:
+**Dashboard → Settings → Profile**
+
+Changes to legal name or tax status may require identity verification documents.
+
+### How do I reset my password?
+Click "Forgot Password" on the login page and follow the secure reset instructions sent to your registered email address.
+
+### Can I enable two-factor authentication (2FA)?
+Yes. We strongly recommend enabling 2FA under:
+**Settings → Security → Two-Factor Authentication**
+
+We support:
+- SMS verification
+- Authenticator apps (recommended)
+- Biometric login on supported devices
+
+## Account Connections
+
+### Which banks can I connect?
+Benefit Finance supports 12,000+ financial institutions globally through secure API integrations.
+
+### What if my bank connection fails?
+First, try refreshing the connection under:
+**Accounts → Manage Connections → Reconnect**
+
+If the issue persists:
+- Confirm your bank credentials are correct
+- Check if your bank is undergoing maintenance
+- Contact support for assistance
+
+## Closing Your Account
+
+### How do I delete my account?
+You may request account deletion by:
+1. Withdrawing or transferring all funds.
+2. Navigating to **Settings → Account → Close Account**
+3. Confirming via email verification.
+
+Account deletion is permanent and cannot be undone.`,
+  },
+  {
+    title: "Retirement Planning Guide",
+    content: `# Retirement Planning Guide
+
+Benefit Finance provides intelligent retirement forecasting tools to help you retire with confidence.
+
+## Supported Retirement Accounts
+
+We support integration and optimization for:
+- 401(k)
+- Traditional IRA
+- Roth IRA
+- SEP IRA
+- Solo 401(k)
+- Pension accounts
+
+## Retirement Projection Engine
+
+Our AI models:
+- Expected retirement age
+- Estimated monthly income in retirement
+- Inflation-adjusted living expenses
+- Required contribution increases
+
+### How accurate are projections?
+Projections are based on historical market data, your contribution rate, and risk profile. While no model can guarantee results, we use Monte Carlo simulations to provide probability-based forecasts.
+
+## Withdrawal Strategies
+
+Private Client members receive guidance on:
+- Safe withdrawal rates
+- Required Minimum Distributions (RMDs)
+- Tax-efficient drawdown sequencing
+- Social Security timing strategies
+
+## Early Retirement (FIRE)
+
+Benefit Finance supports Financial Independence, Retire Early (FIRE) planning by:
+- Tracking savings rate
+- Modeling lean vs. fat FIRE scenarios
+- Identifying acceleration opportunities`,
+  },
+  {
+    title: "Tax Optimization & Reporting",
+    content: `# Tax Optimization & Reporting
+
+Benefit Finance provides built-in tools to help minimize your tax burden legally and efficiently.
+
+## Automated Tax Features
+
+### Tax-Loss Harvesting
+Available for Plus and Private Client members, this feature:
+- Automatically identifies underperforming assets
+- Sells them strategically
+- Reinvests proceeds to maintain allocation
+- Offsets capital gains taxes
+
+### Retirement Contribution Optimization
+We analyze:
+- Employer match opportunities
+- Pre-tax vs. Roth strategies
+- HSA maximization opportunities
+
+## Tax Documents
+
+### Where can I find my tax forms?
+Tax documents are available under:
+**Dashboard → Documents → Tax Forms**
+
+Common forms include:
+- 1099-DIV
+- 1099-B
+- 1099-INT
+- Consolidated tax statements
+
+Tax documents are typically available by February 15 each year.
+
+## Does Benefit Finance file my taxes?
+No. We provide reporting and optimization tools, but we do not directly file tax returns. We recommend consulting a licensed tax professional for filing assistance.`,
+  },
+  {
+    title: "Compliance, Privacy & Data Protection",
+    content: `# Compliance, Privacy & Data Protection
+
+Benefit Finance is committed to the highest standards of compliance and data security.
+
+## Regulatory Status
+
+- Registered Investment Advisor (RIA)
+- Subject to SEC oversight
+- Operates under fiduciary standards
+- Compliant with GDPR for EU clients
+
+## Data Protection
+
+### Encryption Standards
+- AES-256 encryption at rest
+- TLS 1.3 encryption in transit
+- Zero-knowledge architecture for sensitive credentials
+
+### Data Sharing Policy
+- We never sell user data.
+- Data is shared only with trusted custodial and banking partners as required to provide services.
+- Users may request data export or deletion under applicable privacy laws.
+
+## Fraud Prevention
+
+Our system includes:
+- Behavioral anomaly detection
+- Login alerts
+- Device recognition
+- Transaction monitoring
+
+If suspicious activity is detected, accounts may be temporarily restricted until identity verification is completed.
+
+## Incident Response
+
+In the unlikely event of a data breach:
+- Users are notified within 72 hours
+- Affected accounts are secured immediately
+- Remediation steps are clearly communicated`,
+  },
+  {
+    title: "Mobile App & Platform Access",
+    content: `# Mobile App & Platform Access
+
+Benefit Finance is accessible via web and mobile applications.
+
+## Supported Platforms
+
+- Web (Chrome, Safari, Edge, Firefox)
+- iOS (iPhone & iPad)
+- Android devices
+
+## Mobile App Features
+
+The mobile app includes:
+- Real-time net worth tracking
+- Spending alerts
+- Investment performance monitoring
+- Secure document vault access
+- Biometric login (Face ID / Fingerprint)
+
+## Push Notifications
+
+Users can customize alerts for:
+- Large transactions
+- Budget threshold breaches
+- Investment volatility alerts
+- Bill reminders
+- Goal milestones
+
+Notification settings can be adjusted under:
+**Settings → Notifications**
+
+## System Requirements
+
+To ensure optimal security and performance:
+- iOS 15 or later
+- Android 10 or later
+- Latest version of supported browsers
+
+We recommend enabling automatic updates to receive security enhancements and new features.`,
   },
 ] as const;
