@@ -21,9 +21,9 @@ const main = Effect.gen(function* () {
   const allDocsWithChunks = yield* supAgentDocDB.allDocsWithChunks;
 
   // Create an instance of the lang loader needed for localization
-  const { manSupportAgent: ll } = yield* LangLoader.createEffect();
+  const { manSupportAgent: ll, formToastFeedback } = yield* LangLoader.createEffect();
 
-  return { allDocsWithChunks, ll };
+  return { allDocsWithChunks, ll, formToastFeedback };
 });
 
 // Component remains the fast, static shell
@@ -38,10 +38,10 @@ export default function DocsWithChunksTable() {
 // This new async component contains the dynamic logic
 async function DocsWithChunksTableContent() {
   // Execute the main effect for the component, handle known errors, and return the payload
-  const { allDocsWithChunks, ll } = await runComponentMain(main);
+  const { allDocsWithChunks, ll, formToastFeedback } = await runComponentMain(main);
 
   return (
-    <InstanceProvider allDocsWithChunks={allDocsWithChunks} ll={ll}>
+    <InstanceProvider allDocsWithChunks={allDocsWithChunks} ll={ll} llFormToastFeedback={formToastFeedback}>
       <BrowseBar />
       <TableView />
     </InstanceProvider>

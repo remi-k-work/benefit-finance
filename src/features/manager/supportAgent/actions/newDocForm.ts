@@ -51,7 +51,7 @@ const main = (formData: FormData) =>
   });
 
 // The main server action that processes the form
-export default async function newDoc(_prevState: unknown, formData: FormData): Promise<ActionResultWithFormState> {
+export default async function newDocForm(_prevState: unknown, formData: FormData): Promise<ActionResultWithFormState> {
   // Execute the main effect for the server action, handle known errors, and return the payload
   return await runServerActionMain(main(formData));
 }

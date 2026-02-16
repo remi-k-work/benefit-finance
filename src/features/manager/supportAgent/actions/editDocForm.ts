@@ -53,7 +53,7 @@ const main = (docId: string, formData: FormData) =>
   });
 
 // The main server action that processes the form
-export default async function editDoc(docId: string, _prevState: unknown, formData: FormData): Promise<ActionResultWithFormState> {
+export default async function editDocForm(docId: string, _prevState: unknown, formData: FormData): Promise<ActionResultWithFormState> {
   // Execute the main effect for the server action, handle known errors, and return the payload
   return await runServerActionMain(main(docId, formData));
 }

@@ -6,7 +6,7 @@
 import { useActionState, useEffect, useRef } from "react";
 
 // server actions and mutations
-import newDoc from "@/features/manager/supportAgent/actions/newDocForm";
+import newDocForm from "@/features/manager/supportAgent/actions/newDocForm";
 
 // services, features, and other libraries
 import { Schema } from "effect";
@@ -41,7 +41,7 @@ export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback 
   const markdownFieldRef = useRef<MDXEditorMethods>(null);
 
   // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(newDoc, INITIAL_FORM_STATE);
+  const [formState, formAction, isPending] = useActionState(newDocForm, INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),

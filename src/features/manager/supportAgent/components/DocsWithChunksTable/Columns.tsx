@@ -22,7 +22,10 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 const columnHelper = createColumnHelper<AllDocsWithChunks>();
 
-export const columns = (ll: typeof LangLoader.prototype.manSupportAgent): ColumnDef<AllDocsWithChunks>[] =>
+export const columns = (
+  ll: typeof LangLoader.prototype.manSupportAgent,
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
+): ColumnDef<AllDocsWithChunks>[] =>
   [
     columnHelper.accessor("title", { sortingFn: "alphanumeric", filterFn: "includesString" }),
     columnHelper.accessor("content", { filterFn: "includesString" }),
@@ -41,5 +44,9 @@ export const columns = (ll: typeof LangLoader.prototype.manSupportAgent): Column
       cell: ({ row }) => <CreatedAndUpdatedCell row={row} />,
     }),
     columnHelper.display({ id: "chunksColumn", header: ({ table }) => <ChunksHeader table={table} ll={ll} />, cell: ({ row }) => <ChunksCell row={row} /> }),
-    columnHelper.display({ id: "actionsColumn", header: () => <ActionsHeader />, cell: ({ row }) => <ActionsCell row={row} ll={ll} /> }),
+    columnHelper.display({
+      id: "actionsColumn",
+      header: () => <ActionsHeader />,
+      cell: ({ row }) => <ActionsCell row={row} ll={ll} llFormToastFeedback={llFormToastFeedback} />,
+    }),
   ] as ColumnDef<AllDocsWithChunks, unknown>[];

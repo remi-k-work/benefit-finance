@@ -9,7 +9,7 @@ import { useActionState, useEffect, useRef } from "react";
 import type { Doc } from "@/features/supportAgent/db";
 
 // server actions and mutations
-import editDoc from "@/features/manager/supportAgent/actions/editDocForm";
+import editDocForm from "@/features/manager/supportAgent/actions/editDocForm";
 
 // services, features, and other libraries
 import { Schema } from "effect";
@@ -23,7 +23,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import InfoLine from "@/components/Form/InfoLine";
 
 // assets
-import { DocumentTextIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 // types
 import type { Lang } from "@/lib/LangLoader";
@@ -45,7 +45,7 @@ export default function EditDocForm({ doc: { id: docId, title, content }, prefer
   const markdownFieldRef = useRef<MDXEditorMethods>(null);
 
   // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(editDoc.bind(null, docId), INITIAL_FORM_STATE);
+  const [formState, formAction, isPending] = useActionState(editDocForm.bind(null, docId), INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS,
     defaultValues: { ...FORM_OPTIONS.defaultValues, title, content, markdown: content },
@@ -69,7 +69,7 @@ export default function EditDocForm({ doc: { id: docId, title, content }, prefer
     formState,
     () => {
       reset();
-      markdownFieldRef.current?.setMarkdown("");
+      markdownFieldRef.current?.setMarkdown(content);
     },
     store,
     ll,
@@ -142,14 +142,14 @@ export default function EditDocForm({ doc: { id: docId, title, content }, prefer
           <CardFooter>
             <InfoLine message={feedbackMessage} />
             <FormSubmit
-              submitIcon={<DocumentTextIcon className="size-9" />}
+              submitIcon={<PencilSquareIcon className="size-9" />}
               submitText={ll["Edit Document"]}
               resetText={ll["Clear Form"]}
               cancelText={ll["Cancel and Go Back"]}
               isPending={isPending}
               onClearedForm={() => {
                 hideFeedbackMessage();
-                markdownFieldRef.current?.setMarkdown("");
+                markdownFieldRef.current?.setMarkdown(content);
               }}
             />
           </CardFooter>

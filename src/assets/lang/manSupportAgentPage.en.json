@@ -2,5 +2,7 @@
   "Support Agent": "Support Agent",
   "Below, you can view and manage the support agent along with its knowledge base": "Below, you can view and manage the support agent along with its knowledge base",
   "Support Agent ► New Document": "Support Agent ► New Document",
-  "Use the form below to create a new document that will be added to the support agent knowledge base": "Use the form below to create a new document that will be added to the support agent knowledge base"
+  "Use the form below to create a new document that will be added to the support agent knowledge base": "Use the form below to create a new document that will be added to the support agent knowledge base",
+  "Support Agent ► Edit Document": "Support Agent ► Edit Document",
+  "Use the form below to edit an existing document from the support agent knowledge base": "Use the form below to edit an existing document from the support agent knowledge base"
 }

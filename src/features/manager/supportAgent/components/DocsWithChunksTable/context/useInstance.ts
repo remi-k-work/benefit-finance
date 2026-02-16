@@ -14,9 +14,13 @@ import { columns } from "@/features/manager/supportAgent/components/DocsWithChun
 // types
 import type LangLoader from "@/lib/LangLoader";
 
-export default function useInstance(data: AllDocsWithChunks[], ll: typeof LangLoader.prototype.manSupportAgent) {
+export default function useInstance(
+  data: AllDocsWithChunks[],
+  ll: typeof LangLoader.prototype.manSupportAgent,
+  llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
+) {
   const table = useReactTable<AllDocsWithChunks>({
-    columns: columns(ll),
+    columns: columns(ll, llFormToastFeedback),
     data,
     getRowCanExpand: (row) => row.original.docChunks.length > 0,
     getCoreRowModel: getCoreRowModel(),

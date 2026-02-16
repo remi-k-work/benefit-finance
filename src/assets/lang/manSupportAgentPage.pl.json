@@ -2,5 +2,7 @@
   "Support Agent": "Agent Wsparcia",
   "Below, you can view and manage the support agent along with its knowledge base": "Poniżej możesz zarządzać agentem wsparcia oraz jego bazą wiedzy",
   "Support Agent ► New Document": "Agent Wsparcia ► Nowy Dokument",
-  "Use the form below to create a new document that will be added to the support agent knowledge base": "Użyj poniższego formularza, aby utworzyć nowy dokument, który zostanie dodany do bazy wiedzy agenta wsparcia"
+  "Use the form below to create a new document that will be added to the support agent knowledge base": "Użyj poniższego formularza, aby utworzyć nowy dokument, który zostanie dodany do bazy wiedzy agenta wsparcia",
+  "Support Agent ► Edit Document": "Agent Wsparcia ► Edytuj Dokument",
+  "Use the form below to edit an existing document from the support agent knowledge base": "Użyj poniższego formularza, aby edytować istniejący dokument z bazy wiedzy agenta wsparcia"
 }
