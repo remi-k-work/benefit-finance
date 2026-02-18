@@ -4,6 +4,9 @@ import type { AllUsersWithSessions } from "@/features/manager/users/db";
 // components
 import { TableCell } from "@/components/ui/custom/table";
 
+// assets
+import { CheckIcon } from "@heroicons/react/24/outline";
+
 // types
 import type { Row } from "@tanstack/react-table";
 
@@ -12,7 +15,7 @@ interface VerifiedCellProps {
 }
 
 export default function VerifiedCell({ row: { getValue } }: VerifiedCellProps) {
-  return <TableCell className="text-center">{getValue("emailVerified")}</TableCell>;
+  return <TableCell className="text-center">{getValue("emailVerified") ? <CheckIcon className="mx-auto size-9" /> : null}</TableCell>;
 }
 
 export function VerifiedCellSkeleton() {

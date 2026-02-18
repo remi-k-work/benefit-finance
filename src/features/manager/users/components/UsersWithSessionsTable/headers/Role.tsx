@@ -16,7 +16,7 @@ interface RoleHeaderProps {
 
 export default function RoleHeader({ table: { getColumn }, ll }: RoleHeaderProps) {
   return (
-    <TableHead className="w-32">
+    <TableHead className="w-42">
       <ColumnHeader column={getColumn("role")!} title={ll["Role"]} className="mx-auto" />
     </TableHead>
   );
@@ -24,7 +24,7 @@ export default function RoleHeader({ table: { getColumn }, ll }: RoleHeaderProps
 
 export function RoleHeaderSkeleton() {
   return (
-    <TableHead className="w-32">
+    <TableHead className="w-42">
       <ColumnHeaderSkeleton title="Role" className="mx-auto" />
     </TableHead>
   );

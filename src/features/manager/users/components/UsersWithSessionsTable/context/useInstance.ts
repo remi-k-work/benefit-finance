@@ -12,15 +12,17 @@ import useActions from "./useActions";
 import { columns } from "@/features/manager/users/components/UsersWithSessionsTable/Columns";
 
 // types
+import type { Session } from "@/services/better-auth/auth";
 import type LangLoader from "@/lib/LangLoader";
 
 export default function useInstance(
+  session: Session,
   data: AllUsersWithSessions[],
   ll: typeof LangLoader.prototype.manUsers,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
   const table = useReactTable<AllUsersWithSessions>({
-    columns: columns(ll, llFormToastFeedback),
+    columns: columns(session, ll, llFormToastFeedback),
     data,
     getRowCanExpand: (row) => row.original.sessions.length > 0 || row.original.accounts.length > 0,
     getCoreRowModel: getCoreRowModel(),

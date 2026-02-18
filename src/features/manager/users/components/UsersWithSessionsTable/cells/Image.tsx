@@ -3,26 +3,29 @@ import type { AllUsersWithSessions } from "@/features/manager/users/db";
 
 // components
 import { TableCell } from "@/components/ui/custom/table";
+import { UserAvatar, UserAvatarSkeleton } from "@/components/Avatar/User";
 
 // types
 import type { Row } from "@tanstack/react-table";
+import type { Session } from "@/services/better-auth/auth";
 
 interface ImageCellProps {
   row: Row<AllUsersWithSessions>;
+  session: Session;
 }
 
-export default function ImageCell({
-  row: {
-    original: { image },
-  },
-}: ImageCellProps) {
-  return <TableCell className="text-center">{image}</TableCell>;
+export default function ImageCell({ row: { original: user }, session }: ImageCellProps) {
+  return (
+    <TableCell className="text-center">
+      <UserAvatar user={user} session={session} isSmall />
+    </TableCell>
+  );
 }
 
 export function ImageCellSkeleton() {
   return (
     <TableCell className="text-center">
-      <div className="bg-background mx-auto h-5 w-18 animate-pulse" />
+      <UserAvatarSkeleton isSmall />
     </TableCell>
   );
 }

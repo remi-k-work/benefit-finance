@@ -30,7 +30,7 @@ export default function NameAndEmailCell({ row: { getValue, getCanExpand, getTog
       >
         {getIsExpanded() ? <MinusCircleIcon className="size-9" /> : <PlusCircleIcon className="size-9" />}
       </Button>
-      <div>
+      <div className="truncate">
         {getValue("name")}
         <br />
         {getValue("email")}
