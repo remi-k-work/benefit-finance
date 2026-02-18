@@ -8,6 +8,7 @@
   "Expand User": "Rozwiń Użytkownika",
   "Created At": "Data Utworzenia",
   "Updated At": "Data Aktualizacji",
+  "Expires At": "Data Wygaśnięcia",
   "No users have been found!": "Nie znaleziono żadnych użytkowników!",
   "Are you sure you want to": "Czy jesteś pewien, że chcesz",
   "delete": "usunąć",
@@ -18,5 +19,12 @@
   "Name": "Nazwa Użytkownika",
   "Email": "Adres E-mail",
   "Role": "Rola",
-  "Verified?": "Zwe?"
+  "Verified?": "Zwe?",
+  "Operating System": "System Operacyjny",
+  "Device": "Urządzenie",
+  "Unknown Operating System": "Nieznany System Operacyjny",
+  "Unknown Device": "Nieznane Urządzenie",
+  "Sessions": "Sesje",
+  "Accounts": "Konta",
+  "Unknown Browser": "Nieznana Przeglądarka"
 }

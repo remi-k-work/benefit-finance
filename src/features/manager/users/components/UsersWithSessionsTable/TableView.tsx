@@ -22,7 +22,8 @@ import { VerifiedCellSkeleton } from "./cells/Verified";
 import { CreatedAndUpdatedCellSkeleton } from "./cells/CreatedAndUpdated";
 import { RoleCellSkeleton } from "./cells/Role";
 import { ActionsCellSkeleton } from "./cells/Actions";
-// import DocPreview from "@/features/manager/supportAgent/components/DocPreview";
+import Sessions from "@/features/manager/users/components/Sessions";
+import Accounts from "@/features/manager/users/components/Accounts";
 
 export default function TableView() {
   const {
@@ -56,7 +57,10 @@ export default function TableView() {
             {/* If the row is expanded, render the expanded UI as a separate row with a single cell that spans the width of the table */}
             {row.getIsExpanded() && (
               <TableRow>
-                <TableCell colSpan={row.getVisibleCells().length}>{/* <DocPreview docWithChunks={row.original} /> */}</TableCell>
+                <TableCell colSpan={row.getVisibleCells().length}>
+                  <Sessions userWithSessions={row.original} />
+                  <Accounts userWithSessions={row.original} />
+                </TableCell>
               </TableRow>
             )}
           </Fragment>

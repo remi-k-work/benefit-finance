@@ -8,6 +8,7 @@
   "Expand User": "Expand User",
   "Created At": "Created At",
   "Updated At": "Updated At",
+  "Expires At": "Expires At",
   "No users have been found!": "No users have been found!",
   "Are you sure you want to": "Are you sure you want to",
   "delete": "delete",
@@ -18,5 +19,12 @@
   "Name": "Name",
   "Email": "Email",
   "Role": "Role",
-  "Verified?": "Ver?"
+  "Verified?": "Ver?",
+  "Operating System": "Operating System",
+  "Device": "Device",
+  "Unknown Operating System": "Unknown Operating System",
+  "Unknown Device": "Unknown Device",
+  "Sessions": "Sessions",
+  "Accounts": "Accounts",
+  "Unknown Browser": "Unknown Browser"
 }

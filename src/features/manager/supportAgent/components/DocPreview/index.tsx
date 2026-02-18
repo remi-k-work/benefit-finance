@@ -1,12 +1,17 @@
 // drizzle and db access
 import type { AllDocsWithChunks } from "@/features/supportAgent/db";
 
+// services, features, and other libraries
+import { useInstanceContext } from "@/features/manager/supportAgent/components/DocsWithChunksTable/context";
+
 // components
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
 import { MessageResponse } from "@/components/ai-elements/custom/message";
-import CreatedAt from "@/features/manager/supportAgent/components/CreatedAt";
-import UpdatedAt from "@/features/manager/supportAgent/components/UpdatedAt";
+import DateTimeAt from "@/components/DateTimeAt";
 import ChunkPreview from "./ChunkPreview";
+
+// assets
+import { CalendarIcon } from "@heroicons/react/24/outline";
 
 // types
 interface DocPreviewProps {
@@ -14,6 +19,9 @@ interface DocPreviewProps {
 }
 
 export default function DocPreview({ docWithChunks: { id, title, content, createdAt, updatedAt, docChunks } }: DocPreviewProps) {
+  // Access the table context and retrieve all necessary information
+  const { ll } = useInstanceContext();
+
   return (
     <>
       <Card className="w-full max-w-none">
@@ -24,8 +32,8 @@ export default function DocPreview({ docWithChunks: { id, title, content, create
           <MessageResponse>{content}</MessageResponse>
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-around gap-6 border-t pt-6">
-          <CreatedAt createdAt={createdAt} />
-          <UpdatedAt updatedAt={updatedAt} />
+          <DateTimeAt icon={<CalendarIcon className="size-9" />} title={ll["Created At"]} date={createdAt} />
+          <DateTimeAt icon={<CalendarIcon className="size-9" />} title={ll["Updated At"]} date={updatedAt} />
         </CardFooter>
       </Card>
       <br />

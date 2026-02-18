@@ -25,8 +25,7 @@ export class UsersDB extends Effect.Service<UsersDB>()("UsersDB", {
           orderBy: desc(UserTable.createdAt),
 
           // Only fetch sessions that expire in the future (active sessions)
-          // with: { sessions: { where: gt(SessionTable.expiresAt, new Date()) }, accounts: true },
-          with: { sessions: true, accounts: true },
+          with: { sessions: { where: gt(SessionTable.expiresAt, new Date()) }, accounts: true },
         }),
       );
 
