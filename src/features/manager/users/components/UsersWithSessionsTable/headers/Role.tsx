@@ -9,23 +9,23 @@ import ColumnHeader, { ColumnHeaderSkeleton } from "@/components/ColumnHeader";
 import type { Table } from "@tanstack/react-table";
 import type LangLoader from "@/lib/LangLoader";
 
-interface VerifiedHeaderProps {
+interface RoleHeaderProps {
   table: Table<AllUsersWithSessions>;
   ll: typeof LangLoader.prototype.manUsers;
 }
 
-export default function VerifiedHeader({ table: { getColumn }, ll }: VerifiedHeaderProps) {
+export default function RoleHeader({ table: { getColumn }, ll }: RoleHeaderProps) {
   return (
     <TableHead className="w-32">
-      <ColumnHeader column={getColumn("emailVerified")!} title={ll["Verified?"]} className="mx-auto" />
+      <ColumnHeader column={getColumn("role")!} title={ll["Role"]} className="mx-auto" />
     </TableHead>
   );
 }
 
-export function VerifiedHeaderSkeleton() {
+export function RoleHeaderSkeleton() {
   return (
     <TableHead className="w-32">
-      <ColumnHeaderSkeleton title="Verified?" className="mx-auto" />
+      <ColumnHeaderSkeleton title="Role" className="mx-auto" />
     </TableHead>
   );
 }

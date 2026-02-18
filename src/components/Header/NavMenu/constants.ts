@@ -10,7 +10,7 @@ export const NAV_MENU_ITEMS = (ll: typeof LangLoader.prototype.navMenuItems) =>
       title: ll["Manager"],
       items: [
         { title: ll["Support Agent"], href: "/manager/support-agent", match: "^/manager/support-agent(/.*)?$" },
-        { title: ll["Users and Roles"], href: "#", match: "^/manager/users-and-roles(/.*)?$" },
+        { title: ll["Users"], href: "/manager/users", match: "^/manager/users(/.*)?$" },
         { title: ll["Blog and Articles"], href: "#", match: "^/manager/blog-and-articles(/.*)?$" },
         { title: ll["Refferals and Leads"], href: "#", match: "^/manager/refferals-and-leads(/.*)?$" },
       ],

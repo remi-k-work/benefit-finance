@@ -9,7 +9,7 @@ import useState from "./useState";
 import useActions from "./useActions";
 
 // components
-import { columns } from "@/features/manager/supportAgent/components/DocsWithChunksTable/Columns";
+import { columns } from "@/features/manager/users/components/UsersWithSessionsTable/Columns";
 
 // types
 import type LangLoader from "@/lib/LangLoader";
@@ -29,7 +29,7 @@ export default function useInstance(
     getSortedRowModel: getSortedRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
 
-    initialState: { columnVisibility: { title: false, content: false, createdAt: false, updatedAt: false, chunkCount: false } },
+    initialState: { columnVisibility: { name: false, email: false, emailVerified: false, createdAt: false, updatedAt: false, role: false } },
   });
 
   return { table, state: useState(table), actions: useActions(table) };

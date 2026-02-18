@@ -1,5 +1,5 @@
 // services, features, and other libraries
-import { useInstanceContext } from "@/features/manager/supportAgent/components/DocsWithChunksTable/context";
+import { useInstanceContext } from "@/features/manager/users/components/UsersWithSessionsTable/context";
 
 // components
 import { Button } from "@/components/ui/custom/button";

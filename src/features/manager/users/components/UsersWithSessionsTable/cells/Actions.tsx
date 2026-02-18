@@ -1,26 +1,23 @@
 // react
 import { startTransition, useActionState } from "react";
 
-// next
-import Link from "next/link";
-
 // drizzle and db access
-import type { AllDocsWithChunks } from "@/features/supportAgent/db";
+import type { AllUsersWithSessions } from "@/features/manager/users/db";
 
 // server actions and mutations
-import deleteDoc from "@/features/manager/supportAgent/actions/deleteDoc";
+import deleteUser from "@/features/manager/users/actions/deleteUser";
 
 // services, features, and other libraries
 import { useConfirmModal } from "@/atoms/confirmModal";
 import { initialFormState } from "@tanstack/react-form-nextjs";
-import useDeleteDocFeedback from "@/features/manager/supportAgent/hooks/feedbacks/useDeleteDoc";
+import useDeleteUserFeedback from "@/features/manager/users/hooks/feedbacks/useDeleteUser";
 
 // components
 import { TableCell } from "@/components/ui/custom/table";
 import { Button } from "@/components/ui/custom/button";
 
 // assets
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { Loader2 } from "lucide-react";
 
 // types
@@ -28,14 +25,14 @@ import type { Row } from "@tanstack/react-table";
 import type LangLoader from "@/lib/LangLoader";
 
 interface ActionsCellProps {
-  row: Row<AllDocsWithChunks>;
-  ll: typeof LangLoader.prototype.manSupportAgent;
+  row: Row<AllUsersWithSessions>;
+  ll: typeof LangLoader.prototype.manUsers;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
 export default function ActionsCell({
   row: {
-    original: { id: docId },
+    original: { id: userId },
   },
   ll,
   llFormToastFeedback,
@@ -43,44 +40,34 @@ export default function ActionsCell({
   // This is the hook that components use to open the modal
   const { openConfirmModal } = useConfirmModal();
 
-  // This action deletes the support agent document and all of its associated chunks
-  const [deleteDocState, deleteDocAction, deleteDocIsPending] = useActionState(deleteDoc.bind(null, docId), { ...initialFormState, actionStatus: "idle" });
+  // This action permanently deletes a user from the database
+  const [deleteUserState, deleteUserAction, deleteUserIsPending] = useActionState(deleteUser.bind(null, userId), { ...initialFormState, actionStatus: "idle" });
 
   // Provide feedback to the user regarding this server action
-  useDeleteDocFeedback(deleteDocState, ll, llFormToastFeedback);
+  useDeleteUserFeedback(deleteUserState, ll, llFormToastFeedback);
 
   return (
-    <TableCell className="flex items-center gap-2">
-      <Button
-        size="icon"
-        nativeButton={false}
-        title={ll["Edit Document"]}
-        render={
-          <Link href={`/manager/support-agent/${docId}/edit`}>
-            <PencilSquareIcon className="size-9" />
-          </Link>
-        }
-      ></Button>
+    <TableCell>
       <Button
         type="button"
         size="icon"
         variant="destructive"
-        title={ll["Delete Document"]}
-        disabled={deleteDocIsPending}
+        title={ll["Delete User"]}
+        disabled={deleteUserIsPending}
         onClick={() => {
           openConfirmModal({
             content: (
               <p className="text-center text-xl">
-                {ll["Are you sure you want to"]} <b className="text-destructive">{ll["delete"]}</b> {ll["this document?"]}
+                {ll["Are you sure you want to"]} <b className="text-destructive">{ll["delete"]}</b> {ll["this user?"]}
               </p>
             ),
             onConfirmed: () => {
-              startTransition(deleteDocAction);
+              startTransition(deleteUserAction);
             },
           });
         }}
       >
-        {deleteDocIsPending ? <Loader2 className="size-9 animate-spin" /> : <TrashIcon className="size-9" />}
+        {deleteUserIsPending ? <Loader2 className="size-9 animate-spin" /> : <TrashIcon className="size-9" />}
       </Button>
     </TableCell>
   );
@@ -88,11 +75,8 @@ export default function ActionsCell({
 
 export function ActionsCellSkeleton() {
   return (
-    <TableCell className="flex items-center gap-2">
-      <Button type="button" size="icon" title="Edit Document" disabled>
-        <PencilSquareIcon className="size-9" />
-      </Button>
-      <Button type="button" size="icon" variant="destructive" title="Delete Document" disabled>
+    <TableCell>
+      <Button type="button" size="icon" variant="destructive" title="Delete User" disabled>
         <TrashIcon className="size-9" />
       </Button>
     </TableCell>

@@ -76,42 +76,14 @@ export function TableViewSkeleton() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow className="bg-background">
-          <TitleCellSkeleton />
-          <CreatedAndUpdatedCellSkeleton />
-          <ChunksCellSkeleton />
-          <ActionsCellSkeleton />
-        </TableRow>
-        <TableRow className="bg-muted">
-          <TitleCellSkeleton />
-          <CreatedAndUpdatedCellSkeleton />
-          <ChunksCellSkeleton />
-          <ActionsCellSkeleton />
-        </TableRow>
-        <TableRow className="bg-background">
-          <TitleCellSkeleton />
-          <CreatedAndUpdatedCellSkeleton />
-          <ChunksCellSkeleton />
-          <ActionsCellSkeleton />
-        </TableRow>
-        <TableRow className="bg-muted">
-          <TitleCellSkeleton />
-          <CreatedAndUpdatedCellSkeleton />
-          <ChunksCellSkeleton />
-          <ActionsCellSkeleton />
-        </TableRow>
-        <TableRow className="bg-background">
-          <TitleCellSkeleton />
-          <CreatedAndUpdatedCellSkeleton />
-          <ChunksCellSkeleton />
-          <ActionsCellSkeleton />
-        </TableRow>
-        <TableRow className="bg-muted">
-          <TitleCellSkeleton />
-          <CreatedAndUpdatedCellSkeleton />
-          <ChunksCellSkeleton />
-          <ActionsCellSkeleton />
-        </TableRow>
+        {Array.from({ length: 6 }).map((_, index) => (
+          <TableRow key={index} className={index % 2 === 0 ? "bg-background" : "bg-muted"}>
+            <TitleCellSkeleton />
+            <CreatedAndUpdatedCellSkeleton />
+            <ChunksCellSkeleton />
+            <ActionsCellSkeleton />
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );

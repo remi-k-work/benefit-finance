@@ -66,6 +66,8 @@ import manSupportAgentPageEn from "@/assets/lang/manSupportAgentPage.en.json";
 import manSupportAgentPagePl from "@/assets/lang/manSupportAgentPage.pl.json";
 import manUsersEn from "@/assets/lang/manUsers.en.json";
 import manUsersPl from "@/assets/lang/manUsers.pl.json";
+import manUsersPageEn from "@/assets/lang/manUsersPage.en.json";
+import manUsersPagePl from "@/assets/lang/manUsersPage.pl.json";
 import motorInsurancePageEn from "@/assets/lang/motorInsurancePage.en.json";
 import motorInsurancePagePl from "@/assets/lang/motorInsurancePage.pl.json";
 import navMenuItemsEn from "@/assets/lang/navMenuItems.en.json";
@@ -274,6 +276,9 @@ export default class LangLoader {
   }
   public get manUsers() {
     return this.preferredLanguage === "pl" ? manUsersPl : manUsersEn;
+  }
+  public get manUsersPage() {
+    return this.preferredLanguage === "pl" ? manUsersPagePl : manUsersPageEn;
   }
   public get motorInsurancePage() {
     return this.preferredLanguage === "pl" ? motorInsurancePagePl : motorInsurancePageEn;

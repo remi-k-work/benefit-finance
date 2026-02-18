@@ -10,15 +10,15 @@ import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this server action
-export default function useDeleteDocFeedback(
+export default function useDeleteUserFeedback(
   { actionStatus }: ActionResultWithFormState,
-  ll: typeof LangLoader.prototype.manSupportAgent,
+  ll: typeof LangLoader.prototype.manUsers,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
   // Generic hook for displaying toast notifications for form actions
   const showToast = useFormToastFeedback(
-    ll["[DELETE DOCUMENT]"],
-    { succeeded: ll["The document has been deleted."], failed: ll["The document could not be deleted; please try again later."] },
+    ll["[DELETE USER]"],
+    { succeeded: ll["The user has been deleted."], failed: ll["The user could not be deleted; please try again later."] },
     llFormToastFeedback,
   );
 

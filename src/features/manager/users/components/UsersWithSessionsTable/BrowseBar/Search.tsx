@@ -5,7 +5,7 @@ import { useRef } from "react";
 import Form from "next/form";
 
 // services, features, and other libraries
-import { useInstanceContext } from "@/features/manager/supportAgent/components/DocsWithChunksTable/context";
+import { useInstanceContext } from "@/features/manager/users/components/UsersWithSessionsTable/context";
 
 // components
 import { Badge } from "@/components/ui/custom/badge";
@@ -26,9 +26,9 @@ export default function Search() {
   const searchRef = useRef<HTMLInputElement>(null);
 
   return (
-    <Form action="/manager/support-agent" className="flex items-center gap-2">
+    <Form action="/manager/users" className="flex items-center gap-2">
       <Badge>{totalItems}</Badge>
-      <Input ref={searchRef} type="search" name="search" size={15} maxLength={25} aria-label={ll["Search Documents"]} placeholder={ll["Search Documents"]} />
+      <Input ref={searchRef} type="search" name="search" size={15} maxLength={25} aria-label={ll["Search Users"]} placeholder={ll["Search Users"]} />
       <Button
         type="submit"
         size="icon"
