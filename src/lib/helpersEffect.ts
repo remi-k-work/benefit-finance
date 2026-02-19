@@ -3,7 +3,6 @@
 // next
 import { connection } from "next/server";
 import { notFound, unauthorized } from "next/navigation";
-import { refresh } from "next/cache";
 
 // services, features, and other libraries
 import { Console, Effect, Either, Schema } from "effect";
@@ -115,9 +114,6 @@ export const runServerActionMain = async <A extends ActionResultWithFormState, E
     // Some other error occurred
     return { ...initialFormState, actionStatus: "failed" };
   } else {
-    // Refresh the current page to show the latest data
-    refresh();
-
     // The form has successfully validated and submitted!
     return serverActionMainResult.right;
   }

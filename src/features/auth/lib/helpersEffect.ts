@@ -25,4 +25,4 @@ export const hasCredentialAccount = Effect.gen(function* () {
   return (yield* listUserAccounts).some((account) => account.providerId === "credential");
 });
 
-const getHeaders = Effect.promise<Awaited<ReturnType<typeof headers>>>(() => headers());
+export const getHeaders = Effect.promise<Awaited<ReturnType<typeof headers>>>(() => headers());

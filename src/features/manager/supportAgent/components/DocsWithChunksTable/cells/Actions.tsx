@@ -50,7 +50,7 @@ export default function ActionsCell({
   useDeleteDocFeedback(deleteDocState, ll, llFormToastFeedback);
 
   return (
-    <TableCell className="flex items-center gap-2">
+    <TableCell className="flex items-center justify-end gap-2">
       <Button
         size="icon"
         nativeButton={false}
@@ -88,7 +88,7 @@ export default function ActionsCell({
 
 export function ActionsCellSkeleton() {
   return (
-    <TableCell className="flex items-center gap-2">
+    <TableCell className="flex items-center justify-end gap-2">
       <Button type="button" size="icon" title="Edit Document" disabled>
         <PencilSquareIcon className="size-9" />
       </Button>

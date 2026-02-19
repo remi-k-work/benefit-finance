@@ -1,8 +1,11 @@
 // react
-import { useEffect, useEffectEvent } from "react";
+import { startTransition, useEffect, useEffectEvent } from "react";
 
 // next
 import { redirect } from "next/navigation";
+
+// server actions and mutations
+import refreshPage from "@/actions/refreshPage";
 
 // services, features, and other libraries
 import usePermanentMessageFeedback from "@/hooks/feedbacks/usePermanentMessage";
@@ -46,7 +49,13 @@ export default function useEditDocFormFeedback(
       showFeedbackMessage(ll["The document has been updated."]);
 
       // Redirect the user back to the browse page
-      return setTimeout(() => redirect("/manager/support-agent"), 3000);
+      return setTimeout(() => {
+        // Refresh the current page to show the latest data
+        startTransition(() => {
+          refreshPage();
+        });
+        redirect("/manager/support-agent");
+      }, 3000);
     } else {
       // Was a restricted operation attempted under the demo account? Inform the user
       guardForDemoMode();

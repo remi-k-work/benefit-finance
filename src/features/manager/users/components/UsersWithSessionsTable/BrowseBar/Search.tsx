@@ -28,7 +28,7 @@ export default function Search() {
   return (
     <Form action="/manager/users" className="flex items-center gap-2">
       <Badge>{totalItems}</Badge>
-      <Input ref={searchRef} type="search" name="search" size={15} maxLength={25} aria-label={ll["Search Users"]} placeholder={ll["Search Users"]} />
+      <Input ref={searchRef} type="search" name="search" size={20} maxLength={25} aria-label={ll["Search Users"]} placeholder={ll["Search Users"]} />
       <Button
         type="submit"
         size="icon"

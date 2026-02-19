@@ -1,5 +1,8 @@
 // react
-import { useEffect, useEffectEvent } from "react";
+import { startTransition, useEffect, useEffectEvent } from "react";
+
+// server actions and mutations
+import refreshPage from "@/actions/refreshPage";
 
 // services, features, and other libraries
 import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
@@ -30,6 +33,11 @@ export default function useDeleteUserFeedback(
     if (actionStatus === "succeeded") {
       // Display a success message
       showToast("succeeded");
+
+      // Refresh the current page to show the latest data
+      startTransition(() => {
+        refreshPage();
+      });
     } else {
       // Was a restricted operation attempted under the demo account? Inform the user
       guardForDemoMode();

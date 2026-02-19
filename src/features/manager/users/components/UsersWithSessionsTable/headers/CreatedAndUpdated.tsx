@@ -16,7 +16,7 @@ interface CreatedAndUpdatedHeaderProps {
 
 export default function CreatedAndUpdatedHeader({ table: { getColumn }, ll }: CreatedAndUpdatedHeaderProps) {
   return (
-    <TableHead className="w-64">
+    <TableHead className="w-72">
       <ColumnHeader column={getColumn("createdAt")!} title={ll["Created At"]} className="mx-auto" />
       <br />
       <ColumnHeader column={getColumn("updatedAt")!} title={ll["Updated At"]} className="mx-auto" />
@@ -26,7 +26,7 @@ export default function CreatedAndUpdatedHeader({ table: { getColumn }, ll }: Cr
 
 export function CreatedAndUpdatedHeaderSkeleton() {
   return (
-    <TableHead className="w-64">
+    <TableHead className="w-72">
       <ColumnHeaderSkeleton title="Created At" className="mx-auto" />
       <br />
       <ColumnHeaderSkeleton title="Updated At" className="mx-auto" />

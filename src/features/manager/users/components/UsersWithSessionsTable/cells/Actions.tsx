@@ -47,7 +47,7 @@ export default function ActionsCell({
   useDeleteUserFeedback(deleteUserState, ll, llFormToastFeedback);
 
   return (
-    <TableCell>
+    <TableCell className="flex items-center justify-end gap-2">
       <Button
         type="button"
         size="icon"
@@ -75,7 +75,7 @@ export default function ActionsCell({
 
 export function ActionsCellSkeleton() {
   return (
-    <TableCell>
+    <TableCell className="flex items-center justify-end gap-2">
       <Button type="button" size="icon" variant="destructive" title="Delete User" disabled>
         <TrashIcon className="size-9" />
       </Button>

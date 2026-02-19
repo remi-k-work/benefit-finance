@@ -16,7 +16,7 @@ interface ChunksHeaderProps {
 
 export default function ChunksHeader({ table: { getColumn }, ll }: ChunksHeaderProps) {
   return (
-    <TableHead className="w-32">
+    <TableHead className="w-48">
       <ColumnHeader column={getColumn("chunkCount")!} title={ll["Chunks#"]} className="mx-auto" />
     </TableHead>
   );
@@ -24,7 +24,7 @@ export default function ChunksHeader({ table: { getColumn }, ll }: ChunksHeaderP
 
 export function ChunksHeaderSkeleton() {
   return (
-    <TableHead className="w-32">
+    <TableHead className="w-48">
       <ColumnHeaderSkeleton title="Chunks#" className="mx-auto" />
     </TableHead>
   );

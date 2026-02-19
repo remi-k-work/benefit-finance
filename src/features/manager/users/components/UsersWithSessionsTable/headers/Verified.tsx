@@ -16,7 +16,7 @@ interface VerifiedHeaderProps {
 
 export default function VerifiedHeader({ table: { getColumn }, ll }: VerifiedHeaderProps) {
   return (
-    <TableHead className="w-36">
+    <TableHead className="w-38">
       <ColumnHeader column={getColumn("emailVerified")!} title={ll["Verified?"]} className="mx-auto" />
     </TableHead>
   );
@@ -24,7 +24,7 @@ export default function VerifiedHeader({ table: { getColumn }, ll }: VerifiedHea
 
 export function VerifiedHeaderSkeleton() {
   return (
-    <TableHead className="w-36">
+    <TableHead className="w-38">
       <ColumnHeaderSkeleton title="Verified?" className="mx-auto" />
     </TableHead>
   );
