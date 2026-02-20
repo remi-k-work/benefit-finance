@@ -5,6 +5,7 @@ import { Effect } from "effect";
 import { runServerActionMain } from "@/lib/helpersEffect";
 import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
 import { initialFormState } from "@tanstack/react-form-nextjs";
+import { AuthAdmin } from "@/features/auth/lib/admin";
 import { DemoModeError } from "@/lib/errors";
 
 // types
@@ -21,6 +22,8 @@ const main = (userId: string) =>
     if (role === "demo" || role !== "admin") return yield* new DemoModeError({ message: "Demo mode" });
 
     // Permanently delete a user from the database
+    const authAdmin = yield* AuthAdmin;
+    yield* authAdmin.removeUser(userId);
 
     // The action has completed successfully
     return { ...initialFormState, actionStatus: "succeeded" } satisfies ActionResultWithFormState;

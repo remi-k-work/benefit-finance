@@ -18,7 +18,7 @@ export default function Sessions({ userWithSessions: { sessions } }: SessionsPro
 
   return (
     <>
-      <h2 className="from-background via-primary to-secondary max-w-none bg-linear-to-r p-3 uppercase">
+      <h2 className="from-background via-card to-background max-w-none bg-linear-to-b from-15% to-85% p-3 uppercase">
         {ll["Sessions"]}
         &nbsp;({sessions.length})
       </h2>

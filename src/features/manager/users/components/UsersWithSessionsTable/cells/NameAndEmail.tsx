@@ -33,7 +33,9 @@ export default function NameAndEmailCell({ row: { getValue, getCanExpand, getTog
       <div className="truncate">
         {getValue("name")}
         <br />
-        {getValue("email")}
+        <a href={`mailto: ${getValue("email")}`} className="link text-base font-normal normal-case">
+          {getValue("email")}
+        </a>
       </div>
     </TableCell>
   );
