@@ -26,7 +26,7 @@ export default function ProfileInfo({ user, user: { email, name, createdAt }, se
         <CardDescription>{ll["Your account details and current status"]}</CardDescription>
       </CardHeader>
       <CardContent>
-        <UserAvatar user={user} session={session} className="mx-auto" />
+        <UserAvatar user={user} session={session} className="mx-auto size-74" />
         <h4 className="mx-auto mt-4 truncate text-center">{name}</h4>
         <p className="text-muted-foreground mx-auto truncate text-center">{email}</p>
       </CardContent>

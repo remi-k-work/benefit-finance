@@ -11,9 +11,9 @@ import type { InstanceContextType, InstanceProviderProps } from "./types";
 
 const InstanceContext = createContext<InstanceContextType | undefined>(undefined);
 
-export function InstanceProvider({ session, allUsersWithSessions, ll, llFormToastFeedback, children }: InstanceProviderProps) {
-  const { table, state, actions } = useInstance(session, allUsersWithSessions, ll, llFormToastFeedback);
-  return <InstanceContext value={{ session, allUsersWithSessions, ll, llFormToastFeedback, table, state, actions }}>{children}</InstanceContext>;
+export function InstanceProvider({ allUsersWithSessions, ll, llFormToastFeedback, children }: InstanceProviderProps) {
+  const { table, state, actions } = useInstance(allUsersWithSessions, ll, llFormToastFeedback);
+  return <InstanceContext value={{ allUsersWithSessions, ll, llFormToastFeedback, table, state, actions }}>{children}</InstanceContext>;
 }
 
 export function useInstanceContext() {

@@ -22,14 +22,12 @@ import RoleCell from "./cells/Role";
 import ActionsCell from "./cells/Actions";
 
 // types
-import type { Session } from "@/services/better-auth/auth";
 import type LangLoader from "@/lib/LangLoader";
 import type { ColumnDef } from "@tanstack/react-table";
 
 const columnHelper = createColumnHelper<AllUsersWithSessions>();
 
 export const columns = (
-  session: Session,
   ll: typeof LangLoader.prototype.manUsers,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ): ColumnDef<AllUsersWithSessions>[] =>
@@ -44,7 +42,7 @@ export const columns = (
     columnHelper.display({
       id: "imageColumn",
       header: () => <ImageHeader />,
-      cell: ({ row }) => <ImageCell row={row} session={session} />,
+      cell: ({ row }) => <ImageCell row={row} />,
     }),
     columnHelper.display({
       id: "nameAndEmailColumn",

@@ -6,7 +6,7 @@ import { connection } from "next/server";
 
 // services, features, and other libraries
 import { cn } from "@/lib/utils";
-import { getInitialsFromName, getUserAvatarUrl } from "@/lib/helpers";
+import { getInitialsFromName, getRandomInt, getUserAvatarUrl } from "@/lib/helpers";
 
 // components
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/custom/avatar";
@@ -15,7 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/custom/avat
 import type { ComponentPropsWithoutRef } from "react";
 
 // constants
-import { DEMO_USER_EMAIL, DEMO_USER_NAME } from "@/drizzle/seed/constants";
+import { USERS } from "@/drizzle/seed/constants";
 
 // Component remains the fast, static shell
 export default function DemoAvatar(props: ComponentPropsWithoutRef<typeof Avatar>) {
@@ -31,27 +31,35 @@ export default function DemoAvatar(props: ComponentPropsWithoutRef<typeof Avatar
 async function DemoAvatarContent({ className, ...props }: ComponentPropsWithoutRef<typeof Avatar>) {
   await connection();
 
+  // Filter only demo users, and pick a random one
+  const demoUsers = USERS.filter((user) => user.role === "demo");
+  const { name, email } = demoUsers[getRandomInt(0, demoUsers.length - 1)];
+
   return (
     <section className="grid">
       <Avatar className={cn("mx-auto size-74", className)} {...props}>
-        <AvatarImage src={getUserAvatarUrl()} alt={DEMO_USER_NAME} />
-        <AvatarFallback>{getInitialsFromName(DEMO_USER_NAME)}</AvatarFallback>
+        <AvatarImage src={getUserAvatarUrl()} alt={name} />
+        <AvatarFallback>{getInitialsFromName(name)}</AvatarFallback>
       </Avatar>
-      <h4 className="mt-4 max-w-none truncate text-center">{DEMO_USER_NAME}</h4>
-      <p className="text-muted-foreground max-w-none truncate text-center">{DEMO_USER_EMAIL}</p>
+      <h4 className="mt-4 max-w-none truncate text-center">{name}</h4>
+      <p className="text-muted-foreground max-w-none truncate text-center">{email}</p>
     </section>
   );
 }
 
 function DemoAvatarSkeleton({ className, ...props }: ComponentPropsWithoutRef<typeof Avatar>) {
+  // Filter only demo users, and pick a random one
+  const demoUsers = USERS.filter((user) => user.role === "demo");
+  const { name, email } = demoUsers[0];
+
   return (
     <section className="grid">
       <Avatar className={cn("mx-auto size-74", className)} {...props}>
-        <AvatarImage src="https://robohash.org/placeholder.png" alt={DEMO_USER_NAME} />
-        <AvatarFallback>{getInitialsFromName(DEMO_USER_NAME)}</AvatarFallback>
+        <AvatarImage src="https://robohash.org/placeholder.png" alt={name} />
+        <AvatarFallback>{getInitialsFromName(name)}</AvatarFallback>
       </Avatar>
-      <h4 className="mt-4 max-w-none truncate text-center">{DEMO_USER_NAME}</h4>
-      <p className="text-muted-foreground max-w-none truncate text-center">{DEMO_USER_EMAIL}</p>
+      <h4 className="mt-4 max-w-none truncate text-center">{name}</h4>
+      <p className="text-muted-foreground max-w-none truncate text-center">{email}</p>
     </section>
   );
 }

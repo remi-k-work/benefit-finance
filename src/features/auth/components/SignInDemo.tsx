@@ -5,6 +5,7 @@ import { useState } from "react";
 
 // services, features, and other libraries
 import { authClient } from "@/services/better-auth/auth-client";
+import { getRandomInt } from "@/lib/helpers";
 
 // components
 import { Button } from "@/components/ui/custom/button";
@@ -24,11 +25,15 @@ interface SignInDemoProps {
 }
 
 // constants
-import { DEMO_USER_EMAIL, DEMO_USER_PASS } from "@/drizzle/seed/constants";
+import { USERS } from "@/drizzle/seed/constants";
 
 export default function SignInDemo({ redirect, ll }: SignInDemoProps) {
   // Whether or not the demo sign in request is pending
   const [isPending, setIsPending] = useState(false);
+
+  // Filter only demo users, and pick a random one
+  const demoUsers = USERS.filter((user) => user.role === "demo");
+  const { email, password } = demoUsers[getRandomInt(0, demoUsers.length - 1)];
 
   return (
     <Button
@@ -37,8 +42,8 @@ export default function SignInDemo({ redirect, ll }: SignInDemoProps) {
       className="mx-auto"
       onClick={async () => {
         await authClient.signIn.email({
-          email: DEMO_USER_EMAIL,
-          password: DEMO_USER_PASS,
+          email,
+          password,
           rememberMe: false,
           callbackURL: redirect ?? "/dashboard",
           fetchOptions: {

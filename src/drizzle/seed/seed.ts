@@ -12,45 +12,21 @@ import { UserTable } from "@/drizzle/schema";
 import { auth } from "@/services/better-auth/auth";
 
 // constants
-import { ADMIN_USER_EMAIL, ADMIN_USER_NAME, ADMIN_USER_PASS, DEMO_USER_EMAIL, DEMO_USER_NAME, DEMO_USER_PASS } from "./constants";
+import { USERS } from "./constants";
 
 async function main() {
   try {
-    // Perform database seeding or other tasks
-    console.log("Creating admin user...");
+    console.log("Seeding users...");
 
-    // Drop the admin user and their associated stuff
-    await db.delete(UserTable).where(eq(UserTable.email, ADMIN_USER_EMAIL));
+    for (const { email, password, name, role } of USERS) {
+      console.log(`Creating ${role} user: ${email}`);
 
-    const {
-      // user: { id: adminUserId },
-    } = await auth.api.createUser({
-      body: {
-        email: ADMIN_USER_EMAIL,
-        password: ADMIN_USER_PASS,
-        name: ADMIN_USER_NAME,
-        role: "admin",
-      },
-    });
+      // Delete existing user (if exists)
+      await db.delete(UserTable).where(eq(UserTable.email, email));
 
-    // Perform database seeding or other tasks
-    console.log("Creating demo user...");
-
-    // Drop the demo user and their associated stuff
-    await db.delete(UserTable).where(eq(UserTable.email, DEMO_USER_EMAIL));
-
-    const {
-      // user: { id: demoUserId },
-    } = await auth.api.createUser({
-      body: {
-        email: DEMO_USER_EMAIL,
-        password: DEMO_USER_PASS,
-        name: DEMO_USER_NAME,
-        role: "demo",
-      },
-    });
-
-    // const userId = "FPeReveq5IuaniAjnQMQFp6AFUWk8AuQ";
+      // Create user
+      await auth.api.createUser({ body: { email, password, name, role } });
+    }
 
     console.log("Seeding complete ✅");
     process.exit(0);

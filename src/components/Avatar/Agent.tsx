@@ -15,7 +15,7 @@ export default function AgentAvatar({ isSmall = false, className, ...props }: Ag
   return (
     <Avatar className={cn(isSmall && "size-11", className)} {...props}>
       <AvatarImage src="/logoOAuthGoogle.png" alt="Benefit Finance" />
-      <AvatarFallback className={cn(isSmall && "border-none text-3xl")}>BF</AvatarFallback>
+      <AvatarFallback className={cn(isSmall && "border-none text-2xl")}>BF</AvatarFallback>
     </Avatar>
   );
 }

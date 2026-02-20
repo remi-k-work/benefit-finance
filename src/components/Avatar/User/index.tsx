@@ -14,15 +14,19 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/custom/avat
 import type { UserAvatarProps } from "./User";
 
 // constants
-import { DEMO_USER_NAME } from "@/drizzle/seed/constants";
+import { USERS } from "@/drizzle/seed/constants";
 
 export const UserAvatar = dynamic(() => import("./User"), { ssr: false });
 
 export function UserAvatarSkeleton({ isSmall = false, className, ...props }: Omit<UserAvatarProps, "user" | "session">) {
+  // Filter only demo users, and pick a random one
+  const demoUsers = USERS.filter((user) => user.role === "demo");
+  const { name } = demoUsers[0];
+
   return (
     <Avatar className={cn(isSmall && "size-11", className)} {...props}>
-      <AvatarImage src="https://robohash.org/placeholder.png" alt={DEMO_USER_NAME} />
-      <AvatarFallback className={cn(isSmall && "border-none text-3xl")}>{getInitialsFromName(DEMO_USER_NAME)}</AvatarFallback>
+      <AvatarImage src="https://robohash.org/placeholder.png" alt={name} />
+      <AvatarFallback className={cn(isSmall && "border-none text-2xl")}>{getInitialsFromName(name)}</AvatarFallback>
     </Avatar>
   );
 }
