@@ -61,7 +61,11 @@ export const columns = (
       header: ({ table }) => <CreatedAndUpdatedHeader table={table} ll={ll} />,
       cell: ({ row }) => <CreatedAndUpdatedCell row={row} />,
     }),
-    columnHelper.display({ id: "roleColumn", header: ({ table }) => <RoleHeader table={table} ll={ll} />, cell: ({ row }) => <RoleCell row={row} /> }),
+    columnHelper.display({
+      id: "roleColumn",
+      header: ({ table }) => <RoleHeader table={table} ll={ll} />,
+      cell: ({ row }) => <RoleCell row={row} ll={ll} llFormToastFeedback={llFormToastFeedback} />,
+    }),
     columnHelper.display({
       id: "actionsColumn",
       header: () => <ActionsHeader />,

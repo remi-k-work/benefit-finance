@@ -14,8 +14,11 @@
   "delete": "usunąć",
   "this user?": "tego użytkownika?",
   "[DELETE USER]": "[USUŃ UŻYTKOWNIKA]",
+  "[SET USER ROLE]": "[USTAW ROLĘ UŻYTKOWNIKA]",
   "The user has been deleted.": "Użytkownik został usunięty.",
+  "The role has been set.": "Rola została ustalona.",
   "The user could not be deleted; please try again later.": "Nie udało się usunąć użytkownika; spróbuj ponownie później.",
+  "The role could not be set; please try again later.": "Nie udało się ustawić roli; spróbuj ponownie później.",
   "Name": "Nazwa Użytkownika",
   "Email": "Adres E-mail",
   "Role": "Rola",
@@ -23,8 +26,9 @@
   "Operating System": "System Operacyjny",
   "Device": "Urządzenie",
   "Unknown Operating System": "Nieznany System Operacyjny",
-  "Unknown Device": "Nieznane Urządzenie",
+  "Desktop": "Desktop",
   "Sessions": "Sesje",
   "Accounts": "Konta",
-  "Unknown Browser": "Nieznana Przeglądarka"
+  "Unknown Browser": "Nieznana Przeglądarka",
+  "Select a role for": "Wybierz rolę dla"
 }

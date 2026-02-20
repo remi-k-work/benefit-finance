@@ -55,7 +55,7 @@ export default function VerifyEmail({ user: { emailVerified }, ll, llVerifyEmail
       </CardHeader>
       <CardContent>
         {emailVerified ? (
-          <InfoLine message="Your email has been verified. Thank you!" className="mx-0 mb-0" />
+          <InfoLine message={ll["Your email has been verified. Thank you!"]} className="mx-0 mb-0" />
         ) : (
           <>
             <InfoLine message={feedbackMessage} className="mx-0" />

@@ -14,8 +14,11 @@
   "delete": "delete",
   "this user?": "this user?",
   "[DELETE USER]": "[DELETE USER]",
+  "[SET USER ROLE]": "[SET USER ROLE]",
   "The user has been deleted.": "The user has been deleted.",
+  "The role has been set.": "The role has been set.",
   "The user could not be deleted; please try again later.": "The user could not be deleted; please try again later.",
+  "The role could not be set; please try again later.": "The role could not be set; please try again later.",
   "Name": "Name",
   "Email": "Email",
   "Role": "Role",
@@ -23,8 +26,9 @@
   "Operating System": "Operating System",
   "Device": "Device",
   "Unknown Operating System": "Unknown Operating System",
-  "Unknown Device": "Unknown Device",
+  "Desktop": "Desktop",
   "Sessions": "Sessions",
   "Accounts": "Accounts",
-  "Unknown Browser": "Unknown Browser"
+  "Unknown Browser": "Unknown Browser",
+  "Select a role for": "Select a role for"
 }

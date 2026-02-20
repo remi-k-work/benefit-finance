@@ -30,7 +30,7 @@ export default function Session({ session: { browser, os, device, createdAt, upd
         <p className="text-muted-foreground">{os ?? ll["Unknown Operating System"]}</p>
         <br />
         <p className="uppercase">{ll["Device"]}</p>
-        <p className="text-muted-foreground">{device ?? ll["Unknown Device"]}</p>
+        <p className="text-muted-foreground">{device ?? ll["Desktop"]}</p>
       </CardContent>
       <CardFooter className="flex flex-wrap items-center justify-around gap-6 border-t pt-6">
         <DateTimeAt icon={<CalendarIcon className="size-9" />} title={ll["Created At"]} date={createdAt} />
