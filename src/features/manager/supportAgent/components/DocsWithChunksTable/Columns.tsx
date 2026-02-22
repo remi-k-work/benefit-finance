@@ -47,6 +47,6 @@ export const columns = (
     columnHelper.display({
       id: "actionsColumn",
       header: () => <ActionsHeader />,
-      cell: ({ row }) => <ActionsCell row={row} ll={ll} llFormToastFeedback={llFormToastFeedback} />,
+      cell: ({ row, table }) => <ActionsCell row={row} table={table} ll={ll} llFormToastFeedback={llFormToastFeedback} />,
     }),
   ] as ColumnDef<AllDocsWithChunks, unknown>[];

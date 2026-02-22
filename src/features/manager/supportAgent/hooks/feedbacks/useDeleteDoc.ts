@@ -1,8 +1,5 @@
 // react
-import { startTransition, useEffect, useEffectEvent } from "react";
-
-// server actions and mutations
-import refreshPage from "@/actions/refreshPage";
+import { useEffect, useEffectEvent } from "react";
 
 // services, features, and other libraries
 import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
@@ -33,11 +30,6 @@ export default function useDeleteDocFeedback(
     if (actionStatus === "succeeded") {
       // Display a success message
       showToast("succeeded");
-
-      // Refresh the current page to show the latest data
-      startTransition(() => {
-        refreshPage();
-      });
     } else {
       // Was a restricted operation attempted under the demo account? Inform the user
       guardForDemoMode();
@@ -48,6 +40,7 @@ export default function useDeleteDocFeedback(
   });
 
   useEffect(() => {
+    if (actionStatus === "idle") return;
     onFeedbackNeeded();
   }, [actionStatus]);
 }

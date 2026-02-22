@@ -1,5 +1,5 @@
 // react
-import { useState, useTransition } from "react";
+import { startTransition, useState } from "react";
 
 // drizzle and db access
 import type { AllUsersWithSessions } from "@/features/manager/users/db";
@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/custom/badge";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/custom/select";
 
 // types
-import type { Row } from "@tanstack/react-table";
+import type { Row, Table } from "@tanstack/react-table";
 import type LangLoader from "@/lib/LangLoader";
 import type { Role } from "@/services/better-auth/auth";
 import type { ReactNode } from "react";
@@ -25,6 +25,7 @@ import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 interface RoleCellProps {
   row: Row<AllUsersWithSessions>;
+  table: Table<AllUsersWithSessions>;
   ll: typeof LangLoader.prototype.manUsers;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
@@ -52,15 +53,17 @@ const roles = [
 
 export default function RoleCell({
   row: {
+    index: rowIndex,
     original: { id: userId },
     getValue,
   },
+  table: { options },
   ll,
   llFormToastFeedback,
 }: RoleCellProps) {
   // This action establishes a new role for a user
   const [setUserRoleState, setSetUserRoleState] = useState<ActionResultWithFormState>({ ...initialFormState, actionStatus: "idle" });
-  const [setUserRoleIsPending, setUserRoleAction] = useTransition();
+  const [setUserRoleIsPending, setSetUserRoleIsPending] = useState(false);
 
   // Provide feedback to the user regarding this server action
   useSetUserRoleFeedback(setUserRoleState, ll, llFormToastFeedback);
@@ -70,12 +73,22 @@ export default function RoleCell({
       <Select<Role>
         items={roles}
         value={getValue("role")}
-        onValueChange={(newRole) => {
+        onValueChange={async (newRole) => {
           // Proceed only if the new role is different from the current one
           if (!newRole || newRole === getValue("role")) return;
 
-          setUserRoleAction(async () => {
-            setSetUserRoleState(await setUserRole(userId, newRole));
+          // Execute the server action first and capture its result
+          setSetUserRoleState({ ...initialFormState, actionStatus: "idle" });
+          setSetUserRoleIsPending(true);
+          const actionResult = await setUserRole(userId, newRole);
+          setSetUserRoleState(actionResult);
+          setSetUserRoleIsPending(false);
+
+          // Only reflect changes in the UI if the action was successful
+          if (actionResult.actionStatus !== "succeeded") return;
+          startTransition(() => {
+            options.meta?.updateData(rowIndex, "role", newRole);
+            options.meta?.updateData(rowIndex, "updatedAt", new Date());
           });
         }}
         disabled={setUserRoleIsPending}

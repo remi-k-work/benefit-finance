@@ -1,5 +1,5 @@
 // react
-import { startTransition, useActionState } from "react";
+import { startTransition, useState } from "react";
 
 // next
 import Link from "next/link";
@@ -24,19 +24,23 @@ import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Loader2 } from "lucide-react";
 
 // types
-import type { Row } from "@tanstack/react-table";
+import type { Row, Table } from "@tanstack/react-table";
 import type LangLoader from "@/lib/LangLoader";
+import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 interface ActionsCellProps {
   row: Row<AllDocsWithChunks>;
+  table: Table<AllDocsWithChunks>;
   ll: typeof LangLoader.prototype.manSupportAgent;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
 export default function ActionsCell({
   row: {
+    index: rowIndex,
     original: { id: docId },
   },
+  table: { options },
   ll,
   llFormToastFeedback,
 }: ActionsCellProps) {
@@ -44,7 +48,8 @@ export default function ActionsCell({
   const { openConfirmModal } = useConfirmModal();
 
   // This action deletes the support agent document and all of its associated chunks
-  const [deleteDocState, deleteDocAction, deleteDocIsPending] = useActionState(deleteDoc.bind(null, docId), { ...initialFormState, actionStatus: "idle" });
+  const [deleteDocState, setDeleteDocState] = useState<ActionResultWithFormState>({ ...initialFormState, actionStatus: "idle" });
+  const [deleteDocIsPending, setDeleteDocIsPending] = useState(false);
 
   // Provide feedback to the user regarding this server action
   useDeleteDocFeedback(deleteDocState, ll, llFormToastFeedback);
@@ -74,8 +79,19 @@ export default function ActionsCell({
                 {ll["Are you sure you want to"]} <b className="text-destructive">{ll["delete"]}</b> {ll["this document?"]}
               </p>
             ),
-            onConfirmed: () => {
-              startTransition(deleteDocAction);
+            onConfirmed: async () => {
+              // Execute the server action first and capture its result
+              setDeleteDocState({ ...initialFormState, actionStatus: "idle" });
+              setDeleteDocIsPending(true);
+              const actionResult = await deleteDoc(docId);
+              setDeleteDocState(actionResult);
+              setDeleteDocIsPending(false);
+
+              // Only reflect changes in the UI if the action was successful
+              if (actionResult.actionStatus !== "succeeded") return;
+              startTransition(() => {
+                options.meta?.removeData(rowIndex);
+              });
             },
           });
         }}

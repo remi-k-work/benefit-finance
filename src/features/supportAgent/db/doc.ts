@@ -38,7 +38,7 @@ export class SupAgentDocDB extends Effect.Service<SupAgentDocDB>()("SupAgentDocD
     // Get all documents with their corresponding chunks (used by the tanstack table)
     const allDocsWithChunks = execute((dbOrTx) =>
       dbOrTx.query.SupAgentDocTable.findMany({
-        orderBy: desc(SupAgentDocTable.updatedAt),
+        orderBy: desc(SupAgentDocTable.createdAt),
         with: { docChunks: { columns: { chunk: true } } },
         extras: {
           // We use a subquery to count chunks where the foreign key matches

@@ -62,11 +62,11 @@ export const columns = (
     columnHelper.display({
       id: "roleColumn",
       header: ({ table }) => <RoleHeader table={table} ll={ll} />,
-      cell: ({ row }) => <RoleCell row={row} ll={ll} llFormToastFeedback={llFormToastFeedback} />,
+      cell: ({ row, table }) => <RoleCell row={row} table={table} ll={ll} llFormToastFeedback={llFormToastFeedback} />,
     }),
     columnHelper.display({
       id: "actionsColumn",
       header: () => <ActionsHeader />,
-      cell: ({ row }) => <ActionsCell row={row} ll={ll} llFormToastFeedback={llFormToastFeedback} />,
+      cell: ({ row, table }) => <ActionsCell row={row} table={table} ll={ll} llFormToastFeedback={llFormToastFeedback} />,
     }),
   ] as ColumnDef<AllUsersWithSessions, unknown>[];

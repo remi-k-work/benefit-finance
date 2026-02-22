@@ -1,5 +1,5 @@
 // react
-import { startTransition, useActionState } from "react";
+import { startTransition, useState } from "react";
 
 // drizzle and db access
 import type { AllUsersWithSessions } from "@/features/manager/users/db";
@@ -21,19 +21,23 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import { Loader2 } from "lucide-react";
 
 // types
-import type { Row } from "@tanstack/react-table";
+import type { Row, Table } from "@tanstack/react-table";
 import type LangLoader from "@/lib/LangLoader";
+import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 interface ActionsCellProps {
   row: Row<AllUsersWithSessions>;
+  table: Table<AllUsersWithSessions>;
   ll: typeof LangLoader.prototype.manUsers;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
 export default function ActionsCell({
   row: {
+    index: rowIndex,
     original: { id: userId },
   },
+  table: { options },
   ll,
   llFormToastFeedback,
 }: ActionsCellProps) {
@@ -41,7 +45,8 @@ export default function ActionsCell({
   const { openConfirmModal } = useConfirmModal();
 
   // This action permanently deletes a user from the database
-  const [deleteUserState, deleteUserAction, deleteUserIsPending] = useActionState(deleteUser.bind(null, userId), { ...initialFormState, actionStatus: "idle" });
+  const [deleteUserState, setDeleteUserState] = useState<ActionResultWithFormState>({ ...initialFormState, actionStatus: "idle" });
+  const [deleteUserIsPending, setDeleteUserIsPending] = useState(false);
 
   // Provide feedback to the user regarding this server action
   useDeleteUserFeedback(deleteUserState, ll, llFormToastFeedback);
@@ -61,8 +66,19 @@ export default function ActionsCell({
                 {ll["Are you sure you want to"]} <b className="text-destructive">{ll["delete"]}</b> {ll["this user?"]}
               </p>
             ),
-            onConfirmed: () => {
-              startTransition(deleteUserAction);
+            onConfirmed: async () => {
+              // Execute the server action first and capture its result
+              setDeleteUserState({ ...initialFormState, actionStatus: "idle" });
+              setDeleteUserIsPending(true);
+              const actionResult = await deleteUser(userId);
+              setDeleteUserState(actionResult);
+              setDeleteUserIsPending(false);
+
+              // Only reflect changes in the UI if the action was successful
+              if (actionResult.actionStatus !== "succeeded") return;
+              startTransition(() => {
+                options.meta?.removeData(rowIndex);
+              });
             },
           });
         }}
