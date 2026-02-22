@@ -26,10 +26,10 @@ const main = (docId: string) =>
     const supAgentDocDB = yield* SupAgentDocDB;
 
     // Delete a document
-    // yield* supAgentDocDB.deleteDoc(docId);
+    yield* supAgentDocDB.deleteDoc(docId);
 
     // The action has completed successfully
-    return { ...initialFormState, actionStatus: "succeeded" } satisfies ActionResultWithFormState;
+    return { ...initialFormState, actionStatus: "succeeded", timestamp: Date.now() } satisfies ActionResultWithFormState;
   });
 
 // This action deletes the support agent document and all of its associated chunks

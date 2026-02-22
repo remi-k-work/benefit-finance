@@ -68,7 +68,6 @@ export default function ActionsCell({
             ),
             onConfirmed: async () => {
               // Execute the server action first and capture its result
-              setDeleteUserState({ ...initialFormState, actionStatus: "idle" });
               setDeleteUserIsPending(true);
               const actionResult = await deleteUser(userId);
               setDeleteUserState(actionResult);

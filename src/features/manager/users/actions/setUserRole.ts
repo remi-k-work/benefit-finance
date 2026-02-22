@@ -27,7 +27,7 @@ const main = (userId: string, newRole: Role) =>
     yield* authAdmin.setUserRole(userId, newRole);
 
     // The action has completed successfully
-    return { ...initialFormState, actionStatus: "succeeded" } satisfies ActionResultWithFormState;
+    return { ...initialFormState, actionStatus: "succeeded", timestamp: Date.now() } satisfies ActionResultWithFormState;
   });
 
 // This action establishes a new role for a user

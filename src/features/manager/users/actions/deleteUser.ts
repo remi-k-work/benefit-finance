@@ -26,7 +26,7 @@ const main = (userId: string) =>
     yield* authAdmin.removeUser(userId);
 
     // The action has completed successfully
-    return { ...initialFormState, actionStatus: "succeeded" } satisfies ActionResultWithFormState;
+    return { ...initialFormState, actionStatus: "succeeded", timestamp: Date.now() } satisfies ActionResultWithFormState;
   });
 
 // This action permanently deletes a user from the database

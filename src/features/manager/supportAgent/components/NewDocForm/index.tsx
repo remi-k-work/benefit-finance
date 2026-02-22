@@ -3,7 +3,7 @@
 "use client";
 
 // react
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useRef } from "react";
 
 // server actions and mutations
 import newDocForm from "@/features/manager/supportAgent/actions/newDocForm";
@@ -47,20 +47,8 @@ export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback 
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
   });
 
-  // Track if the user has pressed the submit button
-  const hasPressedSubmitRef = useRef(false);
-
-  // All this new cleanup code is for the <Activity /> boundary
-  useEffect(() => {
-    // Reset the flag when the component unmounts
-    return () => {
-      hasPressedSubmitRef.current = false;
-    };
-  }, []);
-
   // Provide feedback to the user regarding this form actions
   const { feedbackMessage, hideFeedbackMessage } = useNewDocFormFeedback(
-    hasPressedSubmitRef,
     formState,
     () => {
       reset();
@@ -77,7 +65,6 @@ export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback 
         action={formAction}
         onSubmit={async () => {
           await handleSubmit();
-          hasPressedSubmitRef.current = true;
         }}
       >
         <Card className="max-w-4xl">

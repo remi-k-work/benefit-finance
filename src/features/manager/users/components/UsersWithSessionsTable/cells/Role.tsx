@@ -78,7 +78,6 @@ export default function RoleCell({
           if (!newRole || newRole === getValue("role")) return;
 
           // Execute the server action first and capture its result
-          setSetUserRoleState({ ...initialFormState, actionStatus: "idle" });
           setSetUserRoleIsPending(true);
           const actionResult = await setUserRole(userId, newRole);
           setSetUserRoleState(actionResult);

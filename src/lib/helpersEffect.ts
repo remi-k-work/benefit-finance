@@ -15,6 +15,7 @@ import type { ServerFormState } from "@tanstack/react-form-nextjs";
 
 export interface ActionResultWithFormState extends ServerFormState<any, any> {
   actionStatus: "idle" | "succeeded" | "failed" | "invalid" | "demoMode";
+  timestamp?: number;
 }
 
 interface PageInputPromises {
@@ -104,15 +105,15 @@ export const runServerActionMain = async <A extends ActionResultWithFormState, E
     if (error._tag === "UnauthorizedAccessError") unauthorized();
 
     // Return early if the current user is in demo mode or not an admin
-    if (error._tag === "DemoModeError") return { ...initialFormState, actionStatus: "demoMode" };
+    if (error._tag === "DemoModeError") return { ...initialFormState, actionStatus: "demoMode", timestamp: Date.now() };
 
     // Validation has failed
     if (error._tag === "ValidationHasFailedError") {
-      if (error.cause instanceof ServerValidateError) return { ...error.cause.formState, actionStatus: "invalid" };
+      if (error.cause instanceof ServerValidateError) return { ...error.cause.formState, actionStatus: "invalid", timestamp: Date.now() };
     }
 
     // Some other error occurred
-    return { ...initialFormState, actionStatus: "failed" };
+    return { ...initialFormState, actionStatus: "failed", timestamp: Date.now() };
   } else {
     // The form has successfully validated and submitted!
     return serverActionMainResult.right;

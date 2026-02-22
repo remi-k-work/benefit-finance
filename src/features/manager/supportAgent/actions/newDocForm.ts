@@ -47,7 +47,7 @@ const main = (formData: FormData) =>
     );
 
     // The form has successfully validated and submitted!
-    return { ...initialFormState, actionStatus: "succeeded" } satisfies ActionResultWithFormState;
+    return { ...initialFormState, actionStatus: "succeeded", timestamp: Date.now() } satisfies ActionResultWithFormState;
   });
 
 // The main server action that processes the form

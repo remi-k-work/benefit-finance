@@ -1,5 +1,5 @@
 // react
-import { useEffect, useEffectEvent } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
 
 // services, features, and other libraries
 import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
@@ -11,10 +11,13 @@ import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this server action
 export default function useSetUserRoleFeedback(
-  { actionStatus }: ActionResultWithFormState,
+  { actionStatus, timestamp }: ActionResultWithFormState,
   ll: typeof LangLoader.prototype.manUsers,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
+  // This ref tracks which submission we have already processed (the <Activity /> replay problem fix)
+  const lastProcessedTimestampRef = useRef<typeof timestamp>(undefined);
+
   // Generic hook for displaying toast notifications for form actions
   const showToast = useFormToastFeedback(
     ll["[SET USER ROLE]"],
@@ -40,7 +43,15 @@ export default function useSetUserRoleFeedback(
   });
 
   useEffect(() => {
-    if (actionStatus === "idle") return;
+    // If there is no timestamp, the user has not submitted yet
+    if (!timestamp) return;
+
+    // If the timestamp matches our ref, we have already handled this specific submission
+    if (timestamp === lastProcessedTimestampRef.current) return;
+
+    // Update the ref immediately so we do not process it again
+    lastProcessedTimestampRef.current = timestamp;
+
     onFeedbackNeeded();
-  }, [actionStatus]);
+  }, [timestamp]);
 }
