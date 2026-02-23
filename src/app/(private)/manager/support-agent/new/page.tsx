@@ -10,7 +10,7 @@ import { UnauthorizedAccessError } from "@/lib/errors";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
-import NewDocForm from "@/features/manager/supportAgent/components/NewDocForm";
+import NewDocForm from "@/features/supportAgent/components/NewDocForm";
 
 // types
 import type { Metadata } from "next";

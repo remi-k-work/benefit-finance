@@ -11,8 +11,8 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
-import ContactUsMap from "@/features/frontend/components/ContactUsMap";
-import ContactUsForm from "@/features/frontend/components/ContactUsForm";
+import ContactUsMap from "@/features/contactUs/components/ContactUsMap";
+import ContactUsForm from "@/features/contactUs/components/ContactUsForm";
 
 // assets
 import contactUs from "@/assets/contactUs.webp";

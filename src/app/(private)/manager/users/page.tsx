@@ -10,7 +10,7 @@ import { UnauthorizedAccessError } from "@/lib/errors";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
-import UsersWithSessionsTable, { UsersWithSessionsTableSkeleton } from "@/features/manager/users/components/UsersWithSessionsTable";
+import UsersWithSessionsTable, { UsersWithSessionsTableSkeleton } from "@/features/users/components/UsersWithSessionsTable";
 
 // types
 import type { Metadata } from "next";

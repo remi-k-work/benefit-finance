@@ -8,13 +8,13 @@ import { SupAgentDocDB } from "@/features/supportAgent/db";
 import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
 import { runPageMainOrNavigate, validatePageInputs } from "@/lib/helpersEffect";
-import { EditDocPageSchema } from "@/features/manager/supportAgent/schemas/editDocPage";
+import { EditDocPageSchema } from "@/features/supportAgent/schemas/editDocPage";
 import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
 import { ItemNotFoundError, UnauthorizedAccessError } from "@/lib/errors";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
-import EditDocForm from "@/features/manager/supportAgent/components/EditDocForm";
+import EditDocForm from "@/features/supportAgent/components/EditDocForm";
 
 // types
 import type { Metadata } from "next";

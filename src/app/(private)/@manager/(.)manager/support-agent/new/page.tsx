@@ -10,7 +10,7 @@ import { UnauthorizedAccessError } from "@/lib/errors";
 
 // components
 import ManagerModal from "@/components/ManagerModal";
-import NewDocForm from "@/features/manager/supportAgent/components/NewDocForm";
+import NewDocForm from "@/features/supportAgent/components/NewDocForm";
 
 // assets
 import { DocumentPlusIcon } from "@heroicons/react/24/outline";
