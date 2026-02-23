@@ -4,9 +4,11 @@ import { relations } from "drizzle-orm";
 // all table definitions (their schemas)
 import { AccountTable, SessionTable, UserTable } from "./auth";
 import { AvatarTable } from "./avatar";
+import { LeadTable } from "./lead";
 
 export const userRelations = relations(UserTable, ({ one, many }) => ({
   avatar: one(AvatarTable, { fields: [UserTable.id], references: [AvatarTable.userId] }),
+  leads: many(LeadTable),
   sessions: many(SessionTable),
   accounts: many(AccountTable),
 }));
