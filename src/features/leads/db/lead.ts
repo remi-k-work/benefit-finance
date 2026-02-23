@@ -6,7 +6,7 @@ import { desc, eq } from "drizzle-orm";
 import { Effect } from "effect";
 
 // all table definitions (their schemas)
-import { LeadTable } from "@/drizzle/schema";
+import { LeadTable, UserTable } from "@/drizzle/schema";
 
 // types
 export type Lead = Exclude<Effect.Effect.Success<ReturnType<typeof LeadDB.prototype.getLead>>, undefined>;
@@ -34,6 +34,10 @@ export class LeadDB extends Effect.Service<LeadDB>()("LeadDB", {
     // Delete all leads
     const deleteAll = execute((dbOrTx) => dbOrTx.delete(LeadTable));
 
+    // Find the referrer id from email
+    const findReferrerId = (email: string) =>
+      execute((dbOrTx) => dbOrTx.query.UserTable.findFirst({ columns: { id: true }, where: eq(UserTable.email, email) }));
+
     // Get all leads for a referrer
     const allLeadsForReferrer = (referredBy: string) =>
       execute((dbOrTx) =>
@@ -53,6 +57,6 @@ export class LeadDB extends Effect.Service<LeadDB>()("LeadDB", {
         }),
       );
 
-    return { getLead, insertLead, updateLead, deleteLead, deleteAll, allLeadsForReferrer } as const;
+    return { getLead, insertLead, updateLead, deleteLead, deleteAll, findReferrerId, allLeadsForReferrer } as const;
   }),
 }) {}
