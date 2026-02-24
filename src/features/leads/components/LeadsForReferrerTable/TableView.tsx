@@ -16,8 +16,7 @@ import { SubmittedHeaderSkeleton } from "./headers/Submitted";
 import { NameCellSkeleton } from "./cells/Name";
 import { StatusCellSkeleton } from "./cells/Status";
 import { SubmittedCellSkeleton } from "./cells/Submitted";
-import Sessions from "@/features/users/components/Sessions";
-import Accounts from "@/features/users/components/Accounts";
+import Lead from "@/features/leads/components/Lead";
 
 export default function TableView() {
   const {
@@ -52,8 +51,7 @@ export default function TableView() {
             {row.getIsExpanded() && (
               <TableRow>
                 <TableCell colSpan={row.getVisibleCells().length}>
-                  {/* <Sessions userWithSessions={row.original} />
-                  <Accounts userWithSessions={row.original} /> */}
+                  <Lead allLeadsForReferrer={row.original} />
                 </TableCell>
               </TableRow>
             )}

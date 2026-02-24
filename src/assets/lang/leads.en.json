@@ -25,5 +25,12 @@
   "during": "during",
   "accepted": "accepted",
   "rejected": "rejected",
-  "Select a status for": "Select a status for"
+  "Select a status for": "Select a status for",
+  "Lead Details": "Lead Details",
+  "Phone": "Phone",
+  "Service of Interest": "Service of Interest",
+  "subsidies": "subsidies",
+  "credits": "credits",
+  "insurance": "insurance",
+  "not sure": "not sure"
 }

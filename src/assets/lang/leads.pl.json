@@ -25,5 +25,12 @@
   "during": "w trakcie",
   "accepted": "zaakceptowany",
   "rejected": "odrzucony",
-  "Select a status for": "Wybierz status dla"
+  "Select a status for": "Wybierz status dla",
+  "Lead Details": "Szczegóły Leada",
+  "Phone": "Telefon",
+  "Service of Interest": "Zainteresowany Usługą",
+  "subsidies": "dofinansowania",
+  "credits": "kredyty",
+  "insurance": "ubezpieczenia",
+  "not sure": "nie jestem pewien"
 }
