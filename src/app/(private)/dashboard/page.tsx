@@ -9,6 +9,8 @@ import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
+import SectionHeader, { SectionHeaderSkeleton } from "@/components/SectionHeader";
+import LeadsForReferrerTable, { LeadsForReferrerTableSkeleton } from "@/features/leads/components/LeadsForReferrerTable";
 import ProfileInfo from "@/features/dashboard/components/ProfileInfo";
 import VerifyEmail from "@/features/dashboard/components/VerifyEmail";
 
@@ -47,6 +49,9 @@ async function PageContent() {
   return (
     <>
       <PageHeader title={ll["Dashboard"]} description={ll["Welcome back! Below is your account overview"]} />
+      <SectionHeader title={ll["Leads that you have submitted so far"]} />
+      <LeadsForReferrerTable />
+      <SectionHeader title={ll["Your basic profile information"]} />
       <article className="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <ProfileInfo user={user} session={session} ll={profileInfo} />
         <VerifyEmail user={user} ll={verifyEmail} llVerifyEmailFeedback={verifyEmailFeedback} llFormToastFeedback={formToastFeedback} />
@@ -59,6 +64,9 @@ function PageSkeleton() {
   return (
     <>
       <PageHeaderSkeleton />
+      <SectionHeaderSkeleton />
+      <LeadsForReferrerTableSkeleton />
+      <SectionHeaderSkeleton />
     </>
   );
 }

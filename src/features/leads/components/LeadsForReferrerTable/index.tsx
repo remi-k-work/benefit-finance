@@ -33,16 +33,16 @@ const main = Effect.gen(function* () {
 });
 
 // Component remains the fast, static shell
-export default function UsersWithSessionsTable() {
+export default function LeadsForReferrerTable() {
   return (
-    <Suspense fallback={<UsersWithSessionsTableSkeleton />}>
-      <UsersWithSessionsTableContent />
+    <Suspense fallback={<LeadsForReferrerTableSkeleton />}>
+      <LeadsForReferrerTableContent />
     </Suspense>
   );
 }
 
 // This new async component contains the dynamic logic
-async function UsersWithSessionsTableContent() {
+async function LeadsForReferrerTableContent() {
   // Execute the main effect for the component, handle known errors, and return the payload
   const { allLeadsForReferrer, ll } = await runComponentMain(main);
 
@@ -54,7 +54,7 @@ async function UsersWithSessionsTableContent() {
   );
 }
 
-export function UsersWithSessionsTableSkeleton() {
+export function LeadsForReferrerTableSkeleton() {
   return (
     <>
       <TableViewSkeleton />
