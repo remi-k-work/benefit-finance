@@ -6,6 +6,10 @@ import { relations } from "drizzle-orm";
 // all table definitions (their schemas)
 import { UserTable } from "./auth";
 
+// types
+export type ServiceOfInterest = (typeof serviceOfInterestEnum.enumValues)[number];
+export type Status = (typeof statusEnum.enumValues)[number];
+
 export const serviceOfInterestEnum = pgEnum("lead_service_of_interest", ["subsidies", "credits", "insurance", "not sure"]);
 export const statusEnum = pgEnum("lead_status", ["during", "accepted", "rejected"]);
 

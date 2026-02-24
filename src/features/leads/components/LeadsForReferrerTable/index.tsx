@@ -1,0 +1,63 @@
+// react
+import { Suspense } from "react";
+
+// drizzle and db access
+import { LeadDB } from "@/features/leads/db";
+
+// services, features, and other libraries
+import { Effect } from "effect";
+import LangLoader from "@/lib/LangLoader";
+import { runComponentMain } from "@/lib/helpersEffect";
+import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
+
+// components
+import { InstanceProvider } from "./context";
+import BrowseBar from "./BrowseBar";
+import TableView, { TableViewSkeleton } from "./TableView";
+
+const main = Effect.gen(function* () {
+  // Access the user session data from the server side or fail with an unauthorized access error
+  const {
+    user: { id: referredBy },
+  } = yield* getUserSessionData;
+
+  const leadDB = yield* LeadDB;
+
+  // Get all leads for a referrer
+  const allLeadsForReferrer = yield* leadDB.allLeadsForReferrer(referredBy);
+
+  // Create an instance of the lang loader needed for localization
+  const { leads: ll } = yield* LangLoader.createEffect();
+
+  return { allLeadsForReferrer, ll };
+});
+
+// Component remains the fast, static shell
+export default function UsersWithSessionsTable() {
+  return (
+    <Suspense fallback={<UsersWithSessionsTableSkeleton />}>
+      <UsersWithSessionsTableContent />
+    </Suspense>
+  );
+}
+
+// This new async component contains the dynamic logic
+async function UsersWithSessionsTableContent() {
+  // Execute the main effect for the component, handle known errors, and return the payload
+  const { allLeadsForReferrer, ll } = await runComponentMain(main);
+
+  return (
+    <InstanceProvider allLeadsForReferrer={allLeadsForReferrer} ll={ll}>
+      <BrowseBar />
+      <TableView />
+    </InstanceProvider>
+  );
+}
+
+export function UsersWithSessionsTableSkeleton() {
+  return (
+    <>
+      <TableViewSkeleton />
+    </>
+  );
+}

@@ -58,6 +58,8 @@ import homePageEn from "@/assets/lang/homePage.en.json";
 import homePagePl from "@/assets/lang/homePage.pl.json";
 import langChangerEn from "@/assets/lang/langChanger.en.json";
 import langChangerPl from "@/assets/lang/langChanger.pl.json";
+import leadsEn from "@/assets/lang/leads.en.json";
+import leadsPl from "@/assets/lang/leads.pl.json";
 import lifeAndHealthInsurancePageEn from "@/assets/lang/lifeAndHealthInsurancePage.en.json";
 import lifeAndHealthInsurancePagePl from "@/assets/lang/lifeAndHealthInsurancePage.pl.json";
 import manSupportAgentEn from "@/assets/lang/manSupportAgent.en.json";
@@ -264,6 +266,9 @@ export default class LangLoader {
   }
   public get langChanger() {
     return this.preferredLanguage === "pl" ? langChangerPl : langChangerEn;
+  }
+  public get leads() {
+    return this.preferredLanguage === "pl" ? leadsPl : leadsEn;
   }
   public get lifeAndHealthInsurancePage() {
     return this.preferredLanguage === "pl" ? lifeAndHealthInsurancePagePl : lifeAndHealthInsurancePageEn;
