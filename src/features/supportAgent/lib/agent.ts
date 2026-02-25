@@ -15,13 +15,22 @@ export type SupportAgentUIMessage = InferAgentUIMessage<typeof supportAgent>;
 // constants
 import { INSTRUCTIONS } from "@/features/supportAgent/constants";
 
+const MODEL_TIMEOUT = "15 seconds";
+const RETRY_SCHEDULE = Schedule.intersect(Schedule.exponential("500 millis"), Schedule.recurs(2)).pipe(Schedule.jittered);
+
+const MODEL_CANDIDATES = [
+  { name: "gemini-3-flash-preview", model: google("gemini-3-flash-preview") },
+  { name: "gemini-flash-latest", model: google("gemini-flash-latest") },
+  { name: "gemini-flash-lite-latest", model: google("gemini-flash-lite-latest") },
+] as const;
+
 // This is a factory designed to create a support agent that uses a specified model
 const supportAgent = (model: LanguageModel) =>
   new ToolLoopAgent({
     model,
     instructions: INSTRUCTIONS,
 
-    stopWhen: stepCountIs(3),
+    stopWhen: stepCountIs(5),
     tools: {
       getInformation: getInformationTool,
     },
@@ -82,39 +91,42 @@ const runAgentWithModel = (model: LanguageModel, prompt: string | ModelMessage[]
     return { result, response };
   });
 
+// Hybrid Error Classifier: Checks standard HTTP status codes, falling back to string matching
+const isRetryableModelFailure = (cause: unknown) => {
+  // If Vercel AI SDK passed through an HTTP status code natively
+  if (cause instanceof Error && "statusCode" in cause) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const status = (cause as any).statusCode;
+    if ([408, 429, 500, 502, 503, 504].includes(status)) return true;
+  }
+
+  // Broad fallback for nested errors, native fetch errors, and our custom timeouts
+  const message = JSON.stringify(cause).toLowerCase();
+  return ["timeout", "timed out", "429", "rate limit", "network", "econnreset", "temporarily unavailable", "service unavailable"].some((fragment) =>
+    message.includes(fragment),
+  );
+};
+
 // The resilience policy ensures the support agent operates using multiple models in a fallback chain (model1 -> model2 -> model3 -> model4 -> model5)
 const supportAgentPolicy = (prompt: string | ModelMessage[]) =>
   Effect.gen(function* () {
-    const schedule = Schedule.intersect(Schedule.exponential("200 millis"), Schedule.recurs(3));
-
-    const model1 = runAgentWithModel(google("gemini-3-flash-preview"), prompt).pipe(
-      Effect.retry(schedule),
-      Effect.timeout("6 seconds"),
-      Effect.tapError(() => Effect.logWarning("Model1 'gemini-3-flash-preview' failed, switching...")),
-    );
-    const model2 = runAgentWithModel(google("gemini-flash-latest"), prompt).pipe(
-      Effect.retry(schedule),
-      Effect.timeout("6 seconds"),
-      Effect.tapError(() => Effect.logWarning("Model2 'gemini-flash-latest' failed, switching...")),
-    );
-    const model3 = runAgentWithModel(google("gemini-flash-lite-latest"), prompt).pipe(
-      Effect.retry(schedule),
-      Effect.timeout("6 seconds"),
-      Effect.tapError(() => Effect.logWarning("Model3 'gemini-flash-lite-latest' failed, switching...")),
-    );
-    const model4 = runAgentWithModel(google("gemini-2.0-flash"), prompt).pipe(
-      Effect.retry(schedule),
-      Effect.timeout("6 seconds"),
-      Effect.tapError(() => Effect.logWarning("Model4 'gemini-2.0-flash' failed, switching...")),
-    );
-    const model5 = runAgentWithModel(google("gemini-2.0-flash-lite"), prompt).pipe(
-      Effect.retry(schedule),
-      Effect.timeout("6 seconds"),
-      Effect.tapError(() => Effect.logWarning("Model5 'gemini-2.0-flash-lite' failed, switching...")),
+    const attempts = MODEL_CANDIDATES.map(({ name, model }) =>
+      runAgentWithModel(model, prompt).pipe(
+        // Enforce a strict time limit on this specific attempt
+        Effect.timeoutFail({ duration: MODEL_TIMEOUT, onTimeout: () => new AiSdkError({ message: `Model '${name}' timed out after ${MODEL_TIMEOUT}` }) }),
+        // Retry only if the classifier deems the failure transient
+        Effect.retry({ schedule: RETRY_SCHEDULE, while: isRetryableModelFailure }),
+        // Log a warning if the model completely fails all retries before moving to the next candidate
+        Effect.tapError((cause) =>
+          Effect.logWarning(
+            `[SUPPORT AGENT] Model '${name}' failed. Moving to fallback. Cause: ${cause instanceof Error ? cause.message : JSON.stringify(cause)}`,
+          ),
+        ),
+      ),
     );
 
-    // Use the first model that succeeds and start streaming its responses
-    return yield* Effect.firstSuccessOf([model1, model2, model3, model4, model5]);
+    // Run through the mapped attempts array in order
+    return yield* Effect.firstSuccessOf(attempts);
   });
 
 // Run the support agent using a fallback chain of models
