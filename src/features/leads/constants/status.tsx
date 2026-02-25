@@ -14,19 +14,19 @@ export const STATUS = (ll: typeof LangLoader.prototype.leads) =>
     {
       value: "during",
       label: (
-        <Badge variant="secondary" className="min-w-32 text-base font-semibold">
+        <Badge variant="secondary" className="min-w-42 text-base font-semibold">
           {ll["during"]}
         </Badge>
       ),
     },
     {
       value: "accepted",
-      label: <Badge className="min-w-32 text-base font-semibold">{ll["accepted"]}</Badge>,
+      label: <Badge className="min-w-42 text-base font-semibold">{ll["accepted"]}</Badge>,
     },
     {
       value: "rejected",
       label: (
-        <Badge variant="destructive" className="min-w-32 text-base font-semibold">
+        <Badge variant="destructive" className="min-w-42 text-base font-semibold">
           {ll["rejected"]}
         </Badge>
       ),

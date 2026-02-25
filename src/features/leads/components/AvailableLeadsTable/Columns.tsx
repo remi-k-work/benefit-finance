@@ -46,7 +46,7 @@ export const columns = (
     columnHelper.display({
       id: "statusColumn",
       header: ({ table }) => <StatusHeader table={table} ll={ll} />,
-      cell: ({ row }) => <StatusCell row={row} ll={ll} />,
+      cell: ({ row, table }) => <StatusCell row={row} table={table} ll={ll} llFormToastFeedback={llFormToastFeedback} />,
     }),
     columnHelper.display({
       id: "submittedColumn",

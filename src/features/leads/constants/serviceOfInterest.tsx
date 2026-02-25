@@ -14,7 +14,7 @@ export const SERVICE_OF_INTEREST = (ll: typeof LangLoader.prototype.leads) =>
     {
       value: "subsidies",
       label: (
-        <Badge variant="outline" className="min-w-32 text-base font-semibold">
+        <Badge variant="outline" className="min-w-42 text-base font-semibold">
           {ll["subsidies"]}
         </Badge>
       ),
@@ -22,7 +22,7 @@ export const SERVICE_OF_INTEREST = (ll: typeof LangLoader.prototype.leads) =>
     {
       value: "credits",
       label: (
-        <Badge variant="outline" className="min-w-32 text-base font-semibold">
+        <Badge variant="outline" className="min-w-42 text-base font-semibold">
           {ll["credits"]}
         </Badge>
       ),
@@ -30,7 +30,7 @@ export const SERVICE_OF_INTEREST = (ll: typeof LangLoader.prototype.leads) =>
     {
       value: "insurance",
       label: (
-        <Badge variant="outline" className="min-w-32 text-base font-semibold">
+        <Badge variant="outline" className="min-w-42 text-base font-semibold">
           {ll["insurance"]}
         </Badge>
       ),

@@ -16,7 +16,7 @@ interface StatusHeaderProps {
 
 export default function StatusHeader({ table: { getColumn }, ll }: StatusHeaderProps) {
   return (
-    <TableHead className="w-48">
+    <TableHead className="w-68">
       <ColumnHeader column={getColumn("status")!} title={ll["Status"]} className="mx-auto" />
     </TableHead>
   );
@@ -24,7 +24,7 @@ export default function StatusHeader({ table: { getColumn }, ll }: StatusHeaderP
 
 export function StatusHeaderSkeleton() {
   return (
-    <TableHead className="w-48">
+    <TableHead className="w-68">
       <ColumnHeaderSkeleton title="Status" className="mx-auto" />
     </TableHead>
   );
