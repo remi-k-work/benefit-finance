@@ -11,6 +11,7 @@ import { LeadTable, UserTable } from "@/drizzle/schema";
 // types
 export type Lead = Exclude<Effect.Effect.Success<ReturnType<typeof LeadDB.prototype.getLead>>, undefined>;
 export type AllLeadsForReferrer = Effect.Effect.Success<ReturnType<typeof LeadDB.prototype.allLeadsForReferrer>>[number];
+export type AllAvailableLeads = Effect.Effect.Success<typeof LeadDB.prototype.allAvailableLeads>[number];
 
 export class LeadDB extends Effect.Service<LeadDB>()("LeadDB", {
   dependencies: [DB.Default],
@@ -57,6 +58,9 @@ export class LeadDB extends Effect.Service<LeadDB>()("LeadDB", {
         }),
       );
 
-    return { getLead, insertLead, updateLead, deleteLead, deleteAll, findReferrerId, allLeadsForReferrer } as const;
+    // Get all the available leads
+    const allAvailableLeads = execute((dbOrTx) => dbOrTx.query.LeadTable.findMany({ orderBy: desc(LeadTable.createdAt) }));
+
+    return { getLead, insertLead, updateLead, deleteLead, deleteAll, findReferrerId, allLeadsForReferrer, allAvailableLeads } as const;
   }),
 }) {}

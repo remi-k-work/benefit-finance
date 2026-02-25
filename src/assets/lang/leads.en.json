@@ -32,5 +32,9 @@
   "subsidies": "subsidies",
   "credits": "credits",
   "insurance": "insurance",
-  "not sure": "not sure"
+  "not sure": "not sure",
+  "New Lead": "New Lead",
+  "Leads": "Leads",
+  "Below, you can view and manage all the leads": "Below, you can view and manage all the leads",
+  "Internal Notes": "Internal Notes"
 }
