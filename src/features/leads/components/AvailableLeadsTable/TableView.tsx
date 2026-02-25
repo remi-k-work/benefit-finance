@@ -10,12 +10,12 @@ import { useInstanceContext } from "./context";
 // components
 import InfoLine from "@/components/Form/InfoLine";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/custom/table";
-import { NameHeaderSkeleton } from "./headers/Name";
+import { NameAndReferrerHeaderSkeleton } from "./headers/NameAndReferrer";
 import { StatusHeaderSkeleton } from "./headers/Status";
-import { SubmittedHeaderSkeleton } from "./headers/Submitted";
-import { NameCellSkeleton } from "./cells/Name";
+import { CreatedAndUpdatedHeaderSkeleton } from "./headers/CreatedAndUpdated";
+import { NameAndReferrerCellSkeleton } from "./cells/NameAndReferrer";
 import { StatusCellSkeleton } from "./cells/Status";
-import { SubmittedCellSkeleton } from "./cells/Submitted";
+import { CreatedAndUpdatedCellSkeleton } from "./cells/CreatedAndUpdated";
 import LeadManager from "@/features/leads/components/LeadManager";
 
 export default function TableView() {
@@ -67,17 +67,17 @@ export function TableViewSkeleton() {
     <Table>
       <TableHeader className="from-background to-secondary bg-linear-to-r font-sans">
         <TableRow>
-          <NameHeaderSkeleton />
+          <NameAndReferrerHeaderSkeleton />
           <StatusHeaderSkeleton />
-          <SubmittedHeaderSkeleton />
+          <CreatedAndUpdatedHeaderSkeleton />
         </TableRow>
       </TableHeader>
       <TableBody>
         {Array.from({ length: 6 }).map((_, index) => (
           <TableRow key={index} className={index % 2 === 0 ? "bg-background" : "bg-muted"}>
-            <NameCellSkeleton />
+            <NameAndReferrerCellSkeleton />
             <StatusCellSkeleton />
-            <SubmittedCellSkeleton />
+            <CreatedAndUpdatedCellSkeleton />
           </TableRow>
         ))}
       </TableBody>

@@ -39,13 +39,19 @@ export default function Lead({ allLeadsForReferrer: { firstName, lastName, email
             <EnvelopeIcon className="size-9" />
             {ll["Email"]}
           </p>
-          <p className="text-muted-foreground">{email}</p>
+          <a href={`mailto: ${email}`} className="link text-base font-normal normal-case">
+            {email}
+          </a>
+          <br />
           <br />
           <p className="flex items-center gap-2 uppercase">
             <PhoneIcon className="size-9" />
             {ll["Phone"]}
           </p>
-          <p className="text-muted-foreground">{phone}</p>
+          <a href={`tel: ${phone}`} className="link text-base font-normal normal-case">
+            {phone}
+          </a>
+          <br />
           <br />
           <p className="uppercase">{ll["Service of Interest"]}</p>
           {SERVICE_OF_INTEREST(ll).find(({ value }) => value === serviceOfInterest)?.label}

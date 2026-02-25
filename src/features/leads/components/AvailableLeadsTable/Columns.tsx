@@ -7,13 +7,13 @@ import type { AllAvailableLeads } from "@/features/leads/db";
 import { createColumnHelper } from "@tanstack/react-table";
 
 // components
-import NameHeader from "./headers/Name";
+import NameAndReferrerHeader from "./headers/NameAndReferrer";
 import StatusHeader from "./headers/Status";
-import SubmittedHeader from "./headers/Submitted";
+import CreatedAndUpdatedHeader from "./headers/CreatedAndUpdated";
 
-import NameCell from "./cells/Name";
+import NameAndReferrerCell from "./cells/NameAndReferrer";
 import StatusCell from "./cells/Status";
-import SubmittedCell from "./cells/Submitted";
+import CreatedAndUpdatedCell from "./cells/CreatedAndUpdated";
 
 // types
 import type LangLoader from "@/lib/LangLoader";
@@ -31,12 +31,17 @@ export const columns = (
     columnHelper.accessor("phone", { filterFn: "equalsString" }),
     columnHelper.accessor("serviceOfInterest", { filterFn: "equalsString" }),
     columnHelper.accessor("status", { filterFn: "equalsString" }),
+    columnHelper.accessor("internalNotes", { filterFn: "includesString" }),
     columnHelper.accessor("createdAt", { sortingFn: "datetime" }),
+    columnHelper.accessor("updatedAt", { sortingFn: "datetime" }),
+
+    columnHelper.accessor("referrer.name", { id: "referrerName", sortingFn: "alphanumericCaseSensitive", filterFn: "equalsString" }),
+    columnHelper.accessor("referrer.email", { id: "referrerEmail", sortingFn: "alphanumericCaseSensitive", filterFn: "equalsString" }),
 
     columnHelper.display({
       id: "nameColumn",
-      header: ({ table }) => <NameHeader table={table} ll={ll} />,
-      cell: ({ row }) => <NameCell row={row} ll={ll} />,
+      header: ({ table }) => <NameAndReferrerHeader table={table} ll={ll} />,
+      cell: ({ row }) => <NameAndReferrerCell row={row} ll={ll} />,
     }),
     columnHelper.display({
       id: "statusColumn",
@@ -45,7 +50,7 @@ export const columns = (
     }),
     columnHelper.display({
       id: "submittedColumn",
-      header: ({ table }) => <SubmittedHeader table={table} ll={ll} />,
-      cell: ({ row }) => <SubmittedCell row={row} />,
+      header: ({ table }) => <CreatedAndUpdatedHeader table={table} ll={ll} />,
+      cell: ({ row }) => <CreatedAndUpdatedCell row={row} />,
     }),
   ] as ColumnDef<AllAvailableLeads, unknown>[];

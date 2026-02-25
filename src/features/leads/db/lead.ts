@@ -59,7 +59,12 @@ export class LeadDB extends Effect.Service<LeadDB>()("LeadDB", {
       );
 
     // Get all the available leads
-    const allAvailableLeads = execute((dbOrTx) => dbOrTx.query.LeadTable.findMany({ orderBy: desc(LeadTable.createdAt) }));
+    const allAvailableLeads = execute((dbOrTx) =>
+      dbOrTx.query.LeadTable.findMany({
+        orderBy: desc(LeadTable.createdAt),
+        with: { referrer: { columns: { name: true, email: true, image: true, role: true } } },
+      }),
+    );
 
     return { getLead, insertLead, updateLead, deleteLead, deleteAll, findReferrerId, allLeadsForReferrer, allAvailableLeads } as const;
   }),

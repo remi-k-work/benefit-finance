@@ -55,6 +55,8 @@ export default function useInstance(
         internalNotes: false,
         createdAt: false,
         updatedAt: false,
+        referrerName: false,
+        referrerEmail: false,
       },
     },
     meta: {

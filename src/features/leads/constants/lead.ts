@@ -47,18 +47,19 @@ function randomItem<T>(arr: readonly T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export const LEAD = Array.from({ length: 60 }).map((_, index) => {
-  const firstName = randomItem(FIRST_NAMES);
-  const lastName = randomItem(LAST_NAMES);
-  const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${index}@gmail.com`;
+export const LEAD = (referredByEmail: string) =>
+  Array.from({ length: 15 }).map((_, index) => {
+    const firstName = randomItem(FIRST_NAMES);
+    const lastName = randomItem(LAST_NAMES);
+    const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${index}@gmail.com`;
 
-  return {
-    referredByEmail: "penny.saver@benefit.demo",
-    firstName,
-    lastName,
-    email,
-    phone: `555-01${String(index).padStart(2, "0")}`,
-    serviceOfInterest: randomItem(SERVICES),
-    status: randomItem(STATUSES),
-  };
-});
+    return {
+      referredByEmail,
+      firstName,
+      lastName,
+      email,
+      phone: `555-01${String(index).padStart(2, "0")}`,
+      serviceOfInterest: randomItem(SERVICES),
+      status: randomItem(STATUSES),
+    };
+  });

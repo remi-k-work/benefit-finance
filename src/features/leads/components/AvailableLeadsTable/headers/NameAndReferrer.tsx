@@ -9,23 +9,27 @@ import ColumnHeader, { ColumnHeaderSkeleton } from "@/components/ColumnHeader";
 import type { Table } from "@tanstack/react-table";
 import type LangLoader from "@/lib/LangLoader";
 
-interface NameHeaderProps {
+interface NameAndReferrerHeaderProps {
   table: Table<AllAvailableLeads>;
   ll: typeof LangLoader.prototype.leads;
 }
 
-export default function NameHeader({ table: { getColumn }, ll }: NameHeaderProps) {
+export default function NameAndReferrerHeader({ table: { getColumn }, ll }: NameAndReferrerHeaderProps) {
   return (
     <TableHead className="w-80">
       <ColumnHeader column={getColumn("name")!} title={ll["Name"]} />
+      <br />
+      <ColumnHeader column={getColumn("referrerName")!} title={ll["Referrer"]} />
     </TableHead>
   );
 }
 
-export function NameHeaderSkeleton() {
+export function NameAndReferrerHeaderSkeleton() {
   return (
     <TableHead className="w-80">
       <ColumnHeaderSkeleton title="Name" />
+      <br />
+      <ColumnHeaderSkeleton title="Referrer" />
     </TableHead>
   );
 }
