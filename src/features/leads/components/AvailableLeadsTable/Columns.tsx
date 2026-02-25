@@ -10,10 +10,12 @@ import { createColumnHelper } from "@tanstack/react-table";
 import NameAndReferrerHeader from "./headers/NameAndReferrer";
 import StatusHeader from "./headers/Status";
 import CreatedAndUpdatedHeader from "./headers/CreatedAndUpdated";
+import ActionsHeader from "./headers/Actions";
 
 import NameAndReferrerCell from "./cells/NameAndReferrer";
 import StatusCell from "./cells/Status";
 import CreatedAndUpdatedCell from "./cells/CreatedAndUpdated";
+import ActionsCell from "./cells/Actions";
 
 // types
 import type LangLoader from "@/lib/LangLoader";
@@ -49,8 +51,13 @@ export const columns = (
       cell: ({ row, table }) => <StatusCell row={row} table={table} ll={ll} llFormToastFeedback={llFormToastFeedback} />,
     }),
     columnHelper.display({
-      id: "submittedColumn",
+      id: "createdAndUpdatedColumn",
       header: ({ table }) => <CreatedAndUpdatedHeader table={table} ll={ll} />,
       cell: ({ row }) => <CreatedAndUpdatedCell row={row} />,
+    }),
+    columnHelper.display({
+      id: "actionsColumn",
+      header: () => <ActionsHeader />,
+      cell: ({ row, table }) => <ActionsCell row={row} table={table} ll={ll} llFormToastFeedback={llFormToastFeedback} />,
     }),
   ] as ColumnDef<AllAvailableLeads, unknown>[];
