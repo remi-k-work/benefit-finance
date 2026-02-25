@@ -37,5 +37,8 @@
   "Leads": "Leady",
   "Below, you can view and manage all the leads": "Poniżej możesz zobaczyć i zarządzać wszystkimi leadami",
   "Internal Notes": "Notatki Wewnętrzne",
-  "Referrer": "Polecający"
+  "Referrer": "Polecający",
+  "[EDIT LEAD NOTES]": "[EDYTUJ NOTATKI LEADA]",
+  "The lead notes have been updated.": "Notatki leada zostały zaktualizowane.",
+  "The lead notes could not be updated; please try again later.": "Nie udało się zaktualizować notatek leada; spróbuj ponownie później."
 }

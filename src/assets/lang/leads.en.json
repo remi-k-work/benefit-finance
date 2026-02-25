@@ -37,5 +37,8 @@
   "Leads": "Leads",
   "Below, you can view and manage all the leads": "Below, you can view and manage all the leads",
   "Internal Notes": "Internal Notes",
-  "Referrer": "Referrer"
+  "Referrer": "Referrer",
+  "[EDIT LEAD NOTES]": "[EDIT LEAD NOTES]",
+  "The lead notes have been updated.": "The lead notes have been updated.",
+  "The lead notes could not be updated; please try again later.": "The lead notes could not be updated; please try again later."
 }
