@@ -51,7 +51,7 @@ export default function TableView() {
             {row.getIsExpanded() && (
               <TableRow>
                 <TableCell colSpan={row.getVisibleCells().length}>
-                  <LeadManager allAvailableLeads={row.original} />
+                  <LeadManager allAvailableLeads={row.original} rowIndex={row.index} />
                 </TableCell>
               </TableRow>
             )}

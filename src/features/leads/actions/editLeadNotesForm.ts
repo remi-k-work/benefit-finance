@@ -33,7 +33,7 @@ const main = (leadId: string, formData: FormData) =>
 
     // Set lead internal notes
     const leadDB = yield* LeadDB;
-    yield* leadDB.updateLead(leadId, { internalNotes: internalNotes ?? null });
+    yield* leadDB.updateLead(leadId, { internalNotes: internalNotes === "" ? null : internalNotes });
 
     // The form has successfully validated and submitted!
     return { ...initialFormState, actionStatus: "succeeded", timestamp: Date.now() } satisfies ActionResultWithFormState;

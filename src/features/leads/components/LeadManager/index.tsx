@@ -15,6 +15,7 @@ import { CalendarIcon, EnvelopeIcon, PhoneIcon, UserIcon } from "@heroicons/reac
 // types
 interface LeadProps {
   allAvailableLeads: AllAvailableLeads;
+  rowIndex: number;
 }
 
 // constants
@@ -24,6 +25,7 @@ import { STATUS } from "@/features/leads/constants";
 export default function LeadManager({
   allAvailableLeads,
   allAvailableLeads: { firstName, lastName, email, phone, serviceOfInterest, status, createdAt, updatedAt },
+  rowIndex,
 }: LeadProps) {
   // Access the table context and retrieve all necessary information
   const { ll } = useInstanceContext();
@@ -65,7 +67,7 @@ export default function LeadManager({
           {STATUS(ll).find(({ value }) => value === status)?.label}
           <br />
           <br />
-          <EditLeadNotesForm allAvailableLeads={allAvailableLeads} />
+          <EditLeadNotesForm allAvailableLeads={allAvailableLeads} rowIndex={rowIndex} />
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-around gap-6 border-t pt-6">
           <DateTimeAt icon={<CalendarIcon className="size-9" />} title={ll["Created At"]} date={createdAt} />

@@ -26,7 +26,7 @@ const main = Effect.gen(function* () {
       // Delete all documents
       yield* Effect.log("Removing all existing leads").pipe(Effect.andThen(leadDB.deleteAll));
 
-      for (const { referredByEmail, firstName, lastName, email, phone, serviceOfInterest, status } of LEAD("penny.saver@benefit.demo")) {
+      for (const { referredByEmail, firstName, lastName, email, phone, serviceOfInterest, status, internalNotes } of LEAD("penny.saver@benefit.demo")) {
         // Find the referrer id from email
         const referredBy = yield* leadDB.findReferrerId(referredByEmail);
         if (!referredBy) {
@@ -36,12 +36,12 @@ const main = Effect.gen(function* () {
 
         // Insert a new lead
         yield* Effect.log(`Seeding with lead "${firstName} ${lastName}" referred by ${referredByEmail} (${referredBy.id})`).pipe(
-          Effect.andThen(leadDB.insertLead({ referredBy: referredBy.id, firstName, lastName, email, phone, serviceOfInterest, status })),
+          Effect.andThen(leadDB.insertLead({ referredBy: referredBy.id, firstName, lastName, email, phone, serviceOfInterest, status, internalNotes })),
           Effect.tap(([{ id }]) => Effect.log(`Lead ID: ${id}`)),
         );
       }
 
-      for (const { referredByEmail, firstName, lastName, email, phone, serviceOfInterest, status } of LEAD("cash.flow@benefit.demo")) {
+      for (const { referredByEmail, firstName, lastName, email, phone, serviceOfInterest, status, internalNotes } of LEAD("cash.flow@benefit.demo")) {
         // Find the referrer id from email
         const referredBy = yield* leadDB.findReferrerId(referredByEmail);
         if (!referredBy) {
@@ -51,12 +51,12 @@ const main = Effect.gen(function* () {
 
         // Insert a new lead
         yield* Effect.log(`Seeding with lead "${firstName} ${lastName}" referred by ${referredByEmail} (${referredBy.id})`).pipe(
-          Effect.andThen(leadDB.insertLead({ referredBy: referredBy.id, firstName, lastName, email, phone, serviceOfInterest, status })),
+          Effect.andThen(leadDB.insertLead({ referredBy: referredBy.id, firstName, lastName, email, phone, serviceOfInterest, status, internalNotes })),
           Effect.tap(([{ id }]) => Effect.log(`Lead ID: ${id}`)),
         );
       }
 
-      for (const { referredByEmail, firstName, lastName, email, phone, serviceOfInterest, status } of LEAD("ivy.ledger@benefit.demo")) {
+      for (const { referredByEmail, firstName, lastName, email, phone, serviceOfInterest, status, internalNotes } of LEAD("ivy.ledger@benefit.demo")) {
         // Find the referrer id from email
         const referredBy = yield* leadDB.findReferrerId(referredByEmail);
         if (!referredBy) {
@@ -66,7 +66,7 @@ const main = Effect.gen(function* () {
 
         // Insert a new lead
         yield* Effect.log(`Seeding with lead "${firstName} ${lastName}" referred by ${referredByEmail} (${referredBy.id})`).pipe(
-          Effect.andThen(leadDB.insertLead({ referredBy: referredBy.id, firstName, lastName, email, phone, serviceOfInterest, status })),
+          Effect.andThen(leadDB.insertLead({ referredBy: referredBy.id, firstName, lastName, email, phone, serviceOfInterest, status, internalNotes })),
           Effect.tap(([{ id }]) => Effect.log(`Lead ID: ${id}`)),
         );
       }

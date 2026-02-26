@@ -3,7 +3,7 @@
 "use client";
 
 // react
-import { useActionState } from "react";
+import { startTransition, useActionState } from "react";
 
 // drizzle and db access
 import type { AllAvailableLeads } from "@/features/leads/db";
@@ -25,21 +25,34 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 // types
 interface EditLeadNotesFormProps {
   allAvailableLeads: AllAvailableLeads;
+  rowIndex: number;
 }
 
 // constants
 import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/leads/constants/editLeadNotesForm";
 
-export default function EditLeadNotesForm({ allAvailableLeads: { id: leadId, internalNotes } }: EditLeadNotesFormProps) {
+export default function EditLeadNotesForm({ allAvailableLeads: { id: leadId, internalNotes }, rowIndex }: EditLeadNotesFormProps) {
   // Access the table context and retrieve all necessary information
-  const { preferredLanguage, ll, llFormToastFeedback } = useInstanceContext();
+  const {
+    preferredLanguage,
+    ll,
+    llFormToastFeedback,
+    table: { options },
+  } = useInstanceContext();
 
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(editLeadNotesForm.bind(null, leadId), INITIAL_FORM_STATE);
   const { AppField, AppForm, FormSubmit, handleSubmit } = useAppForm({
     ...FORM_OPTIONS,
-    defaultValues: { ...FORM_OPTIONS.defaultValues, internalNotes: internalNotes ?? undefined },
+    defaultValues: { ...FORM_OPTIONS.defaultValues, internalNotes: internalNotes ?? "" },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
+    onSubmit: async ({ value: { internalNotes } }) => {
+      // Only reflect changes in the UI if the action was successful
+      startTransition(() => {
+        options.meta?.updateData(rowIndex, "internalNotes", internalNotes.trim());
+        options.meta?.updateData(rowIndex, "updatedAt", new Date());
+      });
+    },
   });
 
   // Provide feedback to the user regarding this form actions
