@@ -6,10 +6,12 @@ import type { ReactNode } from "react";
 import type { Table } from "@tanstack/react-table";
 import type useState from "./useState";
 import type useActions from "./useActions";
+import type { Lang } from "@/lib/LangLoader";
 import type LangLoader from "@/lib/LangLoader";
 
 export interface InstanceContextType {
   allAvailableLeads: AllAvailableLeads[];
+  preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.leads;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
   table: Table<AllAvailableLeads>;
@@ -19,6 +21,7 @@ export interface InstanceContextType {
 
 export interface InstanceProviderProps {
   allAvailableLeads: AllAvailableLeads[];
+  preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.leads;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
   children: ReactNode;

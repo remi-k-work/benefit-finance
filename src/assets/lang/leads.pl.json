@@ -40,5 +40,8 @@
   "Referrer": "Polecający",
   "[EDIT LEAD NOTES]": "[EDYTUJ NOTATKI LEADA]",
   "The lead notes have been updated.": "Notatki leada zostały zaktualizowane.",
-  "The lead notes could not be updated; please try again later.": "Nie udało się zaktualizować notatek leada; spróbuj ponownie później."
+  "The lead notes could not be updated; please try again later.": "Nie udało się zaktualizować notatek leada; spróbuj ponownie później.",
+  "e.g., Spoke with client. Interested in subsidies related to home renovation. Requested more details via email. Sent initial documentation and checklist. Waiting for response.": "np. Rozmawiałem z klientem. Jest zainteresowany dofinansowaniami na remont domu. Poprosiłem o więcej szczegółów e-mailem. Wysłałem wstępną dokumentację i listę kontrolną. Czekam na odpowiedź.",
+  "Update Internal Notes": "Zaktualizuj Notatki Wewnętrzne",
+  "Clear Form": "Wyczyść Formularz"
 }

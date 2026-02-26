@@ -21,9 +21,9 @@ const main = Effect.gen(function* () {
   const allAvailableLeads = yield* leadDB.allAvailableLeads;
 
   // Create an instance of the lang loader needed for localization
-  const { leads: ll, formToastFeedback } = yield* LangLoader.createEffect();
+  const { preferredLanguage, leads: ll, formToastFeedback } = yield* LangLoader.createEffect();
 
-  return { allAvailableLeads, ll, formToastFeedback };
+  return { allAvailableLeads, preferredLanguage, ll, formToastFeedback };
 });
 
 // Component remains the fast, static shell
@@ -38,10 +38,10 @@ export default function AvailableLeadsTable() {
 // This new async component contains the dynamic logic
 async function AvailableLeadsTableContent() {
   // Execute the main effect for the component, handle known errors, and return the payload
-  const { allAvailableLeads, ll, formToastFeedback } = await runComponentMain(main);
+  const { allAvailableLeads, preferredLanguage, ll, formToastFeedback } = await runComponentMain(main);
 
   return (
-    <InstanceProvider allAvailableLeads={allAvailableLeads} ll={ll} llFormToastFeedback={formToastFeedback}>
+    <InstanceProvider allAvailableLeads={allAvailableLeads} preferredLanguage={preferredLanguage} ll={ll} llFormToastFeedback={formToastFeedback}>
       <BrowseBar />
       <TableView />
     </InstanceProvider>

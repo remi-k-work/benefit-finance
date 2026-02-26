@@ -11,9 +11,9 @@ import type { InstanceContextType, InstanceProviderProps } from "./types";
 
 const InstanceContext = createContext<InstanceContextType | undefined>(undefined);
 
-export function InstanceProvider({ allAvailableLeads, ll, llFormToastFeedback, children }: InstanceProviderProps) {
+export function InstanceProvider({ allAvailableLeads, preferredLanguage, ll, llFormToastFeedback, children }: InstanceProviderProps) {
   const { table, state, actions } = useInstance(allAvailableLeads, ll, llFormToastFeedback);
-  return <InstanceContext value={{ allAvailableLeads, ll, llFormToastFeedback, table, state, actions }}>{children}</InstanceContext>;
+  return <InstanceContext value={{ allAvailableLeads, preferredLanguage, ll, llFormToastFeedback, table, state, actions }}>{children}</InstanceContext>;
 }
 
 export function useInstanceContext() {

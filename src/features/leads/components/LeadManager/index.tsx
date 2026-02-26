@@ -6,10 +6,11 @@ import { useInstanceContext } from "@/features/leads/components/AvailableLeadsTa
 
 // components
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
+import EditLeadNotesForm from "@/features/leads/components/EditLeadNotesForm";
 import DateTimeAt from "@/components/DateTimeAt";
 
 // assets
-import { CalendarIcon, DocumentTextIcon, EnvelopeIcon, PhoneIcon, UserIcon } from "@heroicons/react/24/outline";
+import { CalendarIcon, EnvelopeIcon, PhoneIcon, UserIcon } from "@heroicons/react/24/outline";
 
 // types
 interface LeadProps {
@@ -21,7 +22,8 @@ import { SERVICE_OF_INTEREST } from "@/features/leads/constants";
 import { STATUS } from "@/features/leads/constants";
 
 export default function LeadManager({
-  allAvailableLeads: { firstName, lastName, email, phone, serviceOfInterest, status, internalNotes, createdAt, updatedAt },
+  allAvailableLeads,
+  allAvailableLeads: { firstName, lastName, email, phone, serviceOfInterest, status, createdAt, updatedAt },
 }: LeadProps) {
   // Access the table context and retrieve all necessary information
   const { ll } = useInstanceContext();
@@ -63,10 +65,7 @@ export default function LeadManager({
           {STATUS(ll).find(({ value }) => value === status)?.label}
           <br />
           <br />
-          <p className="flex items-center gap-2 uppercase">
-            <DocumentTextIcon className="size-9" />
-            {ll["Internal Notes"]}
-          </p>
+          <EditLeadNotesForm allAvailableLeads={allAvailableLeads} />
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-around gap-6 border-t pt-6">
           <DateTimeAt icon={<CalendarIcon className="size-9" />} title={ll["Created At"]} date={createdAt} />
