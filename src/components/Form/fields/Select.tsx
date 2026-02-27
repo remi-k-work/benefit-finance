@@ -6,7 +6,7 @@ import { useFieldContext } from "@/components/Form";
 
 // components
 import { Label } from "@/components/ui/custom/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/custom/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/custom/select";
 import FieldErrors from "@/components/Form/FieldErrors";
 
 // types
@@ -38,16 +38,21 @@ export default function SelectField({ label, options, placeholder, ...props }: S
   return (
     <>
       <Label htmlFor={id}>{label}</Label>
-      <Select name={name} value={value} onValueChange={(value) => handleChange(value as string)} {...props}>
-        <SelectTrigger id={id} onBlur={handleBlur}>
+      <Select name={name} items={options} value={value} onValueChange={(value) => handleChange(value as string)} {...props}>
+        <SelectTrigger id={id} onBlur={handleBlur} className="min-w-96">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
-          {options.map(({ value, label }) => (
-            <SelectItem key={value} value={value}>
-              {label}
-            </SelectItem>
-          ))}
+          <SelectGroup>
+            <SelectLabel>
+              <p>{placeholder}</p>
+            </SelectLabel>
+            {options.map(({ value, label }) => (
+              <SelectItem key={value} value={value} className="min-w-96">
+                {label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
       <FieldErrors />
