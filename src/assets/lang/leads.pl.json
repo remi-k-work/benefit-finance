@@ -43,5 +43,19 @@
   "The lead notes could not be updated; please try again later.": "Nie udało się zaktualizować notatek leada; spróbuj ponownie później.",
   "e.g., Spoke with client. Interested in subsidies related to home renovation. Requested more details via email. Sent initial documentation and checklist. Waiting for response.": "np. Rozmawiałem z klientem. Jest zainteresowany dofinansowaniami na remont domu. Poprosiłem o więcej szczegółów e-mailem. Wysłałem wstępną dokumentację i listę kontrolną. Czekam na odpowiedź.",
   "Update Internal Notes": "Zaktualizuj Notatki Wewnętrzne",
-  "Clear Form": "Wyczyść Formularz"
+  "Clear Form": "Wyczyść Formularz",
+  "[NEW LEAD SUBMISSION]": "[WYSYŁANIE NOWEGO LEADA]",
+  "The new lead has been submitted. Thank you!": "Nowy lead został przesłany. Dziękujemy!",
+  "New Lead Submission": "Wysyłanie Nowego Leada",
+  "To submit a new lead to us": "Aby wysłać nowego leada do nas",
+  "First Name": "Imię",
+  "e.g., John": "np. Jan",
+  "Last Name": "Nazwisko",
+  "e.g., Doe": "np. Kowalski",
+  "e.g., john.doe@gmail.com": "np. jan.kowalski@gmail.com",
+  "Submit New Lead": "Wyślij Nowego Leada",
+  "Cancel and Go Back": "Anuluj i Wróć",
+  "e.g., 333-444-444": "np. 333-444-444",
+  "I declare that I have the valid and voluntary consent of the data subject to transfer his or her personal data to BENEFIT FINANCE LLC for the purpose of establishing commercial contact and that the data was obtained in accordance with the applicable provisions of the GDPR": "Oświadczam, że posiadam ważną i dobrowolną zgodę osoby, której dane dotyczą, na przekazanie jej danych osobowych firmie BENEFIT FINANCE SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ w celu nawiązania kontaktu handlowego oraz że dane zostały pozyskane zgodnie z obowiązującymi przepisami RODO",
+  "I accept the Terms and Conditions of Partnership": "Akceptuję Regulamin Współpracy Partnerskiej"
 }

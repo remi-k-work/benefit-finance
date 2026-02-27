@@ -143,7 +143,7 @@ export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFe
                   spellCheck={false}
                   autoComplete="tel"
                   pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
-                  placeholder={ll["e.g. 333-444-4444"]}
+                  placeholder={ll["e.g., 333-444-444"]}
                 />
               )}
             />

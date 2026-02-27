@@ -44,3 +44,23 @@ export const SERVICE_OF_INTEREST = (ll: typeof LangLoader.prototype.leads) =>
       ),
     },
   ] satisfies { value: ServiceOfInterest; label: ReactNode }[];
+
+export const SERVICE_OF_INTEREST_TEXTONLY = (ll: typeof LangLoader.prototype.leads) =>
+  [
+    {
+      value: "subsidies",
+      label: ll["subsidies"],
+    },
+    {
+      value: "credits",
+      label: ll["credits"],
+    },
+    {
+      value: "insurance",
+      label: ll["insurance"],
+    },
+    {
+      value: "not sure",
+      label: ll["not sure"],
+    },
+  ] satisfies { value: ServiceOfInterest; label: string }[];

@@ -15,7 +15,7 @@ export const ContactUsFormSchemaEn = Schema.Struct({
     Schema.nonEmptyString({ message: () => "Your message's subject is a required field" }),
     Schema.maxLength(40, { message: () => "Please keep the subject to a maximum of 40 characters" }),
   ),
-  phone: PhoneSchemaEn,
+  phone: PhoneSchemaEn(),
   message: Schema.Trim.pipe(
     Schema.nonEmptyString({ message: () => "What is the message you want to send? This is a mandatory field" }),
     Schema.maxLength(2048, { message: () => "Please keep the message to a maximum of 2048 characters" }),
@@ -36,7 +36,7 @@ export const ContactUsFormSchemaPl = Schema.Struct({
     Schema.nonEmptyString({ message: () => "Temat Twojej wiadomości jest polem wymaganym" }),
     Schema.maxLength(40, { message: () => "Temat wiadomości powinien mieć maksymalnie 40 znaków" }),
   ),
-  phone: PhoneSchemaPl,
+  phone: PhoneSchemaPl(),
   message: Schema.Trim.pipe(
     Schema.nonEmptyString({ message: () => "Jaką wiadomość chcesz wysłać? Jest to pole obowiązkowe" }),
     Schema.maxLength(2048, { message: () => "Wiadomość nie może mieć więcej niż 2048 znaków" }),
