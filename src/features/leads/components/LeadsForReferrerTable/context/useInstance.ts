@@ -28,7 +28,17 @@ declare module "@tanstack/react-table" {
 
 export default function useInstance(allLeadsForReferrer: AllLeadsForReferrer[], ll: typeof LangLoader.prototype.leads) {
   const [data, setData] = useStateReact(allLeadsForReferrer);
+  const [prevData, setPrevData] = useStateReact(allLeadsForReferrer);
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
+
+  // Check if the incoming prop is different from the last one we saw
+  if (allLeadsForReferrer !== prevData) {
+    // Skip page index reset until after next re-render
+    skipAutoResetPageIndex();
+
+    setPrevData(allLeadsForReferrer); // Keep track of the "latest" prop
+    setData(allLeadsForReferrer); // Sync the actual table data
+  }
 
   const table = useReactTable<AllLeadsForReferrer>({
     columns: columns(ll),

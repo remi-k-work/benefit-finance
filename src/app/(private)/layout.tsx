@@ -20,7 +20,7 @@ export default function Layout(props: LayoutProps<"/">) {
 }
 
 // This new async component contains the dynamic logic
-async function LayoutContent({ manager, children }: LayoutProps<"/">) {
+async function LayoutContent({ leads, manager, children }: LayoutProps<"/">) {
   // Create an instance of the lang loader needed for localization
   const { preferredLanguage, confirmModal, demoModeModal, supportAgentModal } = await LangLoader.create();
 
@@ -29,6 +29,7 @@ async function LayoutContent({ manager, children }: LayoutProps<"/">) {
       <Header />
       <main className="mx-4 [grid-area:main]">
         {children}
+        {leads}
         {manager}
       </main>
       <ConfirmModalRoot ll={confirmModal} />
