@@ -58,7 +58,7 @@ function randomItem<T>(arr: readonly T[]): T {
 }
 
 export const LEAD = (referredByEmail: string) =>
-  Array.from({ length: 15 }).map((_, index) => {
+  Array.from({ length: 5 }).map((_, index) => {
     const firstName = randomItem(FIRST_NAMES);
     const lastName = randomItem(LAST_NAMES);
     const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${index}@gmail.com`;

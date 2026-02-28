@@ -4,21 +4,29 @@ import { defaultStatements, userAc, adminAc } from "better-auth/plugins/admin/ac
 
 const statements = {
   ...defaultStatements,
-  note: ["create", "update", "delete"],
+  leads: ["create", "read", "update", "delete"],
+  supportAgent: ["create", "read", "update", "delete"],
+  users: ["create", "read", "update", "delete"],
 } as const;
 
 export const ac = createAccessControl(statements);
 
 export const user = ac.newRole({
-  note: ["create", "update", "delete"],
+  leads: ["create", "read"],
+  supportAgent: ["read"],
+  users: ["read"],
   ...userAc.statements,
 });
 
 export const admin = ac.newRole({
-  note: ["create", "update", "delete"],
+  leads: ["create", "read", "update", "delete"],
+  supportAgent: ["create", "read", "update", "delete"],
+  users: ["create", "read", "update", "delete"],
   ...adminAc.statements,
 });
 
 export const demo = ac.newRole({
-  note: [],
+  leads: ["read"],
+  supportAgent: ["read"],
+  users: ["read"],
 });
