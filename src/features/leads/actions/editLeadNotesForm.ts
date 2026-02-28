@@ -7,23 +7,18 @@ import { LeadDB } from "@/features/leads/db";
 import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
 import { runServerActionMain } from "@/lib/helpersEffect";
-import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
 import { initialFormState } from "@tanstack/react-form-nextjs";
+import { Auth } from "@/features/auth/lib/auth";
 import { SERVER_VALIDATE_EN, SERVER_VALIDATE_PL } from "@/features/leads/constants/editLeadNotesForm";
-import { DemoModeError } from "@/lib/errors";
 
 // types
 import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 const main = (leadId: string, formData: FormData) =>
   Effect.gen(function* () {
-    // Access the user session data from the server side or fail with an unauthorized access error
-    const {
-      user: { role },
-    } = yield* getUserSessionData;
-
-    // Return early if the current user is in demo mode or not an admin
-    if (role === "demo" || role !== "admin") return yield* new DemoModeError({ message: "Demo mode" });
+    // Verify if the current user possesses a specific permission
+    const auth = yield* Auth;
+    yield* auth.assertPermission({ leads: ["update"] });
 
     // Create an instance of the lang loader needed for localization
     const { preferredLanguage } = yield* LangLoader.createEffect();

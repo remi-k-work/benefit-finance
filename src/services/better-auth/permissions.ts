@@ -2,6 +2,8 @@
 import { createAccessControl } from "better-auth/plugins/access";
 import { defaultStatements, userAc, adminAc } from "better-auth/plugins/admin/access";
 
+// RESOURCES (the nouns): the "things" in the system (leads, supportAgent, users, projects, invoices, etc.)
+// ACTIONS (the verbs): what you can do to those "things" (create, read, update, delete, etc.)
 const statements = {
   ...defaultStatements,
   leads: ["create", "read", "update", "delete"],
