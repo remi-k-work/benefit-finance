@@ -17,7 +17,7 @@ import { UserPlusIcon } from "@heroicons/react/24/outline";
 const main = Effect.gen(function* () {
   // Verify if the current user possesses a specific permission
   const auth = yield* Auth;
-  yield* auth.assertPermission({ leads: ["create"] });
+  yield* auth.assertPermission({ leads: ["read"] });
 
   // Create an instance of the lang loader needed for localization
   const { leads: ll, preferredLanguage, formToastFeedback } = yield* LangLoader.createEffect();

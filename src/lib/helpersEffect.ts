@@ -52,6 +52,7 @@ export const runPageMainOrNavigate = async <A, E extends { _tag: string }>(pageM
     if (error._tag === "InvalidPageInputsError") notFound();
     if (error._tag === "ItemNotFoundError") notFound();
     if (error._tag === "UnauthorizedAccessError") unauthorized();
+    if (error._tag === "BetterAuthApiError") unauthorized();
 
     // Allow the next.js error boundary to catch any unexpected errors
     throw error;

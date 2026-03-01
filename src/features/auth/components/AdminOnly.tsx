@@ -18,7 +18,7 @@ const main = Effect.gen(function* () {
   const auth = yield* Auth;
   const { user } = yield* auth.getUserSessionData.pipe(Effect.orElse(() => Effect.succeed({ user: null, session: null })));
 
-  return user?.role === "admin";
+  return user?.role === "admin" || user?.role === "demo";
 });
 
 // Component remains the fast, static shell

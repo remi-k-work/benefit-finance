@@ -33,7 +33,7 @@ const main = ({ params, searchParams }: PageProps<"/manager/support-agent/[id]/e
 
     // Verify if the current user possesses a specific permission
     const auth = yield* Auth;
-    yield* auth.assertPermission({ supportAgent: ["update"] });
+    yield* auth.assertPermission({ supportAgent: ["read"] });
 
     // Get a single document
     const supAgentDocDB = yield* SupAgentDocDB;
