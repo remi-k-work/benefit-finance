@@ -9,7 +9,7 @@ import Link from "next/link";
 // components
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/custom/popover";
 import { Button } from "@/components/ui/custom/button";
-import { UserAvatar, UserAvatarSkeleton } from "@/components/Avatar/User";
+import { UserAvatar } from "@/components/Avatar/User";
 import SignOut from "./SignOut";
 
 // assets
@@ -77,11 +77,11 @@ export function UserPopoverSkeleton() {
     <Button
       variant="ghost"
       size="icon"
-      title="Profile"
+      title="Dashboard"
       nativeButton={false}
       render={
         <Link href="/sign-in?redirect=/dashboard">
-          <UserAvatarSkeleton isSmall />
+          <UserIcon className="size-11" />
         </Link>
       }
     ></Button>

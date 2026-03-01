@@ -15,8 +15,8 @@ export const ac = createAccessControl(statements);
 
 export const user = ac.newRole({
   leads: ["create", "read"],
-  supportAgent: ["read"],
-  users: ["read"],
+  supportAgent: [],
+  users: [],
   ...userAc.statements,
 });
 

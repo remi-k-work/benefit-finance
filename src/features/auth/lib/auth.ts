@@ -1,7 +1,9 @@
+// next
+import { headers } from "next/headers";
+
 // services, features, and other libraries
 import { Effect } from "effect";
 import { auth } from "@/services/better-auth/auth";
-import { getHeaders } from "./helpersEffect";
 import { BetterAuthApiError, UnauthorizedAccessError } from "@/lib/errors";
 
 // types
@@ -52,6 +54,17 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
       );
     });
 
+    // List all accounts associated with the current user
+    const listUserAccounts = Effect.gen(function* () {
+      const headers = yield* getHeaders;
+      return yield* Effect.promise<Awaited<ReturnType<typeof auth.api.listUserAccounts>>>(() => auth.api.listUserAccounts({ headers }));
+    });
+
+    // Determine whether the current user has any "credential" type accounts
+    const hasCredentialAccount = Effect.gen(function* () {
+      return (yield* listUserAccounts).some((account) => account.providerId === "credential");
+    });
+
     // Assert that the current user is of a specific role
     const assertRole = (role: Role) =>
       getUserSessionData.pipe(
@@ -62,6 +75,8 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
         Effect.asVoid,
       );
 
-    return { setUserRole, removeUser, assertPermission, getUserSessionData, assertRole } as const;
+    return { setUserRole, removeUser, assertPermission, getUserSessionData, listUserAccounts, hasCredentialAccount, assertRole } as const;
   }),
 }) {}
+
+const getHeaders = Effect.promise<Awaited<ReturnType<typeof headers>>>(() => headers());
