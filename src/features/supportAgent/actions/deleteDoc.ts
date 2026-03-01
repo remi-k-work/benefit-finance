@@ -18,9 +18,8 @@ const main = (docId: string) =>
     const auth = yield* Auth;
     yield* auth.assertPermission({ supportAgent: ["delete"] });
 
-    const supAgentDocDB = yield* SupAgentDocDB;
-
     // Delete a document
+    const supAgentDocDB = yield* SupAgentDocDB;
     yield* supAgentDocDB.deleteDoc(docId);
 
     // The action has completed successfully

@@ -4,7 +4,7 @@ import { Suspense } from "react";
 // services, features, and other libraries
 import { Effect } from "effect";
 import { runComponentMain } from "@/lib/helpersEffect";
-import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
+import { Auth } from "@/features/auth/lib/auth";
 
 // types
 import type { ReactNode } from "react";
@@ -15,7 +15,8 @@ interface AdminOnlyProps {
 
 const main = Effect.gen(function* () {
   // Access the user session data from the server side or fail with an unauthorized access error
-  const { user } = yield* getUserSessionData.pipe(Effect.orElse(() => Effect.succeed({ user: null, session: null })));
+  const auth = yield* Auth;
+  const { user } = yield* auth.getUserSessionData.pipe(Effect.orElse(() => Effect.succeed({ user: null, session: null })));
 
   return user?.role === "admin";
 });

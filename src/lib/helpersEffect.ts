@@ -102,10 +102,8 @@ export const runServerActionMain = async <A extends ActionResultWithFormState, E
   if (Either.isLeft(serverActionMainResult)) {
     const error = serverActionMainResult.left;
 
-    if (error._tag === "UnauthorizedAccessError") unauthorized();
-
     // Return early if the current user is in demo mode or not an admin
-    if (error._tag === "DemoModeError") return { ...initialFormState, actionStatus: "demoMode", timestamp: Date.now() };
+    if (error._tag === "UnauthorizedAccessError") return { ...initialFormState, actionStatus: "demoMode", timestamp: Date.now() };
 
     // Validation has failed
     if (error._tag === "ValidationHasFailedError") {

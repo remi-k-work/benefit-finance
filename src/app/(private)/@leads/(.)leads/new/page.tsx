@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
 import { runPageMainOrNavigate } from "@/lib/helpersEffect";
-import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
+import { Auth } from "@/features/auth/lib/auth";
 
 // components
 import ManagerModal from "@/components/ManagerModal";
@@ -15,8 +15,9 @@ import NewLeadForm from "@/features/leads/components/NewLeadForm";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
 
 const main = Effect.gen(function* () {
-  // Access the user session data from the server side or fail with an unauthorized access error
-  yield* getUserSessionData;
+  // Verify if the current user possesses a specific permission
+  const auth = yield* Auth;
+  yield* auth.assertPermission({ leads: ["create"] });
 
   // Create an instance of the lang loader needed for localization
   const { leads: ll, preferredLanguage, formToastFeedback } = yield* LangLoader.createEffect();

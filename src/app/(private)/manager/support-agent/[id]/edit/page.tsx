@@ -9,8 +9,8 @@ import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
 import { runPageMainOrNavigate, validatePageInputs } from "@/lib/helpersEffect";
 import { EditDocPageSchema } from "@/features/supportAgent/schemas/editDocPage";
-import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
-import { ItemNotFoundError, UnauthorizedAccessError } from "@/lib/errors";
+import { Auth } from "@/features/auth/lib/auth";
+import { ItemNotFoundError } from "@/lib/errors";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
@@ -31,15 +31,12 @@ const main = ({ params, searchParams }: PageProps<"/manager/support-agent/[id]/e
       params: { id: docId },
     } = yield* validatePageInputs(EditDocPageSchema, { params, searchParams });
 
-    // Access the user session data from the server side or fail with an unauthorized access error
-    const {
-      user: { role },
-    } = yield* getUserSessionData;
-    if (role !== "admin") return yield* new UnauthorizedAccessError({ message: "Unauthorized access" });
-
-    const supAgentDocDB = yield* SupAgentDocDB;
+    // Verify if the current user possesses a specific permission
+    const auth = yield* Auth;
+    yield* auth.assertPermission({ supportAgent: ["update"] });
 
     // Get a single document
+    const supAgentDocDB = yield* SupAgentDocDB;
     const doc = yield* supAgentDocDB.getDoc(docId);
 
     // If the document is not found, fail with item not found error

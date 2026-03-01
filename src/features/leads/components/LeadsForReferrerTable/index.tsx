@@ -8,7 +8,7 @@ import { LeadDB } from "@/features/leads/db";
 import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
 import { runComponentMain } from "@/lib/helpersEffect";
-import { getUserSessionData } from "@/features/auth/lib/helpersEffect";
+import { Auth } from "@/features/auth/lib/auth";
 
 // components
 import { InstanceProvider } from "./context";
@@ -17,13 +17,13 @@ import TableView, { TableViewSkeleton } from "./TableView";
 
 const main = Effect.gen(function* () {
   // Access the user session data from the server side or fail with an unauthorized access error
+  const auth = yield* Auth;
   const {
     user: { id: referredBy },
-  } = yield* getUserSessionData;
-
-  const leadDB = yield* LeadDB;
+  } = yield* auth.getUserSessionData;
 
   // Get all leads for a referrer
+  const leadDB = yield* LeadDB;
   const allLeadsForReferrer = yield* leadDB.allLeadsForReferrer(referredBy);
 
   // Create an instance of the lang loader needed for localization
