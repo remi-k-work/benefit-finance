@@ -6,6 +6,8 @@ import { Effect } from "effect";
 import { resolveAcceptLanguage } from "resolve-accept-language";
 
 // assets
+import aboutUsEn from "@/assets/lang/aboutUs.en.json";
+import aboutUsPl from "@/assets/lang/aboutUs.pl.json";
 import businessInsurancePageEn from "@/assets/lang/businessInsurancePage.en.json";
 import businessInsurancePagePl from "@/assets/lang/businessInsurancePage.pl.json";
 import confirmModalEn from "@/assets/lang/confirmModal.en.json";
@@ -54,8 +56,6 @@ import forgotPasswordPageEn from "@/assets/lang/forgotPasswordPage.en.json";
 import forgotPasswordPagePl from "@/assets/lang/forgotPasswordPage.pl.json";
 import formToastFeedbackEn from "@/assets/lang/formToastFeedback.en.json";
 import formToastFeedbackPl from "@/assets/lang/formToastFeedback.pl.json";
-import homePageEn from "@/assets/lang/homePage.en.json";
-import homePagePl from "@/assets/lang/homePage.pl.json";
 import langChangerEn from "@/assets/lang/langChanger.en.json";
 import langChangerPl from "@/assets/lang/langChanger.pl.json";
 import leadsEn from "@/assets/lang/leads.en.json";
@@ -189,6 +189,9 @@ export default class LangLoader {
   }
 
   // Localized content accessors are designed for the preferred language and optimized to pass specific chunks from the server components as props
+  public get aboutUs() {
+    return this.preferredLanguage === "pl" ? aboutUsPl : aboutUsEn;
+  }
   public get businessInsurancePage() {
     return this.preferredLanguage === "pl" ? businessInsurancePagePl : businessInsurancePageEn;
   }
@@ -260,9 +263,6 @@ export default class LangLoader {
   }
   public get formToastFeedback() {
     return this.preferredLanguage === "pl" ? formToastFeedbackPl : formToastFeedbackEn;
-  }
-  public get homePage() {
-    return this.preferredLanguage === "pl" ? homePagePl : homePageEn;
   }
   public get langChanger() {
     return this.preferredLanguage === "pl" ? langChangerPl : langChangerEn;

@@ -1,9 +1,6 @@
 // react
 import { Suspense } from "react";
 
-// next
-import Image from "next/image";
-
 // services, features, and other libraries
 import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
@@ -11,11 +8,9 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
+import Hero from "@/features/contactUs/components/Hero";
 import ContactUsMap from "@/features/contactUs/components/ContactUsMap";
 import ContactUsForm from "@/features/contactUs/components/ContactUsForm";
-
-// assets
-import contactUs from "@/assets/contactUs.webp";
 
 // types
 import type { Metadata } from "next";
@@ -49,8 +44,8 @@ async function PageContent() {
   return (
     <>
       <PageHeader title={ll["Reach out anytime"]} description={ll["Have a question? Need help? Just want to talk money? We are listening"]} />
+      <Hero />
       <article className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-        <Image src={contactUs} alt="Contact Us" loading="eager" className="mx-auto w-full max-w-300 xl:col-span-2" />
         <ContactUsMap />
         <ContactUsForm
           preferredLanguage={preferredLanguage}
@@ -67,6 +62,7 @@ function PageSkeleton() {
   return (
     <>
       <PageHeaderSkeleton />
+      <Hero />
     </>
   );
 }
