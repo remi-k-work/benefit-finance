@@ -31,9 +31,9 @@ const main = ({ params, searchParams }: PageProps<"/manager/support-agent/[id]/e
       params: { id: docId },
     } = yield* validatePageInputs(EditDocPageSchema, { params, searchParams });
 
-    // Verify if the current user possesses a specific permission
+    // Verify if the current user possesses specific permissions
     const auth = yield* Auth;
-    yield* auth.assertPermission({ supportAgent: ["read"] });
+    yield* auth.assertPermissions({ supportAgent: ["read"] });
 
     // Get a single document
     const supAgentDocDB = yield* SupAgentDocDB;

@@ -31,7 +31,7 @@ export default function TextAreaField({ label, ...props }: TextAreaFieldProps) {
   return (
     <>
       {label && <Label htmlFor={id}>{label}</Label>}
-      <Textarea id={id} name={name} value={value} onChange={(ev) => handleChange(ev.target.value)} onBlur={handleBlur} {...props} />
+      <Textarea id={id} name={name} value={value ?? ""} onChange={(ev) => handleChange(ev.target.value)} onBlur={handleBlur} {...props} />
       <FieldErrors />
     </>
   );

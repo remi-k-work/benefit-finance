@@ -31,7 +31,7 @@ export default function TextField({ label, ...props }: TextFieldProps) {
   return (
     <>
       <Label htmlFor={id}>{label}</Label>
-      <Input id={id} name={name} value={value} onChange={(ev) => handleChange(ev.target.value)} onBlur={handleBlur} {...props} />
+      <Input id={id} name={name} value={value ?? ""} onChange={(ev) => handleChange(ev.target.value)} onBlur={handleBlur} {...props} />
       <FieldErrors />
     </>
   );

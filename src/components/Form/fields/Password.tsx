@@ -59,7 +59,7 @@ export default function PasswordField({ label, forgotPassHref, forgotPassText = 
           type={showPassword ? "text" : "password"}
           id={id}
           name={name}
-          value={value}
+          value={value ?? ""}
           onChange={(ev) => handleChange(ev.target.value)}
           onBlur={handleBlur}
           className={cn("pr-18 [&::-ms-reveal]:hidden", className)}

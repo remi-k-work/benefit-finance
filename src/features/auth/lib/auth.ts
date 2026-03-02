@@ -7,7 +7,7 @@ import { auth } from "@/services/better-auth/auth";
 import { BetterAuthApiError, UnauthorizedAccessError } from "@/lib/errors";
 
 // types
-import type { Permission, Role } from "@/services/better-auth/auth";
+import type { Permissions, Role } from "@/services/better-auth/auth";
 
 export class Auth extends Effect.Service<Auth>()("Auth", {
   effect: Effect.gen(function* () {
@@ -31,13 +31,13 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
         });
       });
 
-    // Verify if the current user possesses a specific permission
-    const assertPermission = (permission: Permission) =>
+    // Verify if the current user possesses specific permissions
+    const assertPermissions = (permissions: Permissions) =>
       Effect.gen(function* () {
         const headers = yield* getHeaders;
         yield* Effect.tryPromise({
-          try: () => auth.api.userHasPermission({ body: { permission: { ...permission } }, headers }),
-          catch: (cause) => new BetterAuthApiError({ message: "Failed to verify permission", cause }),
+          try: () => auth.api.userHasPermission({ body: { permissions: { ...permissions } }, headers }),
+          catch: (cause) => new BetterAuthApiError({ message: "Failed to verify permissions", cause }),
         }).pipe(
           Effect.filterOrFail(
             ({ success }) => success,
@@ -75,7 +75,7 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
         Effect.asVoid,
       );
 
-    return { setUserRole, removeUser, assertPermission, getUserSessionData, listUserAccounts, hasCredentialAccount, assertRole } as const;
+    return { setUserRole, removeUser, assertPermissions, getUserSessionData, listUserAccounts, hasCredentialAccount, assertRole } as const;
   }),
 }) {}
 

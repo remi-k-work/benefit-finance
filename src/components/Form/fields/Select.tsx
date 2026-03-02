@@ -38,7 +38,7 @@ export default function SelectField({ label, options, placeholder, ...props }: S
   return (
     <>
       <Label htmlFor={id}>{label}</Label>
-      <Select name={name} items={options} value={value} onValueChange={(value) => handleChange(value as string)} {...props}>
+      <Select name={name} items={options} value={value ?? ""} onValueChange={(value) => handleChange(value as string)} {...props}>
         <SelectTrigger id={id} onBlur={handleBlur} className="min-w-96">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

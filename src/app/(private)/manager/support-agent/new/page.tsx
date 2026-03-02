@@ -20,9 +20,9 @@ export const metadata: Metadata = {
 };
 
 const main = Effect.gen(function* () {
-  // Verify if the current user possesses a specific permission
+  // Verify if the current user possesses specific permissions
   const auth = yield* Auth;
-  yield* auth.assertPermission({ supportAgent: ["read"] });
+  yield* auth.assertPermissions({ supportAgent: ["read"] });
 
   // Create an instance of the lang loader needed for localization
   const { manSupportAgentPage: ll, preferredLanguage, manSupportAgent, formToastFeedback } = yield* LangLoader.createEffect();

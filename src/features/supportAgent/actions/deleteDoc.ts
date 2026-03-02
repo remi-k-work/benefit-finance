@@ -14,9 +14,9 @@ import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 const main = (docId: string) =>
   Effect.gen(function* () {
-    // Verify if the current user possesses a specific permission
+    // Verify if the current user possesses specific permissions
     const auth = yield* Auth;
-    yield* auth.assertPermission({ supportAgent: ["delete"] });
+    yield* auth.assertPermissions({ supportAgent: ["delete"] });
 
     // Delete a document
     const supAgentDocDB = yield* SupAgentDocDB;

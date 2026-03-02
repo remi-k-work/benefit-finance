@@ -15,9 +15,9 @@ import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 const main = (leadId: string, newStatus: Status) =>
   Effect.gen(function* () {
-    // Verify if the current user possesses a specific permission
+    // Verify if the current user possesses specific permissions
     const auth = yield* Auth;
-    yield* auth.assertPermission({ leads: ["update"] });
+    yield* auth.assertPermissions({ leads: ["update"] });
 
     // Set lead status
     const leadDB = yield* LeadDB;

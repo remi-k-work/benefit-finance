@@ -18,9 +18,9 @@ import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 const main = (formData: FormData) =>
   Effect.gen(function* () {
-    // Verify if the current user possesses a specific permission
+    // Verify if the current user possesses specific permissions
     const auth = yield* Auth;
-    yield* auth.assertPermission({ supportAgent: ["create"] });
+    yield* auth.assertPermissions({ supportAgent: ["create"] });
 
     // Create an instance of the lang loader needed for localization
     const { preferredLanguage } = yield* LangLoader.createEffect();

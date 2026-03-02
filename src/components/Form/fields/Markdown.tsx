@@ -30,7 +30,7 @@ export default function MarkdownField({ label, ...props }: MarkdownFieldProps) {
     <>
       <Label htmlFor={id}>{label}</Label>
       <output id={id} name={name}>
-        <MarkdownEditor {...props} markdown={value} onBlur={handleBlur} />
+        <MarkdownEditor {...props} markdown={value ?? ""} onBlur={handleBlur} />
       </output>
     </>
   );

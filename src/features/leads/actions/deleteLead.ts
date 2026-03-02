@@ -14,9 +14,9 @@ import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 const main = (leadId: string) =>
   Effect.gen(function* () {
-    // Verify if the current user possesses a specific permission
+    // Verify if the current user possesses specific permissions
     const auth = yield* Auth;
-    yield* auth.assertPermission({ leads: ["delete"] });
+    yield* auth.assertPermissions({ leads: ["delete"] });
 
     // Permanently delete a lead from the database
     const leadDB = yield* LeadDB;

@@ -16,9 +16,9 @@ import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 const main = (formData: FormData) =>
   Effect.gen(function* () {
-    // Verify if the current user possesses a specific permission
+    // Verify if the current user possesses specific permissions
     const auth = yield* Auth;
-    yield* auth.assertPermission({ leads: ["create"] });
+    yield* auth.assertPermissions({ leads: ["create"] });
 
     // Access the user session data from the server side or fail with an unauthorized access error
     const {

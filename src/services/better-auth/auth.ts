@@ -18,7 +18,7 @@ import { sendEmailChange, sendResetPassword, sendVerifyEmail } from "@/emails/se
 export type Session = typeof auth.$Infer.Session.session;
 export type User = typeof auth.$Infer.Session.user;
 export type Role = NonNullable<Parameters<typeof auth.api.setRole>[0]>["body"]["role"];
-export type Permission = NonNullable<Parameters<typeof auth.api.userHasPermission>[0]>["body"]["permission"];
+export type Permissions = NonNullable<Parameters<typeof auth.api.userHasPermission>[0]>["body"]["permissions"];
 
 export const auth = betterAuth({
   trustedOrigins: ["http://localhost:3000", "https://benefit-finance.vercel.app", "https://benefit-finance-git-cc-remis-projects-738a757c.vercel.app"],
@@ -66,7 +66,7 @@ export const auth = betterAuth({
   user: {
     changeEmail: {
       enabled: true,
-      sendChangeEmailVerification: async ({ user: { email }, newEmail, url }) => {
+      sendChangeEmailConfirmation: async ({ user: { email }, newEmail, url }) => {
         await sendEmailChange(email, newEmail, url);
       },
     },

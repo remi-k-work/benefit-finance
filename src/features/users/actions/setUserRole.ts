@@ -12,9 +12,9 @@ import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 const main = (userId: string, newRole: Role) =>
   Effect.gen(function* () {
-    // Verify if the current user possesses a specific permission
+    // Verify if the current user possesses specific permissions
     const auth = yield* Auth;
-    yield* auth.assertPermission({ users: ["update"] });
+    yield* auth.assertPermissions({ users: ["update"] });
 
     // Set user role
     yield* auth.setUserRole(userId, newRole);

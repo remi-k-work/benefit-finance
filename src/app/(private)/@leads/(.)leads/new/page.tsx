@@ -15,9 +15,9 @@ import NewLeadForm from "@/features/leads/components/NewLeadForm";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
 
 const main = Effect.gen(function* () {
-  // Verify if the current user possesses a specific permission
+  // Verify if the current user possesses specific permissions
   const auth = yield* Auth;
-  yield* auth.assertPermission({ leads: ["read"] });
+  yield* auth.assertPermissions({ leads: ["read"] });
 
   // Create an instance of the lang loader needed for localization
   const { leads: ll, preferredLanguage, formToastFeedback } = yield* LangLoader.createEffect();
