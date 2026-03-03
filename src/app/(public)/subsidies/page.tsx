@@ -8,6 +8,17 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
+import Hero, { HeroSkeleton } from "@/features/subsidies/components/Hero";
+import {
+  EuropeanFunding,
+  EuropeanFundingSkeleton,
+  ProperlySelected,
+  ProperlySelectedSkeleton,
+  WeHelpObtain,
+  WeHelpObtainSkeleton,
+  WhyIsItWorth,
+  WhyIsItWorthSkeleton,
+} from "@/features/subsidies/components/Sections";
 
 // types
 import type { Metadata } from "next";
@@ -19,7 +30,7 @@ export const metadata: Metadata = {
 
 const main = Effect.gen(function* () {
   // Create an instance of the lang loader needed for localization
-  const { subsidiesPage: ll } = yield* LangLoader.createEffect();
+  const { subsidies: ll } = yield* LangLoader.createEffect();
 
   return { ll };
 });
@@ -40,10 +51,14 @@ async function PageContent() {
 
   return (
     <>
-      <PageHeader
-        title={ll["Manage your subsidies"]}
-        description={ll["Get a clear view of your external funding with AI that organizes your benefits and explains what they mean for your financial future"]}
-      />
+      <PageHeader title={ll["Subsidies"]} description={ll["Development support from EU and government funds"]} />
+      <Hero />
+      <article className="mx-auto max-w-300 space-y-9">
+        <WeHelpObtain ll={ll} />
+        <WhyIsItWorth ll={ll} />
+        <ProperlySelected ll={ll} />
+        <EuropeanFunding ll={ll} />
+      </article>
     </>
   );
 }
@@ -52,6 +67,13 @@ function PageSkeleton() {
   return (
     <>
       <PageHeaderSkeleton />
+      <HeroSkeleton />
+      <article className="mx-auto max-w-300 space-y-9">
+        <WeHelpObtainSkeleton />
+        <WhyIsItWorthSkeleton />
+        <ProperlySelectedSkeleton />
+        <EuropeanFundingSkeleton />
+      </article>
     </>
   );
 }

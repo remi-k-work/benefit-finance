@@ -118,8 +118,8 @@ import signUpFormFeedbackEn from "@/assets/lang/signUpFormFeedback.en.json";
 import signUpFormFeedbackPl from "@/assets/lang/signUpFormFeedback.pl.json";
 import signUpPageEn from "@/assets/lang/signUpPage.en.json";
 import signUpPagePl from "@/assets/lang/signUpPage.pl.json";
-import subsidiesPageEn from "@/assets/lang/subsidiesPage.en.json";
-import subsidiesPagePl from "@/assets/lang/subsidiesPage.pl.json";
+import subsidiesEn from "@/assets/lang/subsidies.en.json";
+import subsidiesPl from "@/assets/lang/subsidies.pl.json";
 import supportAgentEn from "@/assets/lang/supportAgent.en.json";
 import supportAgentPl from "@/assets/lang/supportAgent.pl.json";
 import supportAgentModalEn from "@/assets/lang/supportAgentModal.en.json";
@@ -357,8 +357,8 @@ export default class LangLoader {
   public get signUpPage() {
     return this.preferredLanguage === "pl" ? signUpPagePl : signUpPageEn;
   }
-  public get subsidiesPage() {
-    return this.preferredLanguage === "pl" ? subsidiesPagePl : subsidiesPageEn;
+  public get subsidies() {
+    return this.preferredLanguage === "pl" ? subsidiesPl : subsidiesEn;
   }
   public get supportAgent() {
     return this.preferredLanguage === "pl" ? supportAgentPl : supportAgentEn;
