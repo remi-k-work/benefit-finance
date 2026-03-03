@@ -1,0 +1,18 @@
+@theme inline {
+  --animate-bullet-blink: bullet-blink 36s ease-in-out alternate infinite;
+
+  @keyframes bullet-blink {
+    0% {
+      background: var(--color-primary);
+      border-radius: 0%;
+    }
+    50% {
+      background: var(--color-secondary);
+      border-radius: 50%;
+    }
+    100% {
+      background: var(--color-primary);
+      border-radius: 0%;
+    }
+  }
+}

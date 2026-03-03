@@ -1,5 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
+/* custom styles and animations */
+@import "../assets/styles/bulletBlink.css";
+
 @import "shadcn/tailwind.css";
 @import "uploadthing/tw/v4";
 
