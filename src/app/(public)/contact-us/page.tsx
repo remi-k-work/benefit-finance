@@ -45,7 +45,7 @@ async function PageContent() {
     <>
       <PageHeader title={ll["Reach out anytime"]} description={ll["Have a question? Need help? Just want to talk money? We are listening"]} />
       <Hero />
-      <article className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+      <article className="mx-auto grid max-w-300 grid-cols-1 gap-4 xl:grid-cols-2">
         <ContactUsMap />
         <ContactUsForm
           preferredLanguage={preferredLanguage}

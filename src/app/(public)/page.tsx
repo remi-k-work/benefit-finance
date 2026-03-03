@@ -10,6 +10,7 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
 import Hero from "@/features/aboutUs/components/Hero";
 import SectionHeader, { SectionHeaderSkeleton } from "@/components/SectionHeader";
+import { FamilyOwned, FamilyOwnedSkeleton } from "@/features/aboutUs/components/Sections";
 
 const main = Effect.gen(function* () {
   // Create an instance of the lang loader needed for localization
@@ -37,16 +38,7 @@ async function PageContent() {
       <PageHeader title={ll["About Us"]} description={ll["Welcome to Benefit Finance!"]} />
       <Hero />
       <article className="mx-auto max-w-300 space-y-9">
-        <section className="clear-both">
-          <SectionHeader title={ll["A family-owned company that helps finance and secure dreams"]} />
-          <p>{ll["We are a family-owned company that has been supporting clients in financial, credit, insurance, and financing matters for 13 years."]}</p>
-          <br />
-          <p>
-            {ll["We are not advisors – we act as intermediaries, giving you access to a wide range of banks, insurers and financing programs in one place."]}
-          </p>
-          <br />
-          <p>{ll["Our goal is for every client to be able to make decisions consciously, calmly and without unnecessary stress."]}</p>
-        </section>
+        <FamilyOwned ll={ll} />
 
         <section className="float-end">
           <SectionHeader title={ll["Who we are"]} />
@@ -189,14 +181,7 @@ function PageSkeleton() {
       <PageHeaderSkeleton />
       <Hero />
       <article className="mx-auto max-w-300 space-y-9">
-        <section className="clear-both">
-          <SectionHeaderSkeleton />
-          <p>&nbsp;</p>
-          <br />
-          <p>&nbsp;</p>
-          <br />
-          <p>&nbsp;</p>
-        </section>
+        <FamilyOwnedSkeleton />
 
         <section className="float-end">
           <SectionHeaderSkeleton />
