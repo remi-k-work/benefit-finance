@@ -9,7 +9,7 @@ import SectionHeader, { SectionHeaderSkeleton } from "@/components/SectionHeader
 // types
 import type LangLoader from "@/lib/LangLoader";
 
-interface FamilyOwnedProps {
+interface PleaseContactUsProps {
   ll: typeof LangLoader.prototype.aboutUs;
 }
 
@@ -20,31 +20,25 @@ const LIST = {
 } as const;
 const ITEM = { hidden: { opacity: 0, x: -100 }, visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 40, damping: 20, mass: 1.2 } } } as const;
 
-export function FamilyOwned({ ll }: FamilyOwnedProps) {
+export function PleaseContactUs({ ll }: PleaseContactUsProps) {
   return (
     <motion.section className="clear-both" initial="hidden" whileInView="visible" variants={LIST} viewport={{ once: true }}>
-      <SectionHeader title={ll["A family-owned company that helps finance and secure dreams"]} />
+      <SectionHeader title={ll["Please contact us"]} />
       <motion.p variants={ITEM}>
-        {ll["We are a family-owned company that has been supporting clients in financial, credit, insurance, and financing matters for 13 years."]}
+        {
+          ll[
+            "If you are looking for a reliable, family-run team of intermediaries who will facilitate your access to the best loan, insurance, and financing offers, please contact us."
+          ]
+        }
       </motion.p>
-      <br />
-      <motion.p variants={ITEM}>
-        {ll["We are not advisors – we act as intermediaries, giving you access to a wide range of banks, insurers and financing programs in one place."]}
-      </motion.p>
-      <br />
-      <motion.p variants={ITEM}>{ll["Our goal is for every client to be able to make decisions consciously, calmly and without unnecessary stress."]}</motion.p>
     </motion.section>
   );
 }
 
-export function FamilyOwnedSkeleton() {
+export function PleaseContactUsSkeleton() {
   return (
     <section className="clear-both">
       <SectionHeaderSkeleton />
-      <p>&nbsp;</p>
-      <br />
-      <p>&nbsp;</p>
-      <br />
       <p>&nbsp;</p>
     </section>
   );

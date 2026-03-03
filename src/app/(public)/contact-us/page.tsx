@@ -8,7 +8,7 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
-import Hero from "@/features/contactUs/components/Hero";
+import Hero, { HeroSkeleton } from "@/features/contactUs/components/Hero";
 import ContactUsMap from "@/features/contactUs/components/ContactUsMap";
 import ContactUsForm from "@/features/contactUs/components/ContactUsForm";
 
@@ -62,7 +62,7 @@ function PageSkeleton() {
   return (
     <>
       <PageHeaderSkeleton />
-      <Hero />
+      <HeroSkeleton />
     </>
   );
 }

@@ -26,3 +26,7 @@ export default function Hero() {
     />
   );
 }
+
+export function HeroSkeleton() {
+  return <Image src={hero} alt="Contact Us" loading="eager" className="mx-auto mb-9 w-full max-w-300 opacity-0" />;
+}
