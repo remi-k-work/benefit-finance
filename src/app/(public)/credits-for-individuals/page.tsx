@@ -8,6 +8,19 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
+import HeroA, { HeroASkeleton } from "@/features/credits/components/HeroA";
+import {
+  HowDoesWork,
+  HowDoesWorkSkeleton,
+  PleaseContactUs,
+  PleaseContactUsSkeleton,
+  QuickAccess,
+  QuickAccessSkeleton,
+  WhatLoans,
+  WhatLoansSkeleton,
+  WhyIsItWorth,
+  WhyIsItWorthSkeleton,
+} from "@/features/credits/components/Sections";
 
 // types
 import type { Metadata } from "next";
@@ -40,12 +53,15 @@ async function PageContent() {
 
   return (
     <>
-      <PageHeader
-        title={ll["Keep more of what you earn"]}
-        description={
-          ll["Maximize your tax efficiency with AI that identifies every personal credit you’re eligible for and shows how they lower your cost of living"]
-        }
-      />
+      <PageHeader title={ll["Individual loans"]} description={ll["Support in your financial decisions"]} />
+      <HeroA />
+      <article className="mx-auto max-w-300 space-y-9">
+        <QuickAccess ll={ll} />
+        <WhatLoans ll={ll} />
+        <WhyIsItWorth ll={ll} />
+        <HowDoesWork ll={ll} />
+        <PleaseContactUs ll={ll} />
+      </article>
     </>
   );
 }
@@ -54,6 +70,14 @@ function PageSkeleton() {
   return (
     <>
       <PageHeaderSkeleton />
+      <HeroASkeleton />
+      <article className="mx-auto max-w-300 space-y-9">
+        <QuickAccessSkeleton />
+        <WhatLoansSkeleton />
+        <WhyIsItWorthSkeleton />
+        <HowDoesWorkSkeleton />
+        <PleaseContactUsSkeleton />
+      </article>
     </>
   );
 }

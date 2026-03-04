@@ -7,12 +7,12 @@ import Image from "next/image";
 import { motion } from "motion/react";
 
 // assets
-import hero from "@/features/credits/assets/hero.webp";
+import hero from "@/features/credits/assets/heroA.webp";
 
 // constants
 const MotionImage = motion.create(Image);
 
-export default function Hero() {
+export default function HeroA() {
   return (
     <MotionImage
       src={hero}
@@ -27,6 +27,6 @@ export default function Hero() {
   );
 }
 
-export function HeroSkeleton() {
+export function HeroASkeleton() {
   return <Image src={hero} alt="Credits" loading="eager" className="mx-auto mb-9 w-full max-w-300 opacity-0" />;
 }
