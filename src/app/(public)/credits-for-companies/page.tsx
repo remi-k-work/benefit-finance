@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 const main = Effect.gen(function* () {
   // Create an instance of the lang loader needed for localization
-  const { creditsForCompaniesPage: ll } = yield* LangLoader.createEffect();
+  const { credits: ll } = yield* LangLoader.createEffect();
 
   return { ll };
 });

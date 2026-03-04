@@ -20,10 +20,8 @@ import contactUsMapEn from "@/assets/lang/contactUsMap.en.json";
 import contactUsMapPl from "@/assets/lang/contactUsMap.pl.json";
 import contactUsPageEn from "@/assets/lang/contactUsPage.en.json";
 import contactUsPagePl from "@/assets/lang/contactUsPage.pl.json";
-import creditsForCompaniesPageEn from "@/assets/lang/creditsForCompaniesPage.en.json";
-import creditsForCompaniesPagePl from "@/assets/lang/creditsForCompaniesPage.pl.json";
-import creditsForIndividualsPageEn from "@/assets/lang/creditsForIndividualsPage.en.json";
-import creditsForIndividualsPagePl from "@/assets/lang/creditsForIndividualsPage.pl.json";
+import creditsEn from "@/assets/lang/credits.en.json";
+import creditsPl from "@/assets/lang/credits.pl.json";
 import dashboardPageEn from "@/assets/lang/dashboardPage.en.json";
 import dashboardPagePl from "@/assets/lang/dashboardPage.pl.json";
 import deleteAvatarEn from "@/assets/lang/deleteAvatar.en.json";
@@ -210,11 +208,8 @@ export default class LangLoader {
   public get contactUsPage() {
     return this.preferredLanguage === "pl" ? contactUsPagePl : contactUsPageEn;
   }
-  public get creditsForCompaniesPage() {
-    return this.preferredLanguage === "pl" ? creditsForCompaniesPagePl : creditsForCompaniesPageEn;
-  }
-  public get creditsForIndividualsPage() {
-    return this.preferredLanguage === "pl" ? creditsForIndividualsPagePl : creditsForIndividualsPageEn;
+  public get credits() {
+    return this.preferredLanguage === "pl" ? creditsPl : creditsEn;
   }
   public get dashboardPage() {
     return this.preferredLanguage === "pl" ? dashboardPagePl : dashboardPageEn;
