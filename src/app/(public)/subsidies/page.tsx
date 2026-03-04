@@ -12,10 +12,20 @@ import Hero, { HeroSkeleton } from "@/features/subsidies/components/Hero";
 import {
   EuropeanFunding,
   EuropeanFundingSkeleton,
+  GovernmentFunding,
+  GovernmentFundingSkeleton,
+  PleaseContactUs,
+  PleaseContactUsSkeleton,
   ProperlySelected,
   ProperlySelectedSkeleton,
+  TheScopeOf,
+  TheScopeOfSkeleton,
   WeHelpObtain,
   WeHelpObtainSkeleton,
+  WhatDoesCooperation,
+  WhatDoesCooperationSkeleton,
+  WhoAreTheyFor,
+  WhoAreTheyForSkeleton,
   WhyIsItWorth,
   WhyIsItWorthSkeleton,
 } from "@/features/subsidies/components/Sections";
@@ -58,6 +68,11 @@ async function PageContent() {
         <WhyIsItWorth ll={ll} />
         <ProperlySelected ll={ll} />
         <EuropeanFunding ll={ll} />
+        <GovernmentFunding ll={ll} />
+        <TheScopeOf ll={ll} />
+        <WhoAreTheyFor ll={ll} />
+        <WhatDoesCooperation ll={ll} />
+        <PleaseContactUs ll={ll} />
       </article>
     </>
   );
@@ -73,6 +88,11 @@ function PageSkeleton() {
         <WhyIsItWorthSkeleton />
         <ProperlySelectedSkeleton />
         <EuropeanFundingSkeleton />
+        <GovernmentFundingSkeleton />
+        <TheScopeOfSkeleton />
+        <WhoAreTheyForSkeleton />
+        <WhatDoesCooperationSkeleton />
+        <PleaseContactUsSkeleton />
       </article>
     </>
   );
