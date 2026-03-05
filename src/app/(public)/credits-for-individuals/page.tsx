@@ -12,8 +12,8 @@ import HeroA, { HeroASkeleton } from "@/features/credits/components/HeroA";
 import {
   HowDoesWork,
   HowDoesWorkSkeleton,
-  PleaseContactUs,
-  PleaseContactUsSkeleton,
+  PleaseContactUsA,
+  PleaseContactUsASkeleton,
   QuickAccess,
   QuickAccessSkeleton,
   WhatLoans,
@@ -60,7 +60,7 @@ async function PageContent() {
         <WhatLoans ll={ll} />
         <WhyIsItWorth ll={ll} />
         <HowDoesWork ll={ll} />
-        <PleaseContactUs ll={ll} />
+        <PleaseContactUsA ll={ll} />
       </article>
     </>
   );
@@ -76,7 +76,7 @@ function PageSkeleton() {
         <WhatLoansSkeleton />
         <WhyIsItWorthSkeleton />
         <HowDoesWorkSkeleton />
-        <PleaseContactUsSkeleton />
+        <PleaseContactUsASkeleton />
       </article>
     </>
   );

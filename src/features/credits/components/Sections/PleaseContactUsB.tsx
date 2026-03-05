@@ -9,7 +9,7 @@ import SectionHeader, { SectionHeaderSkeleton } from "@/components/SectionHeader
 // types
 import type LangLoader from "@/lib/LangLoader";
 
-interface PleaseContactUsProps {
+interface PleaseContactUsBProps {
   ll: typeof LangLoader.prototype.credits;
 }
 
@@ -20,21 +20,25 @@ const LIST = {
 } as const;
 const ITEM = { hidden: { opacity: 0, x: -100 }, visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 40, damping: 20, mass: 1.2 } } } as const;
 
-export function PleaseContactUs({ ll }: PleaseContactUsProps) {
+export function PleaseContactUsB({ ll }: PleaseContactUsBProps) {
   return (
     <motion.section className="clear-both" initial="hidden" whileInView="visible" variants={LIST} viewport={{ once: true }}>
       <SectionHeader title={ll["Contact us"]} />
-      <motion.p variants={ITEM}>{ll["With us, the loan process is faster, simpler and less stressful."]}</motion.p>
+      <motion.p variants={ITEM}>{ll["If you are planning to expand your business or need financing for your current operations, please contact us."]}</motion.p>
+      <br />
+      <motion.p variants={ITEM}>{ll["The first conversation is free and non-binding."]}</motion.p>
       <br />
       <motion.p variants={ITEM}>{ll["Schedule a consultation."]}</motion.p>
     </motion.section>
   );
 }
 
-export function PleaseContactUsSkeleton() {
+export function PleaseContactUsBSkeleton() {
   return (
     <section className="clear-both">
       <SectionHeaderSkeleton />
+      <p>&nbsp;</p>
+      <br />
       <p>&nbsp;</p>
       <br />
       <p>&nbsp;</p>

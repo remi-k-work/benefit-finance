@@ -8,6 +8,23 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
+import HeroB, { HeroBSkeleton } from "@/features/credits/components/HeroB";
+import {
+  HowDoesCooperation,
+  HowDoesCooperationSkeleton,
+  PleaseContactUsB,
+  PleaseContactUsBSkeleton,
+  ProfessionalSupport,
+  ProfessionalSupportSkeleton,
+  TheScopeOf,
+  TheScopeOfSkeleton,
+  WhatBusinessLoans,
+  WhatBusinessLoansSkeleton,
+  WhoIsItFor,
+  WhoIsItForSkeleton,
+  WhyIsItWorthUsing,
+  WhyIsItWorthUsingSkeleton,
+} from "@/features/credits/components/Sections";
 
 // types
 import type { Metadata } from "next";
@@ -40,12 +57,17 @@ async function PageContent() {
 
   return (
     <>
-      <PageHeader
-        title={ll["Fuel your business growth"]}
-        description={
-          ll["Reinvest in your vision by using Benefit Finance to track R&D, energy, and payroll credits that turn your tax liabilities into working capital"]
-        }
-      />
+      <PageHeader title={ll["Business loans"]} description={ll["Stable financing for the development of your company"]} />
+      <HeroB />
+      <article className="mx-auto max-w-300 space-y-9">
+        <ProfessionalSupport ll={ll} />
+        <WhatBusinessLoans ll={ll} />
+        <TheScopeOf ll={ll} />
+        <WhyIsItWorthUsing ll={ll} />
+        <WhoIsItFor ll={ll} />
+        <HowDoesCooperation ll={ll} />
+        <PleaseContactUsB ll={ll} />
+      </article>
     </>
   );
 }
@@ -54,6 +76,16 @@ function PageSkeleton() {
   return (
     <>
       <PageHeaderSkeleton />
+      <HeroBSkeleton />
+      <article className="mx-auto max-w-300 space-y-9">
+        <ProfessionalSupportSkeleton />
+        <WhatBusinessLoansSkeleton />
+        <TheScopeOfSkeleton />
+        <WhyIsItWorthUsingSkeleton />
+        <WhoIsItForSkeleton />
+        <HowDoesCooperationSkeleton />
+        <PleaseContactUsBSkeleton />
+      </article>
     </>
   );
 }
