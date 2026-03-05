@@ -8,6 +8,19 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
+import HeroB, { HeroBSkeleton } from "@/features/insurance/components/HeroB";
+import {
+  FinancialInsurance,
+  FinancialInsuranceSkeleton,
+  InsuranceIsOften,
+  InsuranceIsOftenSkeleton,
+  OurApproach,
+  OurApproachSkeleton,
+  PleaseContactUs,
+  PleaseContactUsSkeleton,
+  WhyInsurance,
+  WhyInsuranceSkeleton,
+} from "@/features/insurance/components/Sections";
 
 // types
 import type { Metadata } from "next";
@@ -40,10 +53,15 @@ async function PageContent() {
 
   return (
     <>
-      <PageHeader
-        title={ll["Protect your capital flow"]}
-        description={ll["Secure your liquid assets with AI-driven coverage that shields your accounts from fraud and unexpected market volatility"]}
-      />
+      <PageHeader title={ll["Insurance"]} description={ll["Consciously securing what is truly important"]} />
+      <HeroB />
+      <article className="mx-auto max-w-300 space-y-9">
+        <WhyInsurance ll={ll} />
+        <InsuranceIsOften ll={ll} />
+        <FinancialInsurance ll={ll} />
+        <OurApproach ll={ll} />
+        <PleaseContactUs ll={ll} />
+      </article>
     </>
   );
 }
@@ -52,6 +70,14 @@ function PageSkeleton() {
   return (
     <>
       <PageHeaderSkeleton />
+      <HeroBSkeleton />
+      <article className="mx-auto max-w-300 space-y-9">
+        <WhyInsuranceSkeleton />
+        <InsuranceIsOftenSkeleton />
+        <FinancialInsuranceSkeleton />
+        <OurApproachSkeleton />
+        <PleaseContactUsSkeleton />
+      </article>
     </>
   );
 }

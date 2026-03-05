@@ -9,7 +9,18 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
 import HeroA, { HeroASkeleton } from "@/features/insurance/components/HeroA";
-import { InsuranceIsOften, InsuranceIsOftenSkeleton, WhyInsurance, WhyInsuranceSkeleton } from "@/features/insurance/components/Sections";
+import {
+  BusinessInsurance,
+  BusinessInsuranceSkeleton,
+  InsuranceIsOften,
+  InsuranceIsOftenSkeleton,
+  OurApproach,
+  OurApproachSkeleton,
+  PleaseContactUs,
+  PleaseContactUsSkeleton,
+  WhyInsurance,
+  WhyInsuranceSkeleton,
+} from "@/features/insurance/components/Sections";
 
 // types
 import type { Metadata } from "next";
@@ -47,6 +58,9 @@ async function PageContent() {
       <article className="mx-auto max-w-300 space-y-9">
         <WhyInsurance ll={ll} />
         <InsuranceIsOften ll={ll} />
+        <BusinessInsurance ll={ll} />
+        <OurApproach ll={ll} />
+        <PleaseContactUs ll={ll} />
       </article>
     </>
   );
@@ -60,6 +74,9 @@ function PageSkeleton() {
       <article className="mx-auto max-w-300 space-y-9">
         <WhyInsuranceSkeleton />
         <InsuranceIsOftenSkeleton />
+        <BusinessInsuranceSkeleton />
+        <OurApproachSkeleton />
+        <PleaseContactUsSkeleton />
       </article>
     </>
   );

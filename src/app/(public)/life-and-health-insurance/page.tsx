@@ -8,6 +8,19 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
+import HeroC, { HeroCSkeleton } from "@/features/insurance/components/HeroC";
+import {
+  InsuranceIsOften,
+  InsuranceIsOftenSkeleton,
+  LifeAndHealthInsurance,
+  LifeAndHealthInsuranceSkeleton,
+  OurApproach,
+  OurApproachSkeleton,
+  PleaseContactUs,
+  PleaseContactUsSkeleton,
+  WhyInsurance,
+  WhyInsuranceSkeleton,
+} from "@/features/insurance/components/Sections";
 
 // types
 import type { Metadata } from "next";
@@ -40,12 +53,15 @@ async function PageContent() {
 
   return (
     <>
-      <PageHeader
-        title={ll["Prioritize what matters most"]}
-        description={
-          ll["Take care of yourself and your loved ones with a simplified view of your coverage, ensuring your family’s well-being is never left to chance"]
-        }
-      />
+      <PageHeader title={ll["Insurance"]} description={ll["Consciously securing what is truly important"]} />
+      <HeroC />
+      <article className="mx-auto max-w-300 space-y-9">
+        <WhyInsurance ll={ll} />
+        <InsuranceIsOften ll={ll} />
+        <LifeAndHealthInsurance ll={ll} />
+        <OurApproach ll={ll} />
+        <PleaseContactUs ll={ll} />
+      </article>
     </>
   );
 }
@@ -54,6 +70,14 @@ function PageSkeleton() {
   return (
     <>
       <PageHeaderSkeleton />
+      <HeroCSkeleton />
+      <article className="mx-auto max-w-300 space-y-9">
+        <WhyInsuranceSkeleton />
+        <InsuranceIsOftenSkeleton />
+        <LifeAndHealthInsuranceSkeleton />
+        <OurApproachSkeleton />
+        <PleaseContactUsSkeleton />
+      </article>
     </>
   );
 }
