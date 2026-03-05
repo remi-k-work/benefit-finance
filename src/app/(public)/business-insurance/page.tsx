@@ -8,6 +8,8 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
+import HeroA, { HeroASkeleton } from "@/features/insurance/components/HeroA";
+import { InsuranceIsOften, InsuranceIsOftenSkeleton, WhyInsurance, WhyInsuranceSkeleton } from "@/features/insurance/components/Sections";
 
 // types
 import type { Metadata } from "next";
@@ -19,7 +21,7 @@ export const metadata: Metadata = {
 
 const main = Effect.gen(function* () {
   // Create an instance of the lang loader needed for localization
-  const { businessInsurancePage: ll } = yield* LangLoader.createEffect();
+  const { insurance: ll } = yield* LangLoader.createEffect();
 
   return { ll };
 });
@@ -40,12 +42,12 @@ async function PageContent() {
 
   return (
     <>
-      <PageHeader
-        title={ll["Build on a solid foundation"]}
-        description={
-          ll["From liability to cyber-risk, safeguard your company’s future with Benefit Finance’s intelligent risk assessment tailored to your industry"]
-        }
-      />
+      <PageHeader title={ll["Insurance"]} description={ll["Consciously securing what is truly important"]} />
+      <HeroA />
+      <article className="mx-auto max-w-300 space-y-9">
+        <WhyInsurance ll={ll} />
+        <InsuranceIsOften ll={ll} />
+      </article>
     </>
   );
 }
@@ -54,6 +56,11 @@ function PageSkeleton() {
   return (
     <>
       <PageHeaderSkeleton />
+      <HeroASkeleton />
+      <article className="mx-auto max-w-300 space-y-9">
+        <WhyInsuranceSkeleton />
+        <InsuranceIsOftenSkeleton />
+      </article>
     </>
   );
 }
