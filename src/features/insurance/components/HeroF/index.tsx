@@ -7,16 +7,16 @@ import Image from "next/image";
 import { motion } from "motion/react";
 
 // assets
-import hero from "@/features/insurance/assets/heroD.webp";
+import hero from "@/features/insurance/assets/heroF.webp";
 
 // constants
 const MotionImage = motion.create(Image);
 
-export default function HeroD() {
+export default function HeroF() {
   return (
     <MotionImage
       src={hero}
-      alt="Motor Insurance"
+      alt="Travel Insurance"
       loading="eager"
       className="mx-auto mb-9 w-full max-w-300"
       initial={{ opacity: 0 }}
@@ -27,6 +27,6 @@ export default function HeroD() {
   );
 }
 
-export function HeroDSkeleton() {
-  return <Image src={hero} alt="Motor Insurance" loading="eager" className="mx-auto mb-9 w-full max-w-300 opacity-0" />;
+export function HeroFSkeleton() {
+  return <Image src={hero} alt="Travel Insurance" loading="eager" className="mx-auto mb-9 w-full max-w-300 opacity-0" />;
 }

@@ -8,6 +8,19 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
+import HeroF, { HeroFSkeleton } from "@/features/insurance/components/HeroF";
+import {
+  InsuranceIsOften,
+  InsuranceIsOftenSkeleton,
+  OurApproach,
+  OurApproachSkeleton,
+  PleaseContactUs,
+  PleaseContactUsSkeleton,
+  TravelInsurance,
+  TravelInsuranceSkeleton,
+  WhyInsurance,
+  WhyInsuranceSkeleton,
+} from "@/features/insurance/components/Sections";
 
 // types
 import type { Metadata } from "next";
@@ -40,10 +53,15 @@ async function PageContent() {
 
   return (
     <>
-      <PageHeader
-        title={ll["Explore the world without worry"]}
-        description={ll["Whether for business or leisure, Benefit Finance keeps your trips secure by organizing your coverage for every border you cross"]}
-      />
+      <PageHeader title={ll["Insurance"]} description={ll["Consciously securing what is truly important"]} />
+      <HeroF />
+      <article className="mx-auto max-w-300 space-y-9">
+        <WhyInsurance ll={ll} />
+        <InsuranceIsOften ll={ll} />
+        <TravelInsurance ll={ll} />
+        <OurApproach ll={ll} />
+        <PleaseContactUs ll={ll} />
+      </article>
     </>
   );
 }
@@ -52,6 +70,14 @@ function PageSkeleton() {
   return (
     <>
       <PageHeaderSkeleton />
+      <HeroFSkeleton />
+      <article className="mx-auto max-w-300 space-y-9">
+        <WhyInsuranceSkeleton />
+        <InsuranceIsOftenSkeleton />
+        <TravelInsuranceSkeleton />
+        <OurApproachSkeleton />
+        <PleaseContactUsSkeleton />
+      </article>
     </>
   );
 }

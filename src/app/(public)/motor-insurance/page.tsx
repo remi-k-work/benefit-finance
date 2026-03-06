@@ -8,6 +8,19 @@ import { runPageMainOrNavigate } from "@/lib/helpersEffect";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
+import HeroD, { HeroDSkeleton } from "@/features/insurance/components/HeroD";
+import {
+  InsuranceIsOften,
+  InsuranceIsOftenSkeleton,
+  MotorInsurance,
+  MotorInsuranceSkeleton,
+  OurApproach,
+  OurApproachSkeleton,
+  PleaseContactUs,
+  PleaseContactUsSkeleton,
+  WhyInsurance,
+  WhyInsuranceSkeleton,
+} from "@/features/insurance/components/Sections";
 
 // types
 import type { Metadata } from "next";
@@ -40,10 +53,15 @@ async function PageContent() {
 
   return (
     <>
-      <PageHeader
-        title={ll["Stay moving with confidence"]}
-        description={ll["Manage your vehicles under one roof with AI that tracks your premiums and ensures you’re protected every mile of the journey"]}
-      />
+      <PageHeader title={ll["Insurance"]} description={ll["Consciously securing what is truly important"]} />
+      <HeroD />
+      <article className="mx-auto max-w-300 space-y-9">
+        <WhyInsurance ll={ll} />
+        <InsuranceIsOften ll={ll} />
+        <MotorInsurance ll={ll} />
+        <OurApproach ll={ll} />
+        <PleaseContactUs ll={ll} />
+      </article>
     </>
   );
 }
@@ -52,6 +70,14 @@ function PageSkeleton() {
   return (
     <>
       <PageHeaderSkeleton />
+      <HeroDSkeleton />
+      <article className="mx-auto max-w-300 space-y-9">
+        <WhyInsuranceSkeleton />
+        <InsuranceIsOftenSkeleton />
+        <MotorInsuranceSkeleton />
+        <OurApproachSkeleton />
+        <PleaseContactUsSkeleton />
+      </article>
     </>
   );
 }
