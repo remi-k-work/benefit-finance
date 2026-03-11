@@ -2,13 +2,13 @@
 import { Effect, Layer } from "effect";
 import { RpcClient, RpcSerialization } from "@effect/rpc";
 import { FetchHttpClient } from "@effect/platform";
-import { RpcAuth } from "./requests";
+import { RpcLeads } from "./requests";
 
 const ProtocolLive = RpcClient.layerProtocolHttp({
-  url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/rpc`,
+  url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/rpc/leads`,
 }).pipe(Layer.provide([FetchHttpClient.layer, RpcSerialization.layerNdjson]));
 
-export class RpcAuthClient extends Effect.Service<RpcAuthClient>()("RpcAuthClient", {
+export class RpcLeadsClient extends Effect.Service<RpcLeadsClient>()("RpcLeadsClient", {
   dependencies: [ProtocolLive],
-  scoped: RpcClient.make(RpcAuth),
+  scoped: RpcClient.make(RpcLeads),
 }) {}

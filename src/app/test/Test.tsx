@@ -4,8 +4,8 @@
 import { startTransition, useActionState } from "react";
 
 // services, features, and other libraries
-import { Effect } from "effect";
-import { RpcAuthClient } from "@/features/leads/rpc/client";
+import { Console, Effect } from "effect";
+import { RpcLeadsClient } from "@/features/leads/rpc/client";
 import { RuntimeClient } from "@/lib/RuntimeClient";
 import { useConfirmModal } from "@/atoms/confirmModal";
 import { useDemoModeModal } from "@/atoms/demoModeModal";
@@ -17,20 +17,13 @@ import { Button } from "@/components/ui/custom/button";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
 const main = Effect.gen(function* () {
-  const client = yield* RpcAuthClient;
+  const client = yield* RpcLeadsClient;
 
-  //   👇 `boolean` (as defined in `Rpc.make`)
-  return yield* client
-    .SignUpRequest({
-      email: "",
-      password: "test",
-    })
-    .pipe(
-      Effect.tapErrorTag("RequestError", (requestError) => {
-        return Effect.log(requestError.errorMessage);
-      }),
-    );
-}).pipe(Effect.provide(RpcAuthClient.Default));
+  return yield* client.SignUpRequest({
+    email: "test@test.com",
+    password: "test",
+  });
+}).pipe(Effect.provide(RpcLeadsClient.Default));
 
 export default function Test() {
   // Access the confirm modal context and retrieve all necessary information
@@ -38,7 +31,7 @@ export default function Test() {
   const { openDemoModeModal } = useDemoModeModal();
 
   const [result, signUpRequest, isPending] = useActionState(async () => {
-    const result = await RuntimeClient.runPromise(main);
+    const result = await RuntimeClient.runPromise(main.pipe(Effect.tapError((error) => Console.log(`[COMPONENT MAIN ERROR]: ${error}`))));
     return result;
   }, null);
 
