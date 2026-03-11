@@ -24,9 +24,9 @@ async function PageContent() {
   // Explicitly defer to request time (Effect uses Date.now() internally)
   await connection();
 
-  console.log("user", user);
-  console.log("admin", admin);
-  console.log("demo", demo);
+  // console.log("user", user);
+  // console.log("admin", admin);
+  // console.log("demo", demo);
 
   return (
     <>
