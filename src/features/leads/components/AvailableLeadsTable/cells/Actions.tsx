@@ -1,5 +1,5 @@
 // react
-import { startTransition, useActionState, useState } from "react";
+import { startTransition, useState } from "react";
 
 // drizzle and db access
 import type { AllAvailableLeads } from "@/features/leads/db";
@@ -40,7 +40,7 @@ const main = (leadId: string) =>
       Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
     );
     return { ...initialFormState, ...result } as const;
-  }).pipe(Effect.provide(RpcLeadsClient.Default));
+  });
 
 export default function ActionsCell({
   row: {
@@ -55,20 +55,8 @@ export default function ActionsCell({
   const { openConfirmModal } = useConfirmModal();
 
   // This action permanently deletes a lead from the database
-  const [deleteLeadState, deleteLeadAction, deleteLeadIsPending] = useActionState(
-    async () => {
-      // Execute the server action first and capture its result
-      const actionResult = await runRpcActionMain(main(leadId));
-
-      // Only reflect changes in the UI if the action was successful
-      if (actionResult.actionStatus === "succeeded") options.meta?.removeData(rowIndex);
-      return actionResult;
-    },
-    {
-      ...initialFormState,
-      actionStatus: "idle",
-    },
-  );
+  const [deleteLeadState, setDeleteLeadState] = useState<ActionResultWithFormState>({ ...initialFormState, actionStatus: "idle" });
+  const [deleteLeadIsPending, setDeleteLeadIsPending] = useState(false);
 
   // Provide feedback to the user regarding this server action
   useDeleteLeadFeedback(deleteLeadState, ll, llFormToastFeedback);
@@ -88,7 +76,19 @@ export default function ActionsCell({
                 {ll["Are you sure you want to"]} <b className="text-destructive">{ll["delete"]}</b> {ll["this lead?"]}
               </p>
             ),
-            onConfirmed: () => startTransition(deleteLeadAction),
+            onConfirmed: async () => {
+              // Execute the server action first and capture its result
+              setDeleteLeadIsPending(true);
+              const actionResult = await runRpcActionMain(main(leadId));
+              setDeleteLeadState(actionResult);
+              setDeleteLeadIsPending(false);
+
+              // Only reflect changes in the UI if the action was successful
+              if (actionResult.actionStatus !== "succeeded") return;
+              startTransition(() => {
+                options.meta?.removeData(rowIndex);
+              });
+            },
           });
         }}
       >

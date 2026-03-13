@@ -8,12 +8,11 @@ import { startTransition, useActionState } from "react";
 // drizzle and db access
 import type { AllAvailableLeads } from "@/features/leads/db";
 
-// server actions and mutations
-import editLeadNotesForm from "@/features/leads/actions/editLeadNotesForm";
-
 // services, features, and other libraries
-import { Schema } from "effect";
-import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
+import { Effect, Schema } from "effect";
+import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { RpcLeadsClient } from "@/features/leads/rpc/client";
+import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
 import { EditLeadNotesFormSchemaEn, EditLeadNotesFormSchemaPl } from "@/features/leads/schemas/editLeadNotesForm";
 import useEditLeadNotesFormFeedback from "@/features/leads/hooks/feedbacks/useEditLeadNotesForm";
@@ -31,6 +30,16 @@ interface EditLeadNotesFormProps {
 // constants
 import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/leads/constants/editLeadNotesForm";
 
+const main = (leadId: string, formDataRecord: Record<string, string>) =>
+  Effect.gen(function* () {
+    const { editLeadNotesForm } = yield* RpcLeadsClient;
+
+    const result = yield* editLeadNotesForm({ leadId, formDataRecord }).pipe(
+      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+    );
+    return { ...initialFormState, ...result } as const;
+  });
+
 export default function EditLeadNotesForm({ allAvailableLeads: { id: leadId, internalNotes }, rowIndex }: EditLeadNotesFormProps) {
   // Access the table context and retrieve all necessary information
   const {
@@ -41,8 +50,12 @@ export default function EditLeadNotesForm({ allAvailableLeads: { id: leadId, int
   } = useInstanceContext();
 
   // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(editLeadNotesForm.bind(null, leadId), INITIAL_FORM_STATE);
-  const { AppField, AppForm, FormSubmit, handleSubmit } = useAppForm({
+  const [formState, formAction, isPending] = useActionState(
+    async (_: unknown, formData: FormData) => await runRpcActionMain(main(leadId, formDataToRecord(formData))),
+    INITIAL_FORM_STATE,
+  );
+
+  const { AppField, AppForm, FormSubmit, handleSubmit, reset } = useAppForm({
     ...FORM_OPTIONS,
     defaultValues: { ...FORM_OPTIONS.defaultValues, internalNotes: internalNotes ?? "" },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
@@ -56,7 +69,7 @@ export default function EditLeadNotesForm({ allAvailableLeads: { id: leadId, int
   });
 
   // Provide feedback to the user regarding this form actions
-  useEditLeadNotesFormFeedback(formState, ll, llFormToastFeedback);
+  useEditLeadNotesFormFeedback(formState, reset, ll, llFormToastFeedback);
 
   return (
     <AppForm>

@@ -12,6 +12,7 @@ import type LangLoader from "@/lib/LangLoader";
 // Provide feedback to the user regarding this server action
 export default function useEditLeadNotesFormFeedback(
   { actionStatus, timestamp }: ActionResultWithFormState,
+  reset: () => void,
   ll: typeof LangLoader.prototype.leads,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
@@ -33,6 +34,9 @@ export default function useEditLeadNotesFormFeedback(
     if (actionStatus === "succeeded") {
       // Display a success message
       showToast("succeeded");
+
+      // Reset the entire form after successful submission
+      reset();
     } else {
       // Was a restricted operation attempted under the demo account? Inform the user
       guardForDemoMode();

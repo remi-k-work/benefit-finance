@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // services, features, and other libraries
 import { Console, Effect, Either, Schema } from "effect";
 import { createServerValidate } from "@tanstack/react-form-nextjs";
@@ -24,9 +26,23 @@ export const createServerValidateWithTransforms = <A, I>(DEFAULT_VALUES: A, sche
   };
 };
 
+// Convert the FormData to a plain object before sending it to the RPC client (over the wire)
+export const formDataToRecord = (formData: FormData): Record<string, string> => {
+  const record: Record<string, string> = {};
+  for (const [key, value] of formData.entries()) if (typeof value === "string") record[key] = value;
+  return record;
+};
+
+// Recreate the FormData object from the RPC payload
+export const recordToFormData = (formDataRecord: Record<string, string>): FormData => {
+  const formData = new FormData();
+  for (const [key, value] of Object.entries(formDataRecord)) formData.append(key, value);
+  return formData;
+};
+
 // Execute the main effect for the rpc action, handle known errors, and return the payload
-export const runRpcActionMain = async <A extends ActionResultWithFormState, E extends { _tag: string; readonly cause?: unknown }, R extends never>(
-  serverActionMain: Effect.Effect<A, E, R>,
+export const runRpcActionMain = async <A extends ActionResultWithFormState, E extends { _tag: string; readonly cause?: unknown }>(
+  serverActionMain: Effect.Effect<A, E, any>,
 ): Promise<ActionResultWithFormState> => {
   // We wrap in Effect.either to catch failures gracefully
   const rpcActionMainResult = await RuntimeClient.runPromise(

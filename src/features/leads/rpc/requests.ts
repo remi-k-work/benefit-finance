@@ -9,4 +9,10 @@ export class RpcLeads extends RpcGroup.make(
     success: Schema.Struct({ actionStatus: Schema.Literal("idle", "succeeded"), timestamp: Schema.optional(Schema.Number) }),
     payload: { leadId: Schema.UUID },
   }),
+
+  Rpc.make("editLeadNotesForm", {
+    error: Schema.Union(BetterAuthApiError, DatabaseError, UnauthorizedAccessError, ValidationHasFailedError),
+    success: Schema.Struct({ actionStatus: Schema.Literal("idle", "succeeded"), timestamp: Schema.optional(Schema.Number) }),
+    payload: { leadId: Schema.UUID, formDataRecord: Schema.Record({ key: Schema.String, value: Schema.String }) },
+  }),
 ) {}
