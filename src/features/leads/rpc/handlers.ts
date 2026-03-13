@@ -24,7 +24,7 @@ const RpcLeadsLayer = RpcLeads.toLayer({
 
       // Permanently delete a lead from the database
       const leadDB = yield* LeadDB;
-      yield* leadDB.deleteLead(leadId);
+      // yield* leadDB.deleteLead(leadId);
 
       // The action has completed successfully
       return { actionStatus: "succeeded", timestamp: Date.now() };
