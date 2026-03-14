@@ -36,5 +36,5 @@ export class ItemNotFoundError extends Schema.TaggedError<ItemNotFoundError>()("
 // Define a domain error for server validation, particularly for use during form validation
 export class ValidationHasFailedError extends Schema.TaggedError<ValidationHasFailedError>()("ValidationHasFailedError", {
   message: Schema.String,
-  cause: Schema.optional(Schema.Defect),
+  cause: Schema.optional(Schema.Unknown),
 }) {}

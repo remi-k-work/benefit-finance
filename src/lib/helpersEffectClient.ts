@@ -4,7 +4,7 @@
 import { Console, Effect, Either, Schema } from "effect";
 import { createServerValidate } from "@tanstack/react-form-nextjs";
 import { RuntimeClient } from "@/lib/RuntimeClient";
-import { initialFormState, ServerValidateError } from "@tanstack/react-form-nextjs";
+import { initialFormState } from "@tanstack/react-form-nextjs";
 
 // types
 import type { FormAsyncValidateOrFn } from "@tanstack/react-form-nextjs";
@@ -60,9 +60,7 @@ export const runRpcActionMain = async <A extends ActionResultWithFormState, E ex
     if (error._tag === "UnauthorizedAccessError") return { ...initialFormState, actionStatus: "demoMode", timestamp: Date.now() };
 
     // Validation has failed
-    if (error._tag === "ValidationHasFailedError") {
-      return { ...error.cause.formState, actionStatus: "invalid", timestamp: Date.now() };
-    }
+    if (error._tag === "ValidationHasFailedError") return { ...(error.cause as { formState?: any }).formState, actionStatus: "invalid", timestamp: Date.now() };
 
     // Some other error occurred
     return { ...initialFormState, actionStatus: "failed", timestamp: Date.now() };
