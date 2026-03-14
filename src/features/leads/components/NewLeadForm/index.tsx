@@ -5,12 +5,11 @@
 // react
 import { useActionState } from "react";
 
-// server actions and mutations
-import newLeadForm from "@/features/leads/actions/newLeadForm";
-
 // services, features, and other libraries
-import { Schema } from "effect";
-import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
+import { Effect, Schema } from "effect";
+import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { RpcLeadsClient } from "@/features/leads/rpc/client";
+import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
 import { NewLeadFormSchemaEn, NewLeadFormSchemaPl } from "@/features/leads/schemas/newLeadForm";
 import useNewLeadFormFeedback from "@/features/leads/hooks/feedbacks/useNewLeadForm";
@@ -36,9 +35,23 @@ interface NewLeadFormProps {
 import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/leads/constants/newLeadForm";
 import { SERVICE_OF_INTEREST_TEXTONLY } from "@/features/leads/constants";
 
+const main = (formDataRecord: Record<string, string>) =>
+  Effect.gen(function* () {
+    const { newLeadForm } = yield* RpcLeadsClient;
+
+    const result = yield* newLeadForm({ formDataRecord }).pipe(
+      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+    );
+    return { ...initialFormState, ...result } as const;
+  });
+
 export default function NewLeadForm({ preferredLanguage, ll, llFormToastFeedback }: NewLeadFormProps) {
   // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(newLeadForm, INITIAL_FORM_STATE);
+  const [formState, formAction, isPending] = useActionState(
+    async (_: unknown, formData: FormData) => await runRpcActionMain(main(formDataToRecord(formData))),
+    INITIAL_FORM_STATE,
+  );
+
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),

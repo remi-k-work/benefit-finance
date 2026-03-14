@@ -61,7 +61,7 @@ export const runRpcActionMain = async <A extends ActionResultWithFormState, E ex
 
     // Validation has failed
     if (error._tag === "ValidationHasFailedError") {
-      if (error.cause instanceof ServerValidateError) return { ...error.cause.formState, actionStatus: "invalid", timestamp: Date.now() };
+      return { ...error.cause.formState, actionStatus: "invalid", timestamp: Date.now() };
     }
 
     // Some other error occurred

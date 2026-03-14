@@ -5,11 +5,11 @@ import { startTransition, useState } from "react";
 import type { AllAvailableLeads } from "@/features/leads/db";
 import type { Status } from "@/drizzle/schema/lead";
 
-// server actions and mutations
-import setLeadStatus from "@/features/leads/actions/setLeadStatus";
-
 // services, features, and other libraries
+import { Effect } from "effect";
+import { runRpcActionMain } from "@/lib/helpersEffectClient";
 import { initialFormState } from "@tanstack/react-form-nextjs";
+import { RpcLeadsClient } from "@/features/leads/rpc/client";
 import useSetLeadStatusFeedback from "@/features/leads/hooks/feedbacks/useSetLeadStatus";
 
 // components
@@ -30,6 +30,16 @@ interface StatusCellProps {
 
 // constants
 import { STATUS } from "@/features/leads/constants";
+
+const main = (leadId: string, newStatus: Status) =>
+  Effect.gen(function* () {
+    const { setLeadStatus } = yield* RpcLeadsClient;
+
+    const result = yield* setLeadStatus({ leadId, newStatus }).pipe(
+      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+    );
+    return { ...initialFormState, ...result } as const;
+  });
 
 export default function StatusCell({
   row: {
@@ -59,7 +69,7 @@ export default function StatusCell({
 
           // Execute the server action first and capture its result
           setSetLeadStatusIsPending(true);
-          const actionResult = await setLeadStatus(leadId, newStatus);
+          const actionResult = await runRpcActionMain(main(leadId, newStatus));
           setSetLeadStatusState(actionResult);
           setSetLeadStatusIsPending(false);
 
