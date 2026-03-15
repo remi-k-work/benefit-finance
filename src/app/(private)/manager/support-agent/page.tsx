@@ -25,7 +25,7 @@ const main = Effect.gen(function* () {
   yield* auth.assertPermissions({ supportAgent: ["read"] });
 
   // Create an instance of the lang loader needed for localization
-  const { manSupportAgentPage: ll } = yield* LangLoader.createEffect();
+  const { supportAgent: ll } = yield* LangLoader.createEffect();
 
   return { ll };
 });

@@ -14,7 +14,7 @@ import type LangLoader from "@/lib/LangLoader";
 
 interface TitleCellProps {
   row: Row<AllDocsWithChunks>;
-  ll: typeof LangLoader.prototype.manSupportAgent;
+  ll: typeof LangLoader.prototype.supportAgent;
 }
 
 export default function TitleCell({ row: { getValue, getCanExpand, getToggleExpandedHandler, getIsExpanded }, ll }: TitleCellProps) {

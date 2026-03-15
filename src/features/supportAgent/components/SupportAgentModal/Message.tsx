@@ -11,7 +11,7 @@ import type { SupportAgentUIMessage } from "@/features/supportAgent/lib/agent";
 interface MessageProps {
   message: SupportAgentUIMessage;
   status: ReturnType<typeof useChat<SupportAgentUIMessage>>["status"];
-  ll: typeof LangLoader.prototype.supportAgentModal;
+  ll: typeof LangLoader.prototype.supportAgent;
 }
 
 export default function Message({ message: { id, role, parts }, status, ll }: MessageProps) {

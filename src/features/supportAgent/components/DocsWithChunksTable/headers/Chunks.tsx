@@ -11,7 +11,7 @@ import type LangLoader from "@/lib/LangLoader";
 
 interface ChunksHeaderProps {
   table: Table<AllDocsWithChunks>;
-  ll: typeof LangLoader.prototype.manSupportAgent;
+  ll: typeof LangLoader.prototype.supportAgent;
 }
 
 export default function ChunksHeader({ table: { getColumn }, ll }: ChunksHeaderProps) {

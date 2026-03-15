@@ -21,7 +21,7 @@ const main = Effect.gen(function* () {
   const allDocsWithChunks = yield* supAgentDocDB.allDocsWithChunks;
 
   // Create an instance of the lang loader needed for localization
-  const { manSupportAgent: ll, formToastFeedback } = yield* LangLoader.createEffect();
+  const { supportAgent: ll, formToastFeedback } = yield* LangLoader.createEffect();
 
   return { allDocsWithChunks, ll, formToastFeedback };
 });

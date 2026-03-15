@@ -21,7 +21,7 @@ export default function useNewDocFormFeedback(
   { actionStatus, timestamp }: ActionResultWithFormState,
   reset: () => void,
   formStore: AnyFormApi["store"],
-  ll: typeof LangLoader.prototype.manSupportAgent,
+  ll: typeof LangLoader.prototype.supportAgent,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
   // This ref tracks which submission we have already processed (the <Activity /> replay problem fix)

@@ -17,7 +17,7 @@ import type { SupportAgentUIMessage } from "@/features/supportAgent/lib/agent";
 interface FooterProps {
   sendMessage: ReturnType<typeof useChat<SupportAgentUIMessage>>["sendMessage"];
   status: ReturnType<typeof useChat<SupportAgentUIMessage>>["status"];
-  ll: typeof LangLoader.prototype.supportAgentModal;
+  ll: typeof LangLoader.prototype.supportAgent;
 }
 
 export default function Footer({ sendMessage, status, ll }: FooterProps) {

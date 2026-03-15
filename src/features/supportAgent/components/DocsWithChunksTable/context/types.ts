@@ -10,7 +10,7 @@ import type LangLoader from "@/lib/LangLoader";
 
 export interface InstanceContextType {
   allDocsWithChunks: AllDocsWithChunks[];
-  ll: typeof LangLoader.prototype.manSupportAgent;
+  ll: typeof LangLoader.prototype.supportAgent;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
   table: Table<AllDocsWithChunks>;
   state: ReturnType<typeof useState>;
@@ -19,7 +19,7 @@ export interface InstanceContextType {
 
 export interface InstanceProviderProps {
   allDocsWithChunks: AllDocsWithChunks[];
-  ll: typeof LangLoader.prototype.manSupportAgent;
+  ll: typeof LangLoader.prototype.supportAgent;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
   children: ReactNode;
 }

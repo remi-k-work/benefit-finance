@@ -9,7 +9,7 @@ import type LangLoader from "@/lib/LangLoader";
 
 interface HeaderProps {
   onClosed: () => void;
-  ll: typeof LangLoader.prototype.supportAgentModal;
+  ll: typeof LangLoader.prototype.supportAgent;
 }
 
 export default function Header({ onClosed, ll }: HeaderProps) {

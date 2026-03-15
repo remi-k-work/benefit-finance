@@ -16,7 +16,7 @@ import type LangLoader from "@/lib/LangLoader";
 
 interface SupportAgentModalRootProps {
   preferredLanguage: Lang;
-  ll: typeof LangLoader.prototype.supportAgentModal;
+  ll: typeof LangLoader.prototype.supportAgent;
 }
 
 // Create the atom that holds the modal state that is initially 'none' (closed)

@@ -56,10 +56,6 @@ import langChangerEn from "@/assets/lang/langChanger.en.json";
 import langChangerPl from "@/assets/lang/langChanger.pl.json";
 import leadsEn from "@/assets/lang/leads.en.json";
 import leadsPl from "@/assets/lang/leads.pl.json";
-import manSupportAgentEn from "@/assets/lang/manSupportAgent.en.json";
-import manSupportAgentPl from "@/assets/lang/manSupportAgent.pl.json";
-import manSupportAgentPageEn from "@/assets/lang/manSupportAgentPage.en.json";
-import manSupportAgentPagePl from "@/assets/lang/manSupportAgentPage.pl.json";
 import navMenuItemsEn from "@/assets/lang/navMenuItems.en.json";
 import navMenuItemsPl from "@/assets/lang/navMenuItems.pl.json";
 import notFoundPageEn from "@/assets/lang/notFoundPage.en.json";
@@ -108,8 +104,6 @@ import subsidiesEn from "@/assets/lang/subsidies.en.json";
 import subsidiesPl from "@/assets/lang/subsidies.pl.json";
 import supportAgentEn from "@/assets/lang/supportAgent.en.json";
 import supportAgentPl from "@/assets/lang/supportAgent.pl.json";
-import supportAgentModalEn from "@/assets/lang/supportAgentModal.en.json";
-import supportAgentModalPl from "@/assets/lang/supportAgentModal.pl.json";
 import themeChangerEn from "@/assets/lang/themeChanger.en.json";
 import themeChangerPl from "@/assets/lang/themeChanger.pl.json";
 import unauthorizedPageEn from "@/assets/lang/unauthorizedPage.en.json";
@@ -250,12 +244,6 @@ export default class LangLoader {
   public get leads() {
     return this.preferredLanguage === "pl" ? leadsPl : leadsEn;
   }
-  public get manSupportAgent() {
-    return this.preferredLanguage === "pl" ? manSupportAgentPl : manSupportAgentEn;
-  }
-  public get manSupportAgentPage() {
-    return this.preferredLanguage === "pl" ? manSupportAgentPagePl : manSupportAgentPageEn;
-  }
   public get navMenuItems() {
     return this.preferredLanguage === "pl" ? navMenuItemsPl : navMenuItemsEn;
   }
@@ -327,9 +315,6 @@ export default class LangLoader {
   }
   public get supportAgent() {
     return this.preferredLanguage === "pl" ? supportAgentPl : supportAgentEn;
-  }
-  public get supportAgentModal() {
-    return this.preferredLanguage === "pl" ? supportAgentModalPl : supportAgentModalEn;
   }
   public get themeChanger() {
     return this.preferredLanguage === "pl" ? themeChangerPl : themeChangerEn;

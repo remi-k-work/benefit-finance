@@ -33,7 +33,7 @@ import type { MDXEditorMethods } from "@mdxeditor/editor";
 interface EditDocFormProps {
   doc: Doc;
   preferredLanguage: Lang;
-  ll: typeof LangLoader.prototype.manSupportAgent;
+  ll: typeof LangLoader.prototype.supportAgent;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 

@@ -20,9 +20,9 @@ const main = Effect.gen(function* () {
   yield* auth.assertPermissions({ supportAgent: ["read"] });
 
   // Create an instance of the lang loader needed for localization
-  const { manSupportAgentPage: ll, preferredLanguage, manSupportAgent, formToastFeedback } = yield* LangLoader.createEffect();
+  const { supportAgent: ll, preferredLanguage, formToastFeedback } = yield* LangLoader.createEffect();
 
-  return { ll, preferredLanguage, manSupportAgent, formToastFeedback };
+  return { ll, preferredLanguage, formToastFeedback };
 });
 
 // Page remains the fast, static shell
@@ -37,11 +37,11 @@ export default function Page() {
 // This new async component contains the dynamic logic
 async function PageContent() {
   // Execute the main effect for the page, map known errors to the subsequent navigation helpers, and return the payload
-  const { ll, preferredLanguage, manSupportAgent, formToastFeedback } = await runPageMainOrNavigate(main);
+  const { ll, preferredLanguage, formToastFeedback } = await runPageMainOrNavigate(main);
 
   return (
     <ManagerModal icon={<DocumentPlusIcon className="size-11 flex-none" />} title={ll["Support Agent ► New Document"]}>
-      <NewDocForm preferredLanguage={preferredLanguage} ll={manSupportAgent} llFormToastFeedback={formToastFeedback} />
+      <NewDocForm preferredLanguage={preferredLanguage} ll={ll} llFormToastFeedback={formToastFeedback} />
     </ManagerModal>
   );
 }

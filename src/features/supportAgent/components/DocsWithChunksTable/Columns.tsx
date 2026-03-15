@@ -23,7 +23,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 const columnHelper = createColumnHelper<AllDocsWithChunks>();
 
 export const columns = (
-  ll: typeof LangLoader.prototype.manSupportAgent,
+  ll: typeof LangLoader.prototype.supportAgent,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ): ColumnDef<AllDocsWithChunks>[] =>
   [

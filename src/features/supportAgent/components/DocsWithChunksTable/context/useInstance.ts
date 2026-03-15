@@ -28,7 +28,7 @@ declare module "@tanstack/react-table" {
 
 export default function useInstance(
   allDocsWithChunks: AllDocsWithChunks[],
-  ll: typeof LangLoader.prototype.manSupportAgent,
+  ll: typeof LangLoader.prototype.supportAgent,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
   const [data, setData] = useStateReact(allDocsWithChunks);

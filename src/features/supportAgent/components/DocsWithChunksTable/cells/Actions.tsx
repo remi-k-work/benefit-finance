@@ -31,7 +31,7 @@ import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 interface ActionsCellProps {
   row: Row<AllDocsWithChunks>;
   table: Table<AllDocsWithChunks>;
-  ll: typeof LangLoader.prototype.manSupportAgent;
+  ll: typeof LangLoader.prototype.supportAgent;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 

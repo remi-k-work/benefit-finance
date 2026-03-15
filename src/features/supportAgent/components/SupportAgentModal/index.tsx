@@ -22,7 +22,7 @@ import type { SupportAgentUIMessage } from "@/features/supportAgent/lib/agent";
 interface SupportAgentModalProps extends ComponentPropsWithoutRef<"dialog"> {
   onClosed: () => void;
   preferredLanguage: Lang;
-  ll: typeof LangLoader.prototype.supportAgentModal;
+  ll: typeof LangLoader.prototype.supportAgent;
 }
 
 // constants

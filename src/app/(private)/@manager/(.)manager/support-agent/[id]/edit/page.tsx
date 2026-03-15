@@ -38,9 +38,9 @@ const main = ({ params, searchParams }: PageProps<"/manager/support-agent/[id]/e
     if (!doc) return yield* new ItemNotFoundError({ message: "Document not found" });
 
     // Create an instance of the lang loader needed for localization
-    const { manSupportAgentPage: ll, preferredLanguage, manSupportAgent, formToastFeedback } = yield* LangLoader.createEffect();
+    const { supportAgent: ll, preferredLanguage, formToastFeedback } = yield* LangLoader.createEffect();
 
-    return { doc, ll, preferredLanguage, manSupportAgent, formToastFeedback };
+    return { doc, ll, preferredLanguage, formToastFeedback };
   });
 
 // Page remains the fast, static shell
@@ -55,11 +55,11 @@ export default function Page({ params, searchParams }: PageProps<"/manager/suppo
 // This new async component contains the dynamic logic
 async function PageContent({ params, searchParams }: PageProps<"/manager/support-agent/[id]/edit">) {
   // Execute the main effect for the page, map known errors to the subsequent navigation helpers, and return the payload
-  const { doc, ll, preferredLanguage, manSupportAgent, formToastFeedback } = await runPageMainOrNavigate(main({ params, searchParams }));
+  const { doc, ll, preferredLanguage, formToastFeedback } = await runPageMainOrNavigate(main({ params, searchParams }));
 
   return (
     <ManagerModal icon={<PencilSquareIcon className="size-11 flex-none" />} title={ll["Support Agent ► Edit Document"]}>
-      <EditDocForm doc={doc} preferredLanguage={preferredLanguage} ll={manSupportAgent} llFormToastFeedback={formToastFeedback} />
+      <EditDocForm doc={doc} preferredLanguage={preferredLanguage} ll={ll} llFormToastFeedback={formToastFeedback} />
     </ManagerModal>
   );
 }
