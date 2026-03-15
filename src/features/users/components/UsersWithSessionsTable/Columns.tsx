@@ -28,7 +28,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 const columnHelper = createColumnHelper<AllUsersWithSessions>();
 
 export const columns = (
-  ll: typeof LangLoader.prototype.manUsers,
+  ll: typeof LangLoader.prototype.users,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ): ColumnDef<AllUsersWithSessions>[] =>
   [

@@ -14,7 +14,7 @@ import type LangLoader from "@/lib/LangLoader";
 
 interface NameAndEmailCellProps {
   row: Row<AllUsersWithSessions>;
-  ll: typeof LangLoader.prototype.manUsers;
+  ll: typeof LangLoader.prototype.users;
 }
 
 export default function NameAndEmailCell({ row: { getValue, getCanExpand, getToggleExpandedHandler, getIsExpanded }, ll }: NameAndEmailCellProps) {

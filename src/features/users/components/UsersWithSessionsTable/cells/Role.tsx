@@ -4,52 +4,42 @@ import { startTransition, useState } from "react";
 // drizzle and db access
 import type { AllUsersWithSessions } from "@/features/users/db";
 
-// server actions and mutations
-import setUserRole from "@/features/users/actions/setUserRole";
-
 // services, features, and other libraries
+import { Effect } from "effect";
+import { runRpcActionMain } from "@/lib/helpersEffectClient";
 import { initialFormState } from "@tanstack/react-form-nextjs";
+import { RpcUsersClient } from "@/features/users/rpc/client";
 import useSetUserRoleFeedback from "@/features/users/hooks/feedbacks/useSetUserRole";
 
 // components
 import { TableCell } from "@/components/ui/custom/table";
-import { Badge } from "@/components/ui/custom/badge";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/custom/select";
 
 // types
 import type { Row, Table } from "@tanstack/react-table";
 import type LangLoader from "@/lib/LangLoader";
 import type { Role } from "@/services/better-auth/auth";
-import type { ReactNode } from "react";
 import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 interface RoleCellProps {
   row: Row<AllUsersWithSessions>;
   table: Table<AllUsersWithSessions>;
-  ll: typeof LangLoader.prototype.manUsers;
+  ll: typeof LangLoader.prototype.users;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
 // constants
-const roles = [
-  { value: "user", label: <Badge className="min-w-32 text-base font-semibold">User</Badge> },
-  {
-    value: "admin",
-    label: (
-      <Badge variant="destructive" className="min-w-32 text-base font-semibold">
-        Admin
-      </Badge>
-    ),
-  },
-  {
-    value: "demo",
-    label: (
-      <Badge variant="secondary" className="min-w-32 text-base font-semibold">
-        Demo
-      </Badge>
-    ),
-  },
-] satisfies { value: Role; label: ReactNode }[];
+import { ROLES } from "@/features/users/constants";
+
+const main = (userId: string, newRole: Role) =>
+  Effect.gen(function* () {
+    const { setUserRole } = yield* RpcUsersClient;
+
+    const result = yield* setUserRole({ userId, newRole }).pipe(
+      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+    );
+    return { ...initialFormState, ...result } as const;
+  });
 
 export default function RoleCell({
   row: {
@@ -71,7 +61,7 @@ export default function RoleCell({
   return (
     <TableCell className="text-center">
       <Select<Role>
-        items={roles}
+        items={ROLES(ll)}
         value={getValue("role")}
         onValueChange={async (newRole) => {
           // Proceed only if the new role is different from the current one
@@ -79,7 +69,7 @@ export default function RoleCell({
 
           // Execute the server action first and capture its result
           setSetUserRoleIsPending(true);
-          const actionResult = await setUserRole(userId, newRole);
+          const actionResult = await runRpcActionMain(main(userId, newRole));
           setSetUserRoleState(actionResult);
           setSetUserRoleIsPending(false);
 
@@ -101,7 +91,7 @@ export default function RoleCell({
               <p>{ll["Select a role for"]}</p>
               <p className="text-muted-foreground text-lg font-semibold">{getValue("name")}</p>
             </SelectLabel>
-            {roles.map(({ value, label }) => (
+            {ROLES(ll).map(({ value, label }) => (
               <SelectItem key={value} value={value}>
                 {label}
               </SelectItem>

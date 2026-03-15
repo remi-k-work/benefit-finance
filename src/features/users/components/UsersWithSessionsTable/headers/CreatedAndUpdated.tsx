@@ -11,7 +11,7 @@ import type LangLoader from "@/lib/LangLoader";
 
 interface CreatedAndUpdatedHeaderProps {
   table: Table<AllUsersWithSessions>;
-  ll: typeof LangLoader.prototype.manUsers;
+  ll: typeof LangLoader.prototype.users;
 }
 
 export default function CreatedAndUpdatedHeader({ table: { getColumn }, ll }: CreatedAndUpdatedHeaderProps) {

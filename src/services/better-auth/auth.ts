@@ -17,7 +17,7 @@ import { sendEmailChange, sendResetPassword, sendVerifyEmail } from "@/emails/se
 // types
 export type Session = typeof auth.$Infer.Session.session;
 export type User = typeof auth.$Infer.Session.user;
-export type Role = NonNullable<Parameters<typeof auth.api.setRole>[0]>["body"]["role"];
+export type Role = Extract<NonNullable<Parameters<typeof auth.api.setRole>[0]>["body"]["role"], string>;
 export type Permissions = NonNullable<Parameters<typeof auth.api.userHasPermission>[0]>["body"]["permissions"];
 
 export const auth = betterAuth({

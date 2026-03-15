@@ -32,7 +32,7 @@ interface NewLeadFormProps {
 }
 
 // constants
-import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/leads/constants/newLeadForm";
+import { FORM_OPTIONS_N, INITIAL_FORM_STATE_N } from "@/features/leads/constants";
 import { SERVICE_OF_INTEREST_TEXTONLY } from "@/features/leads/constants";
 
 const main = (formDataRecord: Record<string, string>) =>
@@ -49,11 +49,11 @@ export default function NewLeadForm({ preferredLanguage, ll, llFormToastFeedback
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(
     async (_: unknown, formData: FormData) => await runRpcActionMain(main(formDataToRecord(formData))),
-    INITIAL_FORM_STATE,
+    INITIAL_FORM_STATE_N,
   );
 
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
-    ...FORM_OPTIONS,
+    ...FORM_OPTIONS_N,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
   });
 

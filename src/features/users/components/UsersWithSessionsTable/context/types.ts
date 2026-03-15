@@ -10,7 +10,7 @@ import type LangLoader from "@/lib/LangLoader";
 
 export interface InstanceContextType {
   allUsersWithSessions: AllUsersWithSessions[];
-  ll: typeof LangLoader.prototype.manUsers;
+  ll: typeof LangLoader.prototype.users;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
   table: Table<AllUsersWithSessions>;
   state: ReturnType<typeof useState>;
@@ -19,7 +19,7 @@ export interface InstanceContextType {
 
 export interface InstanceProviderProps {
   allUsersWithSessions: AllUsersWithSessions[];
-  ll: typeof LangLoader.prototype.manUsers;
+  ll: typeof LangLoader.prototype.users;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
   children: ReactNode;
 }

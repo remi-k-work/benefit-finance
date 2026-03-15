@@ -30,5 +30,10 @@
   "Sessions": "Sessions",
   "Accounts": "Accounts",
   "Unknown Browser": "Unknown Browser",
-  "Select a role for": "Select a role for"
+  "Select a role for": "Select a role for",
+  "Users": "Users",
+  "Below, you can view and manage all the users": "Below, you can view and manage all the users",
+  "user": "user",
+  "admin": "admin",
+  "demo": "demo"
 }

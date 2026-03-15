@@ -21,7 +21,7 @@ const main = Effect.gen(function* () {
   const allUsersWithSessions = yield* usersDB.allUsersWithSessions;
 
   // Create an instance of the lang loader needed for localization
-  const { manUsers: ll, formToastFeedback } = yield* LangLoader.createEffect();
+  const { users: ll, formToastFeedback } = yield* LangLoader.createEffect();
 
   return { allUsersWithSessions, ll, formToastFeedback };
 });

@@ -8,9 +8,8 @@ import { RpcSerialization, RpcServer } from "@effect/rpc";
 import { HttpServer } from "@effect/platform";
 import { RpcLeads } from "./requests";
 import { Auth } from "@/features/auth/lib/auth";
-import { SERVER_VALIDATE_EN as SERVER_VALIDATE_EN_N, SERVER_VALIDATE_PL as SERVER_VALIDATE_PL_N } from "@/features/leads/constants/newLeadForm";
-import { SERVER_VALIDATE_EN as SERVER_VALIDATE_EN_E, SERVER_VALIDATE_PL as SERVER_VALIDATE_PL_E } from "@/features/leads/constants/editLeadNotesForm";
 import { recordToFormData } from "@/lib/helpersEffectClient";
+import { SERVER_VALIDATE_EN_E, SERVER_VALIDATE_EN_N, SERVER_VALIDATE_PL_E, SERVER_VALIDATE_PL_N } from "@/features/leads/constants";
 
 const RpcLeadsLayer = RpcLeads.toLayer({
   newLeadForm: ({ formDataRecord }) =>

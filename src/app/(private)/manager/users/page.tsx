@@ -25,7 +25,7 @@ const main = Effect.gen(function* () {
   yield* auth.assertPermissions({ users: ["read"] });
 
   // Create an instance of the lang loader needed for localization
-  const { manUsersPage: ll } = yield* LangLoader.createEffect();
+  const { users: ll } = yield* LangLoader.createEffect();
 
   return { ll };
 });

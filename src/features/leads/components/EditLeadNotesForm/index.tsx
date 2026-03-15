@@ -28,7 +28,7 @@ interface EditLeadNotesFormProps {
 }
 
 // constants
-import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/leads/constants/editLeadNotesForm";
+import { FORM_OPTIONS_E, INITIAL_FORM_STATE_E } from "@/features/leads/constants";
 
 const main = (leadId: string, formDataRecord: Record<string, string>) =>
   Effect.gen(function* () {
@@ -52,12 +52,12 @@ export default function EditLeadNotesForm({ allAvailableLeads: { id: leadId, int
   // The main server action that processes the form
   const [formState, formAction, isPending] = useActionState(
     async (_: unknown, formData: FormData) => await runRpcActionMain(main(leadId, formDataToRecord(formData))),
-    INITIAL_FORM_STATE,
+    INITIAL_FORM_STATE_E,
   );
 
   const { AppField, AppForm, FormSubmit, handleSubmit, reset } = useAppForm({
-    ...FORM_OPTIONS,
-    defaultValues: { ...FORM_OPTIONS.defaultValues, internalNotes: internalNotes ?? "" },
+    ...FORM_OPTIONS_E,
+    defaultValues: { ...FORM_OPTIONS_E.defaultValues, internalNotes: internalNotes ?? "" },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
     onSubmit: async ({ value: { internalNotes } }) => {
       // Only reflect changes in the UI if the action was successful

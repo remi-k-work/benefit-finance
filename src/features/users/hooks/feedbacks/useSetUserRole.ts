@@ -12,7 +12,7 @@ import type LangLoader from "@/lib/LangLoader";
 // Provide feedback to the user regarding this server action
 export default function useSetUserRoleFeedback(
   { actionStatus, timestamp }: ActionResultWithFormState,
-  ll: typeof LangLoader.prototype.manUsers,
+  ll: typeof LangLoader.prototype.users,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
   // This ref tracks which submission we have already processed (the <Activity /> replay problem fix)

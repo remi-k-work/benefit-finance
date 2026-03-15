@@ -60,10 +60,6 @@ import manSupportAgentEn from "@/assets/lang/manSupportAgent.en.json";
 import manSupportAgentPl from "@/assets/lang/manSupportAgent.pl.json";
 import manSupportAgentPageEn from "@/assets/lang/manSupportAgentPage.en.json";
 import manSupportAgentPagePl from "@/assets/lang/manSupportAgentPage.pl.json";
-import manUsersEn from "@/assets/lang/manUsers.en.json";
-import manUsersPl from "@/assets/lang/manUsers.pl.json";
-import manUsersPageEn from "@/assets/lang/manUsersPage.en.json";
-import manUsersPagePl from "@/assets/lang/manUsersPage.pl.json";
 import navMenuItemsEn from "@/assets/lang/navMenuItems.en.json";
 import navMenuItemsPl from "@/assets/lang/navMenuItems.pl.json";
 import notFoundPageEn from "@/assets/lang/notFoundPage.en.json";
@@ -122,6 +118,8 @@ import uploadAvatarEn from "@/assets/lang/uploadAvatar.en.json";
 import uploadAvatarPl from "@/assets/lang/uploadAvatar.pl.json";
 import userPopoverEn from "@/assets/lang/userPopover.en.json";
 import userPopoverPl from "@/assets/lang/userPopover.pl.json";
+import usersEn from "@/assets/lang/users.en.json";
+import usersPl from "@/assets/lang/users.pl.json";
 import verifyEmailEn from "@/assets/lang/verifyEmail.en.json";
 import verifyEmailPl from "@/assets/lang/verifyEmail.pl.json";
 import verifyEmailFeedbackEn from "@/assets/lang/verifyEmailFeedback.en.json";
@@ -258,12 +256,6 @@ export default class LangLoader {
   public get manSupportAgentPage() {
     return this.preferredLanguage === "pl" ? manSupportAgentPagePl : manSupportAgentPageEn;
   }
-  public get manUsers() {
-    return this.preferredLanguage === "pl" ? manUsersPl : manUsersEn;
-  }
-  public get manUsersPage() {
-    return this.preferredLanguage === "pl" ? manUsersPagePl : manUsersPageEn;
-  }
   public get navMenuItems() {
     return this.preferredLanguage === "pl" ? navMenuItemsPl : navMenuItemsEn;
   }
@@ -350,6 +342,9 @@ export default class LangLoader {
   }
   public get userPopover() {
     return this.preferredLanguage === "pl" ? userPopoverPl : userPopoverEn;
+  }
+  public get users() {
+    return this.preferredLanguage === "pl" ? usersPl : usersEn;
   }
   public get verifyEmail() {
     return this.preferredLanguage === "pl" ? verifyEmailPl : verifyEmailEn;

@@ -30,5 +30,10 @@
   "Sessions": "Sesje",
   "Accounts": "Konta",
   "Unknown Browser": "Nieznana Przeglądarka",
-  "Select a role for": "Wybierz rolę dla"
+  "Select a role for": "Wybierz rolę dla",
+  "Users": "Użytkownicy",
+  "Below, you can view and manage all the users": "Poniżej możesz zobaczyć i zarządzać wszystkimi użytkownikami",
+  "user": "użytkownik",
+  "admin": "administrator",
+  "demo": "demonstracyjny"
 }

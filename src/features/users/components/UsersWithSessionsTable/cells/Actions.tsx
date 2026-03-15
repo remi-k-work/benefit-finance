@@ -4,12 +4,12 @@ import { startTransition, useState } from "react";
 // drizzle and db access
 import type { AllUsersWithSessions } from "@/features/users/db";
 
-// server actions and mutations
-import deleteUser from "@/features/users/actions/deleteUser";
-
 // services, features, and other libraries
-import { useConfirmModal } from "@/atoms/confirmModal";
+import { Effect } from "effect";
+import { runRpcActionMain } from "@/lib/helpersEffectClient";
 import { initialFormState } from "@tanstack/react-form-nextjs";
+import { RpcUsersClient } from "@/features/users/rpc/client";
+import { useConfirmModal } from "@/atoms/confirmModal";
 import useDeleteUserFeedback from "@/features/users/hooks/feedbacks/useDeleteUser";
 
 // components
@@ -28,9 +28,19 @@ import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 interface ActionsCellProps {
   row: Row<AllUsersWithSessions>;
   table: Table<AllUsersWithSessions>;
-  ll: typeof LangLoader.prototype.manUsers;
+  ll: typeof LangLoader.prototype.users;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
+
+const main = (userId: string) =>
+  Effect.gen(function* () {
+    const { deleteUser } = yield* RpcUsersClient;
+
+    const result = yield* deleteUser({ userId }).pipe(
+      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+    );
+    return { ...initialFormState, ...result } as const;
+  });
 
 export default function ActionsCell({
   row: {
@@ -69,7 +79,7 @@ export default function ActionsCell({
             onConfirmed: async () => {
               // Execute the server action first and capture its result
               setDeleteUserIsPending(true);
-              const actionResult = await deleteUser(userId);
+              const actionResult = await runRpcActionMain(main(userId));
               setDeleteUserState(actionResult);
               setDeleteUserIsPending(false);
 

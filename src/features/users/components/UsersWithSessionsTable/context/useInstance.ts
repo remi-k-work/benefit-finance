@@ -28,7 +28,7 @@ declare module "@tanstack/react-table" {
 
 export default function useInstance(
   allUsersWithSessions: AllUsersWithSessions[],
-  ll: typeof LangLoader.prototype.manUsers,
+  ll: typeof LangLoader.prototype.users,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
   const [data, setData] = useStateReact(allUsersWithSessions);

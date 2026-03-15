@@ -19,15 +19,15 @@ const DEFAULT_VALUES: typeof NewLeadFormSchemaEn.Type = {
   mustAcceptPartnershipTerms: false,
 };
 
-export const FORM_OPTIONS = formOptions({ defaultValues: DEFAULT_VALUES });
-export const INITIAL_FORM_STATE: ActionResultWithFormState = { ...initialFormState, actionStatus: "idle" };
+export const FORM_OPTIONS_N = formOptions({ defaultValues: DEFAULT_VALUES });
+export const INITIAL_FORM_STATE_N: ActionResultWithFormState = { ...initialFormState, actionStatus: "idle" };
 
-export const SERVER_VALIDATE_EN = (formData: FormData) =>
+export const SERVER_VALIDATE_EN_N = (formData: FormData) =>
   Effect.tryPromise({
     try: () => createServerValidateWithTransforms(DEFAULT_VALUES, NewLeadFormSchemaEn)(formData),
     catch: (cause) => new ValidationHasFailedError({ message: "Server validation failed", cause }),
   });
-export const SERVER_VALIDATE_PL = (formData: FormData) =>
+export const SERVER_VALIDATE_PL_N = (formData: FormData) =>
   Effect.tryPromise({
     try: () => createServerValidateWithTransforms(DEFAULT_VALUES, NewLeadFormSchemaPl)(formData),
     catch: (cause) => new ValidationHasFailedError({ message: "Server validation failed", cause }),

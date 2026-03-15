@@ -11,7 +11,7 @@ import type LangLoader from "@/lib/LangLoader";
 
 interface NameAndEmailHeaderProps {
   table: Table<AllUsersWithSessions>;
-  ll: typeof LangLoader.prototype.manUsers;
+  ll: typeof LangLoader.prototype.users;
 }
 
 export default function NameAndEmailHeader({ table: { getColumn }, ll }: NameAndEmailHeaderProps) {
