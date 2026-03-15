@@ -2,7 +2,7 @@
 import { Schema } from "effect";
 
 // schemas
-import { BasePageParamsSchema, BasePageSchema } from "@/schemas/basePage";
+import { BasePageParamsSchema, BasePageSchema } from "@/schemas";
 
 const EditDocPageParams = Schema.Struct({
   id: Schema.UUID,

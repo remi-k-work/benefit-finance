@@ -2,7 +2,7 @@
 import { useEffect, useEffectEvent } from "react";
 
 // services, features, and other libraries
-import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
+import { useFormToastFeedback } from "@/hooks/feedbacks";
 
 // types
 import type { SignOutEverywhereActionResult } from "@/features/profile/actions/signOutEverywhere";

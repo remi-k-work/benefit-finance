@@ -8,9 +8,8 @@ import { redirect } from "next/navigation";
 import refreshPage from "@/actions/refreshPage";
 
 // services, features, and other libraries
-import usePermanentMessageFeedback from "@/hooks/feedbacks/usePermanentMessage";
-import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
-import useDemoModeGuard from "@/hooks/useDemoModeGuard";
+import { useFormToastFeedback, usePermanentMessageFeedback } from "@/hooks/feedbacks";
+import { useDemoModeGuard } from "@/hooks";
 
 // types
 import type { ActionResultWithFormState } from "@/lib/helpersEffect";

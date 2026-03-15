@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import { useDemoModeModal } from "@/atoms/demoModeModal";
 
 // Custom hook that observes an action's status and automatically opens the global demo mode modal
-export default function useDemoModeGuard(actionStatus: string) {
+export function useDemoModeGuard(actionStatus: string) {
   // This is the hook that components use to open the modal
   const { openDemoModeModal } = useDemoModeModal();
 

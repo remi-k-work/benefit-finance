@@ -3,9 +3,8 @@ import { useEffect, useEffectEvent } from "react";
 
 // services, features, and other libraries
 import { authClient } from "@/services/better-auth/auth-client";
-import usePermanentMessageFeedback from "@/hooks/feedbacks/usePermanentMessage";
-import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
-import useDemoModeGuard from "@/hooks/useDemoModeGuard";
+import { useFormToastFeedback, usePermanentMessageFeedback } from "@/hooks/feedbacks";
+import { useDemoModeGuard } from "@/hooks";
 
 // types
 import type { RefObject } from "react";

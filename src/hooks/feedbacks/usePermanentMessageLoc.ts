@@ -2,7 +2,7 @@
 import { useCallback, useState } from "react";
 
 // Generic hook for managing a permanent feedback message (local-only hook)
-export default function usePermanentMessageFeedbackLoc() {
+export function usePermanentMessageFeedbackLoc() {
   // The permanent feedback message that will be displayed and hung around
   const [feedbackMessage, setFeedbackMessage] = useState("");
 

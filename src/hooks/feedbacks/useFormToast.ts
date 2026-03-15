@@ -11,11 +11,7 @@ type ActionStatus = "idle" | "succeeded" | "failed" | "invalid" | "authError" | 
 type ToastMessages = Pick<Record<ActionStatus, string>, "succeeded"> & Partial<Record<Exclude<ActionStatus, "idle" | "succeeded" | "invalid">, string>>;
 
 // Generic hook for displaying toast notifications for form actions
-export default function useFormToastFeedback(
-  formName: string,
-  { succeeded, failed, authError }: ToastMessages,
-  ll: typeof LangLoader.prototype.formToastFeedback,
-) {
+export function useFormToastFeedback(formName: string, { succeeded, failed, authError }: ToastMessages, ll: typeof LangLoader.prototype.formToastFeedback) {
   return useCallback(
     (actionStatus: ActionStatus) => {
       if (actionStatus === "succeeded") {

@@ -2,7 +2,7 @@
 import { Schema } from "effect";
 
 // schemas
-import { PasswordSchemaEn, PasswordSchemaPl } from "@/schemas/password";
+import { PasswordSchemaEn, PasswordSchemaPl } from "@/schemas";
 
 export const ResetPassFormSchemaEn = Schema.Struct({
   newPassword: PasswordSchemaEn,

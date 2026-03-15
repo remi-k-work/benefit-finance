@@ -25,7 +25,7 @@ interface NavigateFn {
 }
 
 // A hook to easily create new route strings with updated search parameters (it preserves existing search params)
-export default function useUrlScribe() {
+export function useUrlScribe() {
   // Access next.js routing utilities
   const router = useRouter();
   const pathname = usePathname();

@@ -2,7 +2,7 @@
 import { Schema } from "effect";
 
 // schemas
-import { EmailSchemaEn, EmailSchemaPl } from "@/schemas/email";
+import { EmailSchemaEn, EmailSchemaPl } from "@/schemas";
 
 export const EmailChangeFormSchemaEn = Schema.Struct({ newEmail: EmailSchemaEn });
 export const EmailChangeFormSchemaPl = Schema.Struct({ newEmail: EmailSchemaPl });

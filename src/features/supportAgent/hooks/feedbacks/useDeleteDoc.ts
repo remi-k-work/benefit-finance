@@ -2,8 +2,8 @@
 import { useEffect, useEffectEvent, useRef } from "react";
 
 // services, features, and other libraries
-import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
-import useDemoModeGuard from "@/hooks/useDemoModeGuard";
+import { useFormToastFeedback } from "@/hooks/feedbacks";
+import { useDemoModeGuard } from "@/hooks";
 
 // types
 import type { ActionResultWithFormState } from "@/lib/helpersEffect";

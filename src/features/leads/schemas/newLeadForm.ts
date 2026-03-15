@@ -5,8 +5,7 @@ import { serviceOfInterestEnum } from "@/drizzle/schema/lead";
 import { Schema } from "effect";
 
 // schemas
-import { EmailSchemaEn, EmailSchemaPl } from "@/schemas/email";
-import { PhoneSchemaEn, PhoneSchemaPl } from "@/schemas/phone";
+import { EmailSchemaEn, EmailSchemaPl, PhoneSchemaEn, PhoneSchemaPl } from "@/schemas";
 
 export const NewLeadFormSchemaEn = Schema.Struct({
   firstName: Schema.Trim.pipe(

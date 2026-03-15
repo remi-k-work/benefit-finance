@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef } from "react";
 
 // To skip the pagination reset temporarily in the tanstack table
-export default function useSkipper() {
+export function useSkipper() {
   const shouldSkipRef = useRef(true);
 
   // Reset to true after the render cycle where it was used

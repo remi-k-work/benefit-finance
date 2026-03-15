@@ -2,9 +2,8 @@
 import { useEffect, useEffectEvent } from "react";
 
 // services, features, and other libraries
-import usePermanentMessageFeedbackLoc from "@/hooks/feedbacks/usePermanentMessageLoc";
-import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
-import useDemoModeGuard from "@/hooks/useDemoModeGuard";
+import { useFormToastFeedback, usePermanentMessageFeedbackLoc } from "@/hooks/feedbacks";
+import { useDemoModeGuard } from "@/hooks";
 
 // types
 import type { RefObject } from "react";

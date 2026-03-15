@@ -5,8 +5,7 @@ import { useEffect, useEffectEvent } from "react";
 import { redirect } from "next/navigation";
 
 // services, features, and other libraries
-import usePermanentMessageFeedback from "@/hooks/feedbacks/usePermanentMessage";
-import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
+import { useFormToastFeedback, usePermanentMessageFeedback } from "@/hooks/feedbacks";
 
 // types
 import type { RefObject } from "react";

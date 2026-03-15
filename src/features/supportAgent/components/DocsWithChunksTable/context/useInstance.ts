@@ -8,7 +8,7 @@ import type { AllDocsWithChunks } from "@/features/supportAgent/db";
 
 // services, features, and other libraries
 import { getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
-import useSkipper from "@/hooks/useSkipper";
+import { useSkipper } from "@/hooks";
 import useState from "./useState";
 import useActions from "./useActions";
 

@@ -2,7 +2,7 @@
 import { Schema } from "effect";
 
 // schemas
-import { BasePageSchema, BasePageSearchParamsSchema } from "@/schemas/basePage";
+import { BasePageSchema, BasePageSearchParamsSchema } from "@/schemas";
 
 const SignInPageSearchParams = Schema.Struct({
   redirect: Schema.optional(Schema.Trim.pipe(Schema.nonEmptyString())),

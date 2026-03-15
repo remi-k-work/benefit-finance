@@ -2,8 +2,7 @@
 import { Schema } from "effect";
 
 // schemas
-import { EmailSchemaEn, EmailSchemaPl } from "@/schemas/email";
-import { PasswordSchemaEn, PasswordSchemaPl } from "@/schemas/password";
+import { EmailSchemaEn, EmailSchemaPl, PasswordSchemaEn, PasswordSchemaPl } from "@/schemas";
 
 export const SignInFormSchemaEn = Schema.Struct({
   email: EmailSchemaEn,

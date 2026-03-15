@@ -3,8 +3,8 @@ import { useEffect, useEffectEvent } from "react";
 
 // services, features, and other libraries
 import { authClient } from "@/services/better-auth/auth-client";
-import useFormToastFeedback from "@/hooks/feedbacks/useFormToast";
-import useDemoModeGuard from "@/hooks/useDemoModeGuard";
+import { useFormToastFeedback } from "@/hooks/feedbacks";
+import { useDemoModeGuard } from "@/hooks";
 
 // types
 import type { DeleteAvatarActionResult } from "@/features/profile/actions/deleteAvatar";

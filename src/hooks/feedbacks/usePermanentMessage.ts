@@ -2,14 +2,14 @@
 import { useEffect, useEffectEvent } from "react";
 
 // services, features, and other libraries
-import usePermanentMessageFeedbackLoc from "./usePermanentMessageLoc";
+import { usePermanentMessageFeedbackLoc } from ".";
 import { useStore } from "@tanstack/react-form";
 
 // types
 import type { AnyFormApi } from "@tanstack/react-form";
 
 // Generic hook for managing a permanent feedback message (form-aware hook)
-export default function usePermanentMessageFeedback(formStore: AnyFormApi["store"]) {
+export function usePermanentMessageFeedback(formStore: AnyFormApi["store"]) {
   // Generic hook for managing a permanent feedback message (local-only hook)
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedbackLoc();
 

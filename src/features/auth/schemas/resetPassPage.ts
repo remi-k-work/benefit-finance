@@ -2,7 +2,7 @@
 import { Schema } from "effect";
 
 // schemas
-import { BasePageSchema, BasePageSearchParamsSchema } from "@/schemas/basePage";
+import { BasePageSchema, BasePageSearchParamsSchema } from "@/schemas";
 
 const ResetPassPageSearchParams = Schema.Struct({
   token: Schema.Trim.pipe(Schema.nonEmptyString()),
