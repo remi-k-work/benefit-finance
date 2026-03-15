@@ -1,7 +1,7 @@
 // services, features, and other libraries
 import { Effect } from "effect";
 import { formOptions, initialFormState } from "@tanstack/react-form-nextjs";
-import { EditLeadNotesFormSchemaEn, EditLeadNotesFormSchemaPl } from "@/features/leads/schemas/editLeadNotesForm";
+import { EditLeadNotesFormSchemaEn, EditLeadNotesFormSchemaPl } from "@/features/leads/schemas";
 import { createServerValidateWithTransforms } from "@/lib/helpersEffectClient";
 import { ValidationHasFailedError } from "@/lib/errors";
 

@@ -14,8 +14,8 @@ import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
 import { RpcLeadsClient } from "@/features/leads/rpc/client";
 import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { EditLeadNotesFormSchemaEn, EditLeadNotesFormSchemaPl } from "@/features/leads/schemas/editLeadNotesForm";
-import useEditLeadNotesFormFeedback from "@/features/leads/hooks/feedbacks/useEditLeadNotesForm";
+import { EditLeadNotesFormSchemaEn, EditLeadNotesFormSchemaPl } from "@/features/leads/schemas";
+import { useEditLeadNotesFormFeedback } from "@/features/leads/hooks/feedbacks";
 import { useInstanceContext } from "@/features/leads/components/AvailableLeadsTable/context";
 
 // assets

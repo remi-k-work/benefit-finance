@@ -10,7 +10,7 @@ import { Effect } from "effect";
 import { runRpcActionMain } from "@/lib/helpersEffectClient";
 import { initialFormState } from "@tanstack/react-form-nextjs";
 import { RpcLeadsClient } from "@/features/leads/rpc/client";
-import useSetLeadStatusFeedback from "@/features/leads/hooks/feedbacks/useSetLeadStatus";
+import { useSetLeadStatusFeedback } from "@/features/leads/hooks/feedbacks";
 
 // components
 import { TableCell } from "@/components/ui/custom/table";

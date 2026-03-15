@@ -10,7 +10,7 @@ import { runRpcActionMain } from "@/lib/helpersEffectClient";
 import { initialFormState } from "@tanstack/react-form-nextjs";
 import { RpcLeadsClient } from "@/features/leads/rpc/client";
 import { useConfirmModal } from "@/atoms/confirmModal";
-import useDeleteLeadFeedback from "@/features/leads/hooks/feedbacks/useDeleteLead";
+import { useDeleteLeadFeedback } from "@/features/leads/hooks/feedbacks";
 
 // components
 import { TableCell } from "@/components/ui/custom/table";

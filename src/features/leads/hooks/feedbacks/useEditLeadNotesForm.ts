@@ -10,7 +10,7 @@ import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this server action
-export default function useEditLeadNotesFormFeedback(
+export function useEditLeadNotesFormFeedback(
   { actionStatus, timestamp }: ActionResultWithFormState,
   reset: () => void,
   ll: typeof LangLoader.prototype.leads,

@@ -17,7 +17,7 @@ import type { AnyFormApi } from "@tanstack/react-form";
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this form actions
-export default function useNewLeadFormFeedback(
+export function useNewLeadFormFeedback(
   { actionStatus, timestamp }: ActionResultWithFormState,
   reset: () => void,
   formStore: AnyFormApi["store"],

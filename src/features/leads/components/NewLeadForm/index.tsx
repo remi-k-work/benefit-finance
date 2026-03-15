@@ -11,8 +11,8 @@ import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
 import { RpcLeadsClient } from "@/features/leads/rpc/client";
 import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { NewLeadFormSchemaEn, NewLeadFormSchemaPl } from "@/features/leads/schemas/newLeadForm";
-import useNewLeadFormFeedback from "@/features/leads/hooks/feedbacks/useNewLeadForm";
+import { NewLeadFormSchemaEn, NewLeadFormSchemaPl } from "@/features/leads/schemas";
+import { useNewLeadFormFeedback } from "@/features/leads/hooks/feedbacks";
 
 // components
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";

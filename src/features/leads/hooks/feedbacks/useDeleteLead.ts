@@ -10,7 +10,7 @@ import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this server action
-export default function useDeleteLeadFeedback(
+export function useDeleteLeadFeedback(
   { actionStatus, timestamp }: ActionResultWithFormState,
   ll: typeof LangLoader.prototype.leads,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,

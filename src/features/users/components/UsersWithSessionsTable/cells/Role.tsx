@@ -9,7 +9,7 @@ import { Effect } from "effect";
 import { runRpcActionMain } from "@/lib/helpersEffectClient";
 import { initialFormState } from "@tanstack/react-form-nextjs";
 import { RpcUsersClient } from "@/features/users/rpc/client";
-import useSetUserRoleFeedback from "@/features/users/hooks/feedbacks/useSetUserRole";
+import { useSetUserRoleFeedback } from "@/features/users/hooks/feedbacks";
 
 // components
 import { TableCell } from "@/components/ui/custom/table";
