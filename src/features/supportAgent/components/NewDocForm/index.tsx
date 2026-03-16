@@ -5,15 +5,14 @@
 // react
 import { useActionState, useRef } from "react";
 
-// server actions and mutations
-import newDocForm from "@/features/supportAgent/actions/newDocForm";
-
 // services, features, and other libraries
-import { Schema } from "effect";
-import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
+import { Effect, Schema } from "effect";
+import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { RpcSupportAgentClient } from "@/features/supportAgent/rpc/client";
+import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { NewDocFormSchemaEn, NewDocFormSchemaPl } from "@/features/supportAgent/schemas/newDocForm";
-import useNewDocFormFeedback from "@/features/supportAgent/hooks/feedbacks/useNewDocForm";
+import { NewDocFormSchemaEn, NewDocFormSchemaPl } from "@/features/supportAgent/schemas";
+import { useNewDocFormFeedback } from "@/features/supportAgent/hooks/feedbacks";
 
 // components
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
@@ -34,16 +33,30 @@ interface NewDocFormProps {
 }
 
 // constants
-import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/supportAgent/constants/newDocForm";
+import { FORM_OPTIONS_N, INITIAL_FORM_STATE_N } from "@/features/supportAgent/constants";
+
+const main = (formDataRecord: Record<string, string>) =>
+  Effect.gen(function* () {
+    const { newDocForm } = yield* RpcSupportAgentClient;
+
+    const result = yield* newDocForm({ formDataRecord }).pipe(
+      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+    );
+    return { ...initialFormState, ...result } as const;
+  });
 
 export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback }: NewDocFormProps) {
   // Create a ref to the editor component
   const markdownFieldRef = useRef<MDXEditorMethods>(null);
 
   // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(newDocForm, INITIAL_FORM_STATE);
+  const [formState, formAction, isPending] = useActionState(
+    async (_: unknown, formData: FormData) => await runRpcActionMain(main(formDataToRecord(formData))),
+    INITIAL_FORM_STATE_N,
+  );
+
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
-    ...FORM_OPTIONS,
+    ...FORM_OPTIONS_N,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
   });
 

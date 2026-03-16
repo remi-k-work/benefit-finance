@@ -23,7 +23,7 @@ export class RpcLeads extends RpcGroup.make(
   }),
 
   Rpc.make("deleteLead", {
-    error: Schema.Union(BetterAuthApiError, DatabaseError, UnauthorizedAccessError, ValidationHasFailedError),
+    error: Schema.Union(BetterAuthApiError, DatabaseError, UnauthorizedAccessError),
     success: Schema.Struct({ actionStatus: Schema.Literal("idle", "succeeded"), timestamp: Schema.optional(Schema.Number) }),
     payload: { leadId: Schema.UUID },
   }),

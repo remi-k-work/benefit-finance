@@ -8,7 +8,7 @@ import { SupAgentDocDB } from "@/features/supportAgent/db";
 import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
 import { runPageMainOrNavigate, validatePageInputs } from "@/lib/helpersEffect";
-import { EditDocPageSchema } from "@/features/supportAgent/schemas/editDocPage";
+import { EditDocPageSchema } from "@/features/supportAgent/schemas";
 import { Auth } from "@/features/auth/lib/auth";
 import { ItemNotFoundError } from "@/lib/errors";
 

@@ -7,13 +7,13 @@ import Link from "next/link";
 // drizzle and db access
 import type { AllDocsWithChunks } from "@/features/supportAgent/db";
 
-// server actions and mutations
-import deleteDoc from "@/features/supportAgent/actions/deleteDoc";
-
 // services, features, and other libraries
-import { useConfirmModal } from "@/atoms/confirmModal";
+import { Effect } from "effect";
+import { runRpcActionMain } from "@/lib/helpersEffectClient";
 import { initialFormState } from "@tanstack/react-form-nextjs";
-import useDeleteDocFeedback from "@/features/supportAgent/hooks/feedbacks/useDeleteDoc";
+import { RpcSupportAgentClient } from "@/features/supportAgent/rpc/client";
+import { useConfirmModal } from "@/atoms/confirmModal";
+import { useDeleteDocFeedback } from "@/features/supportAgent/hooks/feedbacks";
 
 // components
 import { TableCell } from "@/components/ui/custom/table";
@@ -34,6 +34,16 @@ interface ActionsCellProps {
   ll: typeof LangLoader.prototype.supportAgent;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
+
+const main = (docId: string) =>
+  Effect.gen(function* () {
+    const { deleteDoc } = yield* RpcSupportAgentClient;
+
+    const result = yield* deleteDoc({ docId }).pipe(
+      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+    );
+    return { ...initialFormState, ...result } as const;
+  });
 
 export default function ActionsCell({
   row: {
@@ -82,7 +92,7 @@ export default function ActionsCell({
             onConfirmed: async () => {
               // Execute the server action first and capture its result
               setDeleteDocIsPending(true);
-              const actionResult = await deleteDoc(docId);
+              const actionResult = await runRpcActionMain(main(docId));
               setDeleteDocState(actionResult);
               setDeleteDocIsPending(false);
 

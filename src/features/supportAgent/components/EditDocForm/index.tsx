@@ -8,15 +8,14 @@ import { useActionState, useRef } from "react";
 // drizzle and db access
 import type { Doc } from "@/features/supportAgent/db";
 
-// server actions and mutations
-import editDocForm from "@/features/supportAgent/actions/editDocForm";
-
 // services, features, and other libraries
-import { Schema } from "effect";
-import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
+import { Effect, Schema } from "effect";
+import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { RpcSupportAgentClient } from "@/features/supportAgent/rpc/client";
+import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { EditDocFormSchemaEn, EditDocFormSchemaPl } from "@/features/supportAgent/schemas/editDocForm";
-import useEditDocFormFeedback from "@/features/supportAgent/hooks/feedbacks/useEditDocForm";
+import { EditDocFormSchemaEn, EditDocFormSchemaPl } from "@/features/supportAgent/schemas";
+import { useEditDocFormFeedback } from "@/features/supportAgent/hooks/feedbacks";
 
 // components
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
@@ -38,17 +37,31 @@ interface EditDocFormProps {
 }
 
 // constants
-import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/supportAgent/constants/editDocForm";
+import { FORM_OPTIONS_E, INITIAL_FORM_STATE_E } from "@/features/supportAgent/constants";
+
+const main = (docId: string, formDataRecord: Record<string, string>) =>
+  Effect.gen(function* () {
+    const { editDocForm } = yield* RpcSupportAgentClient;
+
+    const result = yield* editDocForm({ docId, formDataRecord }).pipe(
+      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+    );
+    return { ...initialFormState, ...result } as const;
+  });
 
 export default function EditDocForm({ doc: { id: docId, title, content }, preferredLanguage, ll, llFormToastFeedback }: EditDocFormProps) {
   // Create a ref to the editor component
   const markdownFieldRef = useRef<MDXEditorMethods>(null);
 
   // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(editDocForm.bind(null, docId), INITIAL_FORM_STATE);
+  const [formState, formAction, isPending] = useActionState(
+    async (_: unknown, formData: FormData) => await runRpcActionMain(main(docId, formDataToRecord(formData))),
+    INITIAL_FORM_STATE_E,
+  );
+
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
-    ...FORM_OPTIONS,
-    defaultValues: { ...FORM_OPTIONS.defaultValues, title, content, markdown: content },
+    ...FORM_OPTIONS_E,
+    defaultValues: { ...FORM_OPTIONS_E.defaultValues, title, content, markdown: content },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
   });
 

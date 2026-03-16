@@ -3,7 +3,7 @@ import { getInformation } from "@/features/supportAgent/db";
 
 // services, features, and other libraries
 import { tool } from "ai";
-import { InputSchema, OutputSchema } from "@/features/supportAgent/schemas/getInformation";
+import { InputSchema, OutputSchema } from "@/features/supportAgent/schemas";
 import { RuntimeServer } from "@/lib/RuntimeServer";
 
 export const getInformationTool = tool({
