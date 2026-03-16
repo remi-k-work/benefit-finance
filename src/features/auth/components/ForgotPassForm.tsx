@@ -3,17 +3,16 @@
 "use client";
 
 // react
-import { useActionState, useEffect, useRef } from "react";
-
-// server actions and mutations
-import forgotPass from "@/features/auth/actions/forgotPassForm";
+import { useActionState } from "react";
 
 // services, features, and other libraries
-import { Schema } from "effect";
-import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
+import { Effect, Schema } from "effect";
+import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { RpcAuthClient } from "@/features/auth/rpc/client";
+import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { ForgotPassFormSchemaEn, ForgotPassFormSchemaPl } from "@/features/auth/schemas/forgotPassForm";
-import useForgotPassFormFeedback from "@/features/auth/hooks/feedbacks/useForgotPassForm";
+import { ForgotPassFormSchemaEn, ForgotPassFormSchemaPl } from "@/features/auth/schemas";
+import { useForgotPassFormFeedback } from "@/features/auth/hooks/feedbacks";
 
 // components
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
@@ -34,36 +33,32 @@ interface ForgotPassFormProps {
 }
 
 // constants
-import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/auth/constants/forgotPassForm";
+import { FORM_OPTIONS_FP, INITIAL_FORM_STATE_FP } from "@/features/auth/constants";
+
+const main = (formDataRecord: Record<string, string>) =>
+  Effect.gen(function* () {
+    const { forgotPassForm } = yield* RpcAuthClient;
+
+    const result = yield* forgotPassForm({ formDataRecord }).pipe(
+      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+    );
+    return { ...initialFormState, ...result } as const;
+  });
 
 export default function ForgotPassForm({ preferredLanguage, ll, llForgotPassFormFeedback, llFormToastFeedback }: ForgotPassFormProps) {
   // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(forgotPass, INITIAL_FORM_STATE);
+  const [formState, formAction, isPending] = useActionState(
+    async (_: unknown, formData: FormData) => await runRpcActionMain(main(formDataToRecord(formData))),
+    INITIAL_FORM_STATE_FP,
+  );
+
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
-    ...FORM_OPTIONS,
+    ...FORM_OPTIONS_FP,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
   });
 
-  // Track if the user has pressed the submit button
-  const hasPressedSubmitRef = useRef(false);
-
-  // All this new cleanup code is for the <Activity /> boundary
-  useEffect(() => {
-    // Reset the flag when the component unmounts
-    return () => {
-      hasPressedSubmitRef.current = false;
-    };
-  }, []);
-
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useForgotPassFormFeedback(
-    hasPressedSubmitRef,
-    formState,
-    reset,
-    store,
-    llForgotPassFormFeedback,
-    llFormToastFeedback,
-  );
+  const { feedbackMessage, hideFeedbackMessage } = useForgotPassFormFeedback(formState, reset, store, llForgotPassFormFeedback, llFormToastFeedback);
 
   return (
     <AppForm>
@@ -71,7 +66,6 @@ export default function ForgotPassForm({ preferredLanguage, ll, llForgotPassForm
         action={formAction}
         onSubmit={async () => {
           await handleSubmit();
-          hasPressedSubmitRef.current = true;
         }}
       >
         <Card>

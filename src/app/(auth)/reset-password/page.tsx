@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
 import { runPageMainOrNavigate, validatePageInputs } from "@/lib/helpersEffect";
-import { ResetPassPageSchema } from "@/features/auth/schemas/resetPassPage";
+import { ResetPassPageSchema } from "@/features/auth/schemas";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";

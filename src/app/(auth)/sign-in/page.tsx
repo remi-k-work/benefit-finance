@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
 import { runPageMainOrNavigate, validatePageInputs } from "@/lib/helpersEffect";
-import { SignInPageSchema } from "@/features/auth/schemas/signInPage";
+import { SignInPageSchema } from "@/features/auth/schemas";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";

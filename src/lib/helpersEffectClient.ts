@@ -62,6 +62,9 @@ export const runRpcActionMain = async <A extends ActionResultWithFormState, E ex
     // Validation has failed
     if (error._tag === "ValidationHasFailedError") return { ...(error.cause as { formState?: any }).formState, actionStatus: "invalid", timestamp: Date.now() };
 
+    // The better-auth api request failed with an error
+    if (error._tag === "BetterAuthApiError") return { ...initialFormState, actionStatus: "authError", timestamp: Date.now() };
+
     // Some other error occurred
     return { ...initialFormState, actionStatus: "failed", timestamp: Date.now() };
   } else {

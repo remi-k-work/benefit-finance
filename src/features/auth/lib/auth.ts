@@ -31,6 +31,37 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
         });
       });
 
+    // Request the password reset through the better-auth api for the user
+    const requestPasswordReset = (email: string) =>
+      Effect.tryPromise({
+        try: () => auth.api.requestPasswordReset({ body: { email, redirectTo: "/reset-password" } }),
+        catch: (cause) => new BetterAuthApiError({ message: "Failed to request password reset", cause }),
+      }).pipe(Effect.asVoid);
+
+    // Reset the password through the better-auth api for the user
+    const resetPassword = (token: string, newPassword: string) =>
+      Effect.tryPromise({
+        try: () => auth.api.resetPassword({ body: { token, newPassword } }),
+        catch: (cause) => new BetterAuthApiError({ message: "Failed to reset password", cause }),
+      }).pipe(Effect.asVoid);
+
+    // Sign in the user through the better-auth api
+    const signInEmail = (email: string, password: string, rememberMe: boolean) =>
+      Effect.gen(function* () {
+        const headers = yield* getHeaders;
+        yield* Effect.tryPromise({
+          try: () => auth.api.signInEmail({ body: { email, password, rememberMe }, headers }),
+          catch: (cause) => new BetterAuthApiError({ message: "Failed to sign in", cause }),
+        });
+      });
+
+    // Sign up the user through the better-auth api
+    const signUpEmail = (name: string, email: string, password: string) =>
+      Effect.tryPromise({
+        try: () => auth.api.signUpEmail({ body: { name, email, password } }),
+        catch: (cause) => new BetterAuthApiError({ message: "Failed to sign up", cause }),
+      }).pipe(Effect.asVoid);
+
     // Verify if the current user possesses specific permissions
     const assertPermissions = (permissions: Permissions) =>
       Effect.gen(function* () {
@@ -75,7 +106,19 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
         Effect.asVoid,
       );
 
-    return { setUserRole, removeUser, assertPermissions, getUserSessionData, listUserAccounts, hasCredentialAccount, assertRole } as const;
+    return {
+      setUserRole,
+      removeUser,
+      requestPasswordReset,
+      resetPassword,
+      signInEmail,
+      signUpEmail,
+      assertPermissions,
+      getUserSessionData,
+      listUserAccounts,
+      hasCredentialAccount,
+      assertRole,
+    } as const;
   }),
 }) {}
 

@@ -14,7 +14,7 @@ import { InvalidPageInputsError } from "./errors";
 import type { ServerFormState } from "@tanstack/react-form-nextjs";
 
 export interface ActionResultWithFormState extends ServerFormState<any, any> {
-  actionStatus: "idle" | "succeeded" | "failed" | "invalid" | "demoMode";
+  actionStatus: "idle" | "succeeded" | "failed" | "invalid" | "authError" | "demoMode";
   timestamp?: number;
 }
 
