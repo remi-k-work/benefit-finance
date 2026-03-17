@@ -12,7 +12,7 @@ import type { AnyFormApi } from "@tanstack/react-form";
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this form actions
-export default function usePassChangeFormFeedback(
+export function usePassChangeFormFeedback(
   hasPressedSubmitRef: RefObject<boolean>,
   { actionStatus, actionError, errors }: PassChangeFormActionResult,
   reset: () => void,

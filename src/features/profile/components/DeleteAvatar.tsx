@@ -6,7 +6,7 @@ import deleteAvatar from "@/features/profile/actions/deleteAvatar";
 
 // services, features, and other libraries
 import { useConfirmModal } from "@/atoms/confirmModal";
-import useDeleteAvatarFeedback from "@/features/profile/hooks/feedbacks/useDeleteAvatar";
+import { useDeleteAvatarFeedback } from "@/features/profile/hooks/feedbacks";
 
 // components
 import { Button } from "@/components/ui/custom/button";

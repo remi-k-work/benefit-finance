@@ -13,8 +13,8 @@ import passChange from "@/features/profile/actions/passChangeForm";
 import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { PassChangeFormSchemaEn, PassChangeFormSchemaPl, PassSetupFormSchemaEn, PassSetupFormSchemaPl } from "@/features/profile/schemas/passChangeForm";
-import usePassChangeFormFeedback from "@/features/profile/hooks/feedbacks/usePassChangeForm";
+import { PassChangeFormSchemaEn, PassChangeFormSchemaPl, PassSetupFormSchemaEn, PassSetupFormSchemaPl } from "@/features/profile/schemas";
+import { usePassChangeFormFeedback } from "@/features/profile/hooks/feedbacks";
 
 // components
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";

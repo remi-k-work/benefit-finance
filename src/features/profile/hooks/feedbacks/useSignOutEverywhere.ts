@@ -9,7 +9,7 @@ import type { SignOutEverywhereActionResult } from "@/features/profile/actions/s
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this server action
-export default function useSignOutEverywhereFeedback(
+export function useSignOutEverywhereFeedback(
   { actionStatus, actionError }: SignOutEverywhereActionResult,
   ll: typeof LangLoader.prototype.signOutEverywhereFeedback,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,

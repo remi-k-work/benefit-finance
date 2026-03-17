@@ -13,7 +13,7 @@ import type { AnyFormApi } from "@tanstack/react-form";
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this form actions
-export default function useEmailChangeFormFeedback(
+export function useEmailChangeFormFeedback(
   hasPressedSubmitRef: RefObject<boolean>,
   { actionStatus, actionError, needsApproval, errors }: EmailChangeFormActionResult,
   reset: () => void,

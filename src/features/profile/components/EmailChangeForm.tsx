@@ -12,8 +12,8 @@ import emailChange from "@/features/profile/actions/emailChangeForm";
 import { Schema } from "effect";
 import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
-import { EmailChangeFormSchemaEn, EmailChangeFormSchemaPl } from "@/features/profile/schemas/emailChangeForm";
-import useEmailChangeFormFeedback from "@/features/profile/hooks/feedbacks/useEmailChangeForm";
+import { EmailChangeFormSchemaEn, EmailChangeFormSchemaPl } from "@/features/profile/schemas";
+import { useEmailChangeFormFeedback } from "@/features/profile/hooks/feedbacks";
 
 // components
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";

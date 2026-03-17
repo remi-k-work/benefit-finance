@@ -8,7 +8,7 @@ import signOutEverywhere from "@/features/profile/actions/signOutEverywhere";
 
 // services, features, and other libraries
 import { useConfirmModal } from "@/atoms/confirmModal";
-import useSignOutEverywhereFeedback from "@/features/profile/hooks/feedbacks/useSignOutEverywhere";
+import { useSignOutEverywhereFeedback } from "@/features/profile/hooks/feedbacks";
 
 // components
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";

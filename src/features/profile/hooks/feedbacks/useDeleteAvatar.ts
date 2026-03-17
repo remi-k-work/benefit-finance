@@ -11,7 +11,7 @@ import type { DeleteAvatarActionResult } from "@/features/profile/actions/delete
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this server action
-export default function useDeleteAvatarFeedback(
+export function useDeleteAvatarFeedback(
   { actionStatus, actionError }: DeleteAvatarActionResult,
   ll: typeof LangLoader.prototype.deleteAvatarFeedback,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,

@@ -3,11 +3,21 @@ import { DB } from "@/drizzle/dbEffect";
 import { SupAgentChunkDB, SupAgentDocDB } from "@/features/supportAgent/db";
 import { UsersDB } from "@/features/users/db";
 import { LeadDB } from "@/features/leads/db";
+import { AvatarDB } from "@/features/profile/db";
 
 // services, features, and other libraries
 import { Layer, Logger, ManagedRuntime } from "effect";
 import { Auth } from "@/features/auth/lib/auth";
 
-const MainLayer = Layer.mergeAll(Logger.pretty, DB.Default, SupAgentDocDB.Default, SupAgentChunkDB.Default, UsersDB.Default, Auth.Default, LeadDB.Default);
+const MainLayer = Layer.mergeAll(
+  Logger.pretty,
+  DB.Default,
+  SupAgentDocDB.Default,
+  SupAgentChunkDB.Default,
+  UsersDB.Default,
+  Auth.Default,
+  LeadDB.Default,
+  AvatarDB.Default,
+);
 
 export const RuntimeServer = ManagedRuntime.make(MainLayer);

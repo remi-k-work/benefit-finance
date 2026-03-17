@@ -2,7 +2,7 @@
 import { headers } from "next/headers";
 
 // services, features, and other libraries
-import { Array, Effect } from "effect";
+import { Array, Effect, Option } from "effect";
 import { auth } from "@/services/better-auth/auth";
 import { BetterAuthApiError, UnauthorizedAccessError } from "@/lib/errors";
 
@@ -70,6 +70,45 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
           try: () => auth.api.sendVerificationEmail({ body: { email, callbackURL: "/email-verified" }, headers }),
           catch: (cause) => new BetterAuthApiError({ message: "Failed to send verification email", cause }),
         });
+      });
+
+    // Update the user information through the better-auth api by setting their image to null
+    const deleteImage = Effect.gen(function* () {
+      const headers = yield* getHeaders;
+      yield* Effect.tryPromise({
+        try: () => auth.api.updateUser({ body: { image: null }, headers }),
+        catch: (cause) => new BetterAuthApiError({ message: "Failed to update user image", cause }),
+      });
+    });
+
+    // Request the email change through the better-auth api for the user
+    const changeEmail = (newEmail: string, needsApproval: boolean) =>
+      Effect.gen(function* () {
+        const headers = yield* getHeaders;
+        yield* Effect.tryPromise({
+          try: () => auth.api.changeEmail({ body: { newEmail, callbackURL: needsApproval ? "/email-approved" : "/email-verified" }, headers }),
+          catch: (cause) => new BetterAuthApiError({ message: "Failed to request email change", cause }),
+        });
+      });
+
+    // Setup or change the password through the better-auth api for the user
+    const setupOrChangePassword = (newPassword: string, currentPassword?: string) =>
+      Effect.gen(function* () {
+        const headers = yield* getHeaders;
+        yield* Option.fromNullable(currentPassword).pipe(
+          Option.match({
+            onNone: () =>
+              Effect.tryPromise({
+                try: () => auth.api.setPassword({ body: { newPassword }, headers }),
+                catch: (cause) => new BetterAuthApiError({ message: "Failed to setup password", cause }),
+              }),
+            onSome: (currentPassword) =>
+              Effect.tryPromise({
+                try: () => auth.api.changePassword({ body: { currentPassword, newPassword }, headers }),
+                catch: (cause) => new BetterAuthApiError({ message: "Failed to change password", cause }),
+              }),
+          }),
+        );
       });
 
     // Verify if the current user possesses specific permissions
