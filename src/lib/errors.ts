@@ -16,6 +16,10 @@ export class BetterAuthApiError extends Schema.TaggedError<BetterAuthApiError>()
   message: Schema.String,
   cause: Schema.optional(Schema.Defect),
 }) {}
+export class UtApiError extends Schema.TaggedError<UtApiError>()("UtApiError", {
+  message: Schema.String,
+  cause: Schema.optional(Schema.Defect),
+}) {}
 
 // Define a domain error for the unauthorized access
 export class UnauthorizedAccessError extends Schema.TaggedError<UnauthorizedAccessError>()("UnauthorizedAccessError", {

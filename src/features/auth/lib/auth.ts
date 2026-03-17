@@ -111,6 +111,25 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
         );
       });
 
+    // Update the user information through the better-auth api by setting their name
+    const updateName = (name: string) =>
+      Effect.gen(function* () {
+        const headers = yield* getHeaders;
+        yield* Effect.tryPromise({
+          try: () => auth.api.updateUser({ body: { name }, headers }),
+          catch: (cause) => new BetterAuthApiError({ message: "Failed to update user name", cause }),
+        });
+      });
+
+    // Sign the user out from all devices through the better-auth api
+    const revokeSessions = Effect.gen(function* () {
+      const headers = yield* getHeaders;
+      yield* Effect.tryPromise({
+        try: () => auth.api.revokeSessions({ headers }),
+        catch: (cause) => new BetterAuthApiError({ message: "Failed to sign out", cause }),
+      });
+    });
+
     // Verify if the current user possesses specific permissions
     const assertPermissions = (permissions: Permissions) =>
       Effect.gen(function* () {
@@ -161,6 +180,11 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
       signInEmail,
       signUpEmail,
       sendVerificationEmail,
+      deleteImage,
+      changeEmail,
+      setupOrChangePassword,
+      updateName,
+      revokeSessions,
       assertPermissions,
       getUserSessionData,
       listUserAccounts,
