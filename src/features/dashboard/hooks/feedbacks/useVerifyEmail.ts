@@ -1,29 +1,30 @@
 // react
-import { useEffect, useEffectEvent } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
 
 // services, features, and other libraries
 import { useFormToastFeedback, usePermanentMessageFeedbackLoc } from "@/hooks/feedbacks";
 import { useDemoModeGuard } from "@/hooks";
 
 // types
-import type { RefObject } from "react";
-import type { VerifyEmailActionResult } from "@/features/dashboard/actions/verifyEmail";
+import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this server action
-export default function useVerifyEmailFeedback(
-  hasPressedSubmitRef: RefObject<boolean>,
-  { actionStatus, actionError }: VerifyEmailActionResult,
+export function useVerifyEmailFeedback(
+  { actionStatus, timestamp }: ActionResultWithFormState,
   ll: typeof LangLoader.prototype.verifyEmailFeedback,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
+  // This ref tracks which submission we have already processed (the <Activity /> replay problem fix)
+  const lastProcessedTimestampRef = useRef<typeof timestamp>(undefined);
+
   // Generic hook for managing a permanent feedback message
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedbackLoc();
 
   // Generic hook for displaying toast notifications for form actions
   const showToast = useFormToastFeedback(
     ll["[VERIFY EMAIL]"],
-    { succeeded: ll["A verification email has been sent to your current email address. Please check your inbox."], authError: actionError },
+    { succeeded: ll["A verification email has been sent to your current email address. Please check your inbox."] },
     llFormToastFeedback,
   );
 
@@ -48,9 +49,17 @@ export default function useVerifyEmailFeedback(
   });
 
   useEffect(() => {
-    if (hasPressedSubmitRef.current === false) return;
+    // If there is no timestamp, the user has not submitted yet
+    if (!timestamp) return;
+
+    // If the timestamp matches our ref, we have already handled this specific submission
+    if (timestamp === lastProcessedTimestampRef.current) return;
+
+    // Update the ref immediately so we do not process it again
+    lastProcessedTimestampRef.current = timestamp;
+
     onFeedbackNeeded();
-  }, [hasPressedSubmitRef, actionStatus]);
+  }, [timestamp]);
 
   return { feedbackMessage, hideFeedbackMessage };
 }

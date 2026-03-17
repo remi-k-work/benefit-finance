@@ -2,7 +2,7 @@
 import { headers } from "next/headers";
 
 // services, features, and other libraries
-import { Effect } from "effect";
+import { Array, Effect } from "effect";
 import { auth } from "@/services/better-auth/auth";
 import { BetterAuthApiError, UnauthorizedAccessError } from "@/lib/errors";
 
@@ -62,6 +62,16 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
         catch: (cause) => new BetterAuthApiError({ message: "Failed to sign up", cause }),
       }).pipe(Effect.asVoid);
 
+    // Trigger the email verification process manually for this user through the better-auth api
+    const sendVerificationEmail = (email: string) =>
+      Effect.gen(function* () {
+        const headers = yield* getHeaders;
+        yield* Effect.tryPromise({
+          try: () => auth.api.sendVerificationEmail({ body: { email, callbackURL: "/email-verified" }, headers }),
+          catch: (cause) => new BetterAuthApiError({ message: "Failed to send verification email", cause }),
+        });
+      });
+
     // Verify if the current user possesses specific permissions
     const assertPermissions = (permissions: Permissions) =>
       Effect.gen(function* () {
@@ -80,7 +90,7 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
     // Access the user session data from the server side or fail with an unauthorized access error
     const getUserSessionData = Effect.gen(function* () {
       const headers = yield* getHeaders;
-      return yield* Effect.fromNullable(yield* Effect.promise<Awaited<ReturnType<typeof auth.api.getSession>>>(() => auth.api.getSession({ headers }))).pipe(
+      return yield* Effect.fromNullable(yield* Effect.promise(() => auth.api.getSession({ headers }))).pipe(
         Effect.mapError((cause) => new UnauthorizedAccessError({ message: "Unauthorized access", cause })),
       );
     });
@@ -88,19 +98,17 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
     // List all accounts associated with the current user
     const listUserAccounts = Effect.gen(function* () {
       const headers = yield* getHeaders;
-      return yield* Effect.promise<Awaited<ReturnType<typeof auth.api.listUserAccounts>>>(() => auth.api.listUserAccounts({ headers }));
+      return yield* Effect.promise(() => auth.api.listUserAccounts({ headers }));
     });
 
     // Determine whether the current user has any "credential" type accounts
-    const hasCredentialAccount = Effect.gen(function* () {
-      return (yield* listUserAccounts).some((account) => account.providerId === "credential");
-    });
+    const hasCredentialAccount = listUserAccounts.pipe(Effect.map(Array.some((account) => account.providerId === "credential")));
 
-    // Assert that the current user is of a specific role
-    const assertRole = (role: Role) =>
+    // Assert that the current user has at least one of the allowed roles
+    const assertRoles = (roles: ReadonlyArray<Role>) =>
       getUserSessionData.pipe(
         Effect.filterOrFail(
-          ({ user }) => user.role === role,
+          ({ user: { role } }) => Array.contains(roles, role),
           () => new UnauthorizedAccessError({ message: "Unauthorized access" }),
         ),
         Effect.asVoid,
@@ -113,13 +121,14 @@ export class Auth extends Effect.Service<Auth>()("Auth", {
       resetPassword,
       signInEmail,
       signUpEmail,
+      sendVerificationEmail,
       assertPermissions,
       getUserSessionData,
       listUserAccounts,
       hasCredentialAccount,
-      assertRole,
+      assertRoles,
     } as const;
   }),
 }) {}
 
-const getHeaders = Effect.promise<Awaited<ReturnType<typeof headers>>>(() => headers());
+const getHeaders = Effect.promise(() => headers());

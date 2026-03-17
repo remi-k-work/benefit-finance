@@ -1,13 +1,14 @@
 "use client";
 
 // react
-import { startTransition, useActionState, useEffect, useRef } from "react";
-
-// server actions and mutations
-import verifyEmail from "@/features/dashboard/actions/verifyEmail";
+import { startTransition, useActionState, useEffect, useState } from "react";
 
 // services, features, and other libraries
-import useVerifyEmailFeedback from "@/features/dashboard/hooks/feedbacks/useVerifyEmail";
+import { Effect } from "effect";
+import { runRpcActionMain } from "@/lib/helpersEffectClient";
+import { initialFormState } from "@tanstack/react-form-nextjs";
+import { RpcDashboardClient } from "@/features/dashboard/rpc/client";
+import { useVerifyEmailFeedback } from "@/features/dashboard/hooks/feedbacks";
 
 // components
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
@@ -29,23 +30,34 @@ interface VerifyEmailProps {
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
+const main = Effect.gen(function* () {
+  const { verifyEmail } = yield* RpcDashboardClient;
+
+  const result = yield* verifyEmail().pipe(
+    Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+  );
+  return { ...initialFormState, ...result } as const;
+});
+
 export default function VerifyEmail({ user: { emailVerified }, ll, llVerifyEmailFeedback, llFormToastFeedback }: VerifyEmailProps) {
   // Triggers the email verification process for the current user
-  const [verifyEmailState, verifyEmailAction, verifyEmailsPending] = useActionState(verifyEmail, { actionStatus: "idle" });
-
-  // Track if the user has pressed the submit button
-  const hasPressedSubmitRef = useRef(false);
-
-  // All this new cleanup code is for the <Activity /> boundary
-  useEffect(() => {
-    // Reset the flag when the component unmounts
-    return () => {
-      hasPressedSubmitRef.current = false;
-    };
-  }, []);
+  const [verifyEmailState, verifyEmailAction, verifyEmailsPending] = useActionState(async () => await runRpcActionMain(main), {
+    ...initialFormState,
+    actionStatus: "idle",
+  });
 
   // Provide feedback to the user regarding this server action
-  const { feedbackMessage, hideFeedbackMessage } = useVerifyEmailFeedback(hasPressedSubmitRef, verifyEmailState, llVerifyEmailFeedback, llFormToastFeedback);
+  const { feedbackMessage, hideFeedbackMessage } = useVerifyEmailFeedback(verifyEmailState, llVerifyEmailFeedback, llFormToastFeedback);
+
+  // Add a simple cooldown state
+  const [isCoolingDown, setIsCoolingDown] = useState(false);
+
+  useEffect(() => {
+    if (isCoolingDown) {
+      const timer = setTimeout(() => setIsCoolingDown(false), 9000);
+      return () => clearTimeout(timer);
+    }
+  }, [isCoolingDown]);
 
   return (
     <Card>
@@ -61,12 +73,12 @@ export default function VerifyEmail({ user: { emailVerified }, ll, llVerifyEmail
             <InfoLine message={feedbackMessage} className="mx-0" />
             <Button
               type="button"
-              disabled={verifyEmailsPending}
+              disabled={verifyEmailsPending || isCoolingDown}
               className="mx-auto"
               onClick={() => {
                 hideFeedbackMessage();
+                setIsCoolingDown(true);
                 startTransition(verifyEmailAction);
-                hasPressedSubmitRef.current = true;
               }}
             >
               {verifyEmailsPending ? <Loader2 className="size-9 animate-spin" /> : <CheckBadgeIcon className="size-9" />}
