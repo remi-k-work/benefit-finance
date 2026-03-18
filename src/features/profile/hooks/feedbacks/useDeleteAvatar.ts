@@ -1,5 +1,5 @@
 // react
-import { useEffect, useEffectEvent } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
 
 // services, features, and other libraries
 import { authClient } from "@/services/better-auth/auth-client";
@@ -7,22 +7,25 @@ import { useFormToastFeedback } from "@/hooks/feedbacks";
 import { useDemoModeGuard } from "@/hooks";
 
 // types
-import type { DeleteAvatarActionResult } from "@/features/profile/actions/deleteAvatar";
+import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this server action
 export function useDeleteAvatarFeedback(
-  { actionStatus, actionError }: DeleteAvatarActionResult,
+  { actionStatus, timestamp }: ActionResultWithFormState,
   ll: typeof LangLoader.prototype.deleteAvatarFeedback,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
+  // This ref tracks which submission we have already processed (the <Activity /> replay problem fix)
+  const lastProcessedTimestampRef = useRef<typeof timestamp>(undefined);
+
   // Access the user session data from the client side
   const { refetch } = authClient.useSession();
 
   // Generic hook for displaying toast notifications for form actions
   const showToast = useFormToastFeedback(
     ll["[PROFILE DETAILS]"],
-    { succeeded: ll["Your avatar has been deleted."], failed: ll["Your avatar could not be deleted; please try again later."], authError: actionError },
+    { succeeded: ll["Your avatar has been deleted."], failed: ll["Your avatar could not be deleted; please try again later."] },
     llFormToastFeedback,
   );
 
@@ -47,6 +50,15 @@ export function useDeleteAvatarFeedback(
   });
 
   useEffect(() => {
+    // If there is no timestamp, the user has not submitted yet
+    if (!timestamp) return;
+
+    // If the timestamp matches our ref, we have already handled this specific submission
+    if (timestamp === lastProcessedTimestampRef.current) return;
+
+    // Update the ref immediately so we do not process it again
+    lastProcessedTimestampRef.current = timestamp;
+
     onFeedbackNeeded();
-  }, [actionStatus]);
+  }, [timestamp]);
 }

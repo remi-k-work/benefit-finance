@@ -18,7 +18,7 @@ export class RpcProfile extends RpcGroup.make(
   Rpc.make("passChangeForm", {
     error: Schema.Union(BetterAuthApiError, UnauthorizedAccessError, ValidationHasFailedError),
     success: Schema.Struct({ actionStatus: Schema.Literal("idle", "succeeded"), timestamp: Schema.optional(Schema.Number) }),
-    payload: { hasCredential: Schema.Boolean, formDataRecord: Schema.Record({ key: Schema.String, value: Schema.String }) },
+    payload: { formDataRecord: Schema.Record({ key: Schema.String, value: Schema.String }) },
   }),
 
   Rpc.make("profileDetailsForm", {

@@ -14,11 +14,12 @@ interface AdminOnlyProps {
 }
 
 const main = Effect.gen(function* () {
-  // Access the user session data from the server side or fail with an unauthorized access error
+  // Assert that the current user has at least one of the allowed roles
   const auth = yield* Auth;
-  const { user } = yield* auth.getUserSessionData.pipe(Effect.orElse(() => Effect.succeed({ user: null, session: null })));
-
-  return user?.role === "admin" || user?.role === "demo";
+  return yield* auth.assertRoles(["admin", "demo"]).pipe(
+    Effect.as(true),
+    Effect.orElse(() => Effect.succeed(false)),
+  );
 });
 
 // Component remains the fast, static shell

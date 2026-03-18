@@ -4,14 +4,13 @@
 "use client";
 
 // react
-import { useActionState, useEffect, useRef } from "react";
-
-// server actions and mutations
-import passChange from "@/features/profile/actions/passChangeForm";
+import { useActionState } from "react";
 
 // services, features, and other libraries
-import { Schema } from "effect";
-import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
+import { Effect, Schema } from "effect";
+import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { RpcProfileClient } from "@/features/profile/rpc/client";
+import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
 import { PassChangeFormSchemaEn, PassChangeFormSchemaPl, PassSetupFormSchemaEn, PassSetupFormSchemaPl } from "@/features/profile/schemas";
 import { usePassChangeFormFeedback } from "@/features/profile/hooks/feedbacks";
@@ -36,30 +35,32 @@ interface PassChangeFormProps {
 }
 
 // constants
-import { FORM_OPTIONS_CHANGE, FORM_OPTIONS_SETUP, INITIAL_FORM_STATE } from "@/features/profile/constants/passChangeForm";
+import { FORM_OPTIONS_CHANGE_PC, FORM_OPTIONS_SETUP_PC, INITIAL_FORM_STATE_PC } from "@/features/profile/constants";
+
+const main = (formDataRecord: Record<string, string>) =>
+  Effect.gen(function* () {
+    const { passChangeForm } = yield* RpcProfileClient;
+
+    const result = yield* passChangeForm({ formDataRecord }).pipe(
+      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+    );
+    return { ...initialFormState, ...result } as const;
+  });
 
 export default function PassChangeForm({ hasCredential, preferredLanguage, ll, llPassChangeFormFeedback, llFormToastFeedback }: PassChangeFormProps) {
   // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(passChange.bind(null, hasCredential), INITIAL_FORM_STATE);
+  const [formState, formAction, isPending] = useActionState(
+    async (_: unknown, formData: FormData) => await runRpcActionMain(main(formDataToRecord(formData))),
+    INITIAL_FORM_STATE_PC,
+  );
+
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
-    ...(hasCredential ? FORM_OPTIONS_CHANGE : FORM_OPTIONS_SETUP),
+    ...(hasCredential ? FORM_OPTIONS_CHANGE_PC : FORM_OPTIONS_SETUP_PC),
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
   });
 
-  // Track if the user has pressed the submit button
-  const hasPressedSubmitRef = useRef(false);
-
-  // All this new cleanup code is for the <Activity /> boundary
-  useEffect(() => {
-    // Reset the flag when the component unmounts
-    return () => {
-      hasPressedSubmitRef.current = false;
-    };
-  }, []);
-
   // Provide feedback to the user regarding this form actions
   const { feedbackMessage, hideFeedbackMessage } = usePassChangeFormFeedback(
-    hasPressedSubmitRef,
     formState,
     reset,
     store,
@@ -74,7 +75,6 @@ export default function PassChangeForm({ hasCredential, preferredLanguage, ll, l
         action={formAction}
         onSubmit={async () => {
           await handleSubmit();
-          hasPressedSubmitRef.current = true;
         }}
       >
         <Card>

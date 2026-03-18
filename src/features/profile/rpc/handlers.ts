@@ -77,11 +77,14 @@ const RpcProfileLayer = RpcProfile.toLayer({
       return { actionStatus: "succeeded", timestamp: Date.now() };
     }),
 
-  passChangeForm: ({ hasCredential, formDataRecord }) =>
+  passChangeForm: ({ formDataRecord }) =>
     Effect.gen(function* () {
       // Assert that the current user has at least one of the allowed roles
       const auth = yield* Auth;
       yield* auth.assertRoles(["user", "admin"]);
+
+      // Determine whether the current user has any "credential" type accounts
+      const hasCredential = yield* auth.hasCredentialAccount;
 
       // Create an instance of the lang loader needed for localization
       const { preferredLanguage } = yield* LangLoader.createEffect();

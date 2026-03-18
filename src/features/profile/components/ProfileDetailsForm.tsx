@@ -3,14 +3,13 @@
 "use client";
 
 // react
-import { useActionState, useEffect, useRef } from "react";
-
-// server actions and mutations
-import profileDetails from "@/features/profile/actions/profileDetailsForm";
+import { useActionState } from "react";
 
 // services, features, and other libraries
-import { Schema } from "effect";
-import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
+import { Effect, Schema } from "effect";
+import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { RpcProfileClient } from "@/features/profile/rpc/client";
+import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
 import { ProfileDetailsFormSchemaEn, ProfileDetailsFormSchemaPl } from "@/features/profile/schemas";
 import { useProfileDetailsFormFeedback } from "@/features/profile/hooks/feedbacks";
@@ -43,7 +42,17 @@ interface ProfileDetailsFormProps {
 }
 
 // constants
-import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/profile/constants/profileDetailsForm";
+import { FORM_OPTIONS_PD, INITIAL_FORM_STATE_PD } from "@/features/profile/constants";
+
+const main = (formDataRecord: Record<string, string>) =>
+  Effect.gen(function* () {
+    const { profileDetailsForm } = yield* RpcProfileClient;
+
+    const result = yield* profileDetailsForm({ formDataRecord }).pipe(
+      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+    );
+    return { ...initialFormState, ...result } as const;
+  });
 
 export default function ProfileDetailsForm({
   user,
@@ -58,33 +67,19 @@ export default function ProfileDetailsForm({
   llFormToastFeedback,
 }: ProfileDetailsFormProps) {
   // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(profileDetails, INITIAL_FORM_STATE);
+  const [formState, formAction, isPending] = useActionState(
+    async (_: unknown, formData: FormData) => await runRpcActionMain(main(formDataToRecord(formData))),
+    INITIAL_FORM_STATE_PD,
+  );
+
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
-    ...FORM_OPTIONS,
-    defaultValues: { ...FORM_OPTIONS.defaultValues, name: currentName },
+    ...FORM_OPTIONS_PD,
+    defaultValues: { ...FORM_OPTIONS_PD.defaultValues, name: currentName },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
   });
 
-  // Track if the user has pressed the submit button
-  const hasPressedSubmitRef = useRef(false);
-
-  // All this new cleanup code is for the <Activity /> boundary
-  useEffect(() => {
-    // Reset the flag when the component unmounts
-    return () => {
-      hasPressedSubmitRef.current = false;
-    };
-  }, []);
-
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useProfileDetailsFormFeedback(
-    hasPressedSubmitRef,
-    formState,
-    reset,
-    store,
-    llProfileDetailsFormFeedback,
-    llFormToastFeedback,
-  );
+  const { feedbackMessage, hideFeedbackMessage } = useProfileDetailsFormFeedback(formState, reset, store, llProfileDetailsFormFeedback, llFormToastFeedback);
 
   return (
     <AppForm>
@@ -92,7 +87,6 @@ export default function ProfileDetailsForm({
         action={formAction}
         onSubmit={async () => {
           await handleSubmit();
-          hasPressedSubmitRef.current = true;
         }}
       >
         <Card>

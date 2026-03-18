@@ -1,5 +1,5 @@
 // react
-import { useEffect, useEffectEvent } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
 
 // services, features, and other libraries
 import { authClient } from "@/services/better-auth/auth-client";
@@ -7,20 +7,21 @@ import { useFormToastFeedback, usePermanentMessageFeedback } from "@/hooks/feedb
 import { useDemoModeGuard } from "@/hooks";
 
 // types
-import type { RefObject } from "react";
-import type { ProfileDetailsFormActionResult } from "@/features/profile/actions/profileDetailsForm";
+import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 import type { AnyFormApi } from "@tanstack/react-form";
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this form actions
 export function useProfileDetailsFormFeedback(
-  hasPressedSubmitRef: RefObject<boolean>,
-  { actionStatus, actionError, errors }: ProfileDetailsFormActionResult,
+  { actionStatus, timestamp }: ActionResultWithFormState,
   reset: () => void,
   formStore: AnyFormApi["store"],
   ll: typeof LangLoader.prototype.profileDetailsFormFeedback,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
+  // This ref tracks which submission we have already processed (the <Activity /> replay problem fix)
+  const lastProcessedTimestampRef = useRef<typeof timestamp>(undefined);
+
   // Access the user session data from the client side
   const { refetch } = authClient.useSession();
 
@@ -28,11 +29,7 @@ export function useProfileDetailsFormFeedback(
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedback(formStore);
 
   // Generic hook for displaying toast notifications for form actions
-  const showToast = useFormToastFeedback(
-    ll["[PROFILE DETAILS]"],
-    { succeeded: ll["Your profile details have been updated."], authError: actionError },
-    llFormToastFeedback,
-  );
+  const showToast = useFormToastFeedback(ll["[PROFILE DETAILS]"], { succeeded: ll["Your profile details have been updated."] }, llFormToastFeedback);
 
   // Custom hook that observes an action's status and automatically opens the global demo mode modal
   const guardForDemoMode = useDemoModeGuard(actionStatus);
@@ -61,9 +58,17 @@ export function useProfileDetailsFormFeedback(
   });
 
   useEffect(() => {
-    if (hasPressedSubmitRef.current === false) return;
+    // If there is no timestamp, the user has not submitted yet
+    if (!timestamp) return;
+
+    // If the timestamp matches our ref, we have already handled this specific submission
+    if (timestamp === lastProcessedTimestampRef.current) return;
+
+    // Update the ref immediately so we do not process it again
+    lastProcessedTimestampRef.current = timestamp;
+
     onFeedbackNeeded();
-  }, [hasPressedSubmitRef, actionStatus, errors]);
+  }, [timestamp]);
 
   return { feedbackMessage, hideFeedbackMessage };
 }

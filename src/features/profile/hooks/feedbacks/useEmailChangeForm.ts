@@ -1,5 +1,5 @@
 // react
-import { useEffect, useEffectEvent } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
 
 // services, features, and other libraries
 import { authClient } from "@/services/better-auth/auth-client";
@@ -7,20 +7,22 @@ import { useFormToastFeedback, usePermanentMessageFeedback } from "@/hooks/feedb
 import { useDemoModeGuard } from "@/hooks";
 
 // types
-import type { RefObject } from "react";
-import type { EmailChangeFormActionResult } from "@/features/profile/actions/emailChangeForm";
+import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 import type { AnyFormApi } from "@tanstack/react-form";
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this form actions
 export function useEmailChangeFormFeedback(
-  hasPressedSubmitRef: RefObject<boolean>,
-  { actionStatus, actionError, needsApproval, errors }: EmailChangeFormActionResult,
+  { actionStatus, timestamp }: ActionResultWithFormState,
   reset: () => void,
   formStore: AnyFormApi["store"],
+  needsApproval: boolean,
   ll: typeof LangLoader.prototype.emailChangeFormFeedback,
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback,
 ) {
+  // This ref tracks which submission we have already processed (the <Activity /> replay problem fix)
+  const lastProcessedTimestampRef = useRef<typeof timestamp>(undefined);
+
   // Access the user session data from the client side
   const { refetch } = authClient.useSession();
 
@@ -34,7 +36,6 @@ export function useEmailChangeFormFeedback(
       succeeded: needsApproval
         ? ll["The email change has been initiated and needs to be approved. Please check your current email address for the approval link."]
         : ll["Your email has been changed successfully. A verification email has been sent to your new email address."],
-      authError: actionError,
     },
     llFormToastFeedback,
   );
@@ -70,9 +71,17 @@ export function useEmailChangeFormFeedback(
   });
 
   useEffect(() => {
-    if (hasPressedSubmitRef.current === false) return;
+    // If there is no timestamp, the user has not submitted yet
+    if (!timestamp) return;
+
+    // If the timestamp matches our ref, we have already handled this specific submission
+    if (timestamp === lastProcessedTimestampRef.current) return;
+
+    // Update the ref immediately so we do not process it again
+    lastProcessedTimestampRef.current = timestamp;
+
     onFeedbackNeeded();
-  }, [hasPressedSubmitRef, actionStatus, errors]);
+  }, [timestamp]);
 
   return { feedbackMessage, hideFeedbackMessage };
 }

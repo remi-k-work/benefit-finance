@@ -1,10 +1,11 @@
 // react
 import { startTransition, useActionState } from "react";
 
-// server actions and mutations
-import deleteAvatar from "@/features/profile/actions/deleteAvatar";
-
 // services, features, and other libraries
+import { Effect } from "effect";
+import { runRpcActionMain } from "@/lib/helpersEffectClient";
+import { initialFormState } from "@tanstack/react-form-nextjs";
+import { RpcProfileClient } from "@/features/profile/rpc/client";
 import { useConfirmModal } from "@/atoms/confirmModal";
 import { useDeleteAvatarFeedback } from "@/features/profile/hooks/feedbacks";
 
@@ -25,12 +26,24 @@ interface DeleteAvatarProps {
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
+const main = Effect.gen(function* () {
+  const { deleteAvatar } = yield* RpcProfileClient;
+
+  const result = yield* deleteAvatar().pipe(
+    Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+  );
+  return { ...initialFormState, ...result } as const;
+});
+
 export default function DeleteAvatar({ currentImage, ll, llDeleteAvatarFeedback, llFormToastFeedback }: DeleteAvatarProps) {
   // This is the hook that components use to open the modal
   const { openConfirmModal } = useConfirmModal();
 
   // Deletes a user avatar, sets the user's image to null, and removes the corresponding avatar file from uploadthing
-  const [deleteAvatarState, deleteAvatarAction, deleteAvatarIsPending] = useActionState(deleteAvatar, { actionStatus: "idle" });
+  const [deleteAvatarState, deleteAvatarAction, deleteAvatarIsPending] = useActionState(async () => await runRpcActionMain(main), {
+    ...initialFormState,
+    actionStatus: "idle",
+  });
 
   // Provide feedback to the user regarding this server action
   useDeleteAvatarFeedback(deleteAvatarState, llDeleteAvatarFeedback, llFormToastFeedback);

@@ -3,14 +3,13 @@
 "use client";
 
 // react
-import { useActionState, useEffect, useRef } from "react";
-
-// server actions and mutations
-import emailChange from "@/features/profile/actions/emailChangeForm";
+import { useActionState } from "react";
 
 // services, features, and other libraries
-import { Schema } from "effect";
-import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
+import { Effect, Schema } from "effect";
+import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { RpcProfileClient } from "@/features/profile/rpc/client";
+import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
 import { useAppForm } from "@/components/Form";
 import { EmailChangeFormSchemaEn, EmailChangeFormSchemaPl } from "@/features/profile/schemas";
 import { useEmailChangeFormFeedback } from "@/features/profile/hooks/feedbacks";
@@ -36,40 +35,43 @@ interface EmailChangeFormProps {
 }
 
 // constants
-import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/profile/constants/emailChangeForm";
+import { FORM_OPTIONS_EC, INITIAL_FORM_STATE_EC } from "@/features/profile/constants";
+
+const main = (formDataRecord: Record<string, string>) =>
+  Effect.gen(function* () {
+    const { emailChangeForm } = yield* RpcProfileClient;
+
+    const result = yield* emailChangeForm({ formDataRecord }).pipe(
+      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
+    );
+    return { ...initialFormState, ...result } as const;
+  });
 
 export default function EmailChangeForm({
-  user: { email: currentEmail },
+  user: { email: currentEmail, emailVerified: needsApproval },
   preferredLanguage,
   ll,
   llEmailChangeFormFeedback,
   llFormToastFeedback,
 }: EmailChangeFormProps) {
   // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(emailChange, INITIAL_FORM_STATE);
+  const [formState, formAction, isPending] = useActionState(
+    async (_: unknown, formData: FormData) => await runRpcActionMain(main(formDataToRecord(formData))),
+    INITIAL_FORM_STATE_EC,
+  );
+
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
-    ...FORM_OPTIONS,
-    defaultValues: { ...FORM_OPTIONS.defaultValues, newEmail: currentEmail },
+    ...FORM_OPTIONS_EC,
+    defaultValues: { ...FORM_OPTIONS_EC.defaultValues, newEmail: currentEmail },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
   });
 
-  // Track if the user has pressed the submit button
-  const hasPressedSubmitRef = useRef(false);
-
-  // All this new cleanup code is for the <Activity /> boundary
-  useEffect(() => {
-    // Reset the flag when the component unmounts
-    return () => {
-      hasPressedSubmitRef.current = false;
-    };
-  }, []);
-
   // Provide feedback to the user regarding this form actions
   const { feedbackMessage, hideFeedbackMessage } = useEmailChangeFormFeedback(
-    hasPressedSubmitRef,
     formState,
     reset,
     store,
+    needsApproval,
     llEmailChangeFormFeedback,
     llFormToastFeedback,
   );
@@ -80,7 +82,6 @@ export default function EmailChangeForm({
         action={formAction}
         onSubmit={async () => {
           await handleSubmit();
-          hasPressedSubmitRef.current = true;
         }}
       >
         <Card>
