@@ -1,6 +1,9 @@
 // react
 import { useEffect, useEffectEvent, useRef } from "react";
 
+// next
+import { useRouter } from "next/navigation";
+
 // services, features, and other libraries
 import { authClient } from "@/services/better-auth/auth-client";
 import { useFormToastFeedback } from "@/hooks/feedbacks";
@@ -22,6 +25,9 @@ export function useDeleteAvatarFeedback(
   // Access the user session data from the client side
   const { refetch } = authClient.useSession();
 
+  // To be able to refresh the page
+  const { refresh } = useRouter();
+
   // Generic hook for displaying toast notifications for form actions
   const showToast = useFormToastFeedback(
     ll["[PROFILE DETAILS]"],
@@ -40,6 +46,9 @@ export function useDeleteAvatarFeedback(
 
       // Refetch the user session data with the modified changes
       refetch();
+
+      // Refresh the page
+      refresh();
     } else {
       // Was a restricted operation attempted under the demo account? Inform the user
       guardForDemoMode();

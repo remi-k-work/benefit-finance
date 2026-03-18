@@ -1,6 +1,9 @@
 // react
 import { useEffect, useEffectEvent, useRef } from "react";
 
+// next
+import { useRouter } from "next/navigation";
+
 // services, features, and other libraries
 import { useFormToastFeedback, usePermanentMessageFeedback } from "@/hooks/feedbacks";
 import { useDemoModeGuard } from "@/hooks";
@@ -21,6 +24,9 @@ export function usePassChangeFormFeedback(
 ) {
   // This ref tracks which submission we have already processed (the <Activity /> replay problem fix)
   const lastProcessedTimestampRef = useRef<typeof timestamp>(undefined);
+
+  // To be able to refresh the page
+  const { refresh } = useRouter();
 
   // Generic hook for managing a permanent feedback message
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedback(formStore);
@@ -45,6 +51,9 @@ export function usePassChangeFormFeedback(
 
       // Reset the entire form after successful submission
       reset();
+
+      // Refresh the page
+      refresh();
 
       // Show the permanent feedback message as well
       showFeedbackMessage(hasCredential ? ll["Your password has been changed."] : ll["Your password has been setup."]);

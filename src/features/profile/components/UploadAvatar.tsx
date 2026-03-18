@@ -17,7 +17,7 @@ interface UploadAvatarProps {
 
 export default function UploadAvatar({ ll }: UploadAvatarProps) {
   // To be able to refresh the page
-  const router = useRouter();
+  const { refresh } = useRouter();
 
   return (
     <UploadButton
@@ -31,7 +31,7 @@ export default function UploadAvatar({ ll }: UploadAvatarProps) {
           toast.success(ll["SUCCESS!"], { description: message });
 
           // Refresh the page
-          router.refresh();
+          refresh();
         });
       }}
       onUploadError={(error: Error) => {

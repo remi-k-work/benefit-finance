@@ -5,14 +5,25 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 
 // services, features, and other libraries
+import { Effect } from "effect";
 import LangLoader from "@/lib/LangLoader";
-import { isUserAuthenticated } from "@/features/auth/lib/helpers";
+import { runComponentMain } from "@/lib/helpersEffect";
+import { Auth } from "@/features/auth/lib/auth";
 
 // components
 import Header, { HeaderSkeleton } from "@/components/Header";
 import { ConfirmModalRoot } from "@/atoms/confirmModal";
 import { DemoModeModalRoot } from "@/atoms/demoModeModal";
 import { SupportAgentModalRoot } from "@/atoms/supportAgentModal";
+
+const main = Effect.gen(function* () {
+  // Only check if the current user is authenticated (the check runs on the server side)
+  const auth = yield* Auth;
+  return yield* auth.getUserSessionData.pipe(
+    Effect.as(true),
+    Effect.orElse(() => Effect.succeed(false)),
+  );
+});
 
 // Layout remains the fast, static shell
 export default function Layout(props: LayoutProps<"/">) {
@@ -25,14 +36,14 @@ export default function Layout(props: LayoutProps<"/">) {
 
 // This new async component contains the dynamic logic
 async function LayoutContent({ children }: LayoutProps<"/">) {
-  // Create an instance of the lang loader needed for localization
-  const { preferredLanguage, confirmModal, demoModeModal, supportAgent } = await LangLoader.create();
-
-  // Only check if the current user is authenticated (the check runs on the server side)
-  const isAuthenticated = await isUserAuthenticated();
+  // Execute the main effect for the component, handle known errors, and return the payload
+  const isAuthenticated = await runComponentMain(main);
 
   // If the current user is authenticated, redirect to the dashboard
   if (isAuthenticated) redirect("/dashboard");
+
+  // Create an instance of the lang loader needed for localization
+  const { preferredLanguage, confirmModal, demoModeModal, supportAgent } = await LangLoader.create();
 
   return (
     <>

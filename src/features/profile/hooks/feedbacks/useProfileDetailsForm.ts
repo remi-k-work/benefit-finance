@@ -1,6 +1,9 @@
 // react
 import { useEffect, useEffectEvent, useRef } from "react";
 
+// next
+import { useRouter } from "next/navigation";
+
 // services, features, and other libraries
 import { authClient } from "@/services/better-auth/auth-client";
 import { useFormToastFeedback, usePermanentMessageFeedback } from "@/hooks/feedbacks";
@@ -25,6 +28,9 @@ export function useProfileDetailsFormFeedback(
   // Access the user session data from the client side
   const { refetch } = authClient.useSession();
 
+  // To be able to refresh the page
+  const { refresh } = useRouter();
+
   // Generic hook for managing a permanent feedback message
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedback(formStore);
 
@@ -45,6 +51,9 @@ export function useProfileDetailsFormFeedback(
 
       // Refetch the user session data with the modified changes
       refetch();
+
+      // Refresh the page
+      refresh();
 
       // Show the permanent feedback message as well
       showFeedbackMessage(ll["Your profile details have been updated."]);

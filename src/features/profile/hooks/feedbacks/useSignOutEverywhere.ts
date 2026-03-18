@@ -1,6 +1,9 @@
 // react
 import { useEffect, useEffectEvent, useRef } from "react";
 
+// next
+import { useRouter } from "next/navigation";
+
 // services, features, and other libraries
 import { useFormToastFeedback } from "@/hooks/feedbacks";
 
@@ -17,6 +20,9 @@ export function useSignOutEverywhereFeedback(
   // This ref tracks which submission we have already processed (the <Activity /> replay problem fix)
   const lastProcessedTimestampRef = useRef<typeof timestamp>(undefined);
 
+  // To be able to refresh the page
+  const { refresh } = useRouter();
+
   // Generic hook for displaying toast notifications for form actions
   const showToast = useFormToastFeedback(ll["[SIGN OUT EVERYWHERE]"], { succeeded: ll["You signed out from all devices successfully."] }, llFormToastFeedback);
 
@@ -25,6 +31,9 @@ export function useSignOutEverywhereFeedback(
     if (actionStatus === "succeeded") {
       // Display a success message
       showToast("succeeded");
+
+      // Refresh the page
+      refresh();
     } else {
       // All other statuses ("invalid", "failed", "authError") handled centrally
       showToast(actionStatus);
