@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-children-prop */
 
 "use client";
@@ -56,6 +57,7 @@ export default function ResetPassForm({ token, preferredLanguage, ll, llResetPas
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS_RP,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
+    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? ResetPassFormSchemaEn : ResetPassFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
@@ -80,7 +82,7 @@ export default function ResetPassForm({ token, preferredLanguage, ll, llResetPas
               validators={{
                 onChange: Schema.standardSchemaV1(
                   preferredLanguage === "en" ? ResetPassFormSchemaEn.from.fields.newPassword : ResetPassFormSchemaPl.from.fields.newPassword,
-                ),
+                ) as any,
               }}
               children={(field) => (
                 <field.PasswordField label={ll["New Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />
@@ -91,7 +93,7 @@ export default function ResetPassForm({ token, preferredLanguage, ll, llResetPas
               validators={{
                 onChange: Schema.standardSchemaV1(
                   preferredLanguage === "en" ? ResetPassFormSchemaEn.from.fields.confirmPassword : ResetPassFormSchemaPl.from.fields.confirmPassword,
-                ),
+                ) as any,
               }}
               children={(field) => (
                 <field.PasswordField label={ll["Confirm Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-children-prop */
 
 "use client";
@@ -64,6 +65,7 @@ export default function EmailChangeForm({
     ...FORM_OPTIONS_EC,
     defaultValues: { ...FORM_OPTIONS_EC.defaultValues, newEmail: currentEmail },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
+    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? EmailChangeFormSchemaEn : EmailChangeFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
@@ -95,7 +97,7 @@ export default function EmailChangeForm({
               validators={{
                 onChange: Schema.standardSchemaV1(
                   preferredLanguage === "en" ? EmailChangeFormSchemaEn.fields.newEmail : EmailChangeFormSchemaPl.fields.newEmail,
-                ),
+                ) as any,
               }}
               children={(field) => (
                 <field.TextField

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-children-prop */
 
 "use client";
@@ -55,6 +56,7 @@ export default function NewLeadForm({ preferredLanguage, ll, llFormToastFeedback
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS_N,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
+    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? NewLeadFormSchemaEn : NewLeadFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
@@ -77,7 +79,9 @@ export default function NewLeadForm({ preferredLanguage, ll, llFormToastFeedback
             <AppField
               name="firstName"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? NewLeadFormSchemaEn.fields.firstName : NewLeadFormSchemaPl.fields.firstName),
+                onChange: Schema.standardSchemaV1(
+                  preferredLanguage === "en" ? NewLeadFormSchemaEn.fields.firstName : NewLeadFormSchemaPl.fields.firstName,
+                ) as any,
               }}
               children={(field) => (
                 <field.TextField
@@ -93,7 +97,9 @@ export default function NewLeadForm({ preferredLanguage, ll, llFormToastFeedback
             <AppField
               name="lastName"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? NewLeadFormSchemaEn.fields.lastName : NewLeadFormSchemaPl.fields.lastName),
+                onChange: Schema.standardSchemaV1(
+                  preferredLanguage === "en" ? NewLeadFormSchemaEn.fields.lastName : NewLeadFormSchemaPl.fields.lastName,
+                ) as any,
               }}
               children={(field) => (
                 <field.TextField label={ll["Last Name"]} size={40} maxLength={26} spellCheck={false} autoComplete="family-name" placeholder={ll["e.g., Doe"]} />
@@ -102,7 +108,7 @@ export default function NewLeadForm({ preferredLanguage, ll, llFormToastFeedback
             <AppField
               name="email"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? NewLeadFormSchemaEn.fields.email : NewLeadFormSchemaPl.fields.email),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? NewLeadFormSchemaEn.fields.email : NewLeadFormSchemaPl.fields.email) as any,
               }}
               children={(field) => (
                 <field.TextField
@@ -118,7 +124,7 @@ export default function NewLeadForm({ preferredLanguage, ll, llFormToastFeedback
             <AppField
               name="phone"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? NewLeadFormSchemaEn.fields.phone : NewLeadFormSchemaPl.fields.phone),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? NewLeadFormSchemaEn.fields.phone : NewLeadFormSchemaPl.fields.phone) as any,
               }}
               children={(field) => (
                 <field.TextField
@@ -138,7 +144,7 @@ export default function NewLeadForm({ preferredLanguage, ll, llFormToastFeedback
               validators={{
                 onChange: Schema.standardSchemaV1(
                   preferredLanguage === "en" ? NewLeadFormSchemaEn.fields.serviceOfInterest : NewLeadFormSchemaPl.fields.serviceOfInterest,
-                ),
+                ) as any,
               }}
               children={(field) => (
                 <field.SelectField label={ll["Service of Interest"]} options={SERVICE_OF_INTEREST_TEXTONLY(ll)} placeholder={ll["Service of Interest"]} />
@@ -146,6 +152,11 @@ export default function NewLeadForm({ preferredLanguage, ll, llFormToastFeedback
             />
             <AppField
               name="mustConfirmDataSharing"
+              validators={{
+                onChange: Schema.standardSchemaV1(
+                  preferredLanguage === "en" ? NewLeadFormSchemaEn.fields.mustConfirmDataSharing.from : NewLeadFormSchemaPl.fields.mustConfirmDataSharing.from,
+                ) as any,
+              }}
               children={(field) => (
                 <field.CheckBoxField
                   label={
@@ -158,6 +169,13 @@ export default function NewLeadForm({ preferredLanguage, ll, llFormToastFeedback
             />
             <AppField
               name="mustAcceptPartnershipTerms"
+              validators={{
+                onChange: Schema.standardSchemaV1(
+                  preferredLanguage === "en"
+                    ? NewLeadFormSchemaEn.fields.mustAcceptPartnershipTerms.from
+                    : NewLeadFormSchemaPl.fields.mustAcceptPartnershipTerms.from,
+                ) as any,
+              }}
               children={(field) => <field.CheckBoxField label={ll["I accept the Terms and Conditions of Partnership"]} />}
             />
           </CardContent>

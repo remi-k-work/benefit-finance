@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-children-prop */
 
 "use client";
@@ -62,6 +63,7 @@ export default function SignInForm({ redirect, preferredLanguage, ll, llSignInSo
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS_SI,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
+    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? SignInFormSchemaEn : SignInFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
@@ -83,7 +85,9 @@ export default function SignInForm({ redirect, preferredLanguage, ll, llSignInSo
           <CardContent>
             <AppField
               name="email"
-              validators={{ onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? SignInFormSchemaEn.fields.email : SignInFormSchemaPl.fields.email) }}
+              validators={{
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? SignInFormSchemaEn.fields.email : SignInFormSchemaPl.fields.email) as any,
+              }}
               children={(field) => (
                 <field.TextField
                   label={ll["Email"]}
@@ -98,7 +102,7 @@ export default function SignInForm({ redirect, preferredLanguage, ll, llSignInSo
             <AppField
               name="password"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? SignInFormSchemaEn.fields.password : SignInFormSchemaPl.fields.password),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? SignInFormSchemaEn.fields.password : SignInFormSchemaPl.fields.password) as any,
               }}
               children={(field) => (
                 <field.PasswordField

@@ -1,22 +1,29 @@
 // services, features, and other libraries
-import { useFormContext, useFieldContext } from "@/components/Form";
-import { useStore } from "@tanstack/react-form";
+import { useFieldContext } from "@/components/Form";
 
 // components
-import Server from "./Server";
-import Client from "./Client";
+import ErrorList from "./ErrorList";
 
 // types
-import type { StandardSchemaV1Issue } from "@tanstack/react-form";
+import type { ZodError } from "zod";
 
 export default function FieldErrors() {
-  // Get the form context
-  const { store } = useFormContext();
-
   // Get the field context
-  const { name } = useFieldContext();
+  const {
+    state: {
+      meta: { errors, isTouched },
+    },
+  } = useFieldContext();
 
-  const formServerErrors: Record<string, StandardSchemaV1Issue[]> | undefined = useStore(store, (state) => state.errorMap.onServer?.form);
+  // Only render errors once the field has been touched and is no longer pristine
+  const errorMessages = isTouched ? errors.map(({ message }: ZodError) => message) : [];
 
-  return <div className="min-h-4">{formServerErrors?.[name] ? <Server /> : <Client />}</div>;
+  // Live error messages (unique strings)
+  const liveErrorMessages = [...new Set(errorMessages)];
+
+  return (
+    <div className="min-h-4">
+      <ErrorList messages={liveErrorMessages} />
+    </div>
+  );
 }

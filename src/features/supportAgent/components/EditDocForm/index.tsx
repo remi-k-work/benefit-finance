@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-children-prop */
 
 "use client";
@@ -63,6 +64,7 @@ export default function EditDocForm({ doc: { id: docId, title, content }, prefer
     ...FORM_OPTIONS_E,
     defaultValues: { ...FORM_OPTIONS_E.defaultValues, title, content, markdown: content },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
+    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? EditDocFormSchemaEn : EditDocFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
@@ -94,7 +96,7 @@ export default function EditDocForm({ doc: { id: docId, title, content }, prefer
             <AppField
               name="title"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? EditDocFormSchemaEn.fields.title : EditDocFormSchemaPl.fields.title),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? EditDocFormSchemaEn.fields.title : EditDocFormSchemaPl.fields.title) as any,
               }}
               children={(field) => (
                 <field.TextField label={ll["Title"]} size={40} maxLength={51} spellCheck autoComplete="off" placeholder={ll["e.g., About Benefit Finance"]} />
@@ -120,7 +122,7 @@ export default function EditDocForm({ doc: { id: docId, title, content }, prefer
             <AppField
               name="content"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? EditDocFormSchemaEn.fields.content : EditDocFormSchemaPl.fields.content),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? EditDocFormSchemaEn.fields.content : EditDocFormSchemaPl.fields.content) as any,
               }}
               children={(field) => (
                 <field.TextAreaField

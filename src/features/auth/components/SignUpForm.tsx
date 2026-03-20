@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-children-prop */
 
 "use client";
@@ -55,6 +56,7 @@ export default function SignUpForm({ preferredLanguage, ll, llSignUpFormFeedback
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS_SU,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
+    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? SignUpFormSchemaEn : SignUpFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
@@ -77,7 +79,9 @@ export default function SignUpForm({ preferredLanguage, ll, llSignUpFormFeedback
             <AppField
               name="name"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? SignUpFormSchemaEn.from.fields.name : SignUpFormSchemaPl.from.fields.name),
+                onChange: Schema.standardSchemaV1(
+                  preferredLanguage === "en" ? SignUpFormSchemaEn.from.fields.name : SignUpFormSchemaPl.from.fields.name,
+                ) as any,
               }}
               children={(field) => (
                 <field.TextField label={ll["Name"]} size={40} maxLength={26} spellCheck={false} autoComplete="name" placeholder={ll["e.g. John Doe"]} />
@@ -86,7 +90,9 @@ export default function SignUpForm({ preferredLanguage, ll, llSignUpFormFeedback
             <AppField
               name="email"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? SignUpFormSchemaEn.from.fields.email : SignUpFormSchemaPl.from.fields.email),
+                onChange: Schema.standardSchemaV1(
+                  preferredLanguage === "en" ? SignUpFormSchemaEn.from.fields.email : SignUpFormSchemaPl.from.fields.email,
+                ) as any,
               }}
               children={(field) => (
                 <field.TextField
@@ -104,7 +110,7 @@ export default function SignUpForm({ preferredLanguage, ll, llSignUpFormFeedback
               validators={{
                 onChange: Schema.standardSchemaV1(
                   preferredLanguage === "en" ? SignUpFormSchemaEn.from.fields.password : SignUpFormSchemaPl.from.fields.password,
-                ),
+                ) as any,
               }}
               children={(field) => (
                 <field.PasswordField label={ll["Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />
@@ -115,7 +121,7 @@ export default function SignUpForm({ preferredLanguage, ll, llSignUpFormFeedback
               validators={{
                 onChange: Schema.standardSchemaV1(
                   preferredLanguage === "en" ? SignUpFormSchemaEn.from.fields.confirmPassword : SignUpFormSchemaPl.from.fields.confirmPassword,
-                ),
+                ) as any,
               }}
               children={(field) => (
                 <field.PasswordField label={ll["Confirm Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-children-prop */
 
 "use client";
@@ -43,6 +44,7 @@ export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFe
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
+    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn : ContactUsFormSchemaPl) as any },
   });
 
   // Track if the user has pressed the submit button
@@ -84,7 +86,7 @@ export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFe
             <AppField
               name="name"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.name : ContactUsFormSchemaPl.fields.name),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.name : ContactUsFormSchemaPl.fields.name) as any,
               }}
               children={(field) => (
                 <field.TextField
@@ -100,7 +102,7 @@ export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFe
             <AppField
               name="email"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.email : ContactUsFormSchemaPl.fields.email),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.email : ContactUsFormSchemaPl.fields.email) as any,
               }}
               children={(field) => (
                 <field.TextField
@@ -116,7 +118,9 @@ export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFe
             <AppField
               name="subject"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.subject : ContactUsFormSchemaPl.fields.subject),
+                onChange: Schema.standardSchemaV1(
+                  preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.subject : ContactUsFormSchemaPl.fields.subject,
+                ) as any,
               }}
               children={(field) => (
                 <field.TextField
@@ -132,7 +136,7 @@ export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFe
             <AppField
               name="phone"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.phone : ContactUsFormSchemaPl.fields.phone),
+                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.phone : ContactUsFormSchemaPl.fields.phone) as any,
               }}
               children={(field) => (
                 <field.TextField
@@ -150,7 +154,9 @@ export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFe
             <AppField
               name="message"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.message : ContactUsFormSchemaPl.fields.message),
+                onChange: Schema.standardSchemaV1(
+                  preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.message : ContactUsFormSchemaPl.fields.message,
+                ) as any,
               }}
               children={(field) => (
                 <field.TextAreaField
@@ -170,7 +176,9 @@ export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFe
             <AppField
               name="captcha"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.captcha : ContactUsFormSchemaPl.fields.captcha),
+                onChange: Schema.standardSchemaV1(
+                  preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.captcha : ContactUsFormSchemaPl.fields.captcha,
+                ) as any,
               }}
               children={(field) => (
                 <field.TextField

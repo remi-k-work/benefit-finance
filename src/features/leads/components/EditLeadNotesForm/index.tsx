@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-children-prop */
 
 "use client";
@@ -59,6 +60,7 @@ export default function EditLeadNotesForm({ allAvailableLeads: { id: leadId, int
     ...FORM_OPTIONS_E,
     defaultValues: { ...FORM_OPTIONS_E.defaultValues, internalNotes: internalNotes ?? "" },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
+    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? EditLeadNotesFormSchemaEn : EditLeadNotesFormSchemaPl) as any },
     onSubmit: async ({ value: { internalNotes } }) => {
       // Only reflect changes in the UI if the action was successful
       startTransition(() => {
@@ -84,7 +86,7 @@ export default function EditLeadNotesForm({ allAvailableLeads: { id: leadId, int
           validators={{
             onChange: Schema.standardSchemaV1(
               preferredLanguage === "en" ? EditLeadNotesFormSchemaEn.fields.internalNotes : EditLeadNotesFormSchemaPl.fields.internalNotes,
-            ),
+            ) as any,
           }}
           children={(field) => (
             <field.TextAreaField

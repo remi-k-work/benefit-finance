@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // drizzle and db access
 import { LeadDB } from "@/features/leads/db";
 
@@ -33,7 +35,7 @@ const RpcLeadsLayer = RpcLeads.toLayer({
 
       // Insert a new lead
       const leadDB = yield* LeadDB;
-      yield* leadDB.insertLead({ referredBy, firstName, lastName, email, phone, serviceOfInterest });
+      yield* leadDB.insertLead({ referredBy, firstName, lastName, email, phone, serviceOfInterest: serviceOfInterest as any });
 
       // The form has successfully validated and submitted!
       return { actionStatus: "succeeded", timestamp: Date.now() };

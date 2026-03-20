@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-children-prop */
 
 "use client";
@@ -55,6 +56,7 @@ export default function ForgotPassForm({ preferredLanguage, ll, llForgotPassForm
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS_FP,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
+    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? ForgotPassFormSchemaEn : ForgotPassFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
@@ -77,7 +79,9 @@ export default function ForgotPassForm({ preferredLanguage, ll, llForgotPassForm
             <AppField
               name="email"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ForgotPassFormSchemaEn.fields.email : ForgotPassFormSchemaPl.fields.email),
+                onChange: Schema.standardSchemaV1(
+                  preferredLanguage === "en" ? ForgotPassFormSchemaEn.fields.email : ForgotPassFormSchemaPl.fields.email,
+                ) as any,
               }}
               children={(field) => (
                 <field.TextField

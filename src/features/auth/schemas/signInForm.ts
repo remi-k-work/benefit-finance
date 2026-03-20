@@ -7,11 +7,11 @@ import { EmailSchemaEn, EmailSchemaPl, PasswordSchemaEn, PasswordSchemaPl } from
 export const SignInFormSchemaEn = Schema.Struct({
   email: EmailSchemaEn,
   password: PasswordSchemaEn,
-  rememberMe: Schema.optionalWith(Schema.BooleanFromString, { default: () => false }),
+  rememberMe: Schema.optionalWith(Schema.BooleanFromUnknown, { default: () => false, exact: true }),
 });
 
 export const SignInFormSchemaPl = Schema.Struct({
   email: EmailSchemaPl,
   password: PasswordSchemaPl,
-  rememberMe: Schema.optionalWith(Schema.BooleanFromString, { default: () => false }),
+  rememberMe: Schema.optionalWith(Schema.BooleanFromUnknown, { default: () => false, exact: true }),
 });

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-children-prop */
 
 "use client";
@@ -76,6 +77,7 @@ export default function ProfileDetailsForm({
     ...FORM_OPTIONS_PD,
     defaultValues: { ...FORM_OPTIONS_PD.defaultValues, name: currentName },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
+    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? ProfileDetailsFormSchemaEn : ProfileDetailsFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
@@ -110,7 +112,9 @@ export default function ProfileDetailsForm({
             <AppField
               name="name"
               validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ProfileDetailsFormSchemaEn.fields.name : ProfileDetailsFormSchemaPl.fields.name),
+                onChange: Schema.standardSchemaV1(
+                  preferredLanguage === "en" ? ProfileDetailsFormSchemaEn.fields.name : ProfileDetailsFormSchemaPl.fields.name,
+                ) as any,
               }}
               children={(field) => (
                 <field.TextField label={ll["Name"]} size={40} maxLength={26} spellCheck={false} autoComplete="name" placeholder={ll["e.g. John Doe"]} />
