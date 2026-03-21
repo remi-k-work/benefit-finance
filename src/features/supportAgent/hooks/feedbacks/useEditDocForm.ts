@@ -1,11 +1,8 @@
 // react
-import { startTransition, useEffect, useEffectEvent, useRef } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
 
 // next
-import { redirect } from "next/navigation";
-
-// server actions and mutations
-import refreshPage from "@/actions/refreshPage";
+import { redirect, useRouter } from "next/navigation";
 
 // services, features, and other libraries
 import { useFormToastFeedback, usePermanentMessageFeedback } from "@/hooks/feedbacks";
@@ -27,6 +24,9 @@ export function useEditDocFormFeedback(
   // This ref tracks which submission we have already processed (the <Activity /> replay problem fix)
   const lastProcessedTimestampRef = useRef<typeof timestamp>(undefined);
 
+  // To be able to refresh the page
+  const { refresh } = useRouter();
+
   // Generic hook for managing a permanent feedback message
   const { feedbackMessage, showFeedbackMessage, hideFeedbackMessage } = usePermanentMessageFeedback(formStore);
 
@@ -45,15 +45,14 @@ export function useEditDocFormFeedback(
       // Reset the entire form after successful submission
       reset();
 
+      // Refresh the page
+      refresh();
+
       // Show the permanent feedback message as well
       showFeedbackMessage(ll["The document has been updated."]);
 
       // Redirect the user back to the browse page
       return setTimeout(() => {
-        // Refresh the current page to show the latest data
-        startTransition(() => {
-          refreshPage();
-        });
         redirect("/manager/support-agent");
       }, 3000);
     } else {

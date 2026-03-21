@@ -4,7 +4,7 @@
 "use client";
 
 // react
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 // services, features, and other libraries
 import { Effect, Schema } from "effect";
@@ -57,11 +57,6 @@ export default function PassChangeForm({ hasCredential, preferredLanguage, ll, l
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...(hasCredential ? FORM_OPTIONS_CHANGE_PC : FORM_OPTIONS_SETUP_PC),
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-    validators: {
-      onMount: hasCredential
-        ? (Schema.standardSchemaV1(preferredLanguage === "en" ? PassChangeFormSchemaEn : PassChangeFormSchemaPl) as any)
-        : (Schema.standardSchemaV1(preferredLanguage === "en" ? PassSetupFormSchemaEn : PassSetupFormSchemaPl) as any),
-    },
   });
 
   // Provide feedback to the user regarding this form actions
@@ -73,6 +68,12 @@ export default function PassChangeForm({ hasCredential, preferredLanguage, ll, l
     llPassChangeFormFeedback,
     llFormToastFeedback,
   );
+
+  // Reset the form and hide the feedback message
+  useEffect(() => {
+    reset();
+    hideFeedbackMessage();
+  }, [reset, hideFeedbackMessage]);
 
   return (
     <AppForm>

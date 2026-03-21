@@ -4,7 +4,7 @@
 "use client";
 
 // react
-import { useActionState, useRef } from "react";
+import { useActionState, useEffect, useRef } from "react";
 
 // drizzle and db access
 import type { Doc } from "@/features/supportAgent/db";
@@ -64,7 +64,6 @@ export default function EditDocForm({ doc: { id: docId, title, content }, prefer
     ...FORM_OPTIONS_E,
     defaultValues: { ...FORM_OPTIONS_E.defaultValues, title, content, markdown: content },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? EditDocFormSchemaEn : EditDocFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
@@ -78,6 +77,13 @@ export default function EditDocForm({ doc: { id: docId, title, content }, prefer
     ll,
     llFormToastFeedback,
   );
+
+  // Reset the form and hide the feedback message
+  useEffect(() => {
+    reset();
+    markdownFieldRef.current?.setMarkdown(content);
+    hideFeedbackMessage();
+  }, [reset, content, hideFeedbackMessage]);
 
   return (
     <AppForm>

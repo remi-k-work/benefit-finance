@@ -4,7 +4,7 @@
 "use client";
 
 // react
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 // services, features, and other libraries
 import { Effect, Schema } from "effect";
@@ -57,11 +57,16 @@ export default function ResetPassForm({ token, preferredLanguage, ll, llResetPas
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS_RP,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? ResetPassFormSchemaEn : ResetPassFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
   const { feedbackMessage, hideFeedbackMessage } = useResetPassFormFeedback(formState, reset, store, llResetPassFormFeedback, llFormToastFeedback);
+
+  // Reset the form and hide the feedback message
+  useEffect(() => {
+    reset();
+    hideFeedbackMessage();
+  }, [reset, hideFeedbackMessage]);
 
   return (
     <AppForm>

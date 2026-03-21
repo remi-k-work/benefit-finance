@@ -4,7 +4,7 @@
 "use client";
 
 // react
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 // services, features, and other libraries
 import { Effect, Schema } from "effect";
@@ -56,11 +56,16 @@ export default function SignUpForm({ preferredLanguage, ll, llSignUpFormFeedback
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS_SU,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? SignUpFormSchemaEn : SignUpFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
   const { feedbackMessage, hideFeedbackMessage } = useSignUpFormFeedback(formState, reset, store, llSignUpFormFeedback, llFormToastFeedback);
+
+  // Reset the form and hide the feedback message
+  useEffect(() => {
+    reset();
+    hideFeedbackMessage();
+  }, [reset, hideFeedbackMessage]);
 
   return (
     <AppForm>

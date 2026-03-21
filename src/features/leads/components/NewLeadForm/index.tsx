@@ -4,7 +4,7 @@
 "use client";
 
 // react
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 // services, features, and other libraries
 import { Effect, Schema } from "effect";
@@ -56,11 +56,16 @@ export default function NewLeadForm({ preferredLanguage, ll, llFormToastFeedback
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS_N,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? NewLeadFormSchemaEn : NewLeadFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
   const { feedbackMessage, hideFeedbackMessage } = useNewLeadFormFeedback(formState, reset, store, ll, llFormToastFeedback);
+
+  // Reset the form and hide the feedback message
+  useEffect(() => {
+    reset();
+    hideFeedbackMessage();
+  }, [reset, hideFeedbackMessage]);
 
   return (
     <AppForm>

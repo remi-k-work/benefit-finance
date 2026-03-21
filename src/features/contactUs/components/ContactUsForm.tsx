@@ -44,7 +44,6 @@ export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFe
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn : ContactUsFormSchemaPl) as any },
   });
 
   // Track if the user has pressed the submit button
@@ -67,6 +66,12 @@ export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFe
     llContactUsFormFeedback,
     llFormToastFeedback,
   );
+
+  // Reset the form and hide the feedback message
+  useEffect(() => {
+    reset();
+    hideFeedbackMessage();
+  }, [reset, hideFeedbackMessage]);
 
   return (
     <AppForm>

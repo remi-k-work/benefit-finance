@@ -4,7 +4,7 @@
 "use client";
 
 // react
-import { startTransition, useActionState } from "react";
+import { startTransition, useActionState, useEffect } from "react";
 
 // drizzle and db access
 import type { AllAvailableLeads } from "@/features/leads/db";
@@ -60,7 +60,6 @@ export default function EditLeadNotesForm({ allAvailableLeads: { id: leadId, int
     ...FORM_OPTIONS_E,
     defaultValues: { ...FORM_OPTIONS_E.defaultValues, internalNotes: internalNotes ?? "" },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? EditLeadNotesFormSchemaEn : EditLeadNotesFormSchemaPl) as any },
     onSubmit: async ({ value: { internalNotes } }) => {
       // Only reflect changes in the UI if the action was successful
       startTransition(() => {
@@ -72,6 +71,11 @@ export default function EditLeadNotesForm({ allAvailableLeads: { id: leadId, int
 
   // Provide feedback to the user regarding this form actions
   useEditLeadNotesFormFeedback(formState, reset, ll, llFormToastFeedback);
+
+  // Reset the form and hide the feedback message
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
   return (
     <AppForm>

@@ -4,7 +4,7 @@
 "use client";
 
 // react
-import { useActionState, useRef } from "react";
+import { useActionState, useEffect, useRef } from "react";
 
 // services, features, and other libraries
 import { Effect, Schema } from "effect";
@@ -59,7 +59,6 @@ export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback 
   const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
     ...FORM_OPTIONS_N,
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? NewDocFormSchemaEn : NewDocFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
@@ -73,6 +72,13 @@ export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback 
     ll,
     llFormToastFeedback,
   );
+
+  // Reset the form and hide the feedback message
+  useEffect(() => {
+    reset();
+    markdownFieldRef.current?.setMarkdown("");
+    hideFeedbackMessage();
+  }, [reset, hideFeedbackMessage]);
 
   return (
     <AppForm>

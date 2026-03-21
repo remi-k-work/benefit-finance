@@ -4,7 +4,7 @@
 "use client";
 
 // react
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 // services, features, and other libraries
 import { Effect, Schema } from "effect";
@@ -65,7 +65,6 @@ export default function EmailChangeForm({
     ...FORM_OPTIONS_EC,
     defaultValues: { ...FORM_OPTIONS_EC.defaultValues, newEmail: currentEmail },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? EmailChangeFormSchemaEn : EmailChangeFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
@@ -77,6 +76,12 @@ export default function EmailChangeForm({
     llEmailChangeFormFeedback,
     llFormToastFeedback,
   );
+
+  // Reset the form and hide the feedback message
+  useEffect(() => {
+    reset();
+    hideFeedbackMessage();
+  }, [reset, hideFeedbackMessage]);
 
   return (
     <AppForm>

@@ -4,7 +4,7 @@
 "use client";
 
 // react
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 // services, features, and other libraries
 import { Effect, Schema } from "effect";
@@ -77,11 +77,16 @@ export default function ProfileDetailsForm({
     ...FORM_OPTIONS_PD,
     defaultValues: { ...FORM_OPTIONS_PD.defaultValues, name: currentName },
     transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-    validators: { onMount: Schema.standardSchemaV1(preferredLanguage === "en" ? ProfileDetailsFormSchemaEn : ProfileDetailsFormSchemaPl) as any },
   });
 
   // Provide feedback to the user regarding this form actions
   const { feedbackMessage, hideFeedbackMessage } = useProfileDetailsFormFeedback(formState, reset, store, llProfileDetailsFormFeedback, llFormToastFeedback);
+
+  // Reset the form and hide the feedback message
+  useEffect(() => {
+    reset();
+    hideFeedbackMessage();
+  }, [reset, hideFeedbackMessage]);
 
   return (
     <AppForm>
