@@ -2,8 +2,8 @@
 import { inspect } from "node:util";
 
 // services, features, and other libraries
-import { Effect, Schedule, Sink, Stream } from "effect";
-import { InferAgentUIMessage, stepCountIs, ToolLoopAgent } from "ai";
+import { Effect, Schedule } from "effect";
+import { generateText, InferAgentUIMessage, stepCountIs, ToolLoopAgent } from "ai";
 import { google } from "@ai-sdk/google";
 import { getInformationTool } from "@/features/supportAgent/tools/getInformation";
 import { AiSdkError } from "@/lib/errors";
@@ -15,11 +15,14 @@ export type SupportAgentUIMessage = InferAgentUIMessage<typeof supportAgent>;
 // constants
 import { INSTRUCTIONS } from "@/features/supportAgent/constants";
 
+const PREFLIGHT_TIMEOUT = "3 seconds";
 const MODEL_TIMEOUT = "15 seconds";
-const RETRY_SCHEDULE = Schedule.intersect(Schedule.exponential("500 millis"), Schedule.recurs(2)).pipe(Schedule.jittered);
+
+const PREFLIGHT_RETRY = Schedule.recurs(1).pipe(Schedule.addDelay(() => "200 millis"));
+const STREAM_RETRY = Schedule.intersect(Schedule.exponential("500 millis"), Schedule.recurs(2)).pipe(Schedule.jittered);
 
 const MODEL_CANDIDATES = [
-  { name: "gemini-3-flash-preview", model: google("gemini-3-flash-preview") },
+  { name: "gemini-pro-latest", model: google("gemini-pro-latest") },
   { name: "gemini-flash-latest", model: google("gemini-flash-latest") },
   { name: "gemini-flash-lite-latest", model: google("gemini-flash-lite-latest") },
 ] as const;
@@ -31,6 +34,8 @@ const supportAgent = (model: LanguageModel) =>
     instructions: INSTRUCTIONS,
 
     stopWhen: stepCountIs(5),
+    maxRetries: 0,
+
     tools: {
       getInformation: getInformationTool,
     },
@@ -68,54 +73,46 @@ const supportAgent = (model: LanguageModel) =>
     },
   });
 
-// Initialize the support agent stream
-const initAgentStream = (model: LanguageModel, prompt: string | ModelMessage[]) =>
-  Effect.tryPromise({
-    try: () => supportAgent(model).stream({ prompt }),
-    catch: (cause) => new AiSdkError({ message: "Failed to init support agent stream", cause }),
-  });
-
 // Run the support agent using a specified model and prompt, and start streaming its responses
-const runAgentWithModel = (model: LanguageModel, prompt: string | ModelMessage[]) =>
+const runAgentWithModel = (name: string, model: LanguageModel, prompt: string | ModelMessage[]) =>
   Effect.gen(function* () {
-    // Initialize the support agent stream
-    const result = yield* initAgentStream(model, prompt);
+    // First, perform the pre-flight check; if this check fails, the model attempt will also fail, activating the fallback chain
+    yield* Effect.tryPromise({
+      try: () => generateText({ model, prompt: "OK", maxOutputTokens: 1, maxRetries: 0 }),
+      catch: (cause) => new AiSdkError({ message: `Pre-flight failed for ${name}`, cause }),
+    }).pipe(
+      Effect.timeoutFail({
+        duration: PREFLIGHT_TIMEOUT,
+        onTimeout: () => new AiSdkError({ message: `Pre-flight timeout for ${name}` }),
+      }),
+      Effect.retry(PREFLIGHT_RETRY),
+      Effect.asVoid,
+    );
+
+    // If we reach this point, the model is responsive; proceed to initialize the real agent
+    const result = yield* Effect.tryPromise({
+      try: () => supportAgent(model).stream({ prompt }),
+      catch: (cause) => new AiSdkError({ message: "Failed to init support agent stream", cause }),
+    });
 
     // Convert to response immediately so we can check the underlying stream
-    const response = result.toUIMessageStreamResponse();
-
-    // Peek at the stream to force any immediate network errors (like 429s)
-    const stream = Stream.fromAsyncIterable(result.textStream, (cause) => new AiSdkError({ message: "Stream read failed", cause }));
-    yield* Stream.run(stream, Sink.head());
+    const response = yield* Effect.try({
+      try: () => result.toUIMessageStreamResponse(),
+      catch: (cause) => new AiSdkError({ message: "Failed to generate stream response", cause }),
+    });
 
     return { result, response };
   });
-
-// Hybrid Error Classifier: Checks standard HTTP status codes, falling back to string matching
-const isRetryableModelFailure = (cause: unknown) => {
-  // If Vercel AI SDK passed through an HTTP status code natively
-  if (cause instanceof Error && "statusCode" in cause) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const status = (cause as any).statusCode;
-    if ([408, 429, 500, 502, 503, 504].includes(status)) return true;
-  }
-
-  // Broad fallback for nested errors, native fetch errors, and our custom timeouts
-  const message = JSON.stringify(cause).toLowerCase();
-  return ["timeout", "timed out", "429", "rate limit", "network", "econnreset", "temporarily unavailable", "service unavailable"].some((fragment) =>
-    message.includes(fragment),
-  );
-};
 
 // The resilience policy ensures the support agent operates using multiple models in a fallback chain (model1 -> model2 -> model3 -> model4 -> model5)
 const supportAgentPolicy = (prompt: string | ModelMessage[]) =>
   Effect.gen(function* () {
     const attempts = MODEL_CANDIDATES.map(({ name, model }) =>
-      runAgentWithModel(model, prompt).pipe(
-        // Enforce a strict time limit on this specific attempt
+      runAgentWithModel(name, model, prompt).pipe(
+        // The overall timeout for this model attempt
         Effect.timeoutFail({ duration: MODEL_TIMEOUT, onTimeout: () => new AiSdkError({ message: `Model '${name}' timed out after ${MODEL_TIMEOUT}` }) }),
-        // Retry only if the classifier deems the failure transient
-        Effect.retry({ schedule: RETRY_SCHEDULE, while: isRetryableModelFailure }),
+        // The standard retry mechanism does not require any additional logic; it attempts to retry 2 times before failing to proceed to the next model
+        Effect.retry(STREAM_RETRY),
         // Log a warning if the model completely fails all retries before moving to the next candidate
         Effect.tapError((cause) =>
           Effect.logWarning(
