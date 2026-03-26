@@ -1,25 +1,23 @@
 // services, features, and other libraries
-import { Schema } from "effect";
+import { Field, FormBuilder } from "@lucas-barake/effect-form-react";
 
 // schemas
-import { PasswordSchemaEn, PasswordSchemaPl } from "@/schemas";
+import { PasswordSchemaEn2, PasswordSchemaPl2 } from "@/schemas";
 
-export const ResetPassFormSchemaEn = Schema.Struct({
-  newPassword: PasswordSchemaEn,
-  confirmPassword: PasswordSchemaEn,
-}).pipe(
-  // Add a filter to ensure that passwords match
-  Schema.filter(({ newPassword, confirmPassword }) => {
-    if (newPassword !== confirmPassword) return { path: ["confirmPassword"], message: "Passwords do not match" };
-  }),
-);
+// types
+import type { Lang } from "@/lib/LangLoader";
 
-export const ResetPassFormSchemaPl = Schema.Struct({
-  newPassword: PasswordSchemaPl,
-  confirmPassword: PasswordSchemaPl,
-}).pipe(
-  // Add a filter to ensure that passwords match
-  Schema.filter(({ newPassword, confirmPassword }) => {
-    if (newPassword !== confirmPassword) return { path: ["confirmPassword"], message: "Hasła nie pasują" };
-  }),
-);
+const NewPasswordField = (preferredLanguage: Lang) =>
+  preferredLanguage === "en" ? Field.makeField("newPassword", PasswordSchemaEn2) : Field.makeField("newPassword", PasswordSchemaPl2);
+const ConfirmPasswordField = (preferredLanguage: Lang) =>
+  preferredLanguage === "en" ? Field.makeField("confirmPassword", PasswordSchemaEn2) : Field.makeField("confirmPassword", PasswordSchemaPl2);
+
+export const resetPassFormBuilder = (preferredLanguage: Lang) =>
+  FormBuilder.empty
+    .addField(NewPasswordField(preferredLanguage))
+    .addField(ConfirmPasswordField(preferredLanguage))
+    .refine(({ newPassword, confirmPassword }) => {
+      if (newPassword !== confirmPassword) {
+        return { path: ["confirmPassword"], message: preferredLanguage === "en" ? "Passwords do not match" : "Hasła nie pasują" };
+      }
+    });

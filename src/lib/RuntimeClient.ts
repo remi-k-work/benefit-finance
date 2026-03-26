@@ -1,5 +1,6 @@
 // services, features, and other libraries
 import { Layer, Logger, ManagedRuntime } from "effect";
+import { Atom } from "@effect-atom/atom-react";
 import { RpcLeadsClient } from "@/features/leads/rpc/client";
 import { RpcUsersClient } from "@/features/users/rpc/client";
 import { RpcSupportAgentClient } from "@/features/supportAgent/rpc/client";
@@ -18,3 +19,4 @@ const MainLayer = Layer.mergeAll(
 );
 
 export const RuntimeClient = ManagedRuntime.make(MainLayer);
+export const RuntimeAtom = Atom.runtime(MainLayer);

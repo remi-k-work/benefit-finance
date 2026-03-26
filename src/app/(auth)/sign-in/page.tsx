@@ -9,7 +9,7 @@ import { SignInPageSchema } from "@/features/auth/schemas";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
-import SignInForm from "@/features/auth/components/SignInForm2";
+import SignInForm from "@/features/auth/components/SignInForm";
 import SignInDemoUser from "@/features/auth/components/SignInDemoUser";
 
 // types

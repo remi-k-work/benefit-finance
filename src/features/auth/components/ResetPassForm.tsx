@@ -1,23 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/no-children-prop */
-
 "use client";
 
 // react
-import { useActionState, useEffect } from "react";
+import { useMemo } from "react";
 
 // services, features, and other libraries
-import { Effect, Schema } from "effect";
-import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { Effect } from "effect";
+import { useAtomSet } from "@effect-atom/atom-react";
+import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcAuthClient } from "@/features/auth/rpc/client";
-import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
-import { useAppForm } from "@/components/Form";
-import { ResetPassFormSchemaEn, ResetPassFormSchemaPl } from "@/features/auth/schemas";
-import { useResetPassFormFeedback } from "@/features/auth/hooks/feedbacks";
+import { resetPassFormBuilder } from "@/features/auth/schemas";
+import { RuntimeAtom } from "@/lib/RuntimeClient";
 
 // components
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
-import InfoLine from "@/components/Form/InfoLine";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
+import { PasswordInput } from "@/components/Form2/Inputs";
+import { FormSubmit, SubmitStatus } from "@/components/Form2";
 
 // assets
 import { KeyIcon } from "@heroicons/react/24/outline";
@@ -34,90 +31,62 @@ interface ResetPassFormProps {
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
-// constants
-import { FORM_OPTIONS_RP, INITIAL_FORM_STATE_RP } from "@/features/auth/constants";
-
-const main = (token: string, formDataRecord: Record<string, string>) =>
-  Effect.gen(function* () {
-    const { resetPassForm } = yield* RpcAuthClient;
-
-    const result = yield* resetPassForm({ token, formDataRecord }).pipe(
-      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
-    );
-    return { ...initialFormState, ...result } as const;
+const resetPassForm = (token: string, preferredLanguage: Lang) =>
+  FormReact.make(resetPassFormBuilder(preferredLanguage), {
+    runtime: RuntimeAtom,
+    fields: { newPassword: PasswordInput, confirmPassword: PasswordInput },
+    onSubmit: (_, { decoded: { newPassword } }) =>
+      Effect.gen(function* () {
+        const { resetPassForm } = yield* RpcAuthClient;
+        yield* resetPassForm({ token, newPassword });
+      }),
   });
 
 export default function ResetPassForm({ token, preferredLanguage, ll, llResetPassFormFeedback, llFormToastFeedback }: ResetPassFormProps) {
-  // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(
-    async (_: unknown, formData: FormData) => await runRpcActionMain(main(token, formDataToRecord(formData))),
-    INITIAL_FORM_STATE_RP,
-  );
-
-  const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
-    ...FORM_OPTIONS_RP,
-    transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-  });
-
-  // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useResetPassFormFeedback(formState, reset, store, llResetPassFormFeedback, llFormToastFeedback);
-
-  // Reset the form and hide the feedback message
-  useEffect(() => {
-    reset();
-    hideFeedbackMessage();
-  }, [reset, hideFeedbackMessage]);
+  const resetPassFormL = useMemo(() => resetPassForm(token, preferredLanguage), [token, preferredLanguage]);
+  const submit = useAtomSet(resetPassFormL.submit);
 
   return (
-    <AppForm>
-      <form
-        action={formAction}
-        onSubmit={async () => {
-          await handleSubmit();
-        }}
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>{ll["Reset Your Password"]}</CardTitle>
-            <CardDescription>{ll["Enter your new password below"]}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <AppField
-              name="newPassword"
-              validators={{
-                onChange: Schema.standardSchemaV1(
-                  preferredLanguage === "en" ? ResetPassFormSchemaEn.from.fields.newPassword : ResetPassFormSchemaPl.from.fields.newPassword,
-                ) as any,
-              }}
-              children={(field) => (
-                <field.PasswordField label={ll["New Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />
-              )}
+    <Card>
+      <CardHeader>
+        <CardTitle>{ll["Reset Your Password"]}</CardTitle>
+        <CardDescription>{ll["Enter your new password below"]}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <resetPassFormL.Initialize defaultValues={{ newPassword: "", confirmPassword: "" }}>
+          <form
+            onSubmit={(ev) => {
+              ev.preventDefault();
+              submit();
+            }}
+          >
+            <resetPassFormL.newPassword label={ll["New Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />
+            <br />
+            <resetPassFormL.confirmPassword
+              label={ll["Confirm Password"]}
+              size={40}
+              maxLength={129}
+              autoComplete="new-password"
+              placeholder={ll["e.g. P@ssw0rd!"]}
             />
-            <AppField
-              name="confirmPassword"
-              validators={{
-                onChange: Schema.standardSchemaV1(
-                  preferredLanguage === "en" ? ResetPassFormSchemaEn.from.fields.confirmPassword : ResetPassFormSchemaPl.from.fields.confirmPassword,
-                ) as any,
-              }}
-              children={(field) => (
-                <field.PasswordField label={ll["Confirm Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />
-              )}
+            <br />
+            <SubmitStatus
+              form={resetPassFormL}
+              formName={llResetPassFormFeedback["[RESET PASSWORD]"]}
+              succeededDesc={llResetPassFormFeedback["The password has been reset. Please sign in with your new password."]}
+              redirectTo="/sign-in"
+              llFormToastFeedback={llFormToastFeedback}
             />
-          </CardContent>
-          <CardFooter>
-            <InfoLine message={feedbackMessage} />
             <FormSubmit
+              form={resetPassFormL}
               submitIcon={<KeyIcon className="size-9" />}
               submitText={ll["Reset Password"]}
               resetText={ll["Clear Form"]}
               cancelText={ll["Cancel and Go Back"]}
-              isPending={isPending}
-              onClearedForm={hideFeedbackMessage}
             />
-          </CardFooter>
-        </Card>
-      </form>
-    </AppForm>
+          </form>
+        </resetPassFormL.Initialize>
+      </CardContent>
+    </Card>
   );
 }
