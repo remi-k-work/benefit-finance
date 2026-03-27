@@ -52,7 +52,7 @@ export default function ResetPassForm({ token, preferredLanguage, ll, llResetPas
   useSubmitToast(
     resetPassFormL,
     llFormToastFeedback,
-    llResetPassFormFeedback["[RESET PASSWORD]"],
+    llResetPassFormFeedback["[RESET YOUR PASSWORD]"],
     llResetPassFormFeedback["The password has been reset. Please sign in with your new password."],
     undefined,
     "/sign-in",
@@ -85,7 +85,7 @@ export default function ResetPassForm({ token, preferredLanguage, ll, llResetPas
             <SubmitStatus
               form={resetPassFormL}
               ll={llFormToastFeedback}
-              formName={llResetPassFormFeedback["[RESET PASSWORD]"]}
+              formName={llResetPassFormFeedback["[RESET YOUR PASSWORD]"]}
               succeededDesc={llResetPassFormFeedback["The password has been reset. Please sign in with your new password."]}
             />
             <FormSubmit

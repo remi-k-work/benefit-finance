@@ -1,8 +1,13 @@
 // services, features, and other libraries
-import { Schema } from "effect";
+import { Field, FormBuilder } from "@lucas-barake/effect-form-react";
 
 // schemas
-import { EmailSchemaEn, EmailSchemaPl } from "@/schemas";
+import { EmailSchemaEn2, EmailSchemaPl2 } from "@/schemas";
 
-export const ForgotPassFormSchemaEn = Schema.Struct({ email: EmailSchemaEn });
-export const ForgotPassFormSchemaPl = Schema.Struct({ email: EmailSchemaPl });
+// types
+import type { Lang } from "@/lib/LangLoader";
+
+const EmailPasswordField = (preferredLanguage: Lang) =>
+  preferredLanguage === "en" ? Field.makeField("email", EmailSchemaEn2) : Field.makeField("email", EmailSchemaPl2);
+
+export const forgotPassFormBuilder = (preferredLanguage: Lang) => FormBuilder.empty.addField(EmailPasswordField(preferredLanguage));
