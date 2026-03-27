@@ -10,6 +10,7 @@ import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcAuthClient } from "@/features/auth/rpc/client";
 import { signUpFormBuilder } from "@/features/auth/schemas";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
+import { useSubmitToast } from "@/components/Form2/hooks";
 
 // components
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
@@ -42,8 +43,19 @@ const signUpForm = (preferredLanguage: Lang) =>
   });
 
 export default function SignUpForm({ preferredLanguage, ll, llSignUpFormFeedback, llFormToastFeedback }: SignUpFormProps) {
+  // Get the form context
   const signUpFormL = useMemo(() => signUpForm(preferredLanguage), [preferredLanguage]);
   const submit = useAtomSet(signUpFormL.submit);
+
+  // Provide feedback to the user regarding this form actions
+  useSubmitToast(
+    signUpFormL,
+    llFormToastFeedback,
+    llSignUpFormFeedback["[SIGN UP]"],
+    llSignUpFormFeedback["You signed up successfully."],
+    undefined,
+    "/dashboard",
+  );
 
   return (
     <Card>
@@ -82,10 +94,9 @@ export default function SignUpForm({ preferredLanguage, ll, llSignUpFormFeedback
             <br />
             <SubmitStatus
               form={signUpFormL}
+              ll={llFormToastFeedback}
               formName={llSignUpFormFeedback["[SIGN UP]"]}
               succeededDesc={llSignUpFormFeedback["You signed up successfully."]}
-              redirectTo="/dashboard"
-              llFormToastFeedback={llFormToastFeedback}
             />
             <FormSubmit
               form={signUpFormL}

@@ -10,6 +10,7 @@ import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcAuthClient } from "@/features/auth/rpc/client";
 import { resetPassFormBuilder } from "@/features/auth/schemas";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
+import { useSubmitToast } from "@/components/Form2/hooks";
 
 // components
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
@@ -43,8 +44,19 @@ const resetPassForm = (token: string, preferredLanguage: Lang) =>
   });
 
 export default function ResetPassForm({ token, preferredLanguage, ll, llResetPassFormFeedback, llFormToastFeedback }: ResetPassFormProps) {
+  // Get the form context
   const resetPassFormL = useMemo(() => resetPassForm(token, preferredLanguage), [token, preferredLanguage]);
   const submit = useAtomSet(resetPassFormL.submit);
+
+  // Provide feedback to the user regarding this form actions
+  useSubmitToast(
+    resetPassFormL,
+    llFormToastFeedback,
+    llResetPassFormFeedback["[RESET PASSWORD]"],
+    llResetPassFormFeedback["The password has been reset. Please sign in with your new password."],
+    undefined,
+    "/sign-in",
+  );
 
   return (
     <Card>
@@ -72,10 +84,9 @@ export default function ResetPassForm({ token, preferredLanguage, ll, llResetPas
             <br />
             <SubmitStatus
               form={resetPassFormL}
+              ll={llFormToastFeedback}
               formName={llResetPassFormFeedback["[RESET PASSWORD]"]}
               succeededDesc={llResetPassFormFeedback["The password has been reset. Please sign in with your new password."]}
-              redirectTo="/sign-in"
-              llFormToastFeedback={llFormToastFeedback}
             />
             <FormSubmit
               form={resetPassFormL}

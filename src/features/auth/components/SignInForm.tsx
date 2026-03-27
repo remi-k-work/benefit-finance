@@ -13,6 +13,7 @@ import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcAuthClient } from "@/features/auth/rpc/client";
 import { signInFormBuilder } from "@/features/auth/schemas";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
+import { useSubmitToast } from "@/components/Form2/hooks";
 
 // components
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
@@ -49,8 +50,19 @@ const signInForm = (preferredLanguage: Lang) =>
   });
 
 export default function SignInForm({ redirect, preferredLanguage, ll, llSignInSocial, llSignInFormFeedback, llFormToastFeedback }: SignInFormProps) {
+  // Get the form context
   const signInFormL = useMemo(() => signInForm(preferredLanguage), [preferredLanguage]);
   const submit = useAtomSet(signInFormL.submit);
+
+  // Provide feedback to the user regarding this form actions
+  useSubmitToast(
+    signInFormL,
+    llFormToastFeedback,
+    llSignInFormFeedback["[SIGN IN]"],
+    llSignInFormFeedback["You signed in successfully."],
+    undefined,
+    redirect ?? "/dashboard",
+  );
 
   return (
     <Card>
@@ -89,10 +101,9 @@ export default function SignInForm({ redirect, preferredLanguage, ll, llSignInSo
             <br />
             <SubmitStatus
               form={signInFormL}
+              ll={llFormToastFeedback}
               formName={llSignInFormFeedback["[SIGN IN]"]}
               succeededDesc={llSignInFormFeedback["You signed in successfully."]}
-              redirectTo={redirect ?? "/dashboard"}
-              llFormToastFeedback={llFormToastFeedback}
             />
             <FormSubmit
               form={signInFormL}

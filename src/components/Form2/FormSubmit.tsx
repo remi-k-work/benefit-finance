@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 
 // services, features, and other libraries
+import { Option } from "effect";
 import { useAtomSet, useAtomValue } from "@effect-atom/atom-react";
 
 // components
@@ -38,14 +39,20 @@ export function FormSubmit<TFields extends Field.FieldsRecord, R, A, E>({
   // Get the form context
   const isDirty = useAtomValue(form.isDirty);
   const { waiting } = useAtomValue(form.submit);
+  const hasChangedSinceSubmit = useAtomValue(form.hasChangedSinceSubmit);
+  const lastSubmittedValues = useAtomValue(form.lastSubmittedValues);
   const reset = useAtomSet(form.reset);
 
   // To be able to send the user back after canceling
   const { back } = useRouter();
 
+  // Determine allowance to submit the form
+  const hasSubmittedSuccessfully = Option.isSome(lastSubmittedValues);
+  const canSubmit = isDirty && !waiting && (hasChangedSinceSubmit || !hasSubmittedSuccessfully);
+
   return (
     <section className="flex flex-wrap gap-3 *:flex-1 md:gap-6">
-      <Button type="submit" disabled={!isDirty || waiting}>
+      <Button type="submit" disabled={!canSubmit}>
         {waiting ? <Loader2 className="size-9 animate-spin" /> : <>{submitIcon}</>}
         {submitText}
       </Button>
