@@ -1,5 +1,7 @@
 {
   "Verify Email": "Zweryfikuj adres E-mail",
   "To access all our features": "Aby uzyskać dostęp do wszystkich naszych funkcji",
-  "Your email has been verified. Thank you!": "Twój adres e-mail został zweryfikowany. Dziękujemy!"
+  "Your email has been verified. Thank you!": "Twój adres e-mail został zweryfikowany. Dziękujemy!",
+  "Email": "Adres e-mail",
+  "e.g. john.doe@gmail.com": "np. jan.kowalski@gmail.com"
 }

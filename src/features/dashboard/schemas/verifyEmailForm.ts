@@ -10,4 +10,4 @@ import type { Lang } from "@/lib/LangLoader";
 const EmailField = (preferredLanguage: Lang) =>
   preferredLanguage === "en" ? Field.makeField("email", EmailSchemaEn2) : Field.makeField("email", EmailSchemaPl2);
 
-export const forgotPassFormBuilder = (preferredLanguage: Lang) => FormBuilder.empty.addField(EmailField(preferredLanguage));
+export const verifyEmailFormBuilder = (preferredLanguage: Lang) => FormBuilder.empty.addField(EmailField(preferredLanguage));

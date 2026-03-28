@@ -19,9 +19,6 @@ const RpcDashboardLayer = RpcDashboard.toLayer({
 
       // Trigger the email verification process manually for this user through the better-auth api
       yield* auth.sendVerificationEmail(email);
-
-      // The action has completed successfully
-      return { actionStatus: "succeeded", timestamp: Date.now() };
     }),
 }).pipe(Layer.provide(Auth.Default));
 

@@ -1,9 +1,12 @@
+// react
+import { useEffect, useState } from "react";
+
 // next
 import { useRouter } from "next/navigation";
 
 // services, features, and other libraries
-import { Option } from "effect";
-import { useAtomSet, useAtomValue } from "@effect-atom/atom-react";
+import { Duration, Option } from "effect";
+import { Result, useAtomSet, useAtomSubscribe, useAtomValue } from "@effect-atom/atom-react";
 
 // components
 import { Button } from "@/components/ui/custom/button";
@@ -15,6 +18,7 @@ import { Loader2 } from "lucide-react";
 // types
 import type { Field } from "@lucas-barake/effect-form-react";
 import type { BuiltForm } from "@lucas-barake/effect-form-react/FormReact";
+import type { DurationInput } from "effect/Duration";
 import type { ReactNode } from "react";
 
 interface FormSubmitProps<TFields extends Field.FieldsRecord, R, A, E> {
@@ -23,7 +27,10 @@ interface FormSubmitProps<TFields extends Field.FieldsRecord, R, A, E> {
   submitText: string;
   resetText?: string;
   cancelText?: string;
+  showReset?: boolean;
   showCancel?: boolean;
+  isStateless?: boolean;
+  cooldown?: DurationInput;
   onClearedForm?: () => void;
 }
 
@@ -33,7 +40,10 @@ export function FormSubmit<TFields extends Field.FieldsRecord, R, A, E>({
   submitText,
   resetText = "Clear Form",
   cancelText = "Cancel and Go Back",
+  showReset = true,
   showCancel = true,
+  isStateless = false,
+  cooldown = 0,
   onClearedForm,
 }: FormSubmitProps<TFields, R, A, E>) {
   // Get the form context
@@ -46,9 +56,35 @@ export function FormSubmit<TFields extends Field.FieldsRecord, R, A, E>({
   // To be able to send the user back after canceling
   const { back } = useRouter();
 
+  // Add a simple cooling down state
+  const [isCoolingDown, setIsCoolingDown] = useState(false);
+
+  // Decode the duration safely once (handles numbers, "9 seconds", "1 millis", etc.)
+  const cooldownMillis = Duration.toMillis(Duration.decode(cooldown));
+
+  // Begin the cooldown only after the form has been successfully submitted
+  useAtomSubscribe(
+    form.submit,
+    (result) => {
+      if (Result.isSuccess(result)) {
+        // Make sure the cooldown duration has been actually requested
+        if (cooldownMillis > 0) setIsCoolingDown(true);
+      }
+    },
+    { immediate: false },
+  );
+
+  // Reset the cooling down state
+  useEffect(() => {
+    if (isCoolingDown) {
+      const timer = setTimeout(() => setIsCoolingDown(false), cooldownMillis);
+      return () => clearTimeout(timer);
+    }
+  }, [isCoolingDown, cooldownMillis]);
+
   // Determine allowance to submit the form
   const hasSubmittedSuccessfully = Option.isSome(lastSubmittedValues);
-  const canSubmit = isDirty && !waiting && (hasChangedSinceSubmit || !hasSubmittedSuccessfully);
+  const canSubmit = isStateless ? !waiting && !isCoolingDown : isDirty && !waiting && !isCoolingDown && (hasChangedSinceSubmit || !hasSubmittedSuccessfully);
 
   return (
     <section className="flex flex-wrap gap-3 *:flex-1 md:gap-6">
@@ -56,17 +92,19 @@ export function FormSubmit<TFields extends Field.FieldsRecord, R, A, E>({
         {waiting ? <Loader2 className="size-9 animate-spin" /> : <>{submitIcon}</>}
         {submitText}
       </Button>
-      <Button
-        type="button"
-        variant="destructive"
-        onClick={() => {
-          reset();
-          onClearedForm?.();
-        }}
-      >
-        <XCircleIcon className="size-9" />
-        {resetText}
-      </Button>
+      {showReset && (
+        <Button
+          type="button"
+          variant="destructive"
+          onClick={() => {
+            reset();
+            onClearedForm?.();
+          }}
+        >
+          <XCircleIcon className="size-9" />
+          {resetText}
+        </Button>
+      )}
       {showCancel && (
         <Button type="button" variant="secondary" onClick={() => back()}>
           <ArrowLeftCircleIcon className="size-9" />

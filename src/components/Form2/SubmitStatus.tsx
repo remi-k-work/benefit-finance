@@ -6,7 +6,7 @@ import { ParseError } from "effect/ParseResult";
 import { BetterAuthApiError, UnauthorizedAccessError } from "@/lib/errors";
 
 // components
-import InfoLine from "./InfoLine";
+import { InfoLine } from "./InfoLine";
 
 // types
 import type { Field } from "@lucas-barake/effect-form-react";

@@ -11,7 +11,7 @@ interface InfoLineProps {
   className?: string;
 }
 
-export default function InfoLine({ message, className }: InfoLineProps) {
+export function InfoLine({ message, className }: InfoLineProps) {
   return (
     <AnimatePresence>
       {message && (

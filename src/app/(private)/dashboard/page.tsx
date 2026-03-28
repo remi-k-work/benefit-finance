@@ -12,7 +12,7 @@ import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
 import SectionHeader, { SectionHeaderSkeleton } from "@/components/SectionHeader";
 import LeadsForReferrerTable, { LeadsForReferrerTableSkeleton } from "@/features/leads/components/LeadsForReferrerTable";
 import ProfileInfo from "@/features/dashboard/components/ProfileInfo";
-import VerifyEmail from "@/features/dashboard/components/VerifyEmail";
+import VerifyEmailForm from "@/features/dashboard/components/VerifyEmailForm";
 
 // types
 import type { Metadata } from "next";
@@ -28,9 +28,9 @@ const main = Effect.gen(function* () {
   const { user, session } = yield* auth.getUserSessionData;
 
   // Create an instance of the lang loader needed for localization
-  const { dashboardPage: ll, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback } = yield* LangLoader.createEffect();
+  const { dashboardPage: ll, preferredLanguage, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback } = yield* LangLoader.createEffect();
 
-  return { user, session, ll, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback };
+  return { user, session, ll, preferredLanguage, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback };
 });
 
 // Page remains the fast, static shell
@@ -45,7 +45,7 @@ export default function Page() {
 // This new async component contains the dynamic logic
 async function PageContent() {
   // Execute the main effect for the page, map known errors to the subsequent navigation helpers, and return the payload
-  const { user, session, ll, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback } = await runPageMainOrNavigate(main);
+  const { user, session, ll, preferredLanguage, profileInfo, verifyEmail, verifyEmailFeedback, formToastFeedback } = await runPageMainOrNavigate(main);
 
   return (
     <>
@@ -55,7 +55,13 @@ async function PageContent() {
       <SectionHeader title={ll["Your basic profile information"]} />
       <article className="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <ProfileInfo user={user} session={session} ll={profileInfo} />
-        <VerifyEmail user={user} ll={verifyEmail} llVerifyEmailFeedback={verifyEmailFeedback} llFormToastFeedback={formToastFeedback} />
+        <VerifyEmailForm
+          user={user}
+          preferredLanguage={preferredLanguage}
+          ll={verifyEmail}
+          llVerifyEmailFeedback={verifyEmailFeedback}
+          llFormToastFeedback={formToastFeedback}
+        />
       </article>
     </>
   );
