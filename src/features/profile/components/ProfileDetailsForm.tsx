@@ -1,26 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/no-children-prop */
-
 "use client";
 
 // react
-import { useActionState, useEffect } from "react";
+import { useMemo } from "react";
 
 // services, features, and other libraries
-import { Effect, Schema } from "effect";
-import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { Effect } from "effect";
+import { useAtomSet } from "@effect-atom/atom-react";
+import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcProfileClient } from "@/features/profile/rpc/client";
-import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
-import { useAppForm } from "@/components/Form";
-import { ProfileDetailsFormSchemaEn, ProfileDetailsFormSchemaPl } from "@/features/profile/schemas";
-import { useProfileDetailsFormFeedback } from "@/features/profile/hooks/feedbacks";
+import { profileDetailsFormBuilder } from "@/features/profile/schemas";
+import { RuntimeAtom } from "@/lib/RuntimeClient";
+import { useSubmitToast } from "@/components/Form2/hooks";
 
 // components
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
+import { TextInput } from "@/components/Form2/Inputs";
+import { FormSubmit, SubmitStatus } from "@/components/Form2";
 import { UserAvatar } from "@/components/Avatar/User";
 import UploadAvatar from "./UploadAvatar";
 import DeleteAvatar from "./DeleteAvatar";
-import InfoLine from "@/components/Form/InfoLine";
 
 // assets
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
@@ -42,22 +40,20 @@ interface ProfileDetailsFormProps {
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
-// constants
-import { FORM_OPTIONS_PD, INITIAL_FORM_STATE_PD } from "@/features/profile/constants";
-
-const main = (formDataRecord: Record<string, string>) =>
-  Effect.gen(function* () {
-    const { profileDetailsForm } = yield* RpcProfileClient;
-
-    const result = yield* profileDetailsForm({ formDataRecord }).pipe(
-      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
-    );
-    return { ...initialFormState, ...result } as const;
+const profileDetailsForm = (preferredLanguage: Lang) =>
+  FormReact.make(profileDetailsFormBuilder(preferredLanguage), {
+    runtime: RuntimeAtom,
+    fields: { name: TextInput },
+    onSubmit: (_, { decoded: { name } }) =>
+      Effect.gen(function* () {
+        const { profileDetailsForm } = yield* RpcProfileClient;
+        yield* profileDetailsForm({ name });
+      }),
   });
 
 export default function ProfileDetailsForm({
   user,
-  user: { name: currentName, image: currentImage },
+  user: { name, image },
   session,
   preferredLanguage,
   ll,
@@ -67,79 +63,66 @@ export default function ProfileDetailsForm({
   llProfileDetailsFormFeedback,
   llFormToastFeedback,
 }: ProfileDetailsFormProps) {
-  // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(
-    async (_: unknown, formData: FormData) => await runRpcActionMain(main(formDataToRecord(formData))),
-    INITIAL_FORM_STATE_PD,
-  );
-
-  const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
-    ...FORM_OPTIONS_PD,
-    defaultValues: { ...FORM_OPTIONS_PD.defaultValues, name: currentName },
-    transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-  });
+  // Get the form context
+  const profileDetailsFormL = useMemo(() => profileDetailsForm(preferredLanguage), [preferredLanguage]);
+  const submit = useAtomSet(profileDetailsFormL.submit);
 
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useProfileDetailsFormFeedback(formState, reset, store, llProfileDetailsFormFeedback, llFormToastFeedback);
-
-  // Reset the form and hide the feedback message
-  useEffect(() => {
-    reset();
-    hideFeedbackMessage();
-  }, [reset, hideFeedbackMessage]);
+  useSubmitToast(
+    profileDetailsFormL,
+    llFormToastFeedback,
+    llProfileDetailsFormFeedback["[PROFILE DETAILS]"],
+    llProfileDetailsFormFeedback["Your profile details have been updated."],
+    undefined,
+    undefined,
+    true,
+  );
 
   return (
-    <AppForm>
-      <form
-        action={formAction}
-        onSubmit={async () => {
-          await handleSubmit();
-        }}
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>{ll["Profile Details"]}</CardTitle>
-            <CardDescription>{ll["Change your avatar and name"]}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-4 flex flex-wrap items-center justify-around gap-4 sm:justify-between">
-              <UserAvatar user={user} session={session} />
-              <div className="grid gap-4">
-                <UploadAvatar ll={llUploadAvatar} />
-                <DeleteAvatar
-                  currentImage={currentImage ?? undefined}
-                  ll={llDeleteAvatar}
-                  llDeleteAvatarFeedback={llDeleteAvatarFeedback}
-                  llFormToastFeedback={llFormToastFeedback}
-                />
-              </div>
-            </div>
-            <AppField
-              name="name"
-              validators={{
-                onChange: Schema.standardSchemaV1(
-                  preferredLanguage === "en" ? ProfileDetailsFormSchemaEn.fields.name : ProfileDetailsFormSchemaPl.fields.name,
-                ) as any,
-              }}
-              children={(field) => (
-                <field.TextField label={ll["Name"]} size={40} maxLength={26} spellCheck={false} autoComplete="name" placeholder={ll["e.g. John Doe"]} />
-              )}
+    <Card>
+      <CardHeader>
+        <CardTitle>{ll["Profile Details"]}</CardTitle>
+        <CardDescription>{ll["Change your avatar and name"]}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="mb-4 flex flex-wrap items-center justify-around gap-4 sm:justify-between">
+          <UserAvatar user={user} session={session} />
+          <div className="grid gap-4">
+            <UploadAvatar ll={llUploadAvatar} />
+            <DeleteAvatar
+              currentImage={image ?? undefined}
+              ll={llDeleteAvatar}
+              llDeleteAvatarFeedback={llDeleteAvatarFeedback}
+              llFormToastFeedback={llFormToastFeedback}
             />
-          </CardContent>
-          <CardFooter>
-            <InfoLine message={feedbackMessage} />
+          </div>
+        </div>
+        <profileDetailsFormL.Initialize defaultValues={{ name }}>
+          <form
+            onSubmit={(ev) => {
+              ev.preventDefault();
+              submit();
+            }}
+          >
+            <profileDetailsFormL.name label={ll["Name"]} size={40} maxLength={26} spellCheck={false} autoComplete="name" placeholder={ll["e.g. John Doe"]} />
+            <br />
+            <SubmitStatus
+              form={profileDetailsFormL}
+              ll={llFormToastFeedback}
+              formName={llProfileDetailsFormFeedback["[PROFILE DETAILS]"]}
+              succeededDesc={llProfileDetailsFormFeedback["Your profile details have been updated."]}
+            />
             <FormSubmit
+              form={profileDetailsFormL}
               submitIcon={<PencilSquareIcon className="size-9" />}
               submitText={ll["Change Name"]}
               resetText={ll["Clear Form"]}
               cancelText={ll["Cancel and Go Back"]}
-              isPending={isPending}
               showCancel={false}
-              onClearedForm={hideFeedbackMessage}
             />
-          </CardFooter>
-        </Card>
-      </form>
-    </AppForm>
+          </form>
+        </profileDetailsFormL.Initialize>
+      </CardContent>
+    </Card>
   );
 }

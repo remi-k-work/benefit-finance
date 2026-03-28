@@ -4,8 +4,7 @@ import { Rpc, RpcGroup } from "@effect/rpc";
 import { BetterAuthApiError } from "@/lib/errors";
 
 // schemas
-import { EmailSchemaEn2, PasswordSchemaEn2 } from "@/schemas";
-import { NameSchemaEn } from "@/features/auth/schemas";
+import { EmailSchemaEn2, NameSchemaEn, PasswordSchemaEn2 } from "@/schemas";
 
 export class RpcAuth extends RpcGroup.make(
   Rpc.make("forgotPassForm", {

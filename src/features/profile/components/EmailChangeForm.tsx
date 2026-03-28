@@ -1,23 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/no-children-prop */
-
 "use client";
 
 // react
-import { useActionState, useEffect } from "react";
+import { useMemo } from "react";
 
 // services, features, and other libraries
-import { Effect, Schema } from "effect";
-import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { Effect } from "effect";
+import { useAtomSet } from "@effect-atom/atom-react";
+import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcProfileClient } from "@/features/profile/rpc/client";
-import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
-import { useAppForm } from "@/components/Form";
-import { EmailChangeFormSchemaEn, EmailChangeFormSchemaPl } from "@/features/profile/schemas";
-import { useEmailChangeFormFeedback } from "@/features/profile/hooks/feedbacks";
+import { emailChangeFormBuilder } from "@/features/profile/schemas";
+import { RuntimeAtom } from "@/lib/RuntimeClient";
+import { useSubmitToast } from "@/components/Form2/hooks";
 
 // components
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
-import InfoLine from "@/components/Form/InfoLine";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
+import { TextInput } from "@/components/Form2/Inputs";
+import { FormSubmit, SubmitStatus } from "@/components/Form2";
 
 // assets
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
@@ -35,101 +33,89 @@ interface EmailChangeFormProps {
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
-// constants
-import { FORM_OPTIONS_EC, INITIAL_FORM_STATE_EC } from "@/features/profile/constants";
-
-const main = (formDataRecord: Record<string, string>) =>
-  Effect.gen(function* () {
-    const { emailChangeForm } = yield* RpcProfileClient;
-
-    const result = yield* emailChangeForm({ formDataRecord }).pipe(
-      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
-    );
-    return { ...initialFormState, ...result } as const;
+const emailChangeForm = (preferredLanguage: Lang) =>
+  FormReact.make(emailChangeFormBuilder(preferredLanguage), {
+    runtime: RuntimeAtom,
+    fields: { newEmail: TextInput },
+    onSubmit: (_, { decoded: { newEmail } }) =>
+      Effect.gen(function* () {
+        const { emailChangeForm } = yield* RpcProfileClient;
+        yield* emailChangeForm({ newEmail });
+      }),
   });
 
 export default function EmailChangeForm({
-  user: { email: currentEmail, emailVerified: needsApproval },
+  user: { email: newEmail, emailVerified: needsApproval },
   preferredLanguage,
   ll,
   llEmailChangeFormFeedback,
   llFormToastFeedback,
 }: EmailChangeFormProps) {
-  // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(
-    async (_: unknown, formData: FormData) => await runRpcActionMain(main(formDataToRecord(formData))),
-    INITIAL_FORM_STATE_EC,
-  );
-
-  const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
-    ...FORM_OPTIONS_EC,
-    defaultValues: { ...FORM_OPTIONS_EC.defaultValues, newEmail: currentEmail },
-    transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-  });
+  // Get the form context
+  const emailChangeFormL = useMemo(() => emailChangeForm(preferredLanguage), [preferredLanguage]);
+  const submit = useAtomSet(emailChangeFormL.submit);
 
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useEmailChangeFormFeedback(
-    formState,
-    reset,
-    store,
-    needsApproval,
-    llEmailChangeFormFeedback,
+  useSubmitToast(
+    emailChangeFormL,
     llFormToastFeedback,
+    llEmailChangeFormFeedback["[EMAIL CHANGE]"],
+    needsApproval
+      ? llEmailChangeFormFeedback[
+          "The email change has been initiated and needs to be approved. Please check your current email address for the approval link."
+        ]
+      : llEmailChangeFormFeedback["Your email has been changed successfully. A verification email has been sent to your new email address."],
+    undefined,
+    undefined,
+    true,
   );
 
-  // Reset the form and hide the feedback message
-  useEffect(() => {
-    reset();
-    hideFeedbackMessage();
-  }, [reset, hideFeedbackMessage]);
-
   return (
-    <AppForm>
-      <form
-        action={formAction}
-        onSubmit={async () => {
-          await handleSubmit();
-        }}
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>{ll["Email Change"]}</CardTitle>
-            <CardDescription>{ll["Enter your new email below"]}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <AppField
-              name="newEmail"
-              validators={{
-                onChange: Schema.standardSchemaV1(
-                  preferredLanguage === "en" ? EmailChangeFormSchemaEn.fields.newEmail : EmailChangeFormSchemaPl.fields.newEmail,
-                ) as any,
-              }}
-              children={(field) => (
-                <field.TextField
-                  label={ll["New Email"]}
-                  size={40}
-                  maxLength={50}
-                  spellCheck={false}
-                  autoComplete="email"
-                  placeholder={ll["e.g. john.doe@gmail.com"]}
-                />
-              )}
+    <Card>
+      <CardHeader>
+        <CardTitle>{ll["Email Change"]}</CardTitle>
+        <CardDescription>{ll["Enter your new email below"]}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <emailChangeFormL.Initialize defaultValues={{ newEmail }}>
+          <form
+            onSubmit={(ev) => {
+              ev.preventDefault();
+              submit();
+            }}
+          >
+            <emailChangeFormL.newEmail
+              label={ll["New Email"]}
+              size={40}
+              maxLength={50}
+              spellCheck={false}
+              autoComplete="email"
+              placeholder={ll["e.g. john.doe@gmail.com"]}
             />
-          </CardContent>
-          <CardFooter>
-            <InfoLine message={feedbackMessage} />
+            <br />
+            <SubmitStatus
+              form={emailChangeFormL}
+              ll={llFormToastFeedback}
+              formName={llEmailChangeFormFeedback["[EMAIL CHANGE]"]}
+              succeededDesc={
+                needsApproval
+                  ? llEmailChangeFormFeedback[
+                      "The email change has been initiated and needs to be approved. Please check your current email address for the approval link."
+                    ]
+                  : llEmailChangeFormFeedback["Your email has been changed successfully. A verification email has been sent to your new email address."]
+              }
+            />
             <FormSubmit
+              form={emailChangeFormL}
               submitIcon={<PaperAirplaneIcon className="size-9" />}
               submitText={ll["Request Email Change"]}
               resetText={ll["Clear Form"]}
               cancelText={ll["Cancel and Go Back"]}
-              isPending={isPending}
               showCancel={false}
-              onClearedForm={hideFeedbackMessage}
             />
-          </CardFooter>
-        </Card>
-      </form>
-    </AppForm>
+          </form>
+        </emailChangeFormL.Initialize>
+      </CardContent>
+    </Card>
   );
 }

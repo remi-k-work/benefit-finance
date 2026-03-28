@@ -1,19 +1,12 @@
 // services, features, and other libraries
-import { Schema } from "effect";
+import { Field, FormBuilder } from "@lucas-barake/effect-form-react";
 
 // schemas
-import { FlexibleStringSchema } from "@/schemas";
+import { NameSchemaEn, NameSchemaPl } from "@/schemas";
 
-export const ProfileDetailsFormSchemaEn = Schema.Struct({
-  name: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "Please provide your name; this is a necessary field" }),
-    Schema.maxLength(25, { message: () => "Please keep the name to a maximum of 25 characters" }),
-  ),
-});
+// types
+import type { Lang } from "@/lib/LangLoader";
 
-export const ProfileDetailsFormSchemaPl = Schema.Struct({
-  name: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "Proszę podać swoje imię; jest to pole obowiązkowe" }),
-    Schema.maxLength(25, { message: () => "Imię powinno mieć maksymalnie 25 znaków" }),
-  ),
-});
+const NameField = (preferredLanguage: Lang) => (preferredLanguage === "en" ? Field.makeField("name", NameSchemaEn) : Field.makeField("name", NameSchemaPl));
+
+export const profileDetailsFormBuilder = (preferredLanguage: Lang) => FormBuilder.empty.addField(NameField(preferredLanguage));

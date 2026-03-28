@@ -1,10 +1,11 @@
 // next
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 // services, features, and other libraries
 import { Result, useAtomSubscribe } from "@effect-atom/atom-react";
 import { ParseError } from "effect/ParseResult";
 import { useDemoModeModal } from "@/atoms/demoModeModal";
+import { authClient } from "@/services/better-auth/auth-client";
 import { BetterAuthApiError, UnauthorizedAccessError } from "@/lib/errors";
 
 // components
@@ -24,9 +25,16 @@ export function useSubmitToast<TFields extends Field.FieldsRecord, R, A, E>(
   succeededDesc: string,
   failedDesc?: string,
   redirectTo?: Route,
+  refetchSession?: boolean,
 ) {
   // This is the hook that components use to open the modal
   const { openDemoModeModal } = useDemoModeModal();
+
+  // Access the user session data from the client side
+  const { refetch } = authClient.useSession();
+
+  // To be able to refresh the page
+  const { refresh } = useRouter();
 
   // Display the generic toast notifications
   useAtomSubscribe(
@@ -37,6 +45,12 @@ export function useSubmitToast<TFields extends Field.FieldsRecord, R, A, E>(
         onInitial: () => null,
         onSuccess: () => {
           toast.success(ll["SUCCESS!"], { description: succeededDesc });
+
+          // Refetch the user session data with the modified changes
+          if (refetchSession) {
+            refetch();
+            refresh();
+          }
 
           // Redirect the user when requested
           if (redirectTo) setTimeout(() => redirect(redirectTo), 3000);

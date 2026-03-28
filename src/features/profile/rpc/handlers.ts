@@ -3,22 +3,10 @@ import { AvatarDB } from "@/features/profile/db";
 
 // services, features, and other libraries
 import { Effect, Layer } from "effect";
-import LangLoader from "@/lib/LangLoader";
 import { RpcSerialization, RpcServer } from "@effect/rpc";
 import { HttpServer } from "@effect/platform";
 import { RpcProfile } from "./requests";
 import { Auth } from "@/features/auth/lib/auth";
-import { recordToFormData } from "@/lib/helpersEffectClient";
-import {
-  SERVER_VALIDATE_CHANGE_EN_PC,
-  SERVER_VALIDATE_CHANGE_PL_PC,
-  SERVER_VALIDATE_EN_EC,
-  SERVER_VALIDATE_EN_PD,
-  SERVER_VALIDATE_PL_EC,
-  SERVER_VALIDATE_PL_PD,
-  SERVER_VALIDATE_SETUP_EN_PC,
-  SERVER_VALIDATE_SETUP_PL_PC,
-} from "@/features/profile/constants";
 
 const RpcProfileLayer = RpcProfile.toLayer({
   deleteAvatar: () =>
@@ -49,7 +37,7 @@ const RpcProfileLayer = RpcProfile.toLayer({
       return { actionStatus: "succeeded", timestamp: Date.now() };
     }),
 
-  emailChangeForm: ({ formDataRecord }) =>
+  emailChangeForm: ({ newEmail }) =>
     Effect.gen(function* () {
       // Access the user session data from the server side or fail with an unauthorized access error
       const auth = yield* Auth;
@@ -60,68 +48,31 @@ const RpcProfileLayer = RpcProfile.toLayer({
       // Assert that the current user has at least one of the allowed roles
       yield* auth.assertRoles(["user", "admin"]);
 
-      // Create an instance of the lang loader needed for localization
-      const { preferredLanguage } = yield* LangLoader.createEffect();
-
-      // Validate the form on the server side and extract needed data
-      const formData = recordToFormData(formDataRecord);
-      const { newEmail } = preferredLanguage === "en" ? yield* SERVER_VALIDATE_EN_EC(formData) : yield* SERVER_VALIDATE_PL_EC(formData);
-
       // Only users with verified emails need to additionally approve their email change
       const needsApproval = emailVerified;
 
       // Request the email change through the better-auth api for the user
       yield* auth.changeEmail(newEmail, needsApproval);
-
-      // The form has successfully validated and submitted!
-      return { actionStatus: "succeeded", timestamp: Date.now() };
     }),
 
-  passChangeForm: ({ formDataRecord }) =>
+  passChangeForm: ({ newPassword, currentPassword }) =>
     Effect.gen(function* () {
       // Assert that the current user has at least one of the allowed roles
       const auth = yield* Auth;
       yield* auth.assertRoles(["user", "admin"]);
-
-      // Determine whether the current user has any "credential" type accounts
-      const hasCredential = yield* auth.hasCredentialAccount;
-
-      // Create an instance of the lang loader needed for localization
-      const { preferredLanguage } = yield* LangLoader.createEffect();
-
-      // Validate the form on the server side and extract needed data
-      let currentPassword: string | undefined, newPassword: string;
-      const formData = recordToFormData(formDataRecord);
-      if (hasCredential)
-        ({ currentPassword, newPassword } =
-          preferredLanguage === "en" ? yield* SERVER_VALIDATE_CHANGE_EN_PC(formData) : yield* SERVER_VALIDATE_CHANGE_PL_PC(formData));
-      else ({ newPassword } = preferredLanguage === "en" ? yield* SERVER_VALIDATE_SETUP_EN_PC(formData) : yield* SERVER_VALIDATE_SETUP_PL_PC(formData));
 
       // Setup or change the password through the better-auth api for the user
       yield* auth.setupOrChangePassword(newPassword, currentPassword);
-
-      // The form has successfully validated and submitted!
-      return { actionStatus: "succeeded", timestamp: Date.now() };
     }),
 
-  profileDetailsForm: ({ formDataRecord }) =>
+  profileDetailsForm: ({ name }) =>
     Effect.gen(function* () {
       // Assert that the current user has at least one of the allowed roles
       const auth = yield* Auth;
       yield* auth.assertRoles(["user", "admin"]);
 
-      // Create an instance of the lang loader needed for localization
-      const { preferredLanguage } = yield* LangLoader.createEffect();
-
-      // Validate the form on the server side and extract needed data
-      const formData = recordToFormData(formDataRecord);
-      const { name } = preferredLanguage === "en" ? yield* SERVER_VALIDATE_EN_PD(formData) : yield* SERVER_VALIDATE_PL_PD(formData);
-
       // Update the user information through the better-auth api by setting their name
       yield* auth.updateName(name);
-
-      // The form has successfully validated and submitted!
-      return { actionStatus: "succeeded", timestamp: Date.now() };
     }),
 
   signOutEverywhere: () =>
