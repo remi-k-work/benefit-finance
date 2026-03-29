@@ -9,7 +9,6 @@ import { EmailSchemaEn2, NameSchemaEn, PasswordSchemaEn2 } from "@/schemas";
 export class RpcProfile extends RpcGroup.make(
   Rpc.make("deleteAvatar", {
     error: Schema.Union(BetterAuthApiError, DatabaseError, UnauthorizedAccessError, UtApiError),
-    success: Schema.Struct({ actionStatus: Schema.Literal("idle", "succeeded"), timestamp: Schema.optional(Schema.Number) }),
   }),
 
   Rpc.make("emailChangeForm", {

@@ -49,7 +49,7 @@ export default function PassSetupForm({ preferredLanguage, ll, llPassChangeFormF
 
   // Provide feedback to the user regarding this form actions
   useSubmitToast(
-    passSetupFormL,
+    passSetupFormL.submit,
     llFormToastFeedback,
     llPassChangeFormFeedback["[PASSWORD SETUP]"],
     llPassChangeFormFeedback["Your password has been setup."],

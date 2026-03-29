@@ -49,7 +49,7 @@ export default function SignUpForm({ preferredLanguage, ll, llSignUpFormFeedback
 
   // Provide feedback to the user regarding this form actions
   useSubmitToast(
-    signUpFormL,
+    signUpFormL.submit,
     llFormToastFeedback,
     llSignUpFormFeedback["[SIGN UP]"],
     llSignUpFormFeedback["You signed up successfully."],

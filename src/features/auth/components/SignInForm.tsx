@@ -56,7 +56,7 @@ export default function SignInForm({ redirect, preferredLanguage, ll, llSignInSo
 
   // Provide feedback to the user regarding this form actions
   useSubmitToast(
-    signInFormL,
+    signInFormL.submit,
     llFormToastFeedback,
     llSignInFormFeedback["[SIGN IN]"],
     llSignInFormFeedback["You signed in successfully."],

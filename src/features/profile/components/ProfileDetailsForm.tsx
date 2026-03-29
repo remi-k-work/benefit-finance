@@ -69,7 +69,7 @@ export default function ProfileDetailsForm({
 
   // Provide feedback to the user regarding this form actions
   useSubmitToast(
-    profileDetailsFormL,
+    profileDetailsFormL.submit,
     llFormToastFeedback,
     llProfileDetailsFormFeedback["[PROFILE DETAILS]"],
     llProfileDetailsFormFeedback["Your profile details have been updated."],

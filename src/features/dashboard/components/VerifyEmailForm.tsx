@@ -57,7 +57,7 @@ export default function VerifyEmailForm({
 
   // Provide feedback to the user regarding this form actions
   useSubmitToast(
-    verifyEmailFormL,
+    verifyEmailFormL.submit,
     llFormToastFeedback,
     llVerifyEmailFeedback["[VERIFY EMAIL]"],
     llVerifyEmailFeedback["A verification email has been sent to your current email address. Please check your inbox."],

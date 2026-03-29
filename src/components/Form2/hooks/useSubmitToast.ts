@@ -12,14 +12,13 @@ import { BetterAuthApiError, UnauthorizedAccessError } from "@/lib/errors";
 import { toast } from "sonner";
 
 // types
-import type { Field } from "@lucas-barake/effect-form-react";
-import type { BuiltForm } from "@lucas-barake/effect-form-react/FormReact";
+import type { Atom } from "@effect-atom/atom-react";
 import type { Route } from "next";
 import type LangLoader from "@/lib/LangLoader";
 
 // Provide feedback to the user regarding this form actions
-export function useSubmitToast<TFields extends Field.FieldsRecord, R, A, E>(
-  form: BuiltForm<TFields, R, A, E>,
+export function useSubmitToast<A, E>(
+  actionAtom: Atom.Atom<Result.Result<A, E>>,
   ll: typeof LangLoader.prototype.formToastFeedback,
   formName: string,
   succeededDesc: string,
@@ -38,11 +37,11 @@ export function useSubmitToast<TFields extends Field.FieldsRecord, R, A, E>(
 
   // Display the generic toast notifications
   useAtomSubscribe(
-    form.submit,
+    actionAtom,
     (result) =>
       !result.waiting &&
       Result.matchWithError(result, {
-        onInitial: () => null,
+        onInitial: () => {},
         onSuccess: () => {
           toast.success(ll["SUCCESS!"], { description: succeededDesc });
 
@@ -65,10 +64,11 @@ export function useSubmitToast<TFields extends Field.FieldsRecord, R, A, E>(
             openDemoModeModal();
           }
         },
-        onDefect: () =>
+        onDefect: () => {
           toast.error(ll["SERVER ERROR!"], {
             description: failedDesc ?? `${ll["The"]} ${formName} ${ll["form was not submitted successfully; please try again later."]}`,
-          }),
+          });
+        },
       }),
     { immediate: false },
   );

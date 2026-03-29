@@ -57,7 +57,7 @@ export default function EmailChangeForm({
 
   // Provide feedback to the user regarding this form actions
   useSubmitToast(
-    emailChangeFormL,
+    emailChangeFormL.submit,
     llFormToastFeedback,
     llEmailChangeFormFeedback["[EMAIL CHANGE]"],
     needsApproval

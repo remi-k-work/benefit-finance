@@ -32,9 +32,6 @@ const RpcProfileLayer = RpcProfile.toLayer({
 
       // Delete an avatar for a user
       yield* avatarDB.deleteAvatar(userId);
-
-      // The action has completed successfully
-      return { actionStatus: "succeeded", timestamp: Date.now() };
     }),
 
   emailChangeForm: ({ newEmail }) =>

@@ -49,7 +49,7 @@ export default function ForgotPassForm({ preferredLanguage, ll, llForgotPassForm
 
   // Provide feedback to the user regarding this form actions
   useSubmitToast(
-    forgotPassFormL,
+    forgotPassFormL.submit,
     llFormToastFeedback,
     llForgotPassFormFeedback["[FORGOT YOUR PASSWORD?]"],
     llForgotPassFormFeedback["We have sent the password reset link."],

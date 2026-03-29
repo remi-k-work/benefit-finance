@@ -50,7 +50,7 @@ export default function ResetPassForm({ token, preferredLanguage, ll, llResetPas
 
   // Provide feedback to the user regarding this form actions
   useSubmitToast(
-    resetPassFormL,
+    resetPassFormL.submit,
     llFormToastFeedback,
     llResetPassFormFeedback["[RESET YOUR PASSWORD]"],
     llResetPassFormFeedback["The password has been reset. Please sign in with your new password."],

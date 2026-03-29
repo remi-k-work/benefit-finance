@@ -49,7 +49,7 @@ export default function PassChangeForm({ preferredLanguage, ll, llPassChangeForm
 
   // Provide feedback to the user regarding this form actions
   useSubmitToast(
-    passChangeFormL,
+    passChangeFormL.submit,
     llFormToastFeedback,
     llPassChangeFormFeedback["[PASSWORD CHANGE]"],
     llPassChangeFormFeedback["Your password has been changed."],
