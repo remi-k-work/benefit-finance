@@ -59,7 +59,7 @@ export function useSubmitToast<TFields extends Field.FieldsRecord, R, A, E>(
           if (error instanceof ParseError)
             toast.warning(ll["MISSING FIELDS!"], { description: `${ll["Please correct the"]} ${formName} ${ll["form fields and try again."]}` });
           if (error instanceof BetterAuthApiError)
-            toast.error(ll["AUTHORIZATION ERROR!"], { description: ll["Something went wrong; please try again later."] });
+            toast.error(ll["AUTHORIZATION ERROR!"], { description: `${ll["Something went wrong; please try again later."]} → ${error.message}` });
           if (error instanceof UnauthorizedAccessError) {
             toast.error(ll["DEMO MODE!"], { description: ll["This action is disabled in demo mode."] });
             openDemoModeModal();

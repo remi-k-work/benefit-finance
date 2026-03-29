@@ -12,6 +12,7 @@ import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
 import ProfileDetailsForm from "@/features/profile/components/ProfileDetailsForm";
 import EmailChangeForm from "@/features/profile/components/EmailChangeForm";
 import PassChangeForm from "@/features/profile/components/PassChangeForm";
+import PassSetupForm from "@/features/profile/components/PassSetupForm";
 import SignOutEverywhere from "@/features/profile/components/SignOutEverywhere";
 
 // types
@@ -123,14 +124,21 @@ async function PageContent() {
           llEmailChangeFormFeedback={emailChangeFormFeedback}
           llFormToastFeedback={formToastFeedback}
         />
-        <PassChangeForm
-          key={hasCredential ? "[PASSWORD CHANGE]" : "[PASSWORD SETUP]"}
-          hasCredential={hasCredential}
-          preferredLanguage={preferredLanguage}
-          ll={passChangeForm}
-          llPassChangeFormFeedback={passChangeFormFeedback}
-          llFormToastFeedback={formToastFeedback}
-        />
+        {hasCredential ? (
+          <PassChangeForm
+            preferredLanguage={preferredLanguage}
+            ll={passChangeForm}
+            llPassChangeFormFeedback={passChangeFormFeedback}
+            llFormToastFeedback={formToastFeedback}
+          />
+        ) : (
+          <PassSetupForm
+            preferredLanguage={preferredLanguage}
+            ll={passChangeForm}
+            llPassChangeFormFeedback={passChangeFormFeedback}
+            llFormToastFeedback={formToastFeedback}
+          />
+        )}
         <SignOutEverywhere ll={signOutEverywhere} llSignOutEverywhereFeedback={signOutEverywhereFeedback} llFormToastFeedback={formToastFeedback} />
       </article>
     </>

@@ -117,7 +117,6 @@ export default function ProfileDetailsForm({
               submitIcon={<PencilSquareIcon className="size-9" />}
               submitText={ll["Change Name"]}
               resetText={ll["Clear Form"]}
-              cancelText={ll["Cancel and Go Back"]}
               showCancel={false}
             />
           </form>

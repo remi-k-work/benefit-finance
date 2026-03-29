@@ -110,7 +110,6 @@ export default function EmailChangeForm({
               submitIcon={<PaperAirplaneIcon className="size-9" />}
               submitText={ll["Request Email Change"]}
               resetText={ll["Clear Form"]}
-              cancelText={ll["Cancel and Go Back"]}
               showCancel={false}
             />
           </form>

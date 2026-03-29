@@ -36,16 +36,16 @@ export function SubmitStatus<TFields extends Field.FieldsRecord, R, A, E>({
     .onSuccess(() => <InfoLine message={`[${ll["SUCCESS!"]}] → ${succeededDesc}`} />)
     .onError((error: unknown) =>
       error instanceof ParseError ? (
-        <InfoLine message={`[${ll["MISSING FIELDS!"]}] → ${ll["Please correct the"]} ${formName} ${ll["form fields and try again."]} `} />
+        <InfoLine message={`[${ll["MISSING FIELDS!"]}] → ${ll["Please correct the"]} ${formName} ${ll["form fields and try again."]}`} />
       ) : error instanceof BetterAuthApiError ? (
-        <InfoLine message={`[${ll["AUTHORIZATION ERROR!"]}] → ${ll["Something went wrong; please try again later."]} `} />
+        <InfoLine message={`[${ll["AUTHORIZATION ERROR!"]}] → ${ll["Something went wrong; please try again later."]} → ${error.message}`} />
       ) : error instanceof UnauthorizedAccessError ? (
-        <InfoLine message={`[${ll["DEMO MODE!"]}] → ${ll["This action is disabled in demo mode."]} `} />
+        <InfoLine message={`[${ll["DEMO MODE!"]}] → ${ll["This action is disabled in demo mode."]}`} />
       ) : null,
     )
     .onDefect(() => (
       <InfoLine
-        message={`[${ll["SERVER ERROR!"]}] → ${failedDesc ?? `${ll["The"]} ${formName} ${ll["form was not submitted successfully; please try again later."]} `} `}
+        message={`[${ll["SERVER ERROR!"]}] → ${failedDesc ?? `${ll["The"]} ${formName} ${ll["form was not submitted successfully; please try again later."]}`}`}
       />
     ))
     .orNull();

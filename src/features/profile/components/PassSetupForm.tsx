@@ -8,7 +8,7 @@ import { Effect } from "effect";
 import { useAtomSet } from "@effect-atom/atom-react";
 import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcProfileClient } from "@/features/profile/rpc/client";
-import { passChangeFormBuilder } from "@/features/profile/schemas";
+import { passSetupFormBuilder } from "@/features/profile/schemas";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
 import { useSubmitToast } from "@/components/Form2/hooks";
 
@@ -24,35 +24,35 @@ import { KeyIcon } from "@heroicons/react/24/outline";
 import type { Lang } from "@/lib/LangLoader";
 import type LangLoader from "@/lib/LangLoader";
 
-interface PassChangeFormProps {
+interface PassSetupFormProps {
   preferredLanguage: Lang;
   ll: typeof LangLoader.prototype.passChangeForm;
   llPassChangeFormFeedback: typeof LangLoader.prototype.passChangeFormFeedback;
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
-const passChangeForm = (preferredLanguage: Lang) =>
-  FormReact.make(passChangeFormBuilder(preferredLanguage), {
+const passSetupForm = (preferredLanguage: Lang) =>
+  FormReact.make(passSetupFormBuilder(preferredLanguage), {
     runtime: RuntimeAtom,
-    fields: { currentPassword: PasswordInput, newPassword: PasswordInput, confirmPassword: PasswordInput },
-    onSubmit: (_, { decoded: { newPassword, currentPassword } }) =>
+    fields: { newPassword: PasswordInput, confirmPassword: PasswordInput },
+    onSubmit: (_, { decoded: { newPassword } }) =>
       Effect.gen(function* () {
         const { passChangeForm } = yield* RpcProfileClient;
-        yield* passChangeForm({ newPassword, currentPassword });
+        yield* passChangeForm({ newPassword });
       }),
   });
 
-export default function PassChangeForm({ preferredLanguage, ll, llPassChangeFormFeedback, llFormToastFeedback }: PassChangeFormProps) {
+export default function PassSetupForm({ preferredLanguage, ll, llPassChangeFormFeedback, llFormToastFeedback }: PassSetupFormProps) {
   // Get the form context
-  const passChangeFormL = useMemo(() => passChangeForm(preferredLanguage), [preferredLanguage]);
-  const submit = useAtomSet(passChangeFormL.submit);
+  const passSetupFormL = useMemo(() => passSetupForm(preferredLanguage), [preferredLanguage]);
+  const submit = useAtomSet(passSetupFormL.submit);
 
   // Provide feedback to the user regarding this form actions
   useSubmitToast(
-    passChangeFormL,
+    passSetupFormL,
     llFormToastFeedback,
-    llPassChangeFormFeedback["[PASSWORD CHANGE]"],
-    llPassChangeFormFeedback["Your password has been changed."],
+    llPassChangeFormFeedback["[PASSWORD SETUP]"],
+    llPassChangeFormFeedback["Your password has been setup."],
     undefined,
     undefined,
     true,
@@ -61,28 +61,20 @@ export default function PassChangeForm({ preferredLanguage, ll, llPassChangeForm
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{ll["Password Change"]}</CardTitle>
-        <CardDescription>{ll["Enter your new password below"]}</CardDescription>
+        <CardTitle>{ll["Password Setup"]}</CardTitle>
+        <CardDescription>{ll["Setup your password below"]}</CardDescription>
       </CardHeader>
       <CardContent>
-        <passChangeFormL.Initialize defaultValues={{ currentPassword: "", newPassword: "", confirmPassword: "" }}>
+        <passSetupFormL.Initialize defaultValues={{ newPassword: "", confirmPassword: "" }}>
           <form
             onSubmit={(ev) => {
               ev.preventDefault();
               submit();
             }}
           >
-            <passChangeFormL.currentPassword
-              label={ll["Current Password"]}
-              size={40}
-              maxLength={129}
-              autoComplete="current-password"
-              placeholder={ll["e.g. P@ssw0rd!"]}
-            />
+            <passSetupFormL.newPassword label={ll["New Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />
             <br />
-            <passChangeFormL.newPassword label={ll["New Password"]} size={40} maxLength={129} autoComplete="new-password" placeholder={ll["e.g. P@ssw0rd!"]} />
-            <br />
-            <passChangeFormL.confirmPassword
+            <passSetupFormL.confirmPassword
               label={ll["Confirm Password"]}
               size={40}
               maxLength={129}
@@ -91,20 +83,20 @@ export default function PassChangeForm({ preferredLanguage, ll, llPassChangeForm
             />
             <br />
             <SubmitStatus
-              form={passChangeFormL}
+              form={passSetupFormL}
               ll={llFormToastFeedback}
-              formName={llPassChangeFormFeedback["[PASSWORD CHANGE]"]}
-              succeededDesc={llPassChangeFormFeedback["Your password has been changed."]}
+              formName={llPassChangeFormFeedback["[PASSWORD SETUP]"]}
+              succeededDesc={llPassChangeFormFeedback["Your password has been setup."]}
             />
             <FormSubmit
-              form={passChangeFormL}
+              form={passSetupFormL}
               submitIcon={<KeyIcon className="size-9" />}
-              submitText={ll["Change Password"]}
+              submitText={ll["Setup Password"]}
               resetText={ll["Clear Form"]}
               showCancel={false}
             />
           </form>
-        </passChangeFormL.Initialize>
+        </passSetupFormL.Initialize>
       </CardContent>
     </Card>
   );
