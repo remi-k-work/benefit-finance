@@ -1,16 +1,13 @@
-// react
-import { startTransition, useState } from "react";
-
 // drizzle and db access
 import type { AllAvailableLeads } from "@/features/leads/db";
 import type { Status } from "@/drizzle/schema/lead";
 
 // services, features, and other libraries
 import { Effect } from "effect";
-import { runRpcActionMain } from "@/lib/helpersEffectClient";
-import { initialFormState } from "@tanstack/react-form-nextjs";
+import { useAtom } from "@effect-atom/atom-react";
+import { RuntimeAtom } from "@/lib/RuntimeClient";
+import { useSubmitToast } from "@/components/Form2/hooks";
 import { RpcLeadsClient } from "@/features/leads/rpc/client";
-import { useSetLeadStatusFeedback } from "@/features/leads/hooks/feedbacks";
 
 // components
 import { TableCell } from "@/components/ui/custom/table";
@@ -19,7 +16,6 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 // types
 import type { Row, Table } from "@tanstack/react-table";
 import type LangLoader from "@/lib/LangLoader";
-import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 interface StatusCellProps {
   row: Row<AllAvailableLeads>;
@@ -31,15 +27,28 @@ interface StatusCellProps {
 // constants
 import { STATUS } from "@/features/leads/constants";
 
-const main = (leadId: string, newStatus: Status) =>
-  Effect.gen(function* () {
+const setLeadStatusActionAtom = RuntimeAtom.fn(
+  Effect.fnUntraced(function* ({
+    leadId,
+    newStatus,
+    table: { options },
+    rowIndex,
+  }: {
+    leadId: string;
+    newStatus: Status;
+    table: Table<AllAvailableLeads>;
+    rowIndex: number;
+  }) {
     const { setLeadStatus } = yield* RpcLeadsClient;
+    yield* setLeadStatus({ leadId, newStatus });
 
-    const result = yield* setLeadStatus({ leadId, newStatus }).pipe(
-      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
-    );
-    return { ...initialFormState, ...result } as const;
-  });
+    // Only reflect changes in the UI if the action was successful
+    yield* Effect.sync(() => {
+      options.meta?.updateData(rowIndex, "status", newStatus);
+      options.meta?.updateData(rowIndex, "updatedAt", new Date());
+    });
+  }),
+);
 
 export default function StatusCell({
   row: {
@@ -47,40 +56,33 @@ export default function StatusCell({
     original: { id: leadId },
     getValue,
   },
-  table: { options },
+  table,
   ll,
   llFormToastFeedback,
 }: StatusCellProps) {
   // This action establishes a new status for a lead
-  const [setLeadStatusState, setSetLeadStatusState] = useState<ActionResultWithFormState>({ ...initialFormState, actionStatus: "idle" });
-  const [setLeadStatusIsPending, setSetLeadStatusIsPending] = useState(false);
+  const [setLeadStatusResult, setLeadStatusAction] = useAtom(setLeadStatusActionAtom);
 
   // Provide feedback to the user regarding this server action
-  useSetLeadStatusFeedback(setLeadStatusState, ll, llFormToastFeedback);
+  useSubmitToast(
+    setLeadStatusActionAtom,
+    llFormToastFeedback,
+    ll["[SET LEAD STATUS]"],
+    ll["The status has been set."],
+    ll["The status could not be set; please try again later."],
+  );
 
   return (
     <TableCell className="text-center">
       <Select<Status>
         items={STATUS(ll)}
         value={getValue("status")}
-        onValueChange={async (newStatus) => {
+        onValueChange={(newStatus) => {
           // Proceed only if the new status is different from the current one
           if (!newStatus || newStatus === getValue("status")) return;
-
-          // Execute the server action first and capture its result
-          setSetLeadStatusIsPending(true);
-          const actionResult = await runRpcActionMain(main(leadId, newStatus));
-          setSetLeadStatusState(actionResult);
-          setSetLeadStatusIsPending(false);
-
-          // Only reflect changes in the UI if the action was successful
-          if (actionResult.actionStatus !== "succeeded") return;
-          startTransition(() => {
-            options.meta?.updateData(rowIndex, "status", newStatus);
-            options.meta?.updateData(rowIndex, "updatedAt", new Date());
-          });
+          setLeadStatusAction({ leadId, newStatus, table, rowIndex });
         }}
-        disabled={setLeadStatusIsPending}
+        disabled={setLeadStatusResult.waiting}
       >
         <SelectTrigger className="mx-auto w-fit">
           <SelectValue />

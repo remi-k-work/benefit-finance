@@ -45,9 +45,6 @@ const RpcLeadsLayer = RpcLeads.toLayer({
       // Set lead status
       const leadDB = yield* LeadDB;
       yield* leadDB.updateLead(leadId, { status: newStatus });
-
-      // The action has completed successfully
-      return { actionStatus: "succeeded", timestamp: Date.now() };
     }),
 
   deleteLead: ({ leadId }) =>

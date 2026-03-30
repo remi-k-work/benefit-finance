@@ -38,16 +38,12 @@ const editLeadNotesForm = (leadId: string, preferredLanguage: Lang) =>
     fields: {
       internalNotes: TextAreaInput,
     },
-    onSubmit: (args: { table: Table<AllAvailableLeads>; rowIndex: number }, { decoded: { internalNotes } }) =>
+    onSubmit: ({ table: { options }, rowIndex }: { table: Table<AllAvailableLeads>; rowIndex: number }, { decoded: { internalNotes } }) =>
       Effect.gen(function* () {
         const { editLeadNotesForm } = yield* RpcLeadsClient;
         yield* editLeadNotesForm({ leadId, internalNotes });
 
         // Only reflect changes in the UI if the action was successful
-        const {
-          table: { options },
-          rowIndex,
-        } = args;
         yield* Effect.sync(() => {
           options.meta?.updateData(rowIndex, "internalNotes", internalNotes);
           options.meta?.updateData(rowIndex, "updatedAt", new Date());

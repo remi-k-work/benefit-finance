@@ -30,7 +30,6 @@ export class RpcLeads extends RpcGroup.make(
 
   Rpc.make("setLeadStatus", {
     error: Schema.Union(BetterAuthApiError, DatabaseError, UnauthorizedAccessError),
-    success: Schema.Struct({ actionStatus: Schema.Literal("idle", "succeeded"), timestamp: Schema.optional(Schema.Number) }),
     payload: { leadId: Schema.UUID, newStatus: Schema.Literal("during", "accepted", "rejected") },
   }),
 
