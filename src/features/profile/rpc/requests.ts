@@ -28,6 +28,5 @@ export class RpcProfile extends RpcGroup.make(
 
   Rpc.make("signOutEverywhere", {
     error: Schema.Union(BetterAuthApiError, UnauthorizedAccessError),
-    success: Schema.Struct({ actionStatus: Schema.Literal("idle", "succeeded"), timestamp: Schema.optional(Schema.Number) }),
   }),
 ) {}

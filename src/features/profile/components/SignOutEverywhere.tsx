@@ -1,15 +1,12 @@
 "use client";
 
-// react
-import { startTransition, useActionState } from "react";
-
 // services, features, and other libraries
 import { Effect } from "effect";
-import { runRpcActionMain } from "@/lib/helpersEffectClient";
-import { initialFormState } from "@tanstack/react-form-nextjs";
+import { useAtom } from "@effect-atom/atom-react";
+import { RuntimeAtom } from "@/lib/RuntimeClient";
+import { useSubmitToast } from "@/components/Form2/hooks";
 import { RpcProfileClient } from "@/features/profile/rpc/client";
 import { useConfirmModal } from "@/atoms/confirmModal";
-import { useSignOutEverywhereFeedback } from "@/features/profile/hooks/feedbacks";
 
 // components
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
@@ -28,27 +25,30 @@ interface SignOutEverywhereProps {
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
-const main = Effect.gen(function* () {
-  const { signOutEverywhere } = yield* RpcProfileClient;
-
-  const result = yield* signOutEverywhere().pipe(
-    Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
-  );
-  return { ...initialFormState, ...result } as const;
-});
+const signOutEverywhereActionAtom = RuntimeAtom.fn(
+  Effect.fnUntraced(function* () {
+    const { signOutEverywhere } = yield* RpcProfileClient;
+    yield* signOutEverywhere();
+  }),
+);
 
 export default function SignOutEverywhere({ ll, llSignOutEverywhereFeedback, llFormToastFeedback }: SignOutEverywhereProps) {
   // This is the hook that components use to open the modal
   const { openConfirmModal } = useConfirmModal();
 
   // Signs the user out from all devices
-  const [signOutEverywhereState, signOutEverywhereAction, signOutEverywhereIsPending] = useActionState(async () => await runRpcActionMain(main), {
-    ...initialFormState,
-    actionStatus: "idle",
-  });
+  const [signOutEverywhereResult, signOutEverywhereAction] = useAtom(signOutEverywhereActionAtom);
 
   // Provide feedback to the user regarding this server action
-  useSignOutEverywhereFeedback(signOutEverywhereState, llSignOutEverywhereFeedback, llFormToastFeedback);
+  useSubmitToast(
+    signOutEverywhereActionAtom,
+    llFormToastFeedback,
+    llSignOutEverywhereFeedback["[SIGN OUT EVERYWHERE]"],
+    llSignOutEverywhereFeedback["You signed out from all devices successfully."],
+    undefined,
+    undefined,
+    true,
+  );
 
   return (
     <Card>
@@ -60,7 +60,7 @@ export default function SignOutEverywhere({ ll, llSignOutEverywhereFeedback, llF
         <Button
           type="button"
           variant="destructive"
-          disabled={signOutEverywhereIsPending}
+          disabled={signOutEverywhereResult.waiting}
           className="mx-auto"
           onClick={() => {
             openConfirmModal({
@@ -70,12 +70,12 @@ export default function SignOutEverywhere({ ll, llSignOutEverywhereFeedback, llF
                 </p>
               ),
               onConfirmed: () => {
-                startTransition(signOutEverywhereAction);
+                signOutEverywhereAction();
               },
             });
           }}
         >
-          {signOutEverywhereIsPending ? <Loader2 className="size-9 animate-spin" /> : <ArrowRightStartOnRectangleIcon className="size-9" />}
+          {signOutEverywhereResult.waiting ? <Loader2 className="size-9 animate-spin" /> : <ArrowRightStartOnRectangleIcon className="size-9" />}
           {ll["Sign Out Everywhere"]}
         </Button>
       </CardContent>

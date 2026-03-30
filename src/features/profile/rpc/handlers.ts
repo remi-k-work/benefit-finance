@@ -80,9 +80,6 @@ const RpcProfileLayer = RpcProfile.toLayer({
 
       // Sign the user out from all devices through the better-auth api
       yield* auth.revokeSessions;
-
-      // The action has completed successfully
-      return { actionStatus: "succeeded", timestamp: Date.now() };
     }),
 }).pipe(Layer.provide(Auth.Default), Layer.provide(AvatarDB.Default));
 
