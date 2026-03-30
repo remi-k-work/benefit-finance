@@ -21,8 +21,8 @@ import type { BuiltForm } from "@lucas-barake/effect-form-react/FormReact";
 import type { DurationInput } from "effect/Duration";
 import type { ReactNode } from "react";
 
-interface FormSubmitProps<TFields extends Field.FieldsRecord, R, A, E> {
-  form: BuiltForm<TFields, R, A, E>;
+interface FormSubmitProps<TFields extends Field.FieldsRecord, R, A, E, SubmitArgs> {
+  form: BuiltForm<TFields, R, A, E, SubmitArgs>;
   submitIcon: ReactNode;
   submitText: string;
   resetText?: string;
@@ -34,7 +34,7 @@ interface FormSubmitProps<TFields extends Field.FieldsRecord, R, A, E> {
   onClearedForm?: () => void;
 }
 
-export function FormSubmit<TFields extends Field.FieldsRecord, R, A, E>({
+export function FormSubmit<TFields extends Field.FieldsRecord, R, A, E, SubmitArgs>({
   form,
   submitIcon,
   submitText,
@@ -45,7 +45,7 @@ export function FormSubmit<TFields extends Field.FieldsRecord, R, A, E>({
   isStateless = false,
   cooldown = 0,
   onClearedForm,
-}: FormSubmitProps<TFields, R, A, E>) {
+}: FormSubmitProps<TFields, R, A, E, SubmitArgs>) {
   // Get the form context
   const isDirty = useAtomValue(form.isDirty);
   const { waiting } = useAtomValue(form.submit);

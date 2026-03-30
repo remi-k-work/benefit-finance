@@ -1,121 +1,114 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/no-children-prop */
-
 "use client";
 
 // react
-import { startTransition, useActionState, useEffect } from "react";
+import { useMemo } from "react";
 
 // drizzle and db access
 import type { AllAvailableLeads } from "@/features/leads/db";
 
 // services, features, and other libraries
-import { Effect, Schema } from "effect";
-import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { Effect } from "effect";
+import { useAtomSet } from "@effect-atom/atom-react";
+import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcLeadsClient } from "@/features/leads/rpc/client";
-import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
-import { useAppForm } from "@/components/Form";
-import { EditLeadNotesFormSchemaEn, EditLeadNotesFormSchemaPl } from "@/features/leads/schemas";
-import { useEditLeadNotesFormFeedback } from "@/features/leads/hooks/feedbacks";
+import { editLeadNotesFormBuilder } from "@/features/leads/schemas";
+import { RuntimeAtom } from "@/lib/RuntimeClient";
+import { useSubmitToast } from "@/components/Form2/hooks";
 import { useInstanceContext } from "@/features/leads/components/AvailableLeadsTable/context";
+
+// components
+import { TextAreaInput } from "@/components/Form2/Inputs";
+import { FormSubmit, SubmitStatus } from "@/components/Form2";
 
 // assets
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 // types
+import type { Lang } from "@/lib/LangLoader";
+import type { Table } from "@tanstack/react-table";
+
 interface EditLeadNotesFormProps {
   allAvailableLeads: AllAvailableLeads;
   rowIndex: number;
 }
 
-// constants
-import { FORM_OPTIONS_E, INITIAL_FORM_STATE_E } from "@/features/leads/constants";
+const editLeadNotesForm = (leadId: string, preferredLanguage: Lang) =>
+  FormReact.make(editLeadNotesFormBuilder(preferredLanguage), {
+    runtime: RuntimeAtom,
+    fields: {
+      internalNotes: TextAreaInput,
+    },
+    onSubmit: (args: { table: Table<AllAvailableLeads>; rowIndex: number }, { decoded: { internalNotes } }) =>
+      Effect.gen(function* () {
+        const { editLeadNotesForm } = yield* RpcLeadsClient;
+        yield* editLeadNotesForm({ leadId, internalNotes });
 
-const main = (leadId: string, formDataRecord: Record<string, string>) =>
-  Effect.gen(function* () {
-    const { editLeadNotesForm } = yield* RpcLeadsClient;
-
-    const result = yield* editLeadNotesForm({ leadId, formDataRecord }).pipe(
-      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
-    );
-    return { ...initialFormState, ...result } as const;
+        // Only reflect changes in the UI if the action was successful
+        const {
+          table: { options },
+          rowIndex,
+        } = args;
+        yield* Effect.sync(() => {
+          options.meta?.updateData(rowIndex, "internalNotes", internalNotes);
+          options.meta?.updateData(rowIndex, "updatedAt", new Date());
+        });
+      }),
   });
 
 export default function EditLeadNotesForm({ allAvailableLeads: { id: leadId, internalNotes }, rowIndex }: EditLeadNotesFormProps) {
   // Access the table context and retrieve all necessary information
-  const {
-    preferredLanguage,
-    ll,
-    llFormToastFeedback,
-    table: { options },
-  } = useInstanceContext();
+  const { preferredLanguage, ll, llFormToastFeedback, table } = useInstanceContext();
 
-  // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(
-    async (_: unknown, formData: FormData) => await runRpcActionMain(main(leadId, formDataToRecord(formData))),
-    INITIAL_FORM_STATE_E,
-  );
-
-  const { AppField, AppForm, FormSubmit, handleSubmit, reset } = useAppForm({
-    ...FORM_OPTIONS_E,
-    defaultValues: { ...FORM_OPTIONS_E.defaultValues, internalNotes: internalNotes ?? "" },
-    transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-    onSubmit: async ({ value: { internalNotes } }) => {
-      // Only reflect changes in the UI if the action was successful
-      startTransition(() => {
-        options.meta?.updateData(rowIndex, "internalNotes", internalNotes.trim());
-        options.meta?.updateData(rowIndex, "updatedAt", new Date());
-      });
-    },
-  });
+  // Get the form context
+  const editLeadNotesFormL = useMemo(() => editLeadNotesForm(leadId, preferredLanguage), [leadId, preferredLanguage]);
+  const submit = useAtomSet(editLeadNotesFormL.submit);
 
   // Provide feedback to the user regarding this form actions
-  useEditLeadNotesFormFeedback(formState, reset, ll, llFormToastFeedback);
-
-  // Reset the form and hide the feedback message
-  useEffect(() => {
-    reset();
-  }, [reset]);
+  useSubmitToast(
+    editLeadNotesFormL.submit,
+    llFormToastFeedback,
+    ll["[EDIT LEAD NOTES]"],
+    ll["The lead notes have been updated."],
+    ll["The lead notes could not be updated; please try again later."],
+  );
 
   return (
-    <AppForm>
+    <editLeadNotesFormL.Initialize defaultValues={{ internalNotes: internalNotes ?? "" }}>
       <form
-        action={formAction}
-        onSubmit={async () => {
-          await handleSubmit();
+        onSubmit={(ev) => {
+          ev.preventDefault();
+          submit({ table, rowIndex });
         }}
       >
-        <AppField
-          name="internalNotes"
-          validators={{
-            onChange: Schema.standardSchemaV1(
-              preferredLanguage === "en" ? EditLeadNotesFormSchemaEn.fields.internalNotes : EditLeadNotesFormSchemaPl.fields.internalNotes,
-            ) as any,
-          }}
-          children={(field) => (
-            <field.TextAreaField
-              label={ll["Internal Notes"]}
-              cols={50}
-              rows={8}
-              maxLength={2049}
-              spellCheck={false}
-              autoComplete="off"
-              placeholder={
-                ll[
-                  "e.g., Spoke with client. Interested in subsidies related to home renovation. Requested more details via email. Sent initial documentation and checklist. Waiting for response."
-                ]
-              }
-            />
-          )}
+        <editLeadNotesFormL.internalNotes
+          label={ll["Internal Notes"]}
+          cols={50}
+          rows={8}
+          maxLength={2049}
+          spellCheck={false}
+          autoComplete="off"
+          placeholder={
+            ll[
+              "e.g., Spoke with client. Interested in subsidies related to home renovation. Requested more details via email. Sent initial documentation and checklist. Waiting for response."
+            ]
+          }
+        />
+        <br />
+        <SubmitStatus
+          form={editLeadNotesFormL}
+          ll={llFormToastFeedback}
+          formName={ll["[EDIT LEAD NOTES]"]}
+          succeededDesc={ll["The lead notes have been updated."]}
+          failedDesc={ll["The lead notes could not be updated; please try again later."]}
         />
         <FormSubmit
+          form={editLeadNotesFormL}
           submitIcon={<PencilSquareIcon className="size-9" />}
           submitText={ll["Update Internal Notes"]}
           resetText={ll["Clear Form"]}
-          isPending={isPending}
           showCancel={false}
         />
       </form>
-    </AppForm>
+    </editLeadNotesFormL.Initialize>
   );
 }

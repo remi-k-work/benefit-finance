@@ -13,21 +13,21 @@ import type { Field } from "@lucas-barake/effect-form-react";
 import type { BuiltForm } from "@lucas-barake/effect-form-react/FormReact";
 import type LangLoader from "@/lib/LangLoader";
 
-interface SubmitStatusProps<TFields extends Field.FieldsRecord, R, A, E> {
-  form: BuiltForm<TFields, R, A, E>;
+interface SubmitStatusProps<TFields extends Field.FieldsRecord, R, A, E, SubmitArgs> {
+  form: BuiltForm<TFields, R, A, E, SubmitArgs>;
   ll: typeof LangLoader.prototype.formToastFeedback;
   formName: string;
   succeededDesc: string;
   failedDesc?: string;
 }
 
-export function SubmitStatus<TFields extends Field.FieldsRecord, R, A, E>({
+export function SubmitStatus<TFields extends Field.FieldsRecord, R, A, E, SubmitArgs>({
   form,
   ll,
   formName,
   succeededDesc,
   failedDesc,
-}: SubmitStatusProps<TFields, R, A, E>) {
+}: SubmitStatusProps<TFields, R, A, E, SubmitArgs>) {
   const submitResult = useAtomValue(form.submit);
 
   // Show the permanent feedback message as well

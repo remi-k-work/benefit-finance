@@ -1,20 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 // drizzle and db access
 import { LeadDB } from "@/features/leads/db";
 
 // services, features, and other libraries
 import { Effect, Layer } from "effect";
-import LangLoader from "@/lib/LangLoader";
 import { RpcSerialization, RpcServer } from "@effect/rpc";
 import { HttpServer } from "@effect/platform";
 import { RpcLeads } from "./requests";
 import { Auth } from "@/features/auth/lib/auth";
-import { recordToFormData } from "@/lib/helpersEffectClient";
-import { SERVER_VALIDATE_EN_E, SERVER_VALIDATE_EN_N, SERVER_VALIDATE_PL_E, SERVER_VALIDATE_PL_N } from "@/features/leads/constants";
 
 const RpcLeadsLayer = RpcLeads.toLayer({
-  newLeadForm: ({ formDataRecord }) =>
+  newLeadForm: ({ firstName, lastName, email, phone, serviceOfInterest }) =>
     Effect.gen(function* () {
       // Verify if the current user possesses specific permissions
       const auth = yield* Auth;
@@ -25,41 +20,20 @@ const RpcLeadsLayer = RpcLeads.toLayer({
         user: { id: referredBy },
       } = yield* auth.getUserSessionData;
 
-      // Create an instance of the lang loader needed for localization
-      const { preferredLanguage } = yield* LangLoader.createEffect();
-
-      // Validate the form on the server side and extract needed data
-      const formData = recordToFormData(formDataRecord);
-      const { firstName, lastName, email, phone, serviceOfInterest } =
-        preferredLanguage === "en" ? yield* SERVER_VALIDATE_EN_N(formData) : yield* SERVER_VALIDATE_PL_N(formData);
-
       // Insert a new lead
       const leadDB = yield* LeadDB;
-      yield* leadDB.insertLead({ referredBy, firstName, lastName, email, phone, serviceOfInterest: serviceOfInterest as any });
-
-      // The form has successfully validated and submitted!
-      return { actionStatus: "succeeded", timestamp: Date.now() };
+      yield* leadDB.insertLead({ referredBy, firstName, lastName, email, phone, serviceOfInterest });
     }),
 
-  editLeadNotesForm: ({ leadId, formDataRecord }) =>
+  editLeadNotesForm: ({ leadId, internalNotes }) =>
     Effect.gen(function* () {
       // Verify if the current user possesses specific permissions
       const auth = yield* Auth;
       yield* auth.assertPermissions({ leads: ["update"] });
 
-      // Create an instance of the lang loader needed for localization
-      const { preferredLanguage } = yield* LangLoader.createEffect();
-
-      // Validate the form on the server side and extract needed data
-      const formData = recordToFormData(formDataRecord);
-      const { internalNotes } = preferredLanguage === "en" ? yield* SERVER_VALIDATE_EN_E(formData) : yield* SERVER_VALIDATE_PL_E(formData);
-
       // Set lead internal notes
       const leadDB = yield* LeadDB;
       yield* leadDB.updateLead(leadId, { internalNotes: internalNotes === "" ? null : internalNotes });
-
-      // The form has successfully validated and submitted!
-      return { actionStatus: "succeeded", timestamp: Date.now() };
     }),
 
   setLeadStatus: ({ leadId, newStatus }) =>
