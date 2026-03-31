@@ -9,7 +9,7 @@ import { Auth } from "@/features/auth/lib/auth";
 
 // components
 import ManagerModal from "@/components/ManagerModal";
-import NewDocForm from "@/features/supportAgent/components/NewDocForm";
+import NewDocForm from "@/features/supportAgent/components/NewDocForm2";
 
 // assets
 import { DocumentPlusIcon } from "@heroicons/react/24/outline";
