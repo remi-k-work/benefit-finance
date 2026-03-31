@@ -43,7 +43,7 @@ export function useSubmitToast<A, E>(
       Result.matchWithError(result, {
         onInitial: () => {},
         onSuccess: () => {
-          toast.success(ll["SUCCESS!"], { description: succeededDesc });
+          toast.success(ll["SUCCESS!"], { id: "SUCCESS!", description: succeededDesc });
 
           // Refetch the user session data with the modified changes
           if (refetchSession) {
@@ -56,16 +56,23 @@ export function useSubmitToast<A, E>(
         },
         onError: (error: unknown) => {
           if (error instanceof ParseError)
-            toast.warning(ll["MISSING FIELDS!"], { description: `${ll["Please correct the"]} ${formName} ${ll["form fields and try again."]}` });
+            toast.warning(ll["MISSING FIELDS!"], {
+              id: "MISSING FIELDS!",
+              description: `${ll["Please correct the"]} ${formName} ${ll["form fields and try again."]}`,
+            });
           if (error instanceof BetterAuthApiError)
-            toast.error(ll["AUTHORIZATION ERROR!"], { description: `${ll["Something went wrong; please try again later."]} → ${error.message}` });
+            toast.error(ll["AUTHORIZATION ERROR!"], {
+              id: "AUTHORIZATION ERROR!",
+              description: `${ll["Something went wrong; please try again later."]} → ${error.message}`,
+            });
           if (error instanceof UnauthorizedAccessError) {
-            toast.error(ll["DEMO MODE!"], { description: ll["This action is disabled in demo mode."] });
+            toast.error(ll["DEMO MODE!"], { id: "DEMO MODE!", description: ll["This action is disabled in demo mode."] });
             openDemoModeModal();
           }
         },
         onDefect: () => {
           toast.error(ll["SERVER ERROR!"], {
+            id: "SERVER ERROR!",
             description: failedDesc ?? `${ll["The"]} ${formName} ${ll["form was not submitted successfully; please try again later."]}`,
           });
         },

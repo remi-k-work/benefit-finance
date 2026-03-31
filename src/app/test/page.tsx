@@ -6,7 +6,6 @@ import { connection } from "next/server";
 
 // components
 import PageHeader from "@/components/PageHeader";
-import Test from "./Test";
 
 // constants
 import { user, admin, demo } from "@/services/better-auth/permissions";
@@ -31,7 +30,6 @@ async function PageContent() {
   return (
     <>
       <PageHeader title="Home" description="Welcome to Benefit Finance!" />
-      <Test />
     </>
   );
 }

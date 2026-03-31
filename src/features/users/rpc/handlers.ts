@@ -14,9 +14,6 @@ const RpcUsersLayer = RpcUsers.toLayer({
 
       // Set user role
       yield* auth.setUserRole(userId, newRole);
-
-      // The action has completed successfully
-      return { actionStatus: "succeeded", timestamp: Date.now() };
     }),
 
   deleteUser: ({ userId }) =>
@@ -27,9 +24,6 @@ const RpcUsersLayer = RpcUsers.toLayer({
 
       // Permanently delete a user from the database
       yield* auth.removeUser(userId);
-
-      // The action has completed successfully
-      return { actionStatus: "succeeded", timestamp: Date.now() };
     }),
 }).pipe(Layer.provide(Auth.Default));
 

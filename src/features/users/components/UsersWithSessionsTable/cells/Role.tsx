@@ -1,15 +1,12 @@
-// react
-import { startTransition, useState } from "react";
-
 // drizzle and db access
 import type { AllUsersWithSessions } from "@/features/users/db";
 
 // services, features, and other libraries
 import { Effect } from "effect";
-import { runRpcActionMain } from "@/lib/helpersEffectClient";
-import { initialFormState } from "@tanstack/react-form-nextjs";
+import { Atom, useAtom } from "@effect-atom/atom-react";
+import { RuntimeAtom } from "@/lib/RuntimeClient";
+import { useSubmitToast } from "@/components/Form2/hooks";
 import { RpcUsersClient } from "@/features/users/rpc/client";
-import { useSetUserRoleFeedback } from "@/features/users/hooks/feedbacks";
 
 // components
 import { TableCell } from "@/components/ui/custom/table";
@@ -19,7 +16,6 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import type { Row, Table } from "@tanstack/react-table";
 import type LangLoader from "@/lib/LangLoader";
 import type { Role } from "@/services/better-auth/auth";
-import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 interface RoleCellProps {
   row: Row<AllUsersWithSessions>;
@@ -31,15 +27,20 @@ interface RoleCellProps {
 // constants
 import { ROLES } from "@/features/users/constants";
 
-const main = (userId: string, newRole: Role) =>
-  Effect.gen(function* () {
-    const { setUserRole } = yield* RpcUsersClient;
+const setUserRoleActionAtom = Atom.family((userId: string) =>
+  RuntimeAtom.fn(
+    Effect.fnUntraced(function* ({ newRole, table: { options }, rowIndex }: { newRole: Role; table: Table<AllUsersWithSessions>; rowIndex: number }) {
+      const { setUserRole } = yield* RpcUsersClient;
+      yield* setUserRole({ userId, newRole });
 
-    const result = yield* setUserRole({ userId, newRole }).pipe(
-      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
-    );
-    return { ...initialFormState, ...result } as const;
-  });
+      // Only reflect changes in the UI if the action was successful
+      yield* Effect.sync(() => {
+        options.meta?.updateData(rowIndex, "role", newRole);
+        options.meta?.updateData(rowIndex, "updatedAt", new Date());
+      });
+    }),
+  ),
+);
 
 export default function RoleCell({
   row: {
@@ -47,40 +48,33 @@ export default function RoleCell({
     original: { id: userId },
     getValue,
   },
-  table: { options },
+  table,
   ll,
   llFormToastFeedback,
 }: RoleCellProps) {
   // This action establishes a new role for a user
-  const [setUserRoleState, setSetUserRoleState] = useState<ActionResultWithFormState>({ ...initialFormState, actionStatus: "idle" });
-  const [setUserRoleIsPending, setSetUserRoleIsPending] = useState(false);
+  const [setUserRoleResult, setUserRoleAction] = useAtom(setUserRoleActionAtom(userId));
 
   // Provide feedback to the user regarding this server action
-  useSetUserRoleFeedback(setUserRoleState, ll, llFormToastFeedback);
+  useSubmitToast(
+    setUserRoleActionAtom(userId),
+    llFormToastFeedback,
+    ll["[SET USER ROLE]"],
+    ll["The role has been set."],
+    ll["The role could not be set; please try again later."],
+  );
 
   return (
     <TableCell className="text-center">
       <Select<Role>
         items={ROLES(ll)}
         value={getValue("role")}
-        onValueChange={async (newRole) => {
+        disabled={setUserRoleResult.waiting}
+        onValueChange={(newRole) => {
           // Proceed only if the new role is different from the current one
           if (!newRole || newRole === getValue("role")) return;
-
-          // Execute the server action first and capture its result
-          setSetUserRoleIsPending(true);
-          const actionResult = await runRpcActionMain(main(userId, newRole));
-          setSetUserRoleState(actionResult);
-          setSetUserRoleIsPending(false);
-
-          // Only reflect changes in the UI if the action was successful
-          if (actionResult.actionStatus !== "succeeded") return;
-          startTransition(() => {
-            options.meta?.updateData(rowIndex, "role", newRole);
-            options.meta?.updateData(rowIndex, "updatedAt", new Date());
-          });
+          setUserRoleAction({ newRole, table, rowIndex });
         }}
-        disabled={setUserRoleIsPending}
       >
         <SelectTrigger className="mx-auto w-fit">
           <SelectValue />

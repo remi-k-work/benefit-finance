@@ -4,7 +4,7 @@ import type { Status } from "@/drizzle/schema/lead";
 
 // services, features, and other libraries
 import { Effect } from "effect";
-import { useAtom } from "@effect-atom/atom-react";
+import { Atom, useAtom } from "@effect-atom/atom-react";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
 import { useSubmitToast } from "@/components/Form2/hooks";
 import { RpcLeadsClient } from "@/features/leads/rpc/client";
@@ -27,27 +27,19 @@ interface StatusCellProps {
 // constants
 import { STATUS } from "@/features/leads/constants";
 
-const setLeadStatusActionAtom = RuntimeAtom.fn(
-  Effect.fnUntraced(function* ({
-    leadId,
-    newStatus,
-    table: { options },
-    rowIndex,
-  }: {
-    leadId: string;
-    newStatus: Status;
-    table: Table<AllAvailableLeads>;
-    rowIndex: number;
-  }) {
-    const { setLeadStatus } = yield* RpcLeadsClient;
-    yield* setLeadStatus({ leadId, newStatus });
+const setLeadStatusActionAtom = Atom.family((leadId: string) =>
+  RuntimeAtom.fn(
+    Effect.fnUntraced(function* ({ newStatus, table: { options }, rowIndex }: { newStatus: Status; table: Table<AllAvailableLeads>; rowIndex: number }) {
+      const { setLeadStatus } = yield* RpcLeadsClient;
+      yield* setLeadStatus({ leadId, newStatus });
 
-    // Only reflect changes in the UI if the action was successful
-    yield* Effect.sync(() => {
-      options.meta?.updateData(rowIndex, "status", newStatus);
-      options.meta?.updateData(rowIndex, "updatedAt", new Date());
-    });
-  }),
+      // Only reflect changes in the UI if the action was successful
+      yield* Effect.sync(() => {
+        options.meta?.updateData(rowIndex, "status", newStatus);
+        options.meta?.updateData(rowIndex, "updatedAt", new Date());
+      });
+    }),
+  ),
 );
 
 export default function StatusCell({
@@ -61,11 +53,11 @@ export default function StatusCell({
   llFormToastFeedback,
 }: StatusCellProps) {
   // This action establishes a new status for a lead
-  const [setLeadStatusResult, setLeadStatusAction] = useAtom(setLeadStatusActionAtom);
+  const [setLeadStatusResult, setLeadStatusAction] = useAtom(setLeadStatusActionAtom(leadId));
 
   // Provide feedback to the user regarding this server action
   useSubmitToast(
-    setLeadStatusActionAtom,
+    setLeadStatusActionAtom(leadId),
     llFormToastFeedback,
     ll["[SET LEAD STATUS]"],
     ll["The status has been set."],
@@ -77,12 +69,12 @@ export default function StatusCell({
       <Select<Status>
         items={STATUS(ll)}
         value={getValue("status")}
+        disabled={setLeadStatusResult.waiting}
         onValueChange={(newStatus) => {
           // Proceed only if the new status is different from the current one
           if (!newStatus || newStatus === getValue("status")) return;
-          setLeadStatusAction({ leadId, newStatus, table, rowIndex });
+          setLeadStatusAction({ newStatus, table, rowIndex });
         }}
-        disabled={setLeadStatusResult.waiting}
       >
         <SelectTrigger className="mx-auto w-fit">
           <SelectValue />

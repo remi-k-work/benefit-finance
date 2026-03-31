@@ -1,16 +1,13 @@
-// react
-import { startTransition, useState } from "react";
-
 // drizzle and db access
 import type { AllAvailableLeads } from "@/features/leads/db";
 
 // services, features, and other libraries
 import { Effect } from "effect";
-import { runRpcActionMain } from "@/lib/helpersEffectClient";
-import { initialFormState } from "@tanstack/react-form-nextjs";
+import { Atom, useAtom } from "@effect-atom/atom-react";
+import { RuntimeAtom } from "@/lib/RuntimeClient";
+import { useSubmitToast } from "@/components/Form2/hooks";
 import { RpcLeadsClient } from "@/features/leads/rpc/client";
 import { useConfirmModal } from "@/atoms/confirmModal";
-import { useDeleteLeadFeedback } from "@/features/leads/hooks/feedbacks";
 
 // components
 import { TableCell } from "@/components/ui/custom/table";
@@ -23,7 +20,6 @@ import { Loader2 } from "lucide-react";
 // types
 import type { Row, Table } from "@tanstack/react-table";
 import type LangLoader from "@/lib/LangLoader";
-import type { ActionResultWithFormState } from "@/lib/helpersEffect";
 
 interface ActionsCellProps {
   row: Row<AllAvailableLeads>;
@@ -32,22 +28,26 @@ interface ActionsCellProps {
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
-const main = (leadId: string) =>
-  Effect.gen(function* () {
-    const { deleteLead } = yield* RpcLeadsClient;
+const deleteLeadActionAtom = Atom.family((leadId: string) =>
+  RuntimeAtom.fn(
+    Effect.fnUntraced(function* ({ table: { options }, rowIndex }: { table: Table<AllAvailableLeads>; rowIndex: number }) {
+      const { deleteLead } = yield* RpcLeadsClient;
+      yield* deleteLead({ leadId });
 
-    const result = yield* deleteLead({ leadId }).pipe(
-      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
-    );
-    return { ...initialFormState, ...result } as const;
-  });
+      // Only reflect changes in the UI if the action was successful
+      yield* Effect.sync(() => {
+        options.meta?.removeData(rowIndex);
+      });
+    }),
+  ),
+);
 
 export default function ActionsCell({
   row: {
     index: rowIndex,
     original: { id: leadId },
   },
-  table: { options },
+  table,
   ll,
   llFormToastFeedback,
 }: ActionsCellProps) {
@@ -55,11 +55,16 @@ export default function ActionsCell({
   const { openConfirmModal } = useConfirmModal();
 
   // This action permanently deletes a lead from the database
-  const [deleteLeadState, setDeleteLeadState] = useState<ActionResultWithFormState>({ ...initialFormState, actionStatus: "idle" });
-  const [deleteLeadIsPending, setDeleteLeadIsPending] = useState(false);
+  const [deleteLeadResult, deleteLeadAction] = useAtom(deleteLeadActionAtom(leadId));
 
   // Provide feedback to the user regarding this server action
-  useDeleteLeadFeedback(deleteLeadState, ll, llFormToastFeedback);
+  useSubmitToast(
+    deleteLeadActionAtom(leadId),
+    llFormToastFeedback,
+    ll["[DELETE LEAD]"],
+    ll["The lead has been deleted."],
+    ll["The lead could not be deleted; please try again later."],
+  );
 
   return (
     <TableCell className="flex items-center justify-end gap-2">
@@ -68,7 +73,7 @@ export default function ActionsCell({
         size="icon"
         variant="destructive"
         title={ll["Delete Lead"]}
-        disabled={deleteLeadIsPending}
+        disabled={deleteLeadResult.waiting}
         onClick={() => {
           openConfirmModal({
             content: (
@@ -76,23 +81,13 @@ export default function ActionsCell({
                 {ll["Are you sure you want to"]} <b className="text-destructive">{ll["delete"]}</b> {ll["this lead?"]}
               </p>
             ),
-            onConfirmed: async () => {
-              // Execute the server action first and capture its result
-              setDeleteLeadIsPending(true);
-              const actionResult = await runRpcActionMain(main(leadId));
-              setDeleteLeadState(actionResult);
-              setDeleteLeadIsPending(false);
-
-              // Only reflect changes in the UI if the action was successful
-              if (actionResult.actionStatus !== "succeeded") return;
-              startTransition(() => {
-                options.meta?.removeData(rowIndex);
-              });
+            onConfirmed: () => {
+              deleteLeadAction({ table, rowIndex });
             },
           });
         }}
       >
-        {deleteLeadIsPending ? <Loader2 className="size-9 animate-spin" /> : <TrashIcon className="size-9" />}
+        {deleteLeadResult.waiting ? <Loader2 className="size-9 animate-spin" /> : <TrashIcon className="size-9" />}
       </Button>
     </TableCell>
   );
