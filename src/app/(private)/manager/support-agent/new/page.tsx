@@ -9,7 +9,7 @@ import { Auth } from "@/features/auth/lib/auth";
 
 // components
 import PageHeader, { PageHeaderSkeleton } from "@/components/PageHeader";
-import NewDocForm from "@/features/supportAgent/components/NewDocForm2";
+import NewDocForm from "@/features/supportAgent/components/NewDocForm";
 
 // types
 import type { Metadata } from "next";

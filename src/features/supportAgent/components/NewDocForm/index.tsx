@@ -1,23 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/no-children-prop */
-
 "use client";
 
 // react
-import { useActionState, useEffect, useRef } from "react";
+import { useMemo } from "react";
 
 // services, features, and other libraries
-import { Effect, Schema } from "effect";
-import { formDataToRecord, runRpcActionMain } from "@/lib/helpersEffectClient";
+import { Effect } from "effect";
+import { useAtomSet } from "@effect-atom/atom-react";
+import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcSupportAgentClient } from "@/features/supportAgent/rpc/client";
-import { initialFormState, mergeForm, useTransform } from "@tanstack/react-form-nextjs";
-import { useAppForm } from "@/components/Form";
-import { NewDocFormSchemaEn, NewDocFormSchemaPl } from "@/features/supportAgent/schemas";
-import { useNewDocFormFeedback } from "@/features/supportAgent/hooks/feedbacks";
+import { newDocFormBuilder } from "@/features/supportAgent/schemas";
+import { RuntimeAtom } from "@/lib/RuntimeClient";
+import { useSubmitToast } from "@/components/Form2/hooks";
 
 // components
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
-import InfoLine from "@/components/Form/InfoLine";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
+import { MarkdownInput, TextInput } from "@/components/Form2/Inputs";
+import { FormSubmit, SubmitStatus } from "@/components/Form2";
 
 // assets
 import { DocumentPlusIcon } from "@heroicons/react/24/outline";
@@ -25,7 +23,6 @@ import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 // types
 import type { Lang } from "@/lib/LangLoader";
 import type LangLoader from "@/lib/LangLoader";
-import type { MDXEditorMethods } from "@mdxeditor/editor";
 
 interface NewDocFormProps {
   preferredLanguage: Lang;
@@ -33,131 +30,75 @@ interface NewDocFormProps {
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
-// constants
-import { FORM_OPTIONS_N, INITIAL_FORM_STATE_N } from "@/features/supportAgent/constants";
-
-const main = (formDataRecord: Record<string, string>) =>
-  Effect.gen(function* () {
-    const { newDocForm } = yield* RpcSupportAgentClient;
-
-    const result = yield* newDocForm({ formDataRecord }).pipe(
-      Effect.catchAllDefect(() => Effect.succeed({ ...initialFormState, actionStatus: "failed", timestamp: Date.now() } as const)),
-    );
-    return { ...initialFormState, ...result } as const;
+const newDocForm = (preferredLanguage: Lang) =>
+  FormReact.make(newDocFormBuilder(preferredLanguage), {
+    runtime: RuntimeAtom,
+    fields: { title: TextInput, content: MarkdownInput },
+    onSubmit: (_, { decoded: { title, content } }) =>
+      Effect.gen(function* () {
+        const { newDocForm } = yield* RpcSupportAgentClient;
+        yield* newDocForm({ title, content });
+      }),
   });
 
 export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback }: NewDocFormProps) {
-  // Create a ref to the editor component
-  const markdownFieldRef = useRef<MDXEditorMethods>(null);
-
-  // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(
-    async (_: unknown, formData: FormData) => await runRpcActionMain(main(formDataToRecord(formData))),
-    INITIAL_FORM_STATE_N,
-  );
-
-  const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
-    ...FORM_OPTIONS_N,
-    transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
-  });
+  // Get the form context
+  const newDocFormL = useMemo(() => newDocForm(preferredLanguage), [preferredLanguage]);
+  const submit = useAtomSet(newDocFormL.submit);
 
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useNewDocFormFeedback(
-    formState,
-    () => {
-      reset();
-      markdownFieldRef.current?.setMarkdown("");
-    },
-    store,
-    ll,
+  useSubmitToast(
+    newDocFormL.submit,
     llFormToastFeedback,
+    ll["[NEW DOCUMENT]"],
+    ll["The new document has been created."],
+    undefined,
+    "/manager/support-agent",
+    true,
   );
 
-  // Reset the form and hide the feedback message
-  useEffect(() => {
-    reset();
-    markdownFieldRef.current?.setMarkdown("");
-    hideFeedbackMessage();
-  }, [reset, hideFeedbackMessage]);
-
   return (
-    <AppForm>
-      <form
-        action={formAction}
-        onSubmit={async () => {
-          await handleSubmit();
-        }}
-      >
-        <Card className="max-w-4xl">
-          <CardHeader>
-            <CardTitle>{ll["New Document"]}</CardTitle>
-            <CardDescription>{ll["To create a new document for the support agent"]}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <AppField
-              name="title"
-              validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? NewDocFormSchemaEn.fields.title : NewDocFormSchemaPl.fields.title) as any,
-              }}
-              children={(field) => (
-                <field.TextField label={ll["Title"]} size={40} maxLength={51} spellCheck autoComplete="off" placeholder={ll["e.g., About Benefit Finance"]} />
-              )}
+    <Card className="max-w-4xl">
+      <CardHeader>
+        <CardTitle>{ll["New Document"]}</CardTitle>
+        <CardDescription>{ll["To create a new document for the support agent"]}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <newDocFormL.Initialize defaultValues={{ title: "", content: "" }}>
+          <form
+            onSubmit={(ev) => {
+              ev.preventDefault();
+              submit();
+            }}
+          >
+            <newDocFormL.title label={ll["Title"]} size={40} maxLength={51} spellCheck autoComplete="off" placeholder={ll["e.g., About Benefit Finance"]} />
+            <br />
+            <newDocFormL.content
+              label={ll["Content"]}
+              spellCheck={false}
+              placeholder={
+                ll[
+                  "e.g., Benefit Finance is a holistic wealth management company founded on the belief that financial freedom should be accessible to everyone."
+                ]
+              }
             />
-            <AppField
-              name="markdown"
-              children={(field) => (
-                <field.MarkdownField
-                  ref={markdownFieldRef}
-                  label={ll["Content"]}
-                  markdown=""
-                  spellCheck={false}
-                  placeholder={
-                    ll[
-                      "e.g., Benefit Finance is a holistic wealth management company founded on the belief that financial freedom should be accessible to everyone."
-                    ]
-                  }
-                  onChange={(markdown) => field.form.setFieldValue("content", markdown)}
-                />
-              )}
+            <br />
+            <SubmitStatus
+              form={newDocFormL}
+              ll={llFormToastFeedback}
+              formName={ll["[NEW DOCUMENT]"]}
+              succeededDesc={ll["The new document has been created."]}
             />
-            <AppField
-              name="content"
-              validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? NewDocFormSchemaEn.fields.content : NewDocFormSchemaPl.fields.content) as any,
-              }}
-              children={(field) => (
-                <field.TextAreaField
-                  cols={50}
-                  rows={8}
-                  maxLength={2049}
-                  spellCheck={false}
-                  autoComplete="off"
-                  placeholder={
-                    ll[
-                      "e.g., Benefit Finance is a holistic wealth management company founded on the belief that financial freedom should be accessible to everyone."
-                    ]
-                  }
-                  hidden
-                />
-              )}
-            />
-          </CardContent>
-          <CardFooter>
-            <InfoLine message={feedbackMessage} />
             <FormSubmit
+              form={newDocFormL}
               submitIcon={<DocumentPlusIcon className="size-9" />}
               submitText={ll["Create New Document"]}
               resetText={ll["Clear Form"]}
               cancelText={ll["Cancel and Go Back"]}
-              isPending={isPending}
-              onClearedForm={() => {
-                hideFeedbackMessage();
-                markdownFieldRef.current?.setMarkdown("");
-              }}
             />
-          </CardFooter>
-        </Card>
-      </form>
-    </AppForm>
+          </form>
+        </newDocFormL.Initialize>
+      </CardContent>
+    </Card>
   );
 }

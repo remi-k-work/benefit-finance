@@ -2,13 +2,10 @@
 import { Schema } from "effect";
 import { Field, FormBuilder } from "@lucas-barake/effect-form-react";
 
-// schemas
-import { FlexibleStringSchema } from "@/schemas";
-
 // types
 import type { Lang } from "@/lib/LangLoader";
 
-const TitleField = (preferredLanguage: Lang) =>
+export const TitleField = (preferredLanguage: Lang) =>
   preferredLanguage === "en"
     ? Field.makeField(
         "title",
@@ -24,46 +21,22 @@ const TitleField = (preferredLanguage: Lang) =>
           Schema.maxLength(50, { message: () => "Proszę zachować tytuł o maksymalnej długości 50 znaków" }),
         ),
       );
-const ContentField = (preferredLanguage: Lang) =>
+export const ContentField = (preferredLanguage: Lang) =>
   preferredLanguage === "en"
     ? Field.makeField(
         "content",
         Schema.Trim.pipe(
           Schema.nonEmptyString({ message: () => "What is the content of the document? This is a mandatory field" }),
-          Schema.maxLength(48, { message: () => "Please keep the content to a maximum of 2048 characters" }),
+          Schema.maxLength(2048, { message: () => "Please keep the content to a maximum of 2048 characters" }),
         ),
       )
     : Field.makeField(
         "content",
         Schema.Trim.pipe(
           Schema.nonEmptyString({ message: () => "Jaka jest treść dokumentu? To pole jest obowiązkowe" }),
-          Schema.maxLength(48, { message: () => "Proszę ograniczyć treść do maksymalnie 2048 znaków" }),
+          Schema.maxLength(2048, { message: () => "Proszę ograniczyć treść do maksymalnie 2048 znaków" }),
         ),
       );
 
 export const newDocFormBuilder = (preferredLanguage: Lang) =>
   FormBuilder.empty.addField(TitleField(preferredLanguage)).addField(ContentField(preferredLanguage));
-
-export const NewDocFormSchemaEn = Schema.Struct({
-  title: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "Please provide the document title; this is a necessary field" }),
-    Schema.maxLength(50, { message: () => "Please keep the title to a maximum of 50 characters" }),
-  ),
-  content: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "What is the content of the document? This is a mandatory field" }),
-    Schema.maxLength(2048, { message: () => "Please keep the content to a maximum of 2048 characters" }),
-  ),
-  markdown: Schema.optional(FlexibleStringSchema.pipe(Schema.nonEmptyString())),
-});
-
-export const NewDocFormSchemaPl = Schema.Struct({
-  title: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "Proszę podać tytuł dokumentu, jest to pole obowiązkowe" }),
-    Schema.maxLength(50, { message: () => "Proszę zachować tytuł o maksymalnej długości 50 znaków" }),
-  ),
-  content: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "Jaka jest treść dokumentu? To pole jest obowiązkowe" }),
-    Schema.maxLength(2048, { message: () => "Proszę ograniczyć treść do maksymalnie 2048 znaków" }),
-  ),
-  markdown: Schema.optional(FlexibleStringSchema.pipe(Schema.nonEmptyString())),
-});

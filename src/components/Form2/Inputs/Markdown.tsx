@@ -44,10 +44,12 @@ export const MarkdownInput: FormReact.FieldComponent<string, Omit<MarkdownInputP
           ref={editorRef}
           markdown={value}
           onChange={(markdown) => {
+            // Avoid re-rendering the editor on every change
             markdownRef.current = markdown;
           }}
           onBlur={() => {
             onBlur();
+            // Update the field value (this will trigger a re-render only once)
             onChange(markdownRef.current);
           }}
           {...rest}
