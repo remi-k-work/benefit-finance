@@ -9,12 +9,12 @@ import { ContentField, TitleField } from "@/features/supportAgent/schemas";
 export class RpcSupportAgent extends RpcGroup.make(
   Rpc.make("newDocForm", {
     error: Schema.Union(AiSdkError, BetterAuthApiError, DatabaseError, UnauthorizedAccessError),
-    payload: { title: TitleField("en").schema, content: ContentField("en").schema },
+    payload: { title: TitleField().schema, content: ContentField().schema },
   }),
 
   Rpc.make("editDocForm", {
     error: Schema.Union(AiSdkError, BetterAuthApiError, DatabaseError, UnauthorizedAccessError),
-    payload: { docId: Schema.UUID, title: TitleField("en").schema, content: ContentField("en").schema },
+    payload: { docId: Schema.UUID, title: TitleField().schema, content: ContentField().schema },
   }),
 
   Rpc.make("deleteDoc", {

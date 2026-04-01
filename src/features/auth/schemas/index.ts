@@ -1,4 +1,5 @@
 export * from "./forgotPassForm";
+export * from "./rememberMeField";
 export * from "./resetPassForm";
 export * from "./resetPassPage";
 export * from "./signInForm";

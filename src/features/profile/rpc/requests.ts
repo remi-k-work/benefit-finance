@@ -4,7 +4,7 @@ import { Rpc, RpcGroup } from "@effect/rpc";
 import { BetterAuthApiError, DatabaseError, UnauthorizedAccessError, UtApiError } from "@/lib/errors";
 
 // schemas
-import { EmailSchemaEn2, NameSchemaEn, PasswordSchemaEn2 } from "@/schemas";
+import { EmailField, NameField, PasswordField } from "@/schemas";
 
 export class RpcProfile extends RpcGroup.make(
   Rpc.make("deleteAvatar", {
@@ -13,17 +13,17 @@ export class RpcProfile extends RpcGroup.make(
 
   Rpc.make("emailChangeForm", {
     error: Schema.Union(BetterAuthApiError, UnauthorizedAccessError),
-    payload: { newEmail: EmailSchemaEn2 },
+    payload: { newEmail: EmailField().schema },
   }),
 
   Rpc.make("passChangeForm", {
     error: Schema.Union(BetterAuthApiError, UnauthorizedAccessError),
-    payload: { newPassword: PasswordSchemaEn2, currentPassword: Schema.optional(PasswordSchemaEn2) },
+    payload: { newPassword: PasswordField().schema, currentPassword: Schema.optional(PasswordField().schema) },
   }),
 
   Rpc.make("profileDetailsForm", {
     error: Schema.Union(BetterAuthApiError, UnauthorizedAccessError),
-    payload: { name: NameSchemaEn },
+    payload: { name: NameField().schema },
   }),
 
   Rpc.make("signOutEverywhere", {

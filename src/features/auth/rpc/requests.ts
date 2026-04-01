@@ -4,26 +4,27 @@ import { Rpc, RpcGroup } from "@effect/rpc";
 import { BetterAuthApiError } from "@/lib/errors";
 
 // schemas
-import { EmailSchemaEn2, NameSchemaEn, PasswordSchemaEn2 } from "@/schemas";
+import { EmailField, NameField, PasswordField } from "@/schemas";
+import { RememberMeField } from "@/features/auth/schemas";
 
 export class RpcAuth extends RpcGroup.make(
   Rpc.make("forgotPassForm", {
     error: BetterAuthApiError,
-    payload: { email: EmailSchemaEn2 },
+    payload: { email: EmailField().schema },
   }),
 
   Rpc.make("resetPassForm", {
     error: BetterAuthApiError,
-    payload: { token: Schema.Trim.pipe(Schema.nonEmptyString()), newPassword: PasswordSchemaEn2 },
+    payload: { token: Schema.Trim.pipe(Schema.nonEmptyString()), newPassword: PasswordField().schema },
   }),
 
   Rpc.make("signInForm", {
     error: BetterAuthApiError,
-    payload: { email: EmailSchemaEn2, password: PasswordSchemaEn2, rememberMe: Schema.Boolean },
+    payload: { email: EmailField().schema, password: PasswordField().schema, rememberMe: RememberMeField.schema },
   }),
 
   Rpc.make("signUpForm", {
     error: BetterAuthApiError,
-    payload: { name: NameSchemaEn, email: EmailSchemaEn2, password: PasswordSchemaEn2 },
+    payload: { name: NameField().schema, email: EmailField().schema, password: PasswordField().schema },
   }),
 ) {}
