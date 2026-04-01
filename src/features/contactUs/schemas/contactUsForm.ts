@@ -1,47 +1,28 @@
 // services, features, and other libraries
-import { Schema } from "effect";
+import { Effect } from "effect";
+import { FormBuilder } from "@lucas-barake/effect-form-react";
+import { RpcCaptchaClient } from "@/features/captcha/rpc/client";
 
 // schemas
-import { EmailSchemaEn, EmailSchemaPl, FlexibleStringSchema, PhoneSchemaEn, PhoneSchemaPl } from "@/schemas";
+import { EmailField, NameField, PhoneField } from "@/schemas";
+import { CaptchaInputField, MessageField, SubjectField } from "@/features/contactUs/schemas";
 
-export const ContactUsFormSchemaEn = Schema.Struct({
-  name: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "Please provide your name; this is a necessary field" }),
-    Schema.maxLength(25, { message: () => "Please keep the name to a maximum of 25 characters" }),
-  ),
-  email: EmailSchemaEn,
-  subject: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "Your message's subject is a required field" }),
-    Schema.maxLength(40, { message: () => "Please keep the subject to a maximum of 40 characters" }),
-  ),
-  phone: PhoneSchemaEn(),
-  message: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "What is the message you want to send? This is a mandatory field" }),
-    Schema.maxLength(2048, { message: () => "Please keep the message to a maximum of 2048 characters" }),
-  ),
-  captcha: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "A captcha is required to proceed" }),
-    Schema.maxLength(6, { message: () => "The captcha is no more than six characters long" }),
-  ),
-});
+// types
+import type { Lang } from "@/lib/LangLoader";
 
-export const ContactUsFormSchemaPl = Schema.Struct({
-  name: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "Proszę podać swoje imię; jest to pole obowiązkowe" }),
-    Schema.maxLength(25, { message: () => "Imię powinno mieć maksymalnie 25 znaków" }),
-  ),
-  email: EmailSchemaPl,
-  subject: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "Temat Twojej wiadomości jest polem wymaganym" }),
-    Schema.maxLength(40, { message: () => "Temat wiadomości powinien mieć maksymalnie 40 znaków" }),
-  ),
-  phone: PhoneSchemaPl(),
-  message: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "Jaką wiadomość chcesz wysłać? Jest to pole obowiązkowe" }),
-    Schema.maxLength(2048, { message: () => "Wiadomość nie może mieć więcej niż 2048 znaków" }),
-  ),
-  captcha: FlexibleStringSchema.pipe(
-    Schema.nonEmptyString({ message: () => "Captcha jest wymagane aby kontynuować" }),
-    Schema.maxLength(6, { message: () => "Captcha musi być nie dłuższe niż 6 znaków" }),
-  ),
-});
+export const contactUsFormBuilder = (preferredLanguage: Lang) =>
+  FormBuilder.empty
+    .addField(NameField(preferredLanguage))
+    .addField(EmailField(preferredLanguage))
+    .addField(SubjectField(preferredLanguage))
+    .addField(PhoneField(preferredLanguage))
+    .addField(MessageField(preferredLanguage))
+    .addField(CaptchaInputField(preferredLanguage))
+    .refineEffect(({ captchaInput }) =>
+      Effect.gen(function* () {
+        // Check the captcha to ensure it matches
+        const { isCaptchaValid } = yield* RpcCaptchaClient;
+        if (!(yield* isCaptchaValid({ captchaInput })))
+          return { path: ["captchaInput"], message: preferredLanguage === "en" ? "Entered captcha is invalid" : "Wpisana captcha jest nieprawidłowa" };
+      }).pipe(Effect.orElseSucceed(() => undefined)),
+    );
