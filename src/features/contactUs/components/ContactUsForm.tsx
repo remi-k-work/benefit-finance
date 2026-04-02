@@ -1,25 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/no-children-prop */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 "use client";
 
 // react
-import { useActionState, useEffect, useRef } from "react";
-
-// server actions and mutations
-import contactUs from "@/features/contactUs/actions/contactUsForm";
+import { useMemo } from "react";
 
 // services, features, and other libraries
-import { Schema } from "effect";
-import { mergeForm, useTransform } from "@tanstack/react-form-nextjs";
-import { useAppForm } from "@/components/Form";
-import { ContactUsFormSchemaEn, ContactUsFormSchemaPl } from "@/features/contactUs/schemas/contactUsForm";
-import useContactUsFormFeedback from "@/features/contactUs/hooks/feedbacks/useContactUsForm";
+import { Effect } from "effect";
+import { useAtomSet } from "@effect-atom/atom-react";
+import { FormReact } from "@lucas-barake/effect-form-react";
+import { contactUsFormBuilder } from "@/features/contactUs/schemas";
+import { RuntimeAtom } from "@/lib/RuntimeClient";
+import { useSubmitToast } from "@/components/Form2/hooks";
 
 // components
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/custom/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
+import { TextAreaInput, TextInput } from "@/components/Form2/Inputs";
+import { FormSubmit, SubmitStatus } from "@/components/Form2";
 import Captcha from "@/features/captcha/components/Captcha";
-import InfoLine from "@/components/Form/InfoLine";
 
 // assets
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
@@ -35,181 +33,116 @@ interface ContactUsFormProps {
   llFormToastFeedback: typeof LangLoader.prototype.formToastFeedback;
 }
 
-// constants
-import { FORM_OPTIONS, INITIAL_FORM_STATE } from "@/features/contactUs/constants/contactUsForm";
-
-export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFeedback, llFormToastFeedback }: ContactUsFormProps) {
-  // The main server action that processes the form
-  const [formState, formAction, isPending] = useActionState(contactUs, INITIAL_FORM_STATE);
-  const { AppField, AppForm, FormSubmit, handleSubmit, reset, store } = useAppForm({
-    ...FORM_OPTIONS,
-    transform: useTransform((baseForm) => mergeForm(baseForm, formState), [formState]),
+const contactUsForm = (preferredLanguage: Lang) =>
+  FormReact.make(contactUsFormBuilder(preferredLanguage), {
+    runtime: RuntimeAtom,
+    fields: {
+      name: TextInput,
+      email: TextInput,
+      subject: TextInput,
+      phone: TextInput,
+      message: TextAreaInput,
+      captchaInput: TextInput,
+    },
+    onSubmit: (_, { decoded: {} }) => Effect.void,
   });
 
-  // Track if the user has pressed the submit button
-  const hasPressedSubmitRef = useRef(false);
-
-  // All this new cleanup code is for the <Activity /> boundary
-  useEffect(() => {
-    // Reset the flag when the component unmounts
-    return () => {
-      hasPressedSubmitRef.current = false;
-    };
-  }, []);
+export default function ContactUsForm({ preferredLanguage, ll, llContactUsFormFeedback, llFormToastFeedback }: ContactUsFormProps) {
+  // Get the form context
+  const contactUsFormL = useMemo(() => contactUsForm(preferredLanguage), [preferredLanguage]);
+  const submit = useAtomSet(contactUsFormL.submit);
 
   // Provide feedback to the user regarding this form actions
-  const { feedbackMessage, hideFeedbackMessage } = useContactUsFormFeedback(
-    hasPressedSubmitRef,
-    formState,
-    reset,
-    store,
-    llContactUsFormFeedback,
-    llFormToastFeedback,
-  );
-
-  // Reset the form and hide the feedback message
-  useEffect(() => {
-    reset();
-    hideFeedbackMessage();
-  }, [reset, hideFeedbackMessage]);
+  useSubmitToast(contactUsFormL.submit, llFormToastFeedback, llContactUsFormFeedback["[CONTACT US]"], llContactUsFormFeedback["Your message has been sent."]);
 
   return (
-    <AppForm>
-      <form
-        action={formAction}
-        onSubmit={async () => {
-          await handleSubmit();
-          hasPressedSubmitRef.current = true;
-        }}
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>{ll["Contact Us"]}</CardTitle>
-            <CardDescription>{ll["To get in touch with us"]}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <AppField
-              name="name"
-              validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.name : ContactUsFormSchemaPl.fields.name) as any,
-              }}
-              children={(field) => (
-                <field.TextField
-                  label={ll["Name"]}
-                  size={40}
-                  maxLength={26}
-                  spellCheck={false}
-                  autoComplete="name"
-                  placeholder={ll["Let us know who you are!"]}
-                />
-              )}
+    <Card>
+      <CardHeader>
+        <CardTitle>{ll["Contact Us"]}</CardTitle>
+        <CardDescription>{ll["To get in touch with us"]}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <contactUsFormL.Initialize defaultValues={{ name: "", email: "", subject: "", phone: "", message: "", captchaInput: "" }}>
+          <form
+            onSubmit={(ev) => {
+              ev.preventDefault();
+              submit();
+            }}
+          >
+            <contactUsFormL.name
+              label={ll["Name"]}
+              size={40}
+              maxLength={26}
+              spellCheck={false}
+              autoComplete="name"
+              placeholder={ll["Let us know who you are!"]}
             />
-            <AppField
-              name="email"
-              validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.email : ContactUsFormSchemaPl.fields.email) as any,
-              }}
-              children={(field) => (
-                <field.TextField
-                  label={ll["Email"]}
-                  size={40}
-                  maxLength={50}
-                  spellCheck={false}
-                  autoComplete="email"
-                  placeholder={ll["We will answer you here"]}
-                />
-              )}
+            <br />
+            <contactUsFormL.email
+              label={ll["Email"]}
+              size={40}
+              maxLength={50}
+              spellCheck={false}
+              autoComplete="email"
+              placeholder={ll["We will answer you here"]}
             />
-            <AppField
-              name="subject"
-              validators={{
-                onChange: Schema.standardSchemaV1(
-                  preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.subject : ContactUsFormSchemaPl.fields.subject,
-                ) as any,
-              }}
-              children={(field) => (
-                <field.TextField
-                  label={ll["Subject"]}
-                  size={40}
-                  maxLength={41}
-                  spellCheck
-                  autoComplete="off"
-                  placeholder={ll["Question? Feedback? Let us know!"]}
-                />
-              )}
+            <br />
+            <contactUsFormL.subject
+              label={ll["Subject"]}
+              size={40}
+              maxLength={41}
+              spellCheck
+              autoComplete="off"
+              placeholder={ll["Question? Feedback? Let us know!"]}
             />
-            <AppField
-              name="phone"
-              validators={{
-                onChange: Schema.standardSchemaV1(preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.phone : ContactUsFormSchemaPl.fields.phone) as any,
-              }}
-              children={(field) => (
-                <field.TextField
-                  type="tel"
-                  label={ll["Phone"]}
-                  size={40}
-                  maxLength={12}
-                  spellCheck={false}
-                  autoComplete="tel"
-                  pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
-                  placeholder={ll["e.g., 333-444-444"]}
-                />
-              )}
+            <br />
+            <contactUsFormL.phone
+              type="tel"
+              label={ll["Phone"]}
+              size={40}
+              maxLength={12}
+              spellCheck={false}
+              autoComplete="tel"
+              placeholder={ll["e.g., 333-444-444"]}
             />
-            <AppField
-              name="message"
-              validators={{
-                onChange: Schema.standardSchemaV1(
-                  preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.message : ContactUsFormSchemaPl.fields.message,
-                ) as any,
-              }}
-              children={(field) => (
-                <field.TextAreaField
-                  label={ll["Message"]}
-                  cols={50}
-                  rows={8}
-                  maxLength={2049}
-                  spellCheck
-                  autoComplete="off"
-                  placeholder={ll["How can we help you today?"]}
-                />
-              )}
+            <br />
+            <contactUsFormL.message
+              label={ll["Message"]}
+              cols={50}
+              rows={8}
+              maxLength={2049}
+              spellCheck
+              autoComplete="off"
+              placeholder={ll["How can we help you today?"]}
             />
             <br />
             <Captcha captchaName="captcha" />
             <br />
-            <AppField
-              name="captcha"
-              validators={{
-                onChange: Schema.standardSchemaV1(
-                  preferredLanguage === "en" ? ContactUsFormSchemaEn.fields.captcha : ContactUsFormSchemaPl.fields.captcha,
-                ) as any,
-              }}
-              children={(field) => (
-                <field.TextField
-                  label={ll["Captcha"]}
-                  size={40}
-                  maxLength={7}
-                  spellCheck={false}
-                  autoComplete="off"
-                  placeholder={ll["Enter the generated captcha"]}
-                />
-              )}
+            <contactUsFormL.captchaInput
+              label={ll["Captcha"]}
+              size={40}
+              maxLength={7}
+              spellCheck={false}
+              autoComplete="off"
+              placeholder={ll["Enter the generated captcha"]}
             />
-          </CardContent>
-          <CardFooter>
-            <InfoLine message={feedbackMessage} />
+            <br />
+            <SubmitStatus
+              form={contactUsFormL}
+              ll={llFormToastFeedback}
+              formName={llContactUsFormFeedback["[CONTACT US]"]}
+              succeededDesc={llContactUsFormFeedback["Your message has been sent."]}
+            />
             <FormSubmit
+              form={contactUsFormL}
               submitIcon={<PaperAirplaneIcon className="size-9" />}
               submitText={ll["Send Message"]}
               resetText={ll["Clear Form"]}
               cancelText={ll["Cancel and Go Back"]}
-              isPending={isPending}
-              onClearedForm={hideFeedbackMessage}
             />
-          </CardFooter>
-        </Card>
-      </form>
-    </AppForm>
+          </form>
+        </contactUsFormL.Initialize>
+      </CardContent>
+    </Card>
   );
 }

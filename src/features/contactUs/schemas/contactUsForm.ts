@@ -5,7 +5,8 @@ import { RpcCaptchaClient } from "@/features/captcha/rpc/client";
 
 // schemas
 import { EmailField, NameField, PhoneField } from "@/schemas";
-import { CaptchaInputField, MessageField, SubjectField } from "@/features/contactUs/schemas";
+import { MessageField, SubjectField } from "@/features/contactUs/schemas";
+import { CaptchaInputField } from "@/features/captcha/schemas";
 
 // types
 import type { Lang } from "@/lib/LangLoader";
