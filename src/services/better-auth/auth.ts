@@ -21,7 +21,7 @@ export type Role = Extract<NonNullable<Parameters<typeof auth.api.setRole>[0]>["
 export type Permissions = NonNullable<Parameters<typeof auth.api.userHasPermission>[0]>["body"]["permissions"];
 
 export const auth = betterAuth({
-  trustedOrigins: ["http://localhost:3000", "https://benefit-finance.vercel.app", "https://benefit-finance-git-cc-remis-projects-738a757c.vercel.app"],
+  trustedOrigins: ["http://localhost:3000", "https://benefit-finance.vercel.app", "https://benefit-finance-git-cc-remis-projects-738a757c.vercel.app", "https://benefit-finance.remiforge.dev"],
 
   database: drizzleAdapter(db, {
     provider: "pg",
