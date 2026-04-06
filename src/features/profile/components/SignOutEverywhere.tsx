@@ -4,7 +4,7 @@
 import { Effect } from "effect";
 import { useAtom } from "@effect-atom/atom-react";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
-import { useSubmitToast } from "@/components/Form2/hooks";
+import { useSubmitToast } from "@/components/Form/hooks";
 import { RpcProfileClient } from "@/features/profile/rpc/client";
 import { useConfirmModal } from "@/atoms/confirmModal";
 

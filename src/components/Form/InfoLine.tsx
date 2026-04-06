@@ -1,5 +1,3 @@
-"use client";
-
 // services, features, and other libraries
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "motion/react";
@@ -13,7 +11,7 @@ interface InfoLineProps {
   className?: string;
 }
 
-export default function InfoLine({ message, className }: InfoLineProps) {
+export function InfoLine({ message, className }: InfoLineProps) {
   return (
     <AnimatePresence>
       {message && (

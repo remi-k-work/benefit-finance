@@ -11,12 +11,12 @@ import { useAtomSet } from "@effect-atom/atom-react";
 import { FormReact } from "@lucas-barake/effect-form-react";
 import { contactUsFormBuilder } from "@/features/contactUs/schemas";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
-import { useSubmitToast } from "@/components/Form2/hooks";
+import { useSubmitToast } from "@/components/Form/hooks";
 
 // components
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
-import { TextAreaInput, TextInput } from "@/components/Form2/Inputs";
-import { FormSubmit, SubmitStatus } from "@/components/Form2";
+import { TextAreaInput, TextInput } from "@/components/Form/Inputs";
+import { FormSubmit, SubmitStatus } from "@/components/Form";
 import Captcha from "@/features/captcha/components/Captcha";
 
 // assets

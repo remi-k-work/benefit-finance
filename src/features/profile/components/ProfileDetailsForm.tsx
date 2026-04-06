@@ -10,12 +10,12 @@ import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcProfileClient } from "@/features/profile/rpc/client";
 import { profileDetailsFormBuilder } from "@/features/profile/schemas";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
-import { useSubmitToast } from "@/components/Form2/hooks";
+import { useSubmitToast } from "@/components/Form/hooks";
 
 // components
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
-import { TextInput } from "@/components/Form2/Inputs";
-import { FormSubmit, SubmitStatus } from "@/components/Form2";
+import { TextInput } from "@/components/Form/Inputs";
+import { FormSubmit, SubmitStatus } from "@/components/Form";
 import { UserAvatar } from "@/components/Avatar/User";
 import UploadAvatar from "./UploadAvatar";
 import DeleteAvatar from "./DeleteAvatar";

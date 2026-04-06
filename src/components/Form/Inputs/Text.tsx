@@ -8,17 +8,17 @@ import { AnimatePresence } from "motion/react";
 
 // components
 import { Label } from "@/components/ui/custom/label";
-import { Textarea } from "@/components/ui/custom/textarea";
-import { ErrorLine } from "@/components/Form2";
+import { Input } from "@/components/ui/custom/input";
+import { ErrorLine } from "@/components/Form";
 
 // types
 import type { ComponentPropsWithoutRef } from "react";
 
-interface TextAreaInputProps extends ComponentPropsWithoutRef<typeof Textarea> {
-  label?: string;
+interface TextInputProps extends ComponentPropsWithoutRef<typeof Input> {
+  label: string;
 }
 
-export const TextAreaInput: FormReact.FieldComponent<string, TextAreaInputProps> = ({ field, props }) => {
+export const TextInput: FormReact.FieldComponent<string, TextInputProps> = ({ field, props }) => {
   // Get the field context
   const { path, value, onChange, onBlur, error } = field;
   const { label, ...rest } = props;
@@ -28,8 +28,8 @@ export const TextAreaInput: FormReact.FieldComponent<string, TextAreaInputProps>
 
   return (
     <>
-      {label && <Label htmlFor={id}>{label}</Label>}
-      <Textarea id={id} name={path} value={value} onChange={(ev) => onChange(ev.target.value)} onBlur={onBlur} {...rest} />
+      <Label htmlFor={id}>{label}</Label>
+      <Input id={id} name={path} value={value} onChange={(ev) => onChange(ev.target.value)} onBlur={onBlur} {...rest} />
       <AnimatePresence>{Option.isSome(error) && <ErrorLine message={error.value} />}</AnimatePresence>
     </>
   );

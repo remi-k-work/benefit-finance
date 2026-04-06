@@ -5,7 +5,7 @@ import type { AllUsersWithSessions } from "@/features/users/db";
 import { Effect } from "effect";
 import { Atom, useAtom } from "@effect-atom/atom-react";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
-import { useSubmitToast } from "@/components/Form2/hooks";
+import { useSubmitToast } from "@/components/Form/hooks";
 import { RpcUsersClient } from "@/features/users/rpc/client";
 
 // components

@@ -11,7 +11,7 @@ import { AnimatePresence } from "motion/react";
 // components
 import { Label } from "@/components/ui/custom/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/custom/select";
-import { ErrorLine } from "@/components/Form2";
+import { ErrorLine } from "@/components/Form";
 
 // types
 import type { ComponentPropsWithoutRef } from "react";

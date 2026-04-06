@@ -8,17 +8,17 @@ import { AnimatePresence } from "motion/react";
 
 // components
 import { Label } from "@/components/ui/custom/label";
-import { Checkbox } from "@/components/ui/custom/checkbox";
-import { ErrorLine } from "@/components/Form2";
+import { Textarea } from "@/components/ui/custom/textarea";
+import { ErrorLine } from "@/components/Form";
 
 // types
 import type { ComponentPropsWithoutRef } from "react";
 
-interface CheckBoxInputProps extends ComponentPropsWithoutRef<typeof Checkbox> {
-  label: string;
+interface TextAreaInputProps extends ComponentPropsWithoutRef<typeof Textarea> {
+  label?: string;
 }
 
-export const CheckBoxInput: FormReact.FieldComponent<boolean, CheckBoxInputProps> = ({ field, props }) => {
+export const TextAreaInput: FormReact.FieldComponent<string, TextAreaInputProps> = ({ field, props }) => {
   // Get the field context
   const { path, value, onChange, onBlur, error } = field;
   const { label, ...rest } = props;
@@ -28,10 +28,8 @@ export const CheckBoxInput: FormReact.FieldComponent<boolean, CheckBoxInputProps
 
   return (
     <>
-      <div className="flex items-center gap-1">
-        <Checkbox id={id} name={path} checked={value} onCheckedChange={onChange} onBlur={onBlur} {...rest} />
-        <Label htmlFor={id}>{label}</Label>
-      </div>
+      {label && <Label htmlFor={id}>{label}</Label>}
+      <Textarea id={id} name={path} value={value} onChange={(ev) => onChange(ev.target.value)} onBlur={onBlur} {...rest} />
       <AnimatePresence>{Option.isSome(error) && <ErrorLine message={error.value} />}</AnimatePresence>
     </>
   );

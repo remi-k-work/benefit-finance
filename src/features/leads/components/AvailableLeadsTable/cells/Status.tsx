@@ -6,7 +6,7 @@ import type { Status } from "@/drizzle/schema/lead";
 import { Effect } from "effect";
 import { Atom, useAtom } from "@effect-atom/atom-react";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
-import { useSubmitToast } from "@/components/Form2/hooks";
+import { useSubmitToast } from "@/components/Form/hooks";
 import { RpcLeadsClient } from "@/features/leads/rpc/client";
 
 // components

@@ -8,7 +8,7 @@ import type { AllDocsWithChunks } from "@/features/supportAgent/db";
 import { Effect } from "effect";
 import { Atom, useAtom } from "@effect-atom/atom-react";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
-import { useSubmitToast } from "@/components/Form2/hooks";
+import { useSubmitToast } from "@/components/Form/hooks";
 import { RpcSupportAgentClient } from "@/features/supportAgent/rpc/client";
 import { useConfirmModal } from "@/atoms/confirmModal";
 

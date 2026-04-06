@@ -8,17 +8,17 @@ import { AnimatePresence } from "motion/react";
 
 // components
 import { Label } from "@/components/ui/custom/label";
-import { Input } from "@/components/ui/custom/input";
-import { ErrorLine } from "@/components/Form2";
+import { Checkbox } from "@/components/ui/custom/checkbox";
+import { ErrorLine } from "@/components/Form";
 
 // types
 import type { ComponentPropsWithoutRef } from "react";
 
-interface TextInputProps extends ComponentPropsWithoutRef<typeof Input> {
+interface CheckBoxInputProps extends ComponentPropsWithoutRef<typeof Checkbox> {
   label: string;
 }
 
-export const TextInput: FormReact.FieldComponent<string, TextInputProps> = ({ field, props }) => {
+export const CheckBoxInput: FormReact.FieldComponent<boolean, CheckBoxInputProps> = ({ field, props }) => {
   // Get the field context
   const { path, value, onChange, onBlur, error } = field;
   const { label, ...rest } = props;
@@ -28,8 +28,10 @@ export const TextInput: FormReact.FieldComponent<string, TextInputProps> = ({ fi
 
   return (
     <>
-      <Label htmlFor={id}>{label}</Label>
-      <Input id={id} name={path} value={value} onChange={(ev) => onChange(ev.target.value)} onBlur={onBlur} {...rest} />
+      <div className="flex items-center gap-1">
+        <Checkbox id={id} name={path} checked={value} onCheckedChange={onChange} onBlur={onBlur} {...rest} />
+        <Label htmlFor={id}>{label}</Label>
+      </div>
       <AnimatePresence>{Option.isSome(error) && <ErrorLine message={error.value} />}</AnimatePresence>
     </>
   );

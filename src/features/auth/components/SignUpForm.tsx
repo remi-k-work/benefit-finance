@@ -10,12 +10,12 @@ import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcAuthClient } from "@/features/auth/rpc/client";
 import { signUpFormBuilder } from "@/features/auth/schemas";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
-import { useSubmitToast } from "@/components/Form2/hooks";
+import { useSubmitToast } from "@/components/Form/hooks";
 
 // components
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
-import { PasswordInput, TextInput } from "@/components/Form2/Inputs";
-import { FormSubmit, SubmitStatus } from "@/components/Form2";
+import { PasswordInput, TextInput } from "@/components/Form/Inputs";
+import { FormSubmit, SubmitStatus } from "@/components/Form";
 
 // assets
 import { UserIcon } from "@heroicons/react/24/outline";

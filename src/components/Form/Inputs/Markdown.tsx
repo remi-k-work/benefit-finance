@@ -9,7 +9,7 @@ import { AnimatePresence } from "motion/react";
 // components
 import { Label } from "@/components/ui/custom/label";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
-import { ErrorLine } from "@/components/Form2";
+import { ErrorLine } from "@/components/Form";
 
 // types
 import type { ComponentPropsWithoutRef } from "react";

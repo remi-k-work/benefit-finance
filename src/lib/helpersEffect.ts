@@ -7,16 +7,7 @@ import { notFound, unauthorized } from "next/navigation";
 // services, features, and other libraries
 import { Console, Effect, Either, Schema } from "effect";
 import { RuntimeServer } from "@/lib/RuntimeServer";
-import { initialFormState, ServerValidateError } from "@tanstack/react-form-nextjs";
 import { InvalidPageInputsError } from "./errors";
-
-// types
-import type { ServerFormState } from "@tanstack/react-form-nextjs";
-
-export interface ActionResultWithFormState extends ServerFormState<any, any> {
-  actionStatus: "idle" | "succeeded" | "failed" | "invalid" | "authError" | "demoMode";
-  timestamp?: number;
-}
 
 interface PageInputPromises {
   params: Promise<Record<string, string>>;
@@ -84,37 +75,5 @@ export const runComponentMain = async <A, E extends { _tag: string }>(componentM
   } else {
     // Return success result
     return componentMainResult.right;
-  }
-};
-
-// Execute the main effect for the server action, handle known errors, and return the payload
-export const runServerActionMain = async <A extends ActionResultWithFormState, E extends { _tag: string; readonly cause?: unknown }>(
-  serverActionMain: Effect.Effect<A, E, any>,
-): Promise<ActionResultWithFormState> => {
-  // We wrap in Effect.either to catch failures gracefully
-  const serverActionMainResult = await RuntimeServer.runPromise(
-    serverActionMain.pipe(
-      Effect.tapError((error) => Console.log(`[SERVER ACTION MAIN ERROR]: ${error}`)),
-      Effect.either,
-    ),
-  );
-
-  // Standardized error handling
-  if (Either.isLeft(serverActionMainResult)) {
-    const error = serverActionMainResult.left;
-
-    // Return early if the current user is in demo mode or not an admin
-    if (error._tag === "UnauthorizedAccessError") return { ...initialFormState, actionStatus: "demoMode", timestamp: Date.now() };
-
-    // Validation has failed
-    if (error._tag === "ValidationHasFailedError") {
-      if (error.cause instanceof ServerValidateError) return { ...error.cause.formState, actionStatus: "invalid", timestamp: Date.now() };
-    }
-
-    // Some other error occurred
-    return { ...initialFormState, actionStatus: "failed", timestamp: Date.now() };
-  } else {
-    // The form has successfully validated and submitted!
-    return serverActionMainResult.right;
   }
 };

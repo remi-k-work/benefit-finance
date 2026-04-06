@@ -13,12 +13,12 @@ import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcLeadsClient } from "@/features/leads/rpc/client";
 import { editLeadNotesFormBuilder } from "@/features/leads/schemas";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
-import { useSubmitToast } from "@/components/Form2/hooks";
+import { useSubmitToast } from "@/components/Form/hooks";
 import { useInstanceContext } from "@/features/leads/components/AvailableLeadsTable/context";
 
 // components
-import { TextAreaInput } from "@/components/Form2/Inputs";
-import { FormSubmit, SubmitStatus } from "@/components/Form2";
+import { TextAreaInput } from "@/components/Form/Inputs";
+import { FormSubmit, SubmitStatus } from "@/components/Form";
 
 // assets
 import { PencilSquareIcon } from "@heroicons/react/24/outline";

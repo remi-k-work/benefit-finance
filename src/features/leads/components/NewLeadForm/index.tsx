@@ -10,12 +10,12 @@ import { FormReact } from "@lucas-barake/effect-form-react";
 import { RpcLeadsClient } from "@/features/leads/rpc/client";
 import { newLeadFormBuilder } from "@/features/leads/schemas";
 import { RuntimeAtom } from "@/lib/RuntimeClient";
-import { useSubmitToast } from "@/components/Form2/hooks";
+import { useSubmitToast } from "@/components/Form/hooks";
 
 // components
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/custom/card";
-import { CheckBoxInput, SelectInput, TextInput } from "@/components/Form2/Inputs";
-import { FormSubmit, SubmitStatus } from "@/components/Form2";
+import { CheckBoxInput, SelectInput, TextInput } from "@/components/Form/Inputs";
+import { FormSubmit, SubmitStatus } from "@/components/Form";
 
 // assets
 import { UserPlusIcon } from "@heroicons/react/24/outline";

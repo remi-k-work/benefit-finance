@@ -8,7 +8,7 @@ import { flexRender } from "@tanstack/react-table";
 import { useInstanceContext } from "./context";
 
 // components
-import InfoLine from "@/components/Form/InfoLine";
+import { InfoLine } from "@/components/Form";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/custom/table";
 import { TitleHeaderSkeleton } from "./headers/Title";
 import { CreatedAndUpdatedHeaderSkeleton } from "./headers/CreatedAndUpdated";

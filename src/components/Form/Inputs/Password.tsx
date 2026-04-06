@@ -6,13 +6,15 @@ import Link from "next/link";
 
 // services, features, and other libraries
 import { cn } from "@/lib/utils";
-import { useFieldContext } from "@/components/Form";
+import { Option } from "effect";
+import { FormReact } from "@lucas-barake/effect-form-react";
+import { AnimatePresence } from "motion/react";
 
 // components
 import { Label } from "@/components/ui/custom/label";
 import { Input } from "@/components/ui/custom/input";
 import { Button } from "@/components/ui/custom/button";
-import FieldErrors from "@/components/Form/FieldErrors";
+import { ErrorLine } from "@/components/Form";
 
 // assets
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
@@ -21,20 +23,16 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import type { ComponentPropsWithoutRef } from "react";
 import type { Route } from "next";
 
-interface PasswordFieldProps extends ComponentPropsWithoutRef<typeof Input> {
+interface PasswordInputProps extends ComponentPropsWithoutRef<typeof Input> {
   label: string;
   forgotPassHref?: Route;
   forgotPassText?: string;
 }
 
-export default function PasswordField({ label, forgotPassHref, forgotPassText = "Forgot your password?", className, ...props }: PasswordFieldProps) {
+export const PasswordInput: FormReact.FieldComponent<string, PasswordInputProps> = ({ field, props }) => {
   // Get the field context
-  const {
-    name,
-    state: { value },
-    handleChange,
-    handleBlur,
-  } = useFieldContext<string>();
+  const { path, value, onChange, onBlur, error } = field;
+  const { label, forgotPassHref, forgotPassText = "Forgot your password?", className, ...rest } = props;
 
   // Generate a unique id
   const id = useId();
@@ -58,12 +56,12 @@ export default function PasswordField({ label, forgotPassHref, forgotPassText = 
         <Input
           type={showPassword ? "text" : "password"}
           id={id}
-          name={name}
-          value={value ?? ""}
-          onChange={(ev) => handleChange(ev.target.value)}
-          onBlur={handleBlur}
+          name={path}
+          value={value}
+          onChange={(ev) => onChange(ev.target.value)}
+          onBlur={onBlur}
           className={cn("pr-18 [&::-ms-reveal]:hidden", className)}
-          {...props}
+          {...rest}
         />
         <Button
           type="button"
@@ -76,7 +74,7 @@ export default function PasswordField({ label, forgotPassHref, forgotPassText = 
           {showPassword ? <EyeIcon className="size-7" /> : <EyeSlashIcon className="size-7" />}
         </Button>
       </div>
-      <FieldErrors />
+      <AnimatePresence>{Option.isSome(error) && <ErrorLine message={error.value} />}</AnimatePresence>
     </>
   );
-}
+};
