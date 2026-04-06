@@ -8,8 +8,8 @@ import { runSupportAgent } from "@/features/supportAgent/lib/agent";
 import type { ModelMessage } from "ai";
 import type { SupportAgentUIMessage } from "@/features/supportAgent/lib/agent";
 
-// Allow streaming responses up to 30 seconds
-export const maxDuration = 30;
+// Allow streaming responses up to 60 seconds
+export const maxDuration = 60;
 
 const main = (modelMessages: ModelMessage[]) =>
   Effect.gen(function* () {
