@@ -17,14 +17,13 @@ import { INSTRUCTIONS } from "@/features/supportAgent/constants";
 
 const PREFLIGHT_TIMEOUT = "3 seconds";
 const MODEL_TIMEOUT = "15 seconds";
-
-const PREFLIGHT_RETRY = Schedule.recurs(1).pipe(Schedule.addDelay(() => "200 millis"));
 const STREAM_RETRY = Schedule.intersect(Schedule.exponential("500 millis"), Schedule.recurs(2)).pipe(Schedule.jittered);
 
 const MODEL_CANDIDATES = [
-  { name: "gemini-pro-latest", model: google("gemini-pro-latest") },
-  { name: "gemini-flash-latest", model: google("gemini-flash-latest") },
-  { name: "gemini-flash-lite-latest", model: google("gemini-flash-lite-latest") },
+  { name: "gemini-3.1-pro", model: google("gemini-3.1-pro-preview") },
+  { name: "gemini-2.5-pro", model: google("gemini-2.5-pro") },
+  { name: "gemini-2.5-flash", model: google("gemini-2.5-flash") },
+  { name: "gemini-2.5-flash-lite", model: google("gemini-2.5-flash-lite") },
 ] as const;
 
 // This is a factory designed to create a support agent that uses a specified model
@@ -85,7 +84,6 @@ const runAgentWithModel = (name: string, model: LanguageModel, prompt: string | 
         duration: PREFLIGHT_TIMEOUT,
         onTimeout: () => new AiSdkError({ message: `Pre-flight timeout for ${name}` }),
       }),
-      Effect.retry(PREFLIGHT_RETRY),
       Effect.asVoid,
     );
 
@@ -116,7 +114,7 @@ const supportAgentPolicy = (prompt: string | ModelMessage[]) =>
         // Log a warning if the model completely fails all retries before moving to the next candidate
         Effect.tapError((cause) =>
           Effect.logWarning(
-            `[SUPPORT AGENT] Model '${name}' failed. Moving to fallback. Cause: ${cause instanceof Error ? cause.message : JSON.stringify(cause)}`,
+            `[SUPPORT AGENT] Model '${name}' failed. Moving to fallback. Cause: ${cause instanceof Error ? cause.message : JSON.stringify(cause, null, 2)}`,
           ),
         ),
       ),

@@ -40,7 +40,9 @@ export default function SupportAgentModal({ onClosed, preferredLanguage, ll, cla
     dialogRef.current?.showModal();
   }, []);
 
-  const { messages, sendMessage, status } = useChat<SupportAgentUIMessage>({ messages: preferredLanguage === "en" ? INITIAL_MESSAGE_EN : INITIAL_MESSAGE_PL });
+  const { messages, sendMessage, status, error, regenerate } = useChat<SupportAgentUIMessage>({
+    messages: preferredLanguage === "en" ? INITIAL_MESSAGE_EN : INITIAL_MESSAGE_PL,
+  });
 
   return (
     <dialog
@@ -70,7 +72,7 @@ export default function SupportAgentModal({ onClosed, preferredLanguage, ll, cla
             transition={{ ease: "easeOut", duration: 0.5 }}
           >
             <Header onClosed={() => setIsOpen(false)} ll={ll} />
-            <Messages messages={messages} status={status} ll={ll} />
+            <Messages messages={messages} status={status} error={error} regenerate={regenerate} ll={ll} />
             <Footer sendMessage={sendMessage} status={status} ll={ll} />
           </motion.div>
         )}

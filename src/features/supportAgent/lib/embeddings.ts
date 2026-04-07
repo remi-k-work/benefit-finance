@@ -17,14 +17,14 @@ const generateDocChunks = (docContent: string) => Effect.promise(() => markdownS
 // Embed many values at once (batch embedding); in other words, create embeddings for all document chunks
 const embedManyDocChunks = (docChunks: string[]) =>
   Effect.tryPromise({
-    try: () => embedMany({ model, values: docChunks, providerOptions: { google: { outputDimensionality: 1536 } } }),
+    try: () => embedMany({ model, values: docChunks, providerOptions: { google: { taskType: "RETRIEVAL_DOCUMENT", outputDimensionality: 1536 } } }),
     catch: (cause) => new AiSdkError({ message: "Failed to embed document chunks", cause }),
   });
 
 // Create an embedding for a single value, in this case the user's question
 const embedQuestion = (question: string) =>
   Effect.tryPromise({
-    try: () => embed({ model, value: question, providerOptions: { google: { outputDimensionality: 1536 } } }),
+    try: () => embed({ model, value: question, providerOptions: { google: { taskType: "QUESTION_ANSWERING", outputDimensionality: 1536 } } }),
     catch: (cause) => new AiSdkError({ message: "Failed to embed question", cause }),
   });
 
