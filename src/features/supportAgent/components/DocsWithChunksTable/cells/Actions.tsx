@@ -80,7 +80,7 @@ export default function ActionsCell({
             <PencilSquareIcon className="size-9" />
           </Link>
         }
-      ></Button>
+      />
       <Button
         type="button"
         size="icon"

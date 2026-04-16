@@ -26,7 +26,7 @@ export default function ToolBar() {
             {ll["New Lead"].replaceAll(" ", "\n")}
           </Link>
         }
-      ></Button>
+      />
     </section>
   );
 }

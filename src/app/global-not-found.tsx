@@ -84,7 +84,7 @@ async function PageContent() {
                   {ll["Return Home"]}
                 </a>
               }
-            ></Button>
+            />
           </main>
         </ThemeProvider>
       </body>

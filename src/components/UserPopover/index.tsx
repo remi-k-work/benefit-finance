@@ -84,6 +84,6 @@ export function UserPopoverSkeleton() {
           <UserIcon className="size-11" />
         </Link>
       }
-    ></Button>
+    />
   );
 }

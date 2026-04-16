@@ -29,6 +29,6 @@ export default function LinkToSignIn({ signInText }: LinkToSignInProps) {
           {signInText}
         </Link>
       }
-    ></Button>
+    />
   );
 }

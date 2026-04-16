@@ -57,7 +57,7 @@ async function PageContent() {
             {ll["Return Home"]}
           </Link>
         }
-      ></Button>
+      />
     </article>
   );
 }

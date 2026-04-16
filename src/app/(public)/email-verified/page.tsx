@@ -57,7 +57,7 @@ async function PageContent() {
             {ll["Go to the Dashboard"]}
           </Link>
         }
-      ></Button>
+      />
     </article>
   );
 }
