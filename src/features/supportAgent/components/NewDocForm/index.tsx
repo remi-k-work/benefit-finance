@@ -1,7 +1,7 @@
 "use client";
 
 // react
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 
 // services, features, and other libraries
 import { Effect } from "effect";
@@ -23,6 +23,7 @@ import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 // types
 import type { Lang } from "@/lib/LangLoader";
 import type LangLoader from "@/lib/LangLoader";
+import type { MDXEditorMethods } from "@mdxeditor/editor";
 
 interface NewDocFormProps {
   preferredLanguage: Lang;
@@ -57,6 +58,9 @@ export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback 
     true,
   );
 
+  // Create a ref to the editor component
+  const editorRef = useRef<MDXEditorMethods>(null);
+
   return (
     <Card className="max-w-4xl">
       <CardHeader>
@@ -74,6 +78,7 @@ export default function NewDocForm({ preferredLanguage, ll, llFormToastFeedback 
             <newDocFormL.title label={ll["Title"]} size={40} maxLength={51} spellCheck autoComplete="off" placeholder={ll["e.g., About Benefit Finance"]} />
             <br />
             <newDocFormL.content
+              ref={editorRef}
               label={ll["Content"]}
               spellCheck={false}
               placeholder={
