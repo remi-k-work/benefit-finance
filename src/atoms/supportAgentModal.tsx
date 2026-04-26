@@ -31,7 +31,7 @@ export function useSupportAgentModal() {
     setSupportAgentModal(Option.some(undefined));
   }, [setSupportAgentModal]);
 
-  return { openSupportAgentModal };
+  return { openSupportAgentModal } as const;
 }
 
 // The root component that renders the modal based on the atom state

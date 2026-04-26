@@ -32,10 +32,10 @@ import {
 
 // types
 import type { MDXEditorMethods, MDXEditorProps } from "@mdxeditor/editor";
-import type { Ref } from "react";
+import type { RefObject } from "react";
 
 interface MarkdownEditorProps extends MDXEditorProps {
-  ref?: Ref<MDXEditorMethods>;
+  ref?: RefObject<MDXEditorMethods | null>;
 }
 
 export default function MarkdownEditor({ ref, className, ...props }: MarkdownEditorProps) {

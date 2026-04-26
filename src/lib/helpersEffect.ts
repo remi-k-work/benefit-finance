@@ -9,6 +9,7 @@ import { Console, Effect, Either, Schema } from "effect";
 import { RuntimeServer } from "@/lib/RuntimeServer";
 import { InvalidPageInputsError } from "./errors";
 
+// types
 interface PageInputPromises {
   params: Promise<Record<string, string>>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;

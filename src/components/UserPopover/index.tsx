@@ -37,7 +37,7 @@ export default function UserPopover({ user, user: { email, name }, session, ll }
             <UserAvatar user={user} session={session} isSmall />
           </Button>
         }
-      ></PopoverTrigger>
+      />
       <PopoverContent className="grid">
         <UserAvatar user={user} session={session} className="mx-auto" />
         <h4 className="mt-4 truncate text-center">{name}</h4>

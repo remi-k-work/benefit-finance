@@ -38,7 +38,7 @@ export function useConfirmModal() {
     [setConfirmModal],
   );
 
-  return { openConfirmModal };
+  return { openConfirmModal } as const;
 }
 
 // The root component that renders the modal based on the atom state

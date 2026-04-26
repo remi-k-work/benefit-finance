@@ -29,7 +29,7 @@ export function useDemoModeModal() {
     setDemoModeModal(Option.some(undefined));
   }, [setDemoModeModal]);
 
-  return { openDemoModeModal };
+  return { openDemoModeModal } as const;
 }
 
 // The root component that renders the modal based on the atom state
