@@ -14,7 +14,7 @@ Your goal is to provide accurate support strictly using the provided knowledge b
 6. LANGUAGE: Match the user's language exactly.` as const;
 
 // An initial welcome message shown to the user
-export const INITIAL_MESSAGE_EN: SupportAgentUIMessage[] = [
+export const INITIAL_MESSAGE_EN = [
   {
     id: "welcome-message",
     role: "assistant",
@@ -25,9 +25,9 @@ export const INITIAL_MESSAGE_EN: SupportAgentUIMessage[] = [
       },
     ],
   },
-] as const;
+] as const satisfies SupportAgentUIMessage[];
 
-export const INITIAL_MESSAGE_PL: SupportAgentUIMessage[] = [
+export const INITIAL_MESSAGE_PL = [
   {
     id: "welcome-message",
     role: "assistant",
@@ -38,4 +38,4 @@ export const INITIAL_MESSAGE_PL: SupportAgentUIMessage[] = [
       },
     ],
   },
-] as const;
+] as const satisfies SupportAgentUIMessage[];

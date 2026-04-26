@@ -18,7 +18,7 @@ const main = (modelMessages: ModelMessage[]) =>
     return response;
   }).pipe(
     Effect.scoped,
-    Effect.catchAll((error) => Effect.logError(`Support agent recovering from ${error._tag}`)),
+    Effect.catchAll((error) => Effect.logError(`[SUPPORT AGENT] recovering from ${error._tag}`)),
   );
 
 export async function POST(req: Request) {

@@ -9,7 +9,7 @@ import type { MessageResponse } from "@/components/ai-elements/custom/message";
 type MessageResponseType = ComponentPropsWithoutRef<typeof MessageResponse>;
 
 // This is a list of rehype plugins along with their respective settings
-export const REHYPE_PLUGINS: MessageResponseType["rehypePlugins"] = [
+export const REHYPE_PLUGINS = [
   defaultRehypePlugins.raw,
   defaultRehypePlugins.sanitize,
   [
@@ -19,4 +19,4 @@ export const REHYPE_PLUGINS: MessageResponseType["rehypePlugins"] = [
       allowedLinkPrefixes: [process.env.NEXT_PUBLIC_WEBSITE_URL],
     },
   ],
-] as const;
+] as const satisfies MessageResponseType["rehypePlugins"];
