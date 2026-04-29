@@ -55,6 +55,7 @@ export default function SignUpForm({ preferredLanguage, ll, llSignUpFormFeedback
     llSignUpFormFeedback["You signed up successfully."],
     undefined,
     "/dashboard",
+    true,
   );
 
   return (

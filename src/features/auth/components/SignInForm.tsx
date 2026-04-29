@@ -62,6 +62,7 @@ export default function SignInForm({ redirect, preferredLanguage, ll, llSignInSo
     llSignInFormFeedback["You signed in successfully."],
     undefined,
     redirect ?? "/dashboard",
+    true,
   );
 
   return (
