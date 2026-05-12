@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 
 // components
 import { ThemeProvider } from "next-themes";
+import { RegistryProvider } from "@effect-atom/atom-react";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/custom/sonner";
 
@@ -23,7 +24,32 @@ export const metadata: Metadata = {
   authors: [{ name: "Remi" }],
   robots: { index: true, follow: true },
   category: "finance",
+  keywords: [
+    "personal finance app",
+    "AI finance assistant",
+    "budgeting app",
+    "wealth management platform",
+    "investment tracking",
+    "financial planning",
+    "money management",
+    "AI budgeting tool",
+    "expense tracking",
+    "spending insights",
+    "estate planning",
+    "tax planning",
+    "investment tools",
+    "financial dashboard",
+    "personal wealth tracker",
+    "smart finance app",
+    "financial analytics",
+    "finance management software",
+    "AI-powered finance platform",
+    "wealth building app",
+  ],
   other: { google: "notranslate" },
+
+  metadataBase: new URL("https://benefit-finance.remiforge.dev"),
+  alternates: { canonical: "/" },
 };
 
 export default function Layout({ children }: LayoutProps<"/">) {
@@ -36,10 +62,12 @@ export default function Layout({ children }: LayoutProps<"/">) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-          <Footer />
-          <Toaster richColors />
-          <Analytics debug={false} />
+          <RegistryProvider>
+            {children}
+            <Footer />
+            <Toaster richColors />
+            <Analytics debug={false} />
+          </RegistryProvider>
         </ThemeProvider>
       </body>
     </html>
